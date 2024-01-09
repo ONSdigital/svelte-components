@@ -1,0 +1,18 @@
+import{S as q,i as E,s as N,p as B,j as l,w as h,m as f,a as _,k as j,l as H,b as i,t as $,n as u,d as T,x,y as A,H as D,N as z}from"./index-8607ceaf.js";import{p as F,w as C,M as G,T as J,S as b}from"./collect-stories-45ecfa9a.js";import{T as O}from"./Theme-77c4162c.js";const I=`A component that sets the colour scheme of its child components using CSS variables.
+
+<!-- prettier-ignore -->
+\`\`\`html
+<script>
+  import { Theme } from "@onsvisual/svelte-components";
+<\/script>
+
+<Theme theme="{theme_name}"> {child_components} </Theme>
+\`\`\`
+`;function K(d){let t,m,a,p,s,n;return{c(){t=x("div"),m=x("h2"),m.textContent="Title",a=h(),p=x("p"),p.innerHTML='Text with a <a href="#0">hyperlink</a>.',s=h(),n=x("p"),n.textContent="Muted text.",A(n,"color","var(--muted)"),A(t,"padding","12px")},m(o,v){_(o,t,v),D(t,m),D(t,a),D(t,p),D(t,s),D(t,n)},p:z,d(o){o&&T(t)}}}function P(d){let t,m;const a=[d[0]];let p={$$slots:{default:[K]},$$scope:{ctx:d}};for(let s=0;s<a.length;s+=1)p=B(p,a[s]);return t=new O({props:p}),{c(){l(t.$$.fragment)},m(s,n){f(t,s,n),m=!0},p(s,n){const o=n&1?j(a,[H(s[0])]):{};n&2&&(o.$$scope={dirty:n,ctx:s}),t.$set(o)},i(s){m||(i(t.$$.fragment,s),m=!0)},o(s){$(t.$$.fragment,s),m=!1},d(s){u(t,s)}}}function Q(d){let t,m,a,p,s,n,o,v,g,L,c,k;const w=[{title:"Wrappers/Theme"},{component:O},{argTypes:{theme:{options:["","light","dark","lightblue"],control:{type:"select"}}}},C(I)];let M={};for(let e=0;e<w.length;e+=1)M=B(M,w[e]);return t=new G({props:M}),a=new J({props:{$$slots:{default:[P,({args:e})=>({0:e}),({args:e})=>e?1:0]},$$scope:{ctx:d}}}),s=new b({props:{name:"Default",args:{}}}),o=new b({props:{name:"Dark",args:{theme:"dark"}}}),g=new b({props:{name:"Light blue",args:{theme:"lightblue"}}}),c=new b({props:{name:"Overrides",args:{theme:"light",overrides:{background:"yellow"}}}}),{c(){l(t.$$.fragment),m=h(),l(a.$$.fragment),p=h(),l(s.$$.fragment),n=h(),l(o.$$.fragment),v=h(),l(g.$$.fragment),L=h(),l(c.$$.fragment)},m(e,r){f(t,e,r),_(e,m,r),f(a,e,r),_(e,p,r),f(s,e,r),_(e,n,r),f(o,e,r),_(e,v,r),f(g,e,r),_(e,L,r),f(c,e,r),k=!0},p(e,[r]){const W=r&0?j(w,[w[0],r&0&&{component:O},w[2],r&0&&H(C(I))]):{};t.$set(W);const S={};r&3&&(S.$$scope={dirty:r,ctx:e}),a.$set(S)},i(e){k||(i(t.$$.fragment,e),i(a.$$.fragment,e),i(s.$$.fragment,e),i(o.$$.fragment,e),i(g.$$.fragment,e),i(c.$$.fragment,e),k=!0)},o(e){$(t.$$.fragment,e),$(a.$$.fragment,e),$(s.$$.fragment,e),$(o.$$.fragment,e),$(g.$$.fragment,e),$(c.$$.fragment,e),k=!1},d(e){u(t,e),e&&T(m),u(a,e),e&&T(p),u(s,e),e&&T(n),u(o,e),e&&T(v),u(g,e),e&&T(L),u(c,e)}}}class R extends q{constructor(t){super(),E(this,t,null,Q,N,{})}}const y=F(R,{meta:{title:"Wrappers/Theme"},stories:{"tpl:default":{storyId:"wrappers-theme--default",name:"default",template:!0,source:`<Theme {...args}>
+  <div style:padding="12px">
+    <h2>Title</h2>
+    <p>Text with a <a href="#0">hyperlink</a>.</p>
+    <p style:color="var(--muted)">Muted text.</p>
+  </div>
+</Theme>`,hasArgs:!0},Default:{storyId:"wrappers-theme--default",name:"Default",template:!1,hasArgs:!1},Dark:{storyId:"wrappers-theme--dark",name:"Dark",template:!1,hasArgs:!1},LightBlue:{storyId:"wrappers-theme--light-blue",name:"Light blue",template:!1,hasArgs:!1},Overrides:{storyId:"wrappers-theme--overrides",name:"Overrides",template:!1,hasArgs:!1}},allocatedIds:["default","Meta","Template","Story","componentDocs","Theme","withComponentDocs"]}),Y=y.meta,Z=["Default","Dark","LightBlue","Overrides"],ee=y.stories.Default,te=y.stories.Dark,se=y.stories.LightBlue,re=y.stories.Overrides;export{te as Dark,ee as Default,se as LightBlue,re as Overrides,Z as __namedExportsOrder,Y as default};
+//# sourceMappingURL=Theme.stories-bc783816.js.map
