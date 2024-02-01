@@ -116,76 +116,206 @@
   },
   "exports": {
     "./package.json": "./package.json",
-    "./actions/cssVariables": "./dist/actions/cssVariables/index.js",
-    "./actions/resizeObserver": "./dist/actions/resizeObserver/index.js",
-    "./css/main.css": "./dist/css/main.css",
-    "./datavis/Table/Table.svelte": "./dist/datavis/Table/Table.svelte",
-    "./datavis/shared/data-scatter": "./dist/datavis/shared/data-scatter.js",
-    "./datavis/shared/data": "./dist/datavis/shared/data.js",
-    "./decorators/Blockquote/Blockquote.svelte": "./dist/decorators/Blockquote/Blockquote.svelte",
-    "./decorators/Divider/Divider.svelte": "./dist/decorators/Divider/Divider.svelte",
-    "./decorators/Em/Em.svelte": "./dist/decorators/Em/Em.svelte",
-    "./globals.d.ts": "./dist/globals.d.ts",
-    "./inputs/Button/Button.svelte": "./dist/inputs/Button/Button.svelte",
-    "./inputs/Button/Icon.svelte": "./dist/inputs/Button/Icon.svelte",
-    "./inputs/Checkbox/Checkbox.svelte": "./dist/inputs/Checkbox/Checkbox.svelte",
-    "./inputs/Checkboxes/Checkboxes.svelte": "./dist/inputs/Checkboxes/Checkboxes.svelte",
-    "./inputs/Dropdown/Dropdown.svelte": "./dist/inputs/Dropdown/Dropdown.svelte",
-    "./inputs/ErrorPanel/ErrorPanel.svelte": "./dist/inputs/ErrorPanel/ErrorPanel.svelte",
-    "./inputs/ErrorSummary/ErrorSummary.svelte": "./dist/inputs/ErrorSummary/ErrorSummary.svelte",
-    "./inputs/Input/Input.svelte": "./dist/inputs/Input/Input.svelte",
-    "./inputs/Radios/Radio.svelte": "./dist/inputs/Radios/Radio.svelte",
-    "./inputs/Radios/Radios.svelte": "./dist/inputs/Radios/Radios.svelte",
-    "./inputs/Select/Select.svelte": "./dist/inputs/Select/Select.svelte",
-    "./inputs/Textarea/Textarea.svelte": "./dist/inputs/Textarea/Textarea.svelte",
-    "./js/docsPage": "./dist/js/docsPage.js",
-    "./js/utils": "./dist/js/utils.js",
-    "./js/withParams": "./dist/js/withParams.js",
-    "./layout/Accordion/Accordion.svelte": "./dist/layout/Accordion/Accordion.svelte",
-    "./layout/Accordion/AccordionItem.svelte": "./dist/layout/Accordion/AccordionItem.svelte",
-    "./layout/AnalyticsBanner/AnalyticsBanner.svelte": "./dist/layout/AnalyticsBanner/AnalyticsBanner.svelte",
-    "./layout/Backlink/Backlink.svelte": "./dist/layout/Backlink/Backlink.svelte",
-    "./layout/Breadcrumb/Breadcrumb.svelte": "./dist/layout/Breadcrumb/Breadcrumb.svelte",
-    "./layout/Cards/Card.svelte": "./dist/layout/Cards/Card.svelte",
-    "./layout/Cards/Cards.svelte": "./dist/layout/Cards/Cards.svelte",
-    "./layout/Contents/Contents.svelte": "./dist/layout/Contents/Contents.svelte",
-    "./layout/ErrorPage/ErrorPage.svelte": "./dist/layout/ErrorPage/ErrorPage.svelte",
-    "./layout/Footer/Footer.svelte": "./dist/layout/Footer/Footer.svelte",
-    "./layout/Footer/ONSLogo.svelte": "./dist/layout/Footer/ONSLogo.svelte",
-    "./layout/Grid/Grid.svelte": "./dist/layout/Grid/Grid.svelte",
-    "./layout/Header/Header.svelte": "./dist/layout/Header/Header.svelte",
-    "./layout/Header/ONSLogo.svelte": "./dist/layout/Header/ONSLogo.svelte",
-    "./layout/Hero/Hero.svelte": "./dist/layout/Hero/Hero.svelte",
-    "./layout/Highlight/Highlight.svelte": "./dist/layout/Highlight/Highlight.svelte",
-    "./layout/List/List.svelte": "./dist/layout/List/List.svelte",
-    "./layout/NavSections/NavSection.svelte": "./dist/layout/NavSections/NavSection.svelte",
-    "./layout/NavSections/NavSections.svelte": "./dist/layout/NavSections/NavSections.svelte",
-    "./layout/NavSections/SectionBacklink.svelte": "./dist/layout/NavSections/SectionBacklink.svelte",
-    "./layout/Notice/Notice.svelte": "./dist/layout/Notice/Notice.svelte",
-    "./layout/PhaseBanner/PhaseBanner.svelte": "./dist/layout/PhaseBanner/PhaseBanner.svelte",
-    "./layout/Scroller/Scroller.svelte": "./dist/layout/Scroller/Scroller.svelte",
-    "./layout/Scroller/ScrollerSection.svelte": "./dist/layout/Scroller/ScrollerSection.svelte",
-    "./layout/Section/Section.svelte": "./dist/layout/Section/Section.svelte",
-    "./layout/ShareButtons/ShareButtons.svelte": "./dist/layout/ShareButtons/ShareButtons.svelte",
-    "./layout/Summary/Summary.svelte": "./dist/layout/Summary/Summary.svelte",
-    "./layout/Survey/Survey.svelte": "./dist/layout/Survey/Survey.svelte",
-    "./layout/Survey/init-survey": "./dist/layout/Survey/init-survey.js",
-    "./layout/Tabs/Tab.svelte": "./dist/layout/Tabs/Tab.svelte",
-    "./layout/Tabs/Tabs.svelte": "./dist/layout/Tabs/Tabs.svelte",
-    "./layout/Titleblock/Meta.svelte": "./dist/layout/Titleblock/Meta.svelte",
-    "./layout/Titleblock/Titleblock.svelte": "./dist/layout/Titleblock/Titleblock.svelte",
-    "./layout/Twisty/Twisty.svelte": "./dist/layout/Twisty/Twisty.svelte",
-    "./wrappers/Container/Container.svelte": "./dist/wrappers/Container/Container.svelte",
-    "./wrappers/Embed/Embed.svelte": "./dist/wrappers/Embed/Embed.svelte",
-    "./wrappers/Main/Main.svelte": "./dist/wrappers/Main/Main.svelte",
-    "./wrappers/Observe/Observe.svelte": "./dist/wrappers/Observe/Observe.svelte",
-    "./wrappers/Theme/Theme.svelte": "./dist/wrappers/Theme/Theme.svelte",
-    "./wrappers/Theme/themes": "./dist/wrappers/Theme/themes.js",
+    "./actions/cssVariables": {
+      "svelte": "./dist/actions/cssVariables/index.js"
+    },
+    "./actions/resizeObserver": {
+      "svelte": "./dist/actions/resizeObserver/index.js"
+    },
+    "./css/main.css": {
+      "svelte": "./dist/css/main.css"
+    },
+    "./datavis/Table/Table.svelte": {
+      "svelte": "./dist/datavis/Table/Table.svelte"
+    },
+    "./datavis/shared/data-scatter": {
+      "svelte": "./dist/datavis/shared/data-scatter.js"
+    },
+    "./datavis/shared/data": {
+      "svelte": "./dist/datavis/shared/data.js"
+    },
+    "./decorators/Blockquote/Blockquote.svelte": {
+      "svelte": "./dist/decorators/Blockquote/Blockquote.svelte"
+    },
+    "./decorators/Divider/Divider.svelte": {
+      "svelte": "./dist/decorators/Divider/Divider.svelte"
+    },
+    "./decorators/Em/Em.svelte": {
+      "svelte": "./dist/decorators/Em/Em.svelte"
+    },
+    "./globals.d.ts": {
+      "svelte": "./dist/globals.d.ts"
+    },
+    "./inputs/Button/Button.svelte": {
+      "svelte": "./dist/inputs/Button/Button.svelte"
+    },
+    "./inputs/Button/Icon.svelte": {
+      "svelte": "./dist/inputs/Button/Icon.svelte"
+    },
+    "./inputs/Checkbox/Checkbox.svelte": {
+      "svelte": "./dist/inputs/Checkbox/Checkbox.svelte"
+    },
+    "./inputs/Checkboxes/Checkboxes.svelte": {
+      "svelte": "./dist/inputs/Checkboxes/Checkboxes.svelte"
+    },
+    "./inputs/Dropdown/Dropdown.svelte": {
+      "svelte": "./dist/inputs/Dropdown/Dropdown.svelte"
+    },
+    "./inputs/ErrorPanel/ErrorPanel.svelte": {
+      "svelte": "./dist/inputs/ErrorPanel/ErrorPanel.svelte"
+    },
+    "./inputs/ErrorSummary/ErrorSummary.svelte": {
+      "svelte": "./dist/inputs/ErrorSummary/ErrorSummary.svelte"
+    },
+    "./inputs/Input/Input.svelte": {
+      "svelte": "./dist/inputs/Input/Input.svelte"
+    },
+    "./inputs/Radios/Radio.svelte": {
+      "svelte": "./dist/inputs/Radios/Radio.svelte"
+    },
+    "./inputs/Radios/Radios.svelte": {
+      "svelte": "./dist/inputs/Radios/Radios.svelte"
+    },
+    "./inputs/Select/Select.svelte": {
+      "svelte": "./dist/inputs/Select/Select.svelte"
+    },
+    "./inputs/Textarea/Textarea.svelte": {
+      "svelte": "./dist/inputs/Textarea/Textarea.svelte"
+    },
+    "./js/docsPage": {
+      "svelte": "./dist/js/docsPage.js"
+    },
+    "./js/utils": {
+      "svelte": "./dist/js/utils.js"
+    },
+    "./js/withParams": {
+      "svelte": "./dist/js/withParams.js"
+    },
+    "./layout/Accordion/Accordion.svelte": {
+      "svelte": "./dist/layout/Accordion/Accordion.svelte"
+    },
+    "./layout/Accordion/AccordionItem.svelte": {
+      "svelte": "./dist/layout/Accordion/AccordionItem.svelte"
+    },
+    "./layout/AnalyticsBanner/AnalyticsBanner.svelte": {
+      "svelte": "./dist/layout/AnalyticsBanner/AnalyticsBanner.svelte"
+    },
+    "./layout/BackLink/Backlink.svelte": {
+      "svelte": "./dist/layout/BackLink/Backlink.svelte"
+    },
+    "./layout/Breadcrumb/Breadcrumb.svelte": {
+      "svelte": "./dist/layout/Breadcrumb/Breadcrumb.svelte"
+    },
+    "./layout/Cards/Card.svelte": {
+      "svelte": "./dist/layout/Cards/Card.svelte"
+    },
+    "./layout/Cards/Cards.svelte": {
+      "svelte": "./dist/layout/Cards/Cards.svelte"
+    },
+    "./layout/Contents/Contents.svelte": {
+      "svelte": "./dist/layout/Contents/Contents.svelte"
+    },
+    "./layout/ErrorPage/ErrorPage.svelte": {
+      "svelte": "./dist/layout/ErrorPage/ErrorPage.svelte"
+    },
+    "./layout/Footer/Footer.svelte": {
+      "svelte": "./dist/layout/Footer/Footer.svelte"
+    },
+    "./layout/Footer/ONSLogo.svelte": {
+      "svelte": "./dist/layout/Footer/ONSLogo.svelte"
+    },
+    "./layout/Grid/Grid.svelte": {
+      "svelte": "./dist/layout/Grid/Grid.svelte"
+    },
+    "./layout/Header/Header.svelte": {
+      "svelte": "./dist/layout/Header/Header.svelte"
+    },
+    "./layout/Header/ONSLogo.svelte": {
+      "svelte": "./dist/layout/Header/ONSLogo.svelte"
+    },
+    "./layout/Hero/Hero.svelte": {
+      "svelte": "./dist/layout/Hero/Hero.svelte"
+    },
+    "./layout/Highlight/Highlight.svelte": {
+      "svelte": "./dist/layout/Highlight/Highlight.svelte"
+    },
+    "./layout/List/List.svelte": {
+      "svelte": "./dist/layout/List/List.svelte"
+    },
+    "./layout/NavSections/NavSection.svelte": {
+      "svelte": "./dist/layout/NavSections/NavSection.svelte"
+    },
+    "./layout/NavSections/NavSections.svelte": {
+      "svelte": "./dist/layout/NavSections/NavSections.svelte"
+    },
+    "./layout/NavSections/SectionBacklink.svelte": {
+      "svelte": "./dist/layout/NavSections/SectionBacklink.svelte"
+    },
+    "./layout/Notice/Notice.svelte": {
+      "svelte": "./dist/layout/Notice/Notice.svelte"
+    },
+    "./layout/PhaseBanner/PhaseBanner.svelte": {
+      "svelte": "./dist/layout/PhaseBanner/PhaseBanner.svelte"
+    },
+    "./layout/Scroller/Scroller.svelte": {
+      "svelte": "./dist/layout/Scroller/Scroller.svelte"
+    },
+    "./layout/Scroller/ScrollerSection.svelte": {
+      "svelte": "./dist/layout/Scroller/ScrollerSection.svelte"
+    },
+    "./layout/Section/Section.svelte": {
+      "svelte": "./dist/layout/Section/Section.svelte"
+    },
+    "./layout/ShareButtons/ShareButtons.svelte": {
+      "svelte": "./dist/layout/ShareButtons/ShareButtons.svelte"
+    },
+    "./layout/Summary/Summary.svelte": {
+      "svelte": "./dist/layout/Summary/Summary.svelte"
+    },
+    "./layout/Survey/Survey.svelte": {
+      "svelte": "./dist/layout/Survey/Survey.svelte"
+    },
+    "./layout/Survey/init-survey": {
+      "svelte": "./dist/layout/Survey/init-survey.js"
+    },
+    "./layout/Tabs/Tab.svelte": {
+      "svelte": "./dist/layout/Tabs/Tab.svelte"
+    },
+    "./layout/Tabs/Tabs.svelte": {
+      "svelte": "./dist/layout/Tabs/Tabs.svelte"
+    },
+    "./layout/TitleBlock/Meta.svelte": {
+      "svelte": "./dist/layout/TitleBlock/Meta.svelte"
+    },
+    "./layout/TitleBlock/TitleBlock.svelte": {
+      "svelte": "./dist/layout/TitleBlock/TitleBlock.svelte"
+    },
+    "./layout/Twisty/Twisty.svelte": {
+      "svelte": "./dist/layout/Twisty/Twisty.svelte"
+    },
+    "./wrappers/Container/Container.svelte": {
+      "svelte": "./dist/wrappers/Container/Container.svelte"
+    },
+    "./wrappers/Embed/Embed.svelte": {
+      "svelte": "./dist/wrappers/Embed/Embed.svelte"
+    },
+    "./wrappers/Main/Main.svelte": {
+      "svelte": "./dist/wrappers/Main/Main.svelte"
+    },
+    "./wrappers/Observe/Observe.svelte": {
+      "svelte": "./dist/wrappers/Observe/Observe.svelte"
+    },
+    "./wrappers/Theme/Theme.svelte": {
+      "svelte": "./dist/wrappers/Theme/Theme.svelte"
+    },
+    "./wrappers/Theme/themes": {
+      "svelte": "./dist/wrappers/Theme/themes.js"
+    },
     ".": "./dist/index.js"
   },
-  "svelte": "./dist/index.js",
   "bugs": {
     "url": "https://github.com/onsvisual/svelte-components/issues"
   },
-  "readme": "ERROR: No README data found!"
+  "readme": "ERROR: No README data found!",
+  "svelte": "./dist/index.js"
 }

@@ -71,7 +71,7 @@ const build = async () => {
       await processOther(file);
     }
     if (file === "index.js") continue; // Always add root index last to exports...
-    pkgExports[`./${prettifyImport(file)}`] = `./dist/${file}`;
+    pkgExports[`./${prettifyImport(file)}`] = { svelte: `./dist/${file}` };
   }
   pkgExports["."] = "./dist/index.js";
   const pkg = fs.readJSONSync(PACKAGE);
