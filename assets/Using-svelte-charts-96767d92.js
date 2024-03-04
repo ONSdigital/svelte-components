@@ -1,4 +1,0 @@
-import{j as t,p as o}from"./jsx-runtime-539b76a3.js";import{M as i}from"./chunk-PCJTTTQV-d69775fa.js";import{u as r}from"./index-297ebefe.js";import"./extends-b40c5bac.js";import"./_commonjsHelpers-725317a4.js";import"./iframe-63015b00.js";import"../sb-preview/runtime.js";import"./index-d475d2ea.js";import"./index-d37d4223.js";import"./index-1a79a776.js";import"./index-356e4a49.js";function n(e){const s=Object.assign({h1:"h1",p:"p"},r(),e.components);return t.jsxs(t.Fragment,{children:[t.jsx(i,{title:"Data visualisation/Using svelte charts",parameters:{...o}}),`
-`,t.jsx(s.h1,{id:"using-svelte-charts",children:"Using Svelte Charts"}),`
-`,t.jsx(s.p,{children:"Hello world"})]})}function f(e={}){const{wrapper:s}=Object.assign({},r(),e.components);return s?t.jsx(s,Object.assign({},e,{children:t.jsx(n,e)})):n(e)}export{f as default};
-//# sourceMappingURL=Using-svelte-charts-96767d92.js.map
