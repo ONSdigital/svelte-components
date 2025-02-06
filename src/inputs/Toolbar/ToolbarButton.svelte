@@ -1,9 +1,7 @@
 <script lang="ts">
-  import { createEventDispatcher, getContext } from "svelte";
+  import { createEventDispatcher } from "svelte";
   import Icon from "./Icon.svelte";
   import HelpModal from "./HelpModal.svelte";
-
-  //   import { TOOLBAR_CONTEXT_KEY } from "./toolbar-context.ts";
 
   // Props for the ToolbarButton
   export let icon: string = "";
@@ -11,10 +9,6 @@
   export let disabled: boolean = false;
   export let classes: string = "";
   export let helpText: string | null = null;
-
-  // Get orientation from context, with fallback
-  //   const context = getContext(TOOLBAR_CONTEXT_KEY) ?? { orientation: "horizontal" };
-  //   export let orientation: "horizontal" | "vertical" = context.orientation;
 
   // State for help modal
   export let showHelp: boolean = false;

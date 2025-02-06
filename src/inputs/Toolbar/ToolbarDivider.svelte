@@ -1,13 +1,19 @@
 <script lang="ts">
-  //   import { getContext } from "svelte";
-  //   import { TOOLBAR_CONTEXT_KEY } from "./toolbar-context.js";
+  import { getContext } from "svelte";
+  import { subscribe } from "svelte/store";
 
   export let classes: string = "";
 
-  // Get orientation from context, with fallback
-  //   const context = getContext(TOOLBAR_CONTEXT_KEY) ?? { orientation: "horizontal" };
-  //   export let orientation: "horizontal" | "vertical" = context.orientation;
-  export let orientation: "horizontal" | "vertical" = "horizontal";
+  // Get the orientation store from context
+  const orientationStore = getContext("orientation");
+
+  // Subscribe to the store to get its value
+  let orientation;
+  orientationStore.subscribe((value) => {
+    orientation = value;
+  });
+
+  $: console.log(orientation);
 </script>
 
 <div class="{`toolbar-divider ${orientation} ${classes}`}" aria-hidden="true"></div>

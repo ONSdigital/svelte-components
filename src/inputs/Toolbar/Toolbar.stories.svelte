@@ -60,3 +60,5 @@
 </Template>
 
 <Story name="Default" args="{{ ariaLabel: 'Toolbar' }}" />
+
+<Story name="Vertical" args="{{ orientation: 'vertical' }}" />

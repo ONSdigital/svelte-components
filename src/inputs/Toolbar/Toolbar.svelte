@@ -1,5 +1,6 @@
 <script>
-  // import { setContext } from "svelte";
+  import { setContext } from "svelte";
+  import { writable } from "svelte/store";
   // import { TOOLBAR_CONTEXT_KEY } from "./toolbar-context.js";
 
   /**
@@ -18,10 +19,9 @@
    */
   export let orientation = "horizontal";
 
-  // // Set context for child components
-  // setContext(TOOLBAR_CONTEXT_KEY, {
-  //   orientation,
-  // });
+  // Set context for child components
+  const orientationStore = writable(orientation);
+  $: setContext("orientation", orientationStore);
 </script>
 
 <!-- Toolbar container -->
