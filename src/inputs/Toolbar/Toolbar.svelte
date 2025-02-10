@@ -22,6 +22,12 @@
   // Set context for child components
   const orientationStore = writable(orientation);
   $: setContext("orientation", orientationStore);
+
+  const activeModalStore = writable(null); // Tracks the ID of the active modal
+  setContext("activeModalId", activeModalStore);
+
+  const buttonIds = writable([]); // Tracks the IDs of the buttons
+  setContext("buttonIds", buttonIds);
 </script>
 
 <!-- Toolbar container -->

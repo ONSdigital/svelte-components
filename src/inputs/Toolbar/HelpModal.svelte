@@ -1,88 +1,142 @@
 <script lang="ts">
+  import { getContext } from "svelte";
+  import { set } from "svelte/store";
   import { fly } from "svelte/transition";
+  import Checkbox from "../Checkbox/Checkbox.svelte";
+  import Button from "../Button/Button.svelte";
 
   export let triggerElement: HTMLElement | null = null;
   export let onClose: () => void;
-  export let helpText: string | null = null;
+
+  // Retrieve the stores from context
+  const activeModalId = getContext("activeModalId");
+  const modalIds = getContext("buttonIds");
 
   let modalPosition = { top: 0, left: 0 };
-  let hasSlotContent = false;
+  let notchPosition = { left: 0 };
+
+  let dontShowMeAgain = false;
 
   $: if (triggerElement) {
     const rect = triggerElement.getBoundingClientRect();
 
-    // Determine positioning based on available space
+    // Calculate the modal's position
     const spaceBelow = window.innerHeight - rect.bottom;
     const spaceAbove = rect.top;
-    const spaceRight = window.innerWidth - rect.right;
-    const spaceLeft = rect.left;
 
-    // Prefer positioning below, then above, then right, then left
-    if (spaceBelow > 200) {
-      modalPosition = {
-        top: rect.bottom + window.scrollY + 10,
-        left: rect.left + window.scrollX,
-      };
-    } else if (spaceAbove > 200) {
-      modalPosition = {
-        top: rect.top + window.scrollY - 10,
-        left: rect.left + window.scrollX,
-      };
-    } else if (spaceRight > 200) {
-      modalPosition = {
-        top: rect.top + window.scrollY,
-        left: rect.right + window.scrollX + 10,
-      };
-    } else {
-      modalPosition = {
-        top: rect.top + window.scrollY,
-        left: rect.left + window.scrollX - 10,
-      };
+    // Default to position below the trigger element
+    modalPosition = {
+      top: rect.bottom + window.scrollY + 10,
+      left: window.scrollX - 10,
+    };
+
+    // Align notch with the center of the trigger element
+    notchPosition = {
+      left: window.scrollX - modalPosition.left + rect.width / 2 - 10, // Adjust for the notch width
+    };
+
+    // If there's not enough space below, position above
+    if (spaceBelow < 200 && spaceAbove > 200) {
+      modalPosition.top = rect.top + window.scrollY - 10;
+    }
+  }
+
+  // Navigate to the next modal
+  function nextModal() {
+    const ids = $modalIds;
+    const currentIndex = ids.indexOf($activeModalId);
+    if (currentIndex !== -1 && currentIndex < ids.length - 1) {
+      activeModalId.set(ids[currentIndex + 1]);
+      console.log("Navigating to next modal:", ids[currentIndex + 1]);
+    }
+  }
+
+  // Navigate to the previous modal
+  function previousModal() {
+    const ids = $modalIds;
+    const currentIndex = ids.indexOf($activeModalId);
+    if (currentIndex > 0) {
+      activeModalId.set(ids[currentIndex - 1]);
+      console.log("Navigating to previous modal:", ids[currentIndex - 1]);
     }
   }
 
   function handleKeydown(event: KeyboardEvent) {
-    if (event.key === "Escape") {
-      onClose();
-    }
-  }
-
-  function checkSlotContent(node: HTMLElement) {
-    hasSlotContent = node.children.length > 0;
-    return { destroy() {} };
+    if (event.key === "Escape") onClose();
   }
 </script>
 
 <svelte:window on:keydown="{handleKeydown}" />
 
 <div
-  class="help-modal"
+  class="help-modal-wrapper"
   style="top: {modalPosition.top}px; left: {modalPosition.left}px;"
-  transition:fly="{{ duration: 200, y: 50 }}"
-  role="dialog"
-  aria-modal="true"
+  transition:fly="{{ duration: 200, y: 10 }}"
 >
-  <div use:checkSlotContent>
-    <slot>
-      {#if helpText}
-        <p>{helpText}</p>
+  <!-- Notch -->
+  <div class="help-modal-notch" style="left: {notchPosition.left}px;"></div>
+
+  <!-- Modal Content -->
+  <div class="help-modal" role="dialog" aria-modal="true">
+    <slot />
+    <button class="close-button" on:click="{onClose}" aria-label="Close help">×</button>
+
+    <div class="ons-padding-4">
+      <Checkbox
+        id="dontShowMeAgain"
+        label="Don't show me again"
+        bind:checked="{dontShowMeAgain}"
+        compact
+      />
+    </div>
+    <div class="ons-grid--flex ons-grid--between ons-grid--vertical-center">
+      <a>Skip</a>
+      {#if $modalIds.indexOf($activeModalId) > 0}
+        <span style="margin-left:auto; margin-right:10px">
+          <Button variant="secondary" on:click="{previousModal}">Back</Button>
+        </span>
       {/if}
-    </slot>
+
+      <Button on:click="{nextModal}">Next</Button>
+    </div>
   </div>
-  <button class="close-button" on:click="{onClose}" aria-label="Close help"> × </button>
 </div>
 
 <style>
+  .help-modal-wrapper {
+    position: absolute;
+    z-index: 10;
+  }
+
+  .help-modal-notch {
+    position: absolute;
+    top: -10px;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid white;
+    z-index: 1;
+  }
+
   .help-modal {
     position: absolute;
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 1rem;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    z-index: 10;
-    max-width: 300px;
-    width: max-content;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 16px;
+    isolation: isolate;
+
+    width: 360px;
+
+    background: #ffffff;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.25);
+    border-radius: 16px;
+
+    /* Inside auto layout */
+    flex: none;
+    order: 2;
+    flex-grow: 0;
   }
 
   .close-button {
@@ -91,12 +145,17 @@
     right: 0.5rem;
     background: none;
     border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
+    font-size: 1.25rem;
     color: #666;
+    cursor: pointer;
   }
 
   .close-button:hover {
-    color: #000;
+    color: #333;
+  }
+
+  .ons-padding-4 {
+    padding-top: var(--4-units, 16px);
+    padding-bottom: var(--4-units, 16px);
   }
 </style>

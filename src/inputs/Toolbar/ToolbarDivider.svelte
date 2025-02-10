@@ -12,8 +12,6 @@
   orientationStore.subscribe((value) => {
     orientation = value;
   });
-
-  $: console.log(orientation);
 </script>
 
 <div class="{`toolbar-divider ${orientation} ${classes}`}" aria-hidden="true"></div>

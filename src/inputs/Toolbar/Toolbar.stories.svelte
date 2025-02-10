@@ -7,9 +7,85 @@
   import Toolbar from "./Toolbar.svelte";
   import ToolbarButton from "./ToolbarButton.svelte";
   import ToolbarDivider from "./ToolbarDivider.svelte";
-  import HelpModal from "./HelpModal.svelte";
+  import movepanimg from "./img/movepan.png";
 
   import { withComponentDocs } from "../../js/withParams.js";
+
+  const toolbarContent = [
+    {
+      type: "button",
+      id: "move",
+      icon: "move",
+      label: "Move and Pan",
+      helpContent: `<h3>Move and pan</h3><p>Left-click anywhere on the map and hold the button down while dragging the mouse to move the map in the desired direction.</p><img src='${movepanimg}' alt='Move and pan' />`,
+    },
+    {
+      type: "button",
+      id: "polygon",
+      icon: "polygon",
+      label: "Draw a polygon",
+      helpContent:
+        "<h3>Draw a polygon</h3><p>Left-click to add a point to the polygon. Double-click to finish drawing.</p>",
+    },
+    {
+      type: "button",
+      id: "circle",
+      icon: "radius",
+      label: "Draw a circle",
+      helpContent:
+        "<h3>Draw a circle</h3><p>Left-click anywhere on the map and hold the button down while dragging the mouse to move the map in the desired direction.</p>",
+    },
+    {
+      type: "divider",
+    },
+    {
+      type: "button",
+      id: "zoomin",
+      icon: "zoomin",
+      label: "Zoom in",
+      helpContent:
+        "<h3>Zoom in</h3><p>Left-click anywhere on the map and hold the button down while dragging the mouse to move the map in the desired direction.</p>",
+    },
+    {
+      type: "button",
+      id: "zoomout",
+      icon: "zoomout",
+      label: "Zoom out",
+      helpContent:
+        "<h3>Zoom out</h3><p>Left-click anywhere on the map and hold the button down while dragging the mouse to move the map in the desired direction.</p>",
+    },
+    {
+      type: "divider",
+    },
+    {
+      type: "button",
+      id: "undo",
+      icon: "undo",
+      label: "Undo last step",
+      helpContent:
+        "<h3>Undo last step</h3><p>Left-click anywhere on the map and hold the button down while dragging the mouse to move the map in the desired direction.</p>",
+    },
+    {
+      type: "button",
+      id: "redo",
+      icon: "redo",
+      label: "Redo last step",
+      helpContent:
+        "<h3>Redo last step</h3><p>Left-click anywhere on the map and hold the button down while dragging the mouse to move the map in the desired direction.</p>",
+    },
+    {
+      type: "divider",
+    },
+    {
+      type: "button",
+      id: "search",
+      icon: "search",
+      label: "Search for an area",
+      helpContent: "<h3>Search</h3><p>Search for an area by name or postcode.</p>",
+    },
+  ];
+
+  const buttonIds = toolbarContent.filter((item) => item.type === "button").map((item) => item.id);
 </script>
 
 <Meta
@@ -26,36 +102,15 @@
 
 <Template let:args>
   <Toolbar orientation="{args.orientation}">
-    <ToolbarButton
-      icon="move"
-      label="Move and Pan"
-      helpText="Left-click anywhere on the map and hold the button down while dragging the mouse to move the map in the desired direction."
-    />
-    <ToolbarButton icon="polygon" label="Draw a polygon" helpText="Draw a polygon on the map">
-      <HelpModal>
-        <h3>Detailed Help</h3>
-        <p>More complex help text or even HTML content</p>
-        <ul>
-          <li>With lists</li>
-          <li>Or other elements</li>
-        </ul>
-      </HelpModal>
-    </ToolbarButton>
-    <ToolbarButton
-      icon="radius"
-      label="Draw a circle"
-      helpText="Left-click anywhere on the map and hold the button down while dragging the mouse to move the map in the desired direction."
-    />
-    <ToolbarDivider />
-    <ToolbarButton
-      icon="zoomin"
-      label="Zoom in"
-      helpText="Left-click anywhere on the map and hold the button down while dragging the mouse to move the map in the desired direction."
-    />
-    <ToolbarButton icon="zoomout" label="Zoom out" />
-    <ToolbarDivider />
-    <ToolbarButton icon="undo" label="Undo last step" />
-    <ToolbarButton icon="redo" label="Redo last step" />
+    {#each toolbarContent as { type, id, icon, label, helpContent }}
+      {#if type === "button"}
+        <ToolbarButton id="{id}" icon="{icon}" label="{label}">
+          {@html helpContent}
+        </ToolbarButton>
+      {:else}
+        <ToolbarDivider />
+      {/if}
+    {/each}
   </Toolbar>
 </Template>
 
