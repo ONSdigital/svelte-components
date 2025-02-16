@@ -1,16 +1,17 @@
-A toolbar made up of buttons and dividers
+A toolbar component. Use `ToolbarsContainer` even if using one toolbar as it contains a store for all the IDs and the activeID.
+
+There's a slot on ToolbarButton if you want to put in custom help text otherwise, there's the prop `helpText`.
+
+Each `ToolControl` will display content underneath the row of buttons. The `id` needs to match the `id` of the button.
 
 <!-- prettier-ignore -->
 ```html
 <script>
-  import { Toolbar } from "@onsvisual/svelte-components";
+  import { ToolbarsContainer,Toolbar,ToolbarButton, ToolbarDivider,ToolControls,ToolControl, HelpModal } from "@onsvisual/svelte-components";
+
+  <ToolbarsContainer>
 
   <Toolbar orientation="horizontal">
-    <ToolbarButton
-      icon="move"
-      label="Move and Pan"
-      helpText="Left-click anywhere on the map and hold the button down while dragging the mouse to move the map in the desired direction."
-    />
     <ToolbarButton icon="polygon" label="Draw a polygon" helpText="Draw a polygon on the map">
       <HelpModal>
         <h3>Detailed Help</h3>
@@ -24,19 +25,27 @@ A toolbar made up of buttons and dividers
     <ToolbarButton
       icon="radius"
       label="Draw a circle"
-      helpText="Left-click anywhere on the map and hold the button down while dragging the mouse to move the map in the desired direction."
+      helpText="Draw a circle using this tool"
     />
     <ToolbarDivider />
     <ToolbarButton
       icon="zoomin"
       label="Zoom in"
-      helpText="Left-click anywhere on the map and hold the button down while dragging the mouse to move the map in the desired direction."
     />
     <ToolbarButton icon="zoomout" label="Zoom out" />
-    <ToolbarDivider />
-    <ToolbarButton icon="undo" label="Undo last step" />
-    <ToolbarButton icon="redo" label="Redo last step" />
+   <ToolControls>
+   <ToolControl id="polygon">
+   <p>Text to display when polygon tool is selected</p>
+   </ToolControl>
   </Toolbar>
+
+
+  // Second toolbar
+  <Toolbar>
+    <ToolbarButton id="upload" icon="upload"/>
+    <ToolbarButton id="download" icon="download"/>
+  </Toolbar>
+  </ToolbarsContainer>
 
 </script>
 ```

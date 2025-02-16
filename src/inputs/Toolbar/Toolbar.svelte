@@ -22,24 +22,26 @@
   // Set context for child components
   const orientationStore = writable(orientation);
   $: setContext("orientation", orientationStore);
-
-  const activeModalStore = writable(null); // Tracks the ID of the active modal
-  setContext("activeModalId", activeModalStore);
-
-  const buttonIds = writable([]); // Tracks the IDs of the buttons
-  setContext("buttonIds", buttonIds);
 </script>
 
 <!-- Toolbar container -->
 <div
   role="toolbar"
   aria-label="{ariaLabel}"
-  class="{`toolbar ${orientation === 'vertical' ? 'flex-col' : 'flex'} ${classes}`}"
+  class="{`toolbar ${orientation === 'vertical' ? '' : 'flex-col'} ${classes}`}"
 >
-  <slot />
+  <div class="{`grid--flex ${orientation === 'vertical' ? 'flex-col' : ''}`}">
+    <slot />
+  </div>
+
+  <slot name="controls" />
 </div>
 
 <style>
+  .grid--flex {
+    display: flex;
+  }
+
   .toolbar {
     display: flex;
     align-items: center;
@@ -51,6 +53,7 @@
     flex-wrap: nowrap;
     width: auto;
     max-width: fit-content;
+    height: 100%;
   }
 
   .flex-col {

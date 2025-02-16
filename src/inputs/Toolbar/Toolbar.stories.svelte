@@ -4,10 +4,14 @@
   // @ts-ignore
   import componentDocs from "./docs/component.md?raw";
 
+  import ToolbarsContainer from "./ToolbarsContainer.svelte";
   import Toolbar from "./Toolbar.svelte";
   import ToolbarButton from "./ToolbarButton.svelte";
   import ToolbarDivider from "./ToolbarDivider.svelte";
   import movepanimg from "./img/movepan.png";
+  import Button from "../Button/Button.svelte";
+  import ToolControls from "./ToolControls.svelte";
+  import ToolControl from "./ToolControl.svelte";
 
   import { withComponentDocs } from "../../js/withParams.js";
 
@@ -85,7 +89,7 @@
     },
   ];
 
-  const buttonIds = toolbarContent.filter((item) => item.type === "button").map((item) => item.id);
+  // const buttonIds = toolbarContent.filter((item) => item.type === "button").map((item) => item.id);
 </script>
 
 <Meta
@@ -101,17 +105,41 @@
 />
 
 <Template let:args>
-  <Toolbar orientation="{args.orientation}">
-    {#each toolbarContent as { type, id, icon, label, helpContent }}
-      {#if type === "button"}
-        <ToolbarButton id="{id}" icon="{icon}" label="{label}">
-          {@html helpContent}
-        </ToolbarButton>
-      {:else}
-        <ToolbarDivider />
-      {/if}
-    {/each}
-  </Toolbar>
+  <ToolbarsContainer>
+    <Toolbar orientation="{args.orientation}">
+      {#each toolbarContent as { type, id, icon, label, helpContent }}
+        {#if type === "button"}
+          <ToolbarButton id="{id}" icon="{icon}" label="{label}">
+            {@html helpContent}
+          </ToolbarButton>
+        {:else}
+          <ToolbarDivider />
+        {/if}
+      {/each}
+      <ToolControls slot="controls">
+        <ToolControl id="polygon">
+          <p>
+            Click or tap an area on the map to add a node to the shape. To apply a shape, close it
+            by clicking or tapping on the starting node.
+          </p>
+          <Button variant="secondary" disabled>Clear shape</Button>
+          <Button variant="primary">Apply shape</Button>
+        </ToolControl>
+      </ToolControls>
+    </Toolbar>
+    <Toolbar>
+      <ToolbarButton id="download" icon="download" label="Download area" />
+      <ToolbarButton id="upload" icon="upload" label="Upload a geometry" />
+      <ToolbarDivider />
+      <ToolbarButton id="help" icon="help" label="Help" />
+      <ToolbarDivider />
+      <ToolbarButton custom>
+        <div slot="custom">
+          <Button disabled small>Build profile</Button>
+        </div>
+      </ToolbarButton>
+    </Toolbar>
+  </ToolbarsContainer>
 </Template>
 
 <Story name="Default" args="{{ ariaLabel: 'Toolbar' }}" />

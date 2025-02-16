@@ -1,6 +1,6 @@
 <script lang="ts">
   import { getContext } from "svelte";
-  import { set } from "svelte/store";
+  import { get } from "svelte/store";
   import { fly } from "svelte/transition";
   import Checkbox from "../Checkbox/Checkbox.svelte";
   import Button from "../Button/Button.svelte";
@@ -10,7 +10,10 @@
 
   // Retrieve the stores from context
   const activeModalId = getContext("activeModalId");
-  const modalIds = getContext("buttonIds");
+  // const modalIds = getContext("buttonIds");
+
+  // Access button IDs from context
+  const { buttonIds } = getContext("buttonIds");
 
   let modalPosition = { top: 0, left: 0 };
   let notchPosition = { left: 0 };
@@ -23,6 +26,7 @@
     // Calculate the modal's position
     const spaceBelow = window.innerHeight - rect.bottom;
     const spaceAbove = rect.top;
+    const spaceRight = window.innerWidth - rect.right;
 
     // Default to position below the trigger element
     modalPosition = {
@@ -33,17 +37,28 @@
     // Align notch with the center of the trigger element
     notchPosition = {
       left: window.scrollX - modalPosition.left + rect.width / 2 - 10, // Adjust for the notch width
+      right: "auto",
     };
 
     // If there's not enough space below, position above
     if (spaceBelow < 200 && spaceAbove > 200) {
       modalPosition.top = rect.top + window.scrollY - 10;
     }
+
+    // Adjust if close to the right edge
+    if (spaceRight < 300) {
+      modalPosition.left = window.scrollX - 300; // Adjust for modal width
+      notchPosition = {
+        left: "auto",
+        right: -340,
+      };
+    }
   }
 
   // Navigate to the next modal
   function nextModal() {
-    const ids = $modalIds;
+    // const ids = $modalIds;
+    const ids = get(buttonIds);
     const currentIndex = ids.indexOf($activeModalId);
     if (currentIndex !== -1 && currentIndex < ids.length - 1) {
       activeModalId.set(ids[currentIndex + 1]);
@@ -53,7 +68,8 @@
 
   // Navigate to the previous modal
   function previousModal() {
-    const ids = $modalIds;
+    // const ids = $modalIds;
+    const ids = get(buttonIds);
     const currentIndex = ids.indexOf($activeModalId);
     if (currentIndex > 0) {
       activeModalId.set(ids[currentIndex - 1]);
@@ -67,14 +83,16 @@
 </script>
 
 <svelte:window on:keydown="{handleKeydown}" />
-
 <div
   class="help-modal-wrapper"
   style="top: {modalPosition.top}px; left: {modalPosition.left}px;"
   transition:fly="{{ duration: 200, y: 10 }}"
 >
   <!-- Notch -->
-  <div class="help-modal-notch" style="left: {notchPosition.left}px;"></div>
+  <div
+    class="help-modal-notch"
+    style="left: {notchPosition.left}px;right: {notchPosition.right}px;"
+  ></div>
 
   <!-- Modal Content -->
   <div class="help-modal" role="dialog" aria-modal="true">
@@ -91,13 +109,18 @@
     </div>
     <div class="ons-grid--flex ons-grid--between ons-grid--vertical-center">
       <a>Skip</a>
-      {#if $modalIds.indexOf($activeModalId) > 0}
+      {#if $buttonIds.indexOf($activeModalId) > 0}
         <span style="margin-left:auto; margin-right:10px">
           <Button variant="secondary" on:click="{previousModal}">Back</Button>
         </span>
       {/if}
 
-      <Button on:click="{nextModal}">Next</Button>
+      {#if $buttonIds.indexOf($activeModalId) != $buttonIds.length - 1}
+        <Button on:click="{nextModal}">Next</Button>
+      {/if}
+      {#if $buttonIds.indexOf($activeModalId) == $buttonIds.length - 1}
+        <Button>Get started</Button>
+      {/if}
     </div>
   </div>
 </div>

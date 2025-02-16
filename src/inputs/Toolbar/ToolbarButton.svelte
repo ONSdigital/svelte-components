@@ -1,25 +1,38 @@
 <script lang="ts">
-  import { onMount, createEventDispatcher, getContext } from "svelte";
+  import { onMount, onDestroy, createEventDispatcher, getContext } from "svelte";
   import Icon from "./Icon.svelte";
   import HelpModal from "./HelpModal.svelte";
+  import { nanoid } from "nanoid";
 
   // Props for the ToolbarButton
-  export let id: string = "";
+  export let id: string = nanoid(6);
   export let icon: string = "";
   export let label: string = "";
   export let disabled: boolean = false;
   export let classes: string = "";
   export let helpText: string | null = null;
-
-  // // State for help modal
-  // export let showHelp: boolean = false;
+  export let selected: boolean = false;
+  export let custom: boolean = false;
 
   const dispatch = createEventDispatcher();
 
   let buttonElement: HTMLElement;
 
+  // Get activeModalId store from context
   const activeModalId = getContext("activeModalId");
-  const modalIds = getContext("buttonIds");
+
+  // Retrieve button registry from context
+  const { register, unregister } = getContext("buttonIds");
+
+  // Register button on mount
+  onMount(() => {
+    register(id);
+  });
+
+  // Unregister button on destroy
+  onDestroy(() => {
+    unregister(id);
+  });
 
   // Reactive store subscription
   $: isActive = $activeModalId === id;
@@ -29,57 +42,34 @@
     if (!disabled) {
       dispatch("click");
       activeModalId.set(isActive ? null : id); // Toggle the modal
+      // maybe something here to check if selected
     }
   }
-
-  // function handleClick() {
-  //   if (!disabled) {
-  //     dispatch("click");
-  //     // Toggle help modal if help text is provided
-  //     // if (helpText) {
-  //     showHelp = !showHelp;
-  //     // }
-  //   }
-  // }
-
-  // function closeHelp() {
-  //   showHelp = false;
-  // }
-
-  // Add this ToolbarButton's ID to the modal list on mount
-  onMount(() => {
-    modalIds.update((ids) => [...ids, id]);
-    return () => {
-      modalIds.update((ids) => ids.filter((existingId) => existingId !== id));
-    };
-  });
 </script>
 
 <div class="toolbar-button-wrapper">
-  <button
-    type="button"
-    aria-label="{label}"
-    class="{`toolbar-button ${disabled ? 'disabled' : ''}  ${classes}`}"
-    on:click="{handleClick}"
-    disabled="{disabled}"
-    bind:this="{buttonElement}"
-  >
-    {#if icon}
-      <Icon type="{icon}" selected="{isActive ? true : false}" />
-    {:else}
-      {label}
-    {/if}
-  </button>
-
-  <!-- {#if showHelp && helpText}
-    <HelpModal triggerElement="{buttonElement}" onClose="{closeHelp}">
-      <p>{helpText}</p>
-    </HelpModal>
-  {:else if showHelp && !helpText}
-    <HelpModal triggerElement="{buttonElement}" onClose="{closeHelp}">
-      <slot />
-    </HelpModal>
-  {/if} -->
+  {#if custom}
+    <div on:click="{handleClick}" bind:this="{buttonElement}">
+      <slot name="custom" />
+    </div>
+  {:else}
+    <button
+      type="button"
+      aria-label="{label}"
+      class="{`toolbar-button ${disabled ? 'disabled' : ''}  ${
+        isActive ? 'selected' : ''
+      } ${classes}`}"
+      on:click="{handleClick}"
+      disabled="{disabled}"
+      bind:this="{buttonElement}"
+    >
+      {#if icon}
+        <Icon type="{icon}" selected="{isActive ? true : false}" />
+      {:else}
+        {label}
+      {/if}
+    </button>
+  {/if}
 
   {#if isActive}
     {#if helpText}
@@ -113,5 +103,10 @@
   .toolbar-button.disabled {
     opacity: 0.5;
     cursor: not-allowed;
+  }
+
+  .selected {
+    background: #e9eff4;
+    border-radius: 8px;
   }
 </style>
