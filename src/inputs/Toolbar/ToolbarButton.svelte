@@ -66,7 +66,7 @@
       aria-controls="panel-{id}"
     >
       {#if icon}
-        <Icon type="{icon}" selected="{isActive ? true : false}" />
+        <Icon type="{icon}" selected="{isActive ? true : false}" disabled="{disabled}" />
       {:else}
         {label}
       {/if}
@@ -103,7 +103,7 @@
   }
 
   .toolbar-button.disabled {
-    opacity: 0.5;
+    /* opacity: 0.5; */
     cursor: not-allowed;
   }
 

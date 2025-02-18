@@ -2,10 +2,11 @@
   import { getContext } from "svelte";
   const activeModalId = getContext("activeModalId");
 
+  const showHelpModals = getContext("showHelpModals");
   export let id = "";
 </script>
 
-{#if $activeModalId === id}
+{#if $activeModalId === id && !$showHelpModals}
   <div class="tool-control" role="tabpanel" aria-labelledby="button-{id}" id="panel-{id}">
     <slot />
   </div>

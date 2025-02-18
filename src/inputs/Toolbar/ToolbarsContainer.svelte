@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { setContext } from "svelte";
+  import { setContext, onMount } from "svelte";
   import { writable } from "svelte/store";
 
   // Initialize a store for button IDs
@@ -14,8 +14,31 @@
     buttonIds,
   });
 
+  // Initial state: true unless explicitly set to 'false' in either localStorage or sessionStorage
+  const initialState =
+    sessionStorage.getItem("showHelpModals") === "false"
+      ? false
+      : localStorage.getItem("showHelpModals") === "false"
+      ? false
+      : true;
+
+  const showHelpModals = writable(initialState ?? true);
+  // Subscribe to store changes to persist in localStorage
+  // showHelpModals.subscribe((value) => {
+  //   localStorage.setItem("showHelpModals", value);
+  // });
+
+  // Set context for showHelpModals
+  setContext("showHelpModals", showHelpModals);
+
   const activeModalStore = writable(null); // Tracks the ID of the active modal
   setContext("activeModalId", activeModalStore);
+
+  onMount(() => {
+    window.addEventListener("beforeunload", () => {
+      sessionStorage.removeItem("showHelpModals");
+    });
+  });
 </script>
 
 <div class="multi-toolbar-container">

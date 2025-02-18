@@ -76,6 +76,7 @@
       label: "Redo last step",
       helpContent:
         "<h3>Redo last step</h3><p>Left-click anywhere on the map and hold the button down while dragging the mouse to move the map in the desired direction.</p>",
+      disabled: true,
     },
     {
       type: "divider",
@@ -107,9 +108,9 @@
 <Template let:args>
   <ToolbarsContainer>
     <Toolbar orientation="{args.orientation}">
-      {#each toolbarContent as { type, id, icon, label, helpContent }}
+      {#each toolbarContent as { type, id, icon, label, helpContent, disabled }}
         {#if type === "button"}
-          <ToolbarButton id="{id}" icon="{icon}" label="{label}">
+          <ToolbarButton id="{id}" icon="{icon}" label="{label}" disabled="{disabled}">
             {@html helpContent}
           </ToolbarButton>
         {:else}
@@ -133,7 +134,7 @@
       <ToolbarDivider />
       <ToolbarButton id="help" icon="help" label="Help" />
       <ToolbarDivider />
-      <ToolbarButton custom>
+      <ToolbarButton id="getstarted" custom label="Get started">
         <div slot="custom">
           <Button disabled small>Build profile</Button>
         </div>

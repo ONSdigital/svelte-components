@@ -3,6 +3,7 @@
   export let marginLeft = false;
   export let marginRight = false;
   export let selected = false;
+  export let disabled = false;
 
   const paths = {
     // arrow: {
@@ -108,7 +109,7 @@
     viewBox="{paths[type].viewBox}"
     xmlns="http://www.w3.org/2000/svg"
     focusable="false"
-    fill="{selected ? '#206095' : 'currentColor'}"
+    fill="{selected ? '#206095' : disabled ? '#BCBCBD' : 'currentColor'}"
   >
     {#if selected}
       <path opacity="0.2" d="{paths[type].selected}"></path>

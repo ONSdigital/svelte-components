@@ -10,10 +10,11 @@
 
   // Retrieve the stores from context
   const activeModalId = getContext("activeModalId");
-  // const modalIds = getContext("buttonIds");
 
   // Access button IDs from context
   const { buttonIds } = getContext("buttonIds");
+
+  const showHelpModals = getContext("showHelpModals");
 
   let modalPosition = { top: 0, left: 0 };
   let notchPosition = { left: 0 };
@@ -55,25 +56,50 @@
     }
   }
 
+  // Update localStorage if "Don't show me again" is checked
+  function disableHelpModalsPermanently() {
+    localStorage.setItem("showHelpModals", "false");
+    sessionStorage.setItem("showHelpModals", "false");
+    $showHelpModals = false;
+  }
+
+  // Hide modals until refresh
+  function hideHelpModalsUntilRefresh() {
+    sessionStorage.setItem("showHelpModals", "false");
+    $showHelpModals = false;
+  }
+
   // Navigate to the next modal
   function nextModal() {
-    // const ids = $modalIds;
     const ids = get(buttonIds);
     const currentIndex = ids.indexOf($activeModalId);
     if (currentIndex !== -1 && currentIndex < ids.length - 1) {
       activeModalId.set(ids[currentIndex + 1]);
       console.log("Navigating to next modal:", ids[currentIndex + 1]);
     }
+    if (dontShowMeAgain) {
+      disableHelpModalsPermanently(); // Disable help modals permanently
+    }
+  }
+
+  function handleSkip() {
+    if (dontShowMeAgain) {
+      disableHelpModalsPermanently(); // Disable help modals permanently
+    } else {
+      hideHelpModalsUntilRefresh();
+    }
   }
 
   // Navigate to the previous modal
   function previousModal() {
-    // const ids = $modalIds;
     const ids = get(buttonIds);
     const currentIndex = ids.indexOf($activeModalId);
     if (currentIndex > 0) {
       activeModalId.set(ids[currentIndex - 1]);
       console.log("Navigating to previous modal:", ids[currentIndex - 1]);
+    }
+    if (dontShowMeAgain) {
+      disableHelpModalsPermanently(); // Disable help modals permanently
     }
   }
 
@@ -83,47 +109,49 @@
 </script>
 
 <svelte:window on:keydown="{handleKeydown}" />
-<div
-  class="help-modal-wrapper"
-  style="top: {modalPosition.top}px; left: {modalPosition.left}px;"
-  transition:fly="{{ duration: 200, y: 10 }}"
->
-  <!-- Notch -->
+{#if $showHelpModals}
   <div
-    class="help-modal-notch"
-    style="left: {notchPosition.left}px;right: {notchPosition.right}px;"
-  ></div>
+    class="help-modal-wrapper"
+    style="top: {modalPosition.top}px; left: {modalPosition.left}px;"
+    transition:fly="{{ duration: 200, y: 10 }}"
+  >
+    <!-- Notch -->
+    <div
+      class="help-modal-notch"
+      style="left: {notchPosition.left}px;right: {notchPosition.right}px;"
+    ></div>
 
-  <!-- Modal Content -->
-  <div class="help-modal" role="dialog" aria-modal="true">
-    <slot />
-    <button class="close-button" on:click="{onClose}" aria-label="Close help">×</button>
+    <!-- Modal Content -->
+    <div class="help-modal" role="dialog" aria-modal="true">
+      <slot />
+      <button class="close-button" on:click="{onClose}" aria-label="Close help">×</button>
 
-    <div class="ons-padding-4">
-      <Checkbox
-        id="dontShowMeAgain"
-        label="Don't show me again"
-        bind:checked="{dontShowMeAgain}"
-        compact
-      />
-    </div>
-    <div class="ons-grid--flex ons-grid--between ons-grid--vertical-center">
-      <a>Skip</a>
-      {#if $buttonIds.indexOf($activeModalId) > 0}
-        <span style="margin-left:auto; margin-right:10px">
-          <Button variant="secondary" on:click="{previousModal}">Back</Button>
-        </span>
-      {/if}
+      <div class="ons-padding-4">
+        <Checkbox
+          id="dontShowMeAgain"
+          label="Don't show me again"
+          bind:checked="{dontShowMeAgain}"
+          compact
+        />
+      </div>
+      <div class="ons-grid--flex ons-grid--between ons-grid--vertical-center">
+        <a on:click="{handleSkip}">Skip</a>
+        {#if $buttonIds.indexOf($activeModalId) > 0}
+          <span style="margin-left:auto; margin-right:10px">
+            <Button variant="secondary" on:click="{previousModal}">Back</Button>
+          </span>
+        {/if}
 
-      {#if $buttonIds.indexOf($activeModalId) != $buttonIds.length - 1}
-        <Button on:click="{nextModal}">Next</Button>
-      {/if}
-      {#if $buttonIds.indexOf($activeModalId) == $buttonIds.length - 1}
-        <Button>Get started</Button>
-      {/if}
+        {#if $buttonIds.indexOf($activeModalId) != $buttonIds.length - 1}
+          <Button on:click="{nextModal}">Next</Button>
+        {/if}
+        {#if $buttonIds.indexOf($activeModalId) == $buttonIds.length - 1}
+          <Button on:click="{hideHelpModalsUntilRefresh}">Get started</Button>
+        {/if}
+      </div>
     </div>
   </div>
-</div>
+{/if}
 
 <style>
   .help-modal-wrapper {
