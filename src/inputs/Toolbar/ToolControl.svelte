@@ -6,7 +6,7 @@
 </script>
 
 {#if $activeModalId === id}
-  <div class="tool-control">
+  <div class="tool-control" role="tabpanel" aria-labelledby="button-{id}" id="panel-{id}">
     <slot />
   </div>
 {/if}

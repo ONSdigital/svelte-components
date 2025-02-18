@@ -62,6 +62,8 @@
       on:click="{handleClick}"
       disabled="{disabled}"
       bind:this="{buttonElement}"
+      id="button-{id}"
+      aria-controls="panel-{id}"
     >
       {#if icon}
         <Icon type="{icon}" selected="{isActive ? true : false}" />

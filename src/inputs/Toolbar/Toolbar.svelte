@@ -30,10 +30,12 @@
   aria-label="{ariaLabel}"
   class="{`toolbar ${orientation === 'vertical' ? '' : 'flex-col'} ${classes}`}"
 >
+  <!-- slot for helpModal -->
   <div class="{`grid--flex ${orientation === 'vertical' ? 'flex-col' : ''}`}">
     <slot />
   </div>
 
+  <!-- slot for controls -->
   <slot name="controls" />
 </div>
 
