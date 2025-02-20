@@ -48,7 +48,7 @@
     display: flex;
     align-items: center;
     box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.25);
-    border-radius: 16px;
+    border-radius: 8px;
     padding: 8px;
     justify-content: flex-start;
     align-content: flex-start;
@@ -56,6 +56,8 @@
     width: auto;
     max-width: fit-content;
     height: 100%;
+    margin: 8px;
+    background: white;
   }
 
   .flex-col {

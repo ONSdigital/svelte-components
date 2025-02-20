@@ -13,6 +13,7 @@
   export let helpText: string | null = null;
   export let selected: boolean = false;
   export let custom: boolean = false;
+  export let hasAriaControls: boolean = false;
 
   const dispatch = createEventDispatcher();
 
@@ -63,7 +64,7 @@
       disabled="{disabled}"
       bind:this="{buttonElement}"
       id="button-{id}"
-      aria-controls="panel-{id}"
+      aria-controls="{hasAriaControls ? `panel-${id}` : undefined}"
     >
       {#if icon}
         <Icon type="{icon}" selected="{isActive ? true : false}" disabled="{disabled}" />

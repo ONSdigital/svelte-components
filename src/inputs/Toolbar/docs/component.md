@@ -4,6 +4,8 @@ There's a slot on ToolbarButton if you want to put in custom help text otherwise
 
 Each `ToolControl` will display content underneath the row of buttons. The `id` needs to match the `id` of the button.
 
+Use the prop `hasAriaControls` on a button to link the controls to the button.
+
 <!-- prettier-ignore -->
 ```html
 <script>
@@ -13,7 +15,7 @@ Each `ToolControl` will display content underneath the row of buttons. The `id` 
   <ToolbarsContainer>
 
     <Toolbar orientation="horizontal">
-      <ToolbarButton icon="polygon" label="Draw a polygon" helpText="Draw a polygon on the map">
+      <ToolbarButton icon="polygon" label="Draw a polygon" helpText="Draw a polygon on the map" hasAriaControls>
         <HelpModal>
           <h3>Detailed Help</h3>
           <p>More complex help text or even HTML content</p>
@@ -36,7 +38,7 @@ Each `ToolControl` will display content underneath the row of buttons. The `id` 
       <ToolbarButton icon="zoomout" label="Zoom out" />
     <ToolControls>
       <ToolControl id="polygon">
-      <p>Text to display when polygon tool is selected</p>
+      <p>Text to display when polygon tool is selected, or even an input</p>
       </ToolControl>
     </Toolbar>
 

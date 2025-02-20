@@ -30,6 +30,7 @@
       label: "Draw a polygon",
       helpContent:
         "<h3>Draw a polygon</h3><p>Left-click to add a point to the polygon. Double-click to finish drawing.</p>",
+      hasAriaControls: true,
     },
     {
       type: "button",
@@ -89,8 +90,6 @@
       helpContent: "<h3>Search</h3><p>Search for an area by name or postcode.</p>",
     },
   ];
-
-  // const buttonIds = toolbarContent.filter((item) => item.type === "button").map((item) => item.id);
 </script>
 
 <Meta
@@ -108,9 +107,15 @@
 <Template let:args>
   <ToolbarsContainer>
     <Toolbar orientation="{args.orientation}">
-      {#each toolbarContent as { type, id, icon, label, helpContent, disabled }}
+      {#each toolbarContent as { type, id, icon, label, helpContent, disabled, hasAriaControls }}
         {#if type === "button"}
-          <ToolbarButton id="{id}" icon="{icon}" label="{label}" disabled="{disabled}">
+          <ToolbarButton
+            id="{id}"
+            icon="{icon}"
+            label="{label}"
+            disabled="{disabled}"
+            hasAriaControls="{hasAriaControls}"
+          >
             {@html helpContent}
           </ToolbarButton>
         {:else}

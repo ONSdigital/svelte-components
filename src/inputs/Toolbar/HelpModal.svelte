@@ -31,10 +31,11 @@
 
     // Default to position below the trigger element
     modalPosition = {
-      top: rect.bottom + window.scrollY + 10,
+      // top: rect.bottom + window.scrollY + 10,
+      top: window.scrollY + 55,
+
       left: window.scrollX - 10,
     };
-
     // Align notch with the center of the trigger element
     notchPosition = {
       left: window.scrollX - modalPosition.left + rect.width / 2 - 10, // Adjust for the notch width
@@ -135,7 +136,8 @@
         />
       </div>
       <div class="ons-grid--flex ons-grid--between ons-grid--vertical-center">
-        <a on:click="{handleSkip}">Skip</a>
+        <button class="btn-link" on:click="{handleSkip}" aria-label="Skip instructions">Skip</button
+        >
         {#if $buttonIds.indexOf($activeModalId) > 0}
           <span style="margin-left:auto; margin-right:10px">
             <Button variant="secondary" on:click="{previousModal}">Back</Button>
@@ -208,5 +210,29 @@
   .ons-padding-4 {
     padding-top: var(--4-units, 16px);
     padding-bottom: var(--4-units, 16px);
+  }
+
+  button.btn-link {
+    line-height: 1.3;
+    color: var(--link, #206095);
+    background: none;
+    margin: 0;
+    padding: 0;
+    border: none;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-position: under;
+  }
+  button.btn-link:hover {
+    color: var(--link-hover, #003c57) !important;
+    text-decoration-thickness: 2px;
+  }
+  button.btn-link:focus {
+    background-color: #fbc900 !important;
+    box-shadow: 0 -2px #fbc900, 0 4px #222;
+    color: #222 !important;
+    outline: 3px solid transparent;
+    outline-offset: 1px;
+    text-decoration: none;
   }
 </style>

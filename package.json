@@ -1,6 +1,6 @@
 {
   "name": "@onsvisual/svelte-components",
-  "version": "0.1.86-component.toolbar",
+  "version": "0.1.88-component.toolbar",
   "type": "module",
   "private": false,
   "homepage": "https://onsvisual.github.io/svelte-components",
@@ -17,7 +17,8 @@
     "build": "npm-run-all build:package build:docs",
     "deploy": "gh-pages -d docs -t true",
     "prepublishOnly": "npm run build:package",
-    "postversion": "git push origin && git push origin --tags"
+    "postversion": "git push origin && git push origin --tags",
+    "watch:package": "npx nodemon --ext svelte,js,ts --ignore dist/ --exec 'npm run build:package'"
   },
   "license": "MIT",
   "types": "./dist/@types/index.d.ts",
@@ -71,6 +72,7 @@
     "gh-pages": "^6.2.0",
     "kleur": "^4.1.5",
     "nanoid": "^5.0.9",
+    "nodemon": "^3.1.9",
     "npm-run-all": "^4.1.5",
     "postcss": "^8.4.24",
     "postcss-load-config": "^4.0.1",
