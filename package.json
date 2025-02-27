@@ -131,6 +131,8 @@
     "./globals.d.ts": "./dist/globals.d.ts",
     "./inputs/Button/Button.svelte": "./dist/inputs/Button/Button.svelte",
     "./inputs/Button/Icon.svelte": "./dist/inputs/Button/Icon.svelte",
+    "./inputs/ButtonGroup/ButtonGroup.svelte": "./dist/inputs/ButtonGroup/ButtonGroup.svelte",
+    "./inputs/ButtonGroup/ButtonGroupItem.svelte": "./dist/inputs/ButtonGroup/ButtonGroupItem.svelte",
     "./inputs/Checkbox/Checkbox.svelte": "./dist/inputs/Checkbox/Checkbox.svelte",
     "./inputs/Checkboxes/Checkboxes.svelte": "./dist/inputs/Checkboxes/Checkboxes.svelte",
     "./inputs/Dropdown/Dropdown.svelte": "./dist/inputs/Dropdown/Dropdown.svelte",

@@ -60,6 +60,8 @@ export { default as ToolbarDivider } from "./inputs/Toolbar/ToolbarDivider.svelt
 export { default as ToolbarsContainer } from "./inputs/Toolbar/ToolbarsContainer.svelte";
 export { default as ToolControl } from "./inputs/Toolbar/ToolControl.svelte";
 export { default as ToolControls } from "./inputs/Toolbar/ToolControls.svelte";
+export { default as ButtonGroup } from "./inputs/ButtonGroup/ButtonGroup.svelte";
+export { default as ButtonGroupItem } from "./inputs/ButtonGroup/ButtonGroupItem.svelte";
 
 // Decorators
 export { default as Blockquote } from "./decorators/Blockquote/Blockquote.svelte";
