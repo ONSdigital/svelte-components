@@ -64,7 +64,7 @@
 
 <style>
   .button-container {
-    display: inline-block;
+    display: flex;
   }
 
   .radio-input {
@@ -75,14 +75,17 @@
   }
 
   .button {
-    display: inline-block;
-    padding: 0.5rem 1rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    flex-grow: 0;
+    min-width: 100px;
+    padding: 8px 16px;
+    border: none;
+    background: transparent;
+    font-size: 14px;
     cursor: pointer;
-    background-color: #f8f8f8;
-    user-select: none;
-    transition: all 0.2s ease;
+    border-radius: 6px;
+    transition: background 0.2s ease, color 0.2s ease;
+    color: #707071;
+    text-align: center;
   }
 
   .button:hover {
@@ -94,8 +97,9 @@
   }
 
   .button.selected {
-    background-color: #4c88f8;
-    color: white;
-    border-color: #3a7ce8;
+    background: white;
+    font-weight: bold;
+    color: #206095;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
   }
 </style>

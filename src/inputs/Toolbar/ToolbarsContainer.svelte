@@ -38,6 +38,13 @@
     window.addEventListener("beforeunload", () => {
       sessionStorage.removeItem("showHelpModals");
     });
+    let unsubscribe = buttonIds.subscribe((ids) => {
+      if (ids.length > 0) {
+        activeModalStore.set(ids[0]); // Set first button as active
+      }
+    });
+
+    return unsubscribe;
   });
 </script>
 

@@ -40,3 +40,8 @@
   </ButtonGroup>
   <p>Selected value:{selectedValue}</p>
 </Story>
+
+<Story
+  name="Visually hide legend"
+  args="{{ name: 'primary', legend: 'Choose an option', visuallyHideLegend: true }}"
+/>

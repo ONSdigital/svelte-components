@@ -5,6 +5,7 @@
   export let name = "";
   export let legend = "";
   export let value;
+  export let visuallyHideLegend = false;
 
   // create the store
   const selectedValue = writable(value);
@@ -27,7 +28,7 @@
 
 <fieldset class="button-group">
   {#if legend}
-    <legend>{legend}</legend>
+    <legend class:ons-u-vh="{visuallyHideLegend}">{legend}</legend>
   {/if}
   <div class="buttons">
     <slot />
@@ -46,7 +47,9 @@
 
   .buttons {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 8px;
+    background: #f5f5f6;
+    padding: 4px;
+    border-radius: 8px;
   }
 </style>
