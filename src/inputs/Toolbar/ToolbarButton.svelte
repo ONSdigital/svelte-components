@@ -14,6 +14,8 @@
   export let selected: boolean = false;
   export let custom: boolean = false;
   export let hasAriaControls: boolean = false;
+  export let sticky: boolean = false;
+  export let transient: boolean = false;
 
   const dispatch = createEventDispatcher();
 
@@ -41,9 +43,18 @@
   // Subscribe to the store to determine if this modal is active
   function handleClick() {
     if (!disabled) {
+      if (transient) {
+        // If it's a transient button, just trigger the action and return
+        dispatch("click");
+        return;
+      }
+
       dispatch("click");
+      if ($activeModalId === id && sticky) {
+        // If it's already active and sticky, keep it selected
+        return;
+      }
       activeModalId.set(isActive ? null : id); // Toggle the modal
-      // maybe something here to check if selected
     }
   }
 </script>
@@ -57,9 +68,9 @@
     <button
       type="button"
       aria-label="{label}"
-      class="{`toolbar-button ${disabled ? 'disabled' : ''}  ${
-        isActive ? 'selected' : ''
-      } ${classes}`}"
+      class="toolbar-button {disabled ? 'disabled' : ''} {isActive && !transient
+        ? 'selected'
+        : ''} {classes}"
       on:click="{handleClick}"
       disabled="{disabled}"
       bind:this="{buttonElement}"
@@ -67,7 +78,11 @@
       aria-controls="{hasAriaControls ? `panel-${id}` : undefined}"
     >
       {#if icon}
-        <Icon type="{icon}" selected="{isActive ? true : false}" disabled="{disabled}" />
+        <Icon
+          type="{icon}"
+          selected="{!transient ? (isActive ? true : false) : false}"
+          disabled="{disabled}"
+        />
       {:else}
         {label}
       {/if}
@@ -86,6 +101,37 @@
     {/if}
   {/if}
 </div>
+
+<!-- 
+
+/* /* Slightly darker gray when clicked */
+
+/* 
+button:active {
+  background-color: #d6d6d6; 
+}
+
+button.active {
+  background-color: #ddd; /* Selected button background */
+  border: 2px solid #333; /* Active button border */
+}
+
+button:hover:active {
+  background-color: #ccc; /* Slightly more contrast when active */
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: #f2f2f2;
+  border: 1px solid #ddd;
+}
+
+button:hover:disabled {
+  background-color: #f2f2f2; /* Keep it the same so disabled buttons don’t change on hover */
+  border: 1px solid #ddd;
+} */
+ -->
 
 <style>
   .toolbar-button-wrapper {
@@ -110,6 +156,18 @@
 
   .selected {
     background: #e9eff4;
+    border-radius: 8px;
+  }
+
+  button:hover {
+    background-color: #f5f5f6;
+    border-radius: 8px;
+  }
+
+  button:focus {
+    outline: 2px solid #fbc900;
+    outline-offset: 2px;
+    box-shadow: 0 0 2px 2px #222222;
     border-radius: 8px;
   }
 </style>

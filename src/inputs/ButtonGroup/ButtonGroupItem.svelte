@@ -76,8 +76,7 @@
 
   .button {
     flex-grow: 0;
-    min-width: 100px;
-    padding: 8px 16px;
+    padding: 4px 8px;
     border: none;
     background: transparent;
     font-size: 14px;

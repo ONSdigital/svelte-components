@@ -51,5 +51,6 @@
     background: #f5f5f6;
     padding: 4px;
     border-radius: 8px;
+    justify-content: space-between;
   }
 </style>

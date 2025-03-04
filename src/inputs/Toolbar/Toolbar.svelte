@@ -42,6 +42,7 @@
 <style>
   .grid--flex {
     display: flex;
+    gap: 4px;
   }
 
   .toolbar {
@@ -58,6 +59,7 @@
     height: 100%;
     margin: 8px;
     background: white;
+    gap: 8px;
   }
 
   .flex-col {

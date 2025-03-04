@@ -23,7 +23,6 @@
 
   .toolbar-divider.horizontal {
     width: 1px;
-    margin: 0 0.5rem;
   }
 
   .toolbar-divider.vertical {
