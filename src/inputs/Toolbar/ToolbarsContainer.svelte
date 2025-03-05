@@ -58,5 +58,6 @@
     flex-direction: row;
     gap: 1rem;
     justify-content: space-between;
+    pointer-events: none;
   }
 </style>

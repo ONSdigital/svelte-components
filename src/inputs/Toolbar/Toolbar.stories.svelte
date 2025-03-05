@@ -176,3 +176,19 @@
     </Toolbar>
   </ToolbarsContainer>
 </Story>
+
+<Story name="No help modal">
+  <ToolbarsContainer>
+    <Toolbar>
+      <ToolbarButton
+        id="zoomin"
+        icon="zoomin"
+        label="Zoom in"
+        transient="{true}"
+        selected="{false}"
+        disableHelp="{true}"
+      />
+      <ToolbarButton id="zoomout" icon="zoomout" label="zoom out" disableHelp="{true}" transient />
+    </Toolbar>
+  </ToolbarsContainer>
+</Story>

@@ -16,6 +16,7 @@
   export let hasAriaControls: boolean = false;
   export let sticky: boolean = false;
   export let transient: boolean = false;
+  export let disableHelp: boolean = false;
 
   const dispatch = createEventDispatcher();
 
@@ -90,11 +91,11 @@
   {/if}
 
   {#if isActive}
-    {#if helpText}
+    {#if helpText && !disableHelp}
       <HelpModal triggerElement="{buttonElement}" onClose="{() => activeModalId.set(null)}">
         <p>{helpText}</p>
       </HelpModal>
-    {:else if !helpText}
+    {:else if !helpText && !disableHelp}
       <HelpModal triggerElement="{buttonElement}" onClose="{() => activeModalId.set(null)}">
         <slot />
       </HelpModal>

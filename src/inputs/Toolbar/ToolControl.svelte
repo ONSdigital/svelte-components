@@ -14,7 +14,7 @@
 
 <style>
   .tool-control {
-    max-width: 345px;
+    max-width: 371px;
     padding: 8px;
   }
 </style>

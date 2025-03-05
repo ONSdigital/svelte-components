@@ -1,5 +1,5 @@
 <script>
-  import { setContext } from "svelte";
+  import { getContext, setContext } from "svelte";
   import { writable } from "svelte/store";
   // import { TOOLBAR_CONTEXT_KEY } from "./toolbar-context.js";
 
@@ -22,6 +22,9 @@
   // Set context for child components
   const orientationStore = writable(orientation);
   $: setContext("orientation", orientationStore);
+
+  // Get the showHelpModals state from context
+  const showHelpModals = getContext("showHelpModals");
 </script>
 
 <!-- Toolbar container -->
@@ -35,8 +38,9 @@
     <slot />
   </div>
 
-  <!-- slot for controls -->
-  <slot name="controls" />
+  {#if !$showHelpModals}
+    <slot name="controls" />
+  {/if}
 </div>
 
 <style>
@@ -59,7 +63,7 @@
     height: 100%;
     margin: 8px;
     background: white;
-    gap: 8px;
+    pointer-events: all;
   }
 
   .flex-col {
