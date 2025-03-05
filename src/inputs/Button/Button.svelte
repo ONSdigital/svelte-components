@@ -49,12 +49,18 @@
    * @type {string}
    */
   export let arialabel = "";
+  /**
+   * filename if link is used for a file download
+   * @type {string|null}
+   */
+  export let download = null;
 </script>
 
 {#if href}
   <a
     href="{!disabled ? href : null}"
     role="button"
+    download="{download}"
     class="ons-btn ons-btn--link ons-js-submit-btn"
     class:ons-btn--small="{small}"
     class:ons-btn--secondary="{variant === 'secondary'}"
