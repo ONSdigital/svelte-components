@@ -1,6 +1,6 @@
 {
   "name": "@onsvisual/svelte-components",
-  "version": "0.1.93-component.toolbar",
+  "version": "0.1.94-component.toolbar",
   "type": "module",
   "private": false,
   "homepage": "https://onsvisual.github.io/svelte-components",
@@ -157,7 +157,7 @@
     "./layout/Accordion/Accordion.svelte": "./dist/layout/Accordion/Accordion.svelte",
     "./layout/Accordion/AccordionItem.svelte": "./dist/layout/Accordion/AccordionItem.svelte",
     "./layout/AnalyticsBanner/AnalyticsBanner.svelte": "./dist/layout/AnalyticsBanner/AnalyticsBanner.svelte",
-    "./layout/BackLink/Backlink.svelte": "./dist/layout/BackLink/Backlink.svelte",
+    "./layout/Backlink/Backlink.svelte": "./dist/layout/Backlink/Backlink.svelte",
     "./layout/Breadcrumb/Breadcrumb.svelte": "./dist/layout/Breadcrumb/Breadcrumb.svelte",
     "./layout/Cards/Card.svelte": "./dist/layout/Cards/Card.svelte",
     "./layout/Cards/Cards.svelte": "./dist/layout/Cards/Cards.svelte",
