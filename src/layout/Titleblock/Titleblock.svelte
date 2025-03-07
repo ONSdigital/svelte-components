@@ -58,6 +58,11 @@
    * @type {string}
    */
   export let titleBadgeColor = "#003C57";
+  /**
+   * Set a width for the container
+   * @type {"narrow"|"medium"|"wide"|"wider"|"full"}
+   */
+  export let width = "wide";
 
   $: titleBadgeTextColor = contrastColor(titleBadgeColor);
 </script>
@@ -67,6 +72,7 @@
   themeOverrides="{themeOverrides}"
   allowClientOverrides="{allowClientOverrides}"
   background="{background}"
+  width="{width}"
 >
   <section class="ons-u-mb-xl">
     <slot name="before" />
