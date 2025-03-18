@@ -125,7 +125,7 @@
     <!-- Modal Content -->
     <div class="help-modal" role="dialog" aria-modal="true">
       <slot />
-      <button class="close-button" on:click="{onClose}" aria-label="Close help">×</button>
+      <!-- <button class="close-button" on:click="{onClose}" aria-label="Close help">×</button> -->
 
       <div class="ons-padding-4">
         <Checkbox
