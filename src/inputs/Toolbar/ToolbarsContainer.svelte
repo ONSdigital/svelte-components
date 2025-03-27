@@ -59,5 +59,6 @@
     gap: 1rem;
     justify-content: space-between;
     pointer-events: none;
+    flex-wrap: wrap;
   }
 </style>
