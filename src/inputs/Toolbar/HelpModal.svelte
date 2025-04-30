@@ -76,7 +76,7 @@
     const currentIndex = ids.indexOf($activeModalId);
     if (currentIndex !== -1 && currentIndex < ids.length - 1) {
       activeModalId.set(ids[currentIndex + 1]);
-      console.log("Navigating to next modal:", ids[currentIndex + 1]);
+      // console.log("Navigating to next modal:", ids[currentIndex + 1]);
     }
     if (dontShowMeAgain) {
       disableHelpModalsPermanently(); // Disable help modals permanently
@@ -97,7 +97,7 @@
     const currentIndex = ids.indexOf($activeModalId);
     if (currentIndex > 0) {
       activeModalId.set(ids[currentIndex - 1]);
-      console.log("Navigating to previous modal:", ids[currentIndex - 1]);
+      // console.log("Navigating to previous modal:", ids[currentIndex - 1]);
     }
     if (dontShowMeAgain) {
       disableHelpModalsPermanently(); // Disable help modals permanently

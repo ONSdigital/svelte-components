@@ -15,6 +15,8 @@
 
   import { withComponentDocs } from "../../js/withParams.js";
 
+  let container;
+
   const toolbarContent = [
     {
       type: "button",
@@ -105,7 +107,7 @@
 />
 
 <Template let:args>
-  <ToolbarsContainer>
+  <ToolbarsContainer bind:this="{container}">
     <Toolbar orientation="{args.orientation}">
       {#each toolbarContent as { type, id, icon, label, helpContent, disabled, hasAriaControls }}
         {#if type === "button"}
@@ -137,7 +139,7 @@
       <ToolbarButton id="download" icon="download" label="Download area" />
       <ToolbarButton id="upload" icon="upload" label="Upload a geometry" />
       <ToolbarDivider />
-      <ToolbarButton id="help" icon="help" label="Help" />
+      <ToolbarButton id="help" icon="help" label="Help" on:click="{container.resetHelp}" />
       <ToolbarDivider />
       <ToolbarButton id="getstarted" custom label="Get started">
         <div slot="custom">

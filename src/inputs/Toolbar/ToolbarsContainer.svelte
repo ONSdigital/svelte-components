@@ -15,18 +15,21 @@
   });
 
   // Initial state: true unless explicitly set to 'false' in either localStorage or sessionStorage
-  const initialState =
+  $: showHelpState =
     sessionStorage.getItem("showHelpModals") === "false"
       ? false
       : localStorage.getItem("showHelpModals") === "false"
       ? false
       : true;
 
-  const showHelpModals = writable(initialState ?? true);
+  const showHelpModals = writable(showHelpState ?? true);
   // Subscribe to store changes to persist in localStorage
   // showHelpModals.subscribe((value) => {
   //   localStorage.setItem("showHelpModals", value);
   // });
+
+  // Reactively update the initial state
+  $: showHelpModals.set(showHelpState);
 
   // Set context for showHelpModals
   setContext("showHelpModals", showHelpModals);
@@ -46,6 +49,11 @@
 
     return unsubscribe;
   });
+
+  export function resetHelp() {
+    sessionStorage.setItem("showHelpModals", "true");
+    showHelpModals.set(true);
+  }
 </script>
 
 <div class="multi-toolbar-container">
