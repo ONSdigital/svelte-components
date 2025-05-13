@@ -1,0 +1,1 @@
+{"version":3,"file":"Main-29863fc4.js","sources":["../../src/wrappers/Main/Main.svelte"],"sourcesContent":["<slot name=\"before\" />\n<main id=\"main\" tabindex=\"-1\" style=\"display:block\">\n  <slot />\n</main>\n"],"names":["insert","target","main","anchor"],"mappings":"sYACAA,EAEMC,EAAAC,EAAAC,CAAA"}
