@@ -9,6 +9,11 @@
 	margin-bottom: 2rem;
 }
 
+/* Fixes for unexpected behaviour in design system */
+.ons-grid {
+	font-size: unset;
+}
+
 /* Backfills for legacy website */
 .primary-nav__item:hover > ul,
 .primary-nav__link:focus + ul {
