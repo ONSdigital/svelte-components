@@ -1,6 +1,6 @@
 {
 	"name": "@onsvisual/svelte-components",
-	"version": "1.0.0-next.8",
+	"version": "1.0.1",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "npm run build:package && npm run build:docs",
