@@ -1,0 +1,67 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Introduction" />
+
+# @onsvisual/svelte-components
+
+<p>
+  <a href="https://www.npmjs.com/package/@onsvisual/svelte-components">
+    <img
+      src="https://badge.fury.io/js/@onsvisual%2Fsvelte-components.svg"
+      alt="npm version"
+      style={{ display: "inline-block", margin: "0 5px 0 0" }}
+    />
+  </a>
+  <a href="https://github.com/onsvisual/svelte-components">
+    <img
+      src="https://badgen.net/badge/icon/GitHub?icon=github&label"
+      alt="GitHub"
+      style={{ display: "inline-block", margin: "0 5px 0 0" }}
+    />
+  </a>
+</p>
+
+A library of ONS-branded components for any Svelte or SvelteKit project.
+
+The components and styles in this library are built on the HTML and CSS of the [ONS Design System](https://service-manual.ons.gov.uk/design-system/), but with a number of tweaks and additions to make them suitable for a range of interactive data visualisation and data journalism projects.
+
+## Installing the components
+
+There are two ways to start a new project using these components.
+
+### 1. Use a ready-made template
+
+When you start a project with one of the following templates, @onsvisual/svelte-components will already be installed:
+
+- [sveltekit-starter](https://github.com/ONSvisual/sveltekit-starter)
+- [robo-article](https://github.com/ONSvisual/robo-article)
+- [robo-embed](https://github.com/ONSvisual/robo-embed)
+
+### 2. Start a new Svelte Kit project from scratch
+
+If you want to start from scratch, you can set up a [new Svelte Kit project](https://kit.svelte.dev/docs/creating-a-project), then run the following command.
+
+```bash
+npm install @onsvisual/svelte-components --save-dev
+```
+
+## Using the components
+
+When using the components, you need to import both the desired component and the global CSS styles. In a SvelteKit project it is best to import the CSS in the top-level **+layout.svelte** file in your **src/routes** folder, which will apply it to all pages/components in the project.
+
+{/* prettier-ignore */}
+```html
+<!-- +layout.svelte -->
+<script>
+  import "@onsvisual/svelte-components/css/main.css";
+</script>
+
+<slot/>
+
+<!-- +page.svelte / Component.svelte -->
+<script>
+  import { Section } from "@onsvisual/svelte-components";
+</script>
+
+<Section title="Hello world!">I am using an ONS Svelte component.</Section>
+```

@@ -1,0 +1,19 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Templates/Using templates" />
+
+# Using templates
+
+This section includes a series of starter templates constructed from multiple components within this library. Similar templates to these examples are included in the [sveltekit-starter](https://github.com/ONSvisual/sveltekit-starter) project, which is typically the easiest way to use them.
+
+When using these templates in an existing SvelteKit project (or one built from scratch), you will need to include the **main.css** file from this library, which is best imported to your top-level `+layout.svelte` file in Svelte Kit. By doing this, you will not need to include it on individual pages.
+
+{/* prettier-ignore */}
+```html
+<!-- /src/routes/+layout.svelte -->
+<script>
+  import "@onsvisual/svelte-components/css/main.css";
+</script>
+
+<slot />
+```

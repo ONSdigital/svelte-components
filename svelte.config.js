@@ -1,14 +1,5 @@
-import autoprefixer from 'autoprefixer';
-import preprocess from 'svelte-preprocess';
+import adapter from '@sveltejs/adapter-static';
 
-const config = {
-  preprocess: preprocess({
-    preserve: ['ld+json'],
-    scss: { quietDeps: true },
-    postcss: {
-      plugins: [autoprefixer],
-    },
-  }),
-};
+const config = { kit: { adapter: adapter() } };
 
 export default config;

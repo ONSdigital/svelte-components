@@ -1,0 +1,22 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Data visualisation/Using svelte-charts" />
+
+# Using svelte-charts
+
+Most of the charts in this section are examples from the [@onsvisual/svelte-charts](https://github.com/onsvisual/svelte-charts/) library. To make use of the charts from that library, it is necessary to install an additional dependency in your project:
+
+```bash
+npm install @onsvisual/svelte-charts --save-dev
+```
+
+When using these charts, you need to make sure that you import them from the **svelte-charts** library and not the components library, for example:
+
+{/* prettier-ignore */}
+```html
+<script>
+  import { Chart } from  "@onsvisual/svelte-charts";
+</script>
+
+<Chart {...chart_properties}>
+```
