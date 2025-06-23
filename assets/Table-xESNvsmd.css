@@ -1,0 +1,1 @@
+table.sticky-header.svelte-yk94at thead.ons-table__head:where(.svelte-yk94at){position:sticky;top:0;background:var(--ons-color-page-light);border-bottom:none}table.sticky-header.svelte-yk94at thead.ons-table__head:where(.svelte-yk94at) th:where(.svelte-yk94at){box-shadow:0 -2px var(--ons-color-borders) inset;border-bottom:none}

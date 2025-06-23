@@ -1,0 +1,29 @@
+import{w as J,A as E,v as K,ar as N,p as I,r as W,a as u,j as _,i as Q,t as b,u as X,e as f,h as M,k as w,n as v,o as x,q as C,as as Y,g as p,f as $,Z as ee,_ as te}from"./iframe-Ctfpl9ZJ.js";import{i as B,w as ae,c as ne,d as le}from"./create-runtime-stories-DgJbsNY1.js";import{s as ie}from"./style-CcY6orqc.js";import{e as se,i as oe}from"./each-a10QJc0s.js";import{s as S}from"./attributes-Cz_CYo18.js";import{s as j}from"./class-Dzh9Da8g.js";import{o as L}from"./menuOptions-kj4WdJs_.js";import"./attributes-Co-1QMVx.js";function re(){console.warn("https://svelte.dev/e/select_multiple_invalid_value")}function F(e,t,n){if(e.multiple){if(t==null)return;if(!K(t))return re();for(var a of e.options)a.selected=t.includes(y(a));return}for(a of e.options){var l=y(a);if(N(l,t)){a.selected=!0;return}}(!n||t!==void 0)&&(e.selectedIndex=-1)}function de(e,t){E(()=>{var n=new MutationObserver(()=>{var a=e.__value;F(e,a)});return n.observe(e,{childList:!0,subtree:!0,attributes:!0,attributeFilter:["value"]}),()=>{n.disconnect()}})}function ce(e,t,n=t){var a=!0;J(e,"change",l=>{var o=l?"[selected]":":checked",r;if(e.multiple)r=[].map.call(e.querySelectorAll(o),y);else{var c=e.querySelector(o)??e.querySelector("option:not([disabled])");r=c&&y(c)}n(r)}),E(()=>{var l=t();if(F(e,l,a),a&&l===void 0){var o=e.querySelector(":checked");o!==null&&(l=y(o),n(l))}e.__value=l,a=!1}),de(e)}function y(e){return"__value"in e?e.__value:e.value}var ue=_("<label> </label>"),pe=_("<option selected disabled> </option>"),ve=_("<option> </option>"),fe=_('<div><!> <select class="ons-input ons-input--select"><!><!></select></div>');function A(e,t){I(t,!1);const n=W();let a=u(t,"id",8,""),l=u(t,"label",8,""),o=u(t,"hideLabel",8,!1),r=u(t,"placeholder",8,"Select an option"),c=u(t,"value",12,null),g=u(t,"options",24,()=>[]),U=u(t,"cls",8,"");B();var k=fe(),T=v(k);{var Z=s=>{var i=ue();let d;var h=v(i);b(D=>{d=j(i,1,"ons-label",null,d,D),S(i,"for",a()),C(h,l())},[()=>({"ons-u-vh":o()})],x),f(s,i)};Q(T,s=>{l()&&s(Z)})}var m=w(T,2);b(()=>{c(),Y(()=>{a(),r(),g()})});var P=v(m);{var z=s=>{var i=pe();i.value=(i.__value=null)??"";var d=v(i);b(()=>C(d,r())),f(s,i)};Q(P,s=>{r()&&s(z)})}var G=w(P);se(G,1,g,oe,(s,i)=>{var d=ve(),h={},D=v(d);b(()=>{var O;h!==(h=p(i))&&(d.value=(d.__value=p(i))??""),C(D,((O=p(i))==null?void 0:O.label)||p(i))}),f(s,d)}),b(()=>{j(k,1,`ons-field ${U()??""}`),S(m,"id",a()),S(m,"name",a())}),ce(m,c),X("change",m,s=>n("change",s)),f(e,k),M()}A.__docgen={data:[{name:"id",visibility:"public",description:"Unique id for the &lt;select&gt; element",keywords:[],kind:"let",type:{kind:"type",type:"string",text:"string"},static:!1,readonly:!1,defaultValue:'""'},{name:"label",visibility:"public",description:"A label to describe the &lt;select&gt; element (expected for accessibility)",keywords:[],kind:"let",type:{kind:"type",type:"string",text:"string"},static:!1,readonly:!1,defaultValue:'""'},{name:"hideLabel",visibility:"public",description:"Visually hide the label",keywords:[],kind:"let",type:{kind:"type",type:"boolean",text:"boolean"},static:!1,readonly:!1,defaultValue:"false"},{name:"placeholder",visibility:"public",description:"An optional placeholder text",keywords:[],kind:"let",type:{kind:"type",type:"string",text:"string"},static:!1,readonly:!1,defaultValue:'"Select an option"'},{name:"value",visibility:"public",description:"A prop to bind to for the selected value",keywords:[],kind:"let",type:{kind:"type",type:"other",text:"null"},static:!1,readonly:!1,defaultValue:"null"},{name:"options",visibility:"public",description:"An array of options, formatted {id, label}",keywords:[],kind:"let",type:{kind:"type",type:"array",text:"object[]"},static:!1,readonly:!1,defaultValue:"[]"},{name:"cls",visibility:"public",description:"Optional: Set an additional CSS class for the component",keywords:[],kind:"let",type:{kind:"type",type:"string",text:"string"},static:!1,readonly:!1,defaultValue:'""'}],name:"Dropdown.svelte"};const _e=`A standard \`<select>\` component with Svelte bindings and events.
+
+<!-- prettier-ignore -->
+\`\`\`html
+<script>
+  import { Dropdown } from "@onsvisual/svelte-components";
+
+  const values = [
+    { id: "1", label: "one" },
+    { id: "2", label: "two" },
+    { id: "3", label: "three" },
+  ];
+
+  // Bind the <select> value to a variable (reactive)
+  let value;
+
+  // Define your own function on change
+  const handleChange = (e) => console.log(e);
+<\/script>
+
+<Dropdown {options} bind:value on:change="{handleChange}" />
+\`\`\`
+`,q=(e,t=ee)=>{var n=be();ie(n,"",{},{padding:"12px"});var a=v(n);A(a,te(t)),f(e,n)},me={title:"Inputs/Dropdown",component:A,tags:["autodocs"],argTypes:{},parameters:ae(_e)},{Story:V}=le();var be=_("<div><!></div>"),ye=_("<!> <!> <!>",1);function R(e,t){I(t,!1),B();var n=ye(),a=$(n);const l=x(()=>({id:"topic",label:"Question topic",options:L}));V(a,{name:"Default",get args(){return p(l)},get template(){return q},parameters:{__svelteCsf:{rawCode:`<div style:padding="12px">
+	<Dropdown {...args} />
+</div>`}}});var o=w(a,2);const r=x(()=>({id:"topic",label:"Question topic",hideLabel:!0,options:L}));V(o,{name:"Hidden label",get args(){return p(r)},get template(){return q},parameters:{__svelteCsf:{rawCode:`<div style:padding="12px">
+	<Dropdown {...args} />
+</div>`}}});var c=w(o,2);const g=x(()=>({id:"topic",label:"Question topic",hideLabel:!0,placeholder:"Some custom text",options:L}));V(c,{name:"Custom placeholder text",get args(){return p(g)},get template(){return q},parameters:{__svelteCsf:{rawCode:`<div style:padding="12px">
+	<Dropdown {...args} />
+</div>`}}}),f(e,n),M()}R.__docgen={data:[],name:"Dropdown.stories.svelte"};const H=ne(R,me),Le=["Default","HiddenLabel","CustomPlaceholderText"],qe={...H.Default,tags:["svelte-csf-v5"]},Ve={...H.HiddenLabel,tags:["svelte-csf-v5"]},Ae={...H.CustomPlaceholderText,tags:["svelte-csf-v5"]};export{Ae as CustomPlaceholderText,qe as Default,Ve as HiddenLabel,Le as __namedExportsOrder,me as default};
