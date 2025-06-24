@@ -1,8 +1,9 @@
 <script module>
 	import { defineMeta } from "@storybook/addon-svelte-csf";
-	import { withComponentDocs } from "../../js/withParams.js";
+	import { withComponentDocs, withStoryDocs } from "../../js/withParams.js";
 	import DataCard from "./DataCard.svelte";
 	import componentDocs from "./docs/component.md?raw";
+	import exampleDocs from "./docs/example.md?raw";
 	import data from "../demo-data/data-scatter.js";
 
 	const { Story } = defineMeta({
@@ -39,4 +40,5 @@
 		caption: `Change from 1979 to 2016`,
 		source: "Source: ONS"
 	}}
+	parameters={withStoryDocs(exampleDocs)}
 />
