@@ -22,13 +22,23 @@
 	 */
 	export let cls = "";
 	/**
-	 * Overrides the base theme background (accepts any valid CSS background value)
+	 * Optional: Sets a base theme ("light", "dark", null etc)
+	 * @type {"light"|"dark"|"paleblue"|"blue"|"navyblue"|"grey"|null}
+	 */
+	export let theme = null;
+	/**
+	 * Optional: Define additional props to override the base theme
+	 * @type {object}
+	 */
+	export let themeOverrides = {};
+	/**
+	 * Optional: Overrides the base theme background (accepts any valid CSS background value)
 	 * @type {string|null}
 	 */
 	export let background = null;
 </script>
 
-<Container {width} {background} {cls}>
+<Container {width} {theme} {themeOverrides} {background} {cls}>
 	<nav class="ons-breadcrumbs" aria-label="Breadcrumbs">
 		<ol class="ons-breadcrumbs__items ons-u-fs-s">
 			{#each backHref ? [{ label: "Back", href: backHref }] : links as link}
