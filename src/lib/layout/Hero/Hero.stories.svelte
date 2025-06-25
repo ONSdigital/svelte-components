@@ -58,8 +58,9 @@
 		theme: "grey",
 		natStatBadge: true,
 		meta: [
-			{ key: "Dataset ID", value: "RM169" },
-			{ key: "Released", value: "2023-04-04" }
+			{ key: "Release date", value: "1 January 2024" },
+			{ key: "Last updated", value: "1 January 2025" },
+			{ key: "Publisher", value: "ONS" }
 		]
 	}}
 	{template}

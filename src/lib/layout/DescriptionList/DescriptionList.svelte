@@ -24,9 +24,8 @@
 <dl
 	class="ons-description-list ons-description-list__items ons-grid ons-grid--gutterless ons-u-mb-no {cls} {mode ===
 	'inline'
-		? 'ons-u-mt-s ons-u-mt-l@l'
+		? 'ons-description-list--inline ons-u-mt-s ons-u-mt-l@l'
 		: 'ons-u-cf'}"
-	class:ons-description-list--inline={mode === "inline"}
 	{title}
 	aria-label={title}
 >
@@ -34,7 +33,7 @@
 		<div class="ons-description-list__item">
 			<dt
 				class="ons-description-list__term ons-grid__col {mode === 'inline'
-					? 'ons-col-5@xs@l'
+					? 'ons-col-4@s@l'
 					: 'ons-col-2@m'}"
 			>
 				{item.key}:
@@ -42,7 +41,7 @@
 			{#each [item.value].flat() as value}
 				<dd
 					class="ons-description-list__value ons-grid__col {mode === 'inline'
-						? 'ons-col-7@xs@l'
+						? 'ons-col-8@s@l'
 						: 'ons-col-10@m'}"
 				>
 					{@html value}
@@ -51,3 +50,10 @@
 		</div>
 	{/each}
 </dl>
+
+<style>
+	/* Fix for inline wrapping on narrower container widths */
+	.ons-description-list--inline {
+		grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+	}
+</style>
