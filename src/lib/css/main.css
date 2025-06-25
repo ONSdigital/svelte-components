@@ -1,4 +1,4 @@
-@import url("https://cdn.ons.gov.uk/sdc/design-system/72.10.2/css/main.css");
+@import url("https://cdn.ons.gov.uk/sdc/design-system/72.10.4	/css/main.css");
 @import url("https://cdn.ons.gov.uk/vendor/accessible-autocomplete/3.0.1/accessible-autocomplete.min.css");
 
 /* CSS rules missing from design system */
@@ -13,8 +13,8 @@
 body {
 	height: unset;
 }
-.ons-grid {
-	font-size: unset;
+.ons-grid > * {
+	font-size: 1.125rem;
 }
 
 /* Backfills for legacy website */

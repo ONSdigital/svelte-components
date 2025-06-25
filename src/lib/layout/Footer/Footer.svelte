@@ -65,25 +65,21 @@
 					<div class="ons-grid">
 						<div class="ons-grid__col ons-col-4@m">
 							<h2 class="ons-footer__heading ons-u-fs-r--b">{i18n("Help")}</h2>
-
 							<ul class="ons-list ons-u-mb-no ons-list--bare">
 								<li class="ons-list__item">
 									<a href="{baseurl}/help/accessibility" class="ons-list__link"
 										>{i18n("Accessibility")}</a
 									>
 								</li>
-
 								<li class="ons-list__item">
 									<a href="{baseurl}/manage-cookie-settings/" class="ons-list__link"
 										>{i18n("Cookies")}</a
 									>
 								</li>
-
 								<li class="ons-list__item">
 									<a href="{baseurl}/help/privacynotice" class="ons-list__link">{i18n("Privacy")}</a
 									>
 								</li>
-
 								<li class="ons-list__item">
 									<a href="{baseurl}/help/termsandconditions" class="ons-list__link"
 										>{i18n("Terms and conditions")}</a
@@ -91,32 +87,26 @@
 								</li>
 							</ul>
 						</div>
-
 						<!-- Full footer columns -->
 						<div class="ons-grid__col ons-col-4@m ons-u-mt-l@2xs@m">
 							<h2 class="ons-footer__heading ons-u-fs-r--b">{i18n("About ONS")}</h2>
-
 							<ul class="ons-list ons-u-mb-no ons-list--bare">
 								<li class="ons-list__item">
 									<a href="{baseurl}/aboutus/whatwedo" class="ons-list__link"
 										>{i18n("What we do")}</a
 									>
 								</li>
-
 								<li class="ons-list__item">
 									<a href="https://careers.ons.gov.uk" class="ons-list__link">{i18n("Careers")}</a>
 								</li>
-
 								<li class="ons-list__item">
 									<a href="{baseurl}/aboutus/contactus" class="ons-list__link"
 										>{i18n("Contact us")}</a
 									>
 								</li>
-
 								<li class="ons-list__item">
 									<a href="{baseurl}/news" class="ons-list__link">{i18n("News")}</a>
 								</li>
-
 								<li class="ons-list__item">
 									<a
 										href="{baseurl}/aboutus/transparencyandgovernance/freedomofinformationfoi"
@@ -128,44 +118,37 @@
 						<!-- Full footer columns -->
 						<div class="ons-grid__col ons-col-4@m ons-u-mt-l@2xs@m">
 							<h2 class="ons-footer__heading ons-u-fs-r--b">{i18n("Connect with us")}</h2>
-
 							<ul class="ons-list ons-u-mb-no ons-list--bare">
 								<li class="ons-list__item">
 									<a href="https://x.com/ONS" class="ons-list__link">{i18n("X")}</a>
 								</li>
-
 								<li class="ons-list__item">
 									<a
 										href="https://www.instagram.com/officefornationalstatistics/"
 										class="ons-list__link">{i18n("Instagram")}</a
 									>
 								</li>
-
 								<li class="ons-list__item">
 									<a href="https://www.facebook.com/ONS" class="ons-list__link"
 										>{i18n("Facebook")}</a
 									>
 								</li>
-
 								<li class="ons-list__item">
 									<a
 										href="https://www.linkedin.com/company/office-for-national-statistics"
 										class="ons-list__link">{i18n("Linkedin")}</a
 									>
 								</li>
-
 								<li class="ons-list__item">
 									<a href="https://consultations.ons.gov.uk/" class="ons-list__link"
 										>{i18n("Consultations")}</a
 									>
 								</li>
-
 								<li class="ons-list__item">
 									<a href="https://www.statsusernetwork.ons.gov.uk/" class="ons-list__link"
 										>{i18n("Discussion forums")}</a
 									>
 								</li>
-
 								<li class="ons-list__item">
 									<a
 										href="https://public.govdelivery.com/accounts/UKONS/subscribers/new"
@@ -174,7 +157,6 @@
 								</li>
 							</ul>
 						</div>
-
 						<div class="ons-grid__col ons-u-mb-l">
 							<hr class="ons-footer__hr" />
 						</div>
