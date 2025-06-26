@@ -726,10 +726,8 @@
 						>
 							<!-- Home Link -->
 							<li class="primary-nav__item js-nav">
-								<a
-									class="primary-nav__link col col--md-7 col--lg-9"
-									href="{baseurl}/"
-									style="color: #e5e6e7">{i18n("Home")}</a
+								<a class="primary-nav__link col col--md-7 col--lg-9" href="{baseurl}/"
+									>{i18n("Home")}</a
 								>
 							</li>
 
