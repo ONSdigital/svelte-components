@@ -16,6 +16,9 @@ body {
 .ons-grid > * {
 	font-size: 1.125rem;
 }
+.ons-hero {
+	overflow: visible;
+}
 
 /* Backfills for legacy website */
 .primary-nav__item:hover > ul,
