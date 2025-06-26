@@ -77,7 +77,7 @@
 	export let background = null;
 </script>
 
-<Theme theme={theme === "blue" ? null : theme} overrides={themeOverrides} {background}>
+<Theme {theme} overrides={themeOverrides} {background}>
 	<section
 		class="ons-hero {cls}"
 		class:ons-hero--pale-blue={theme === "paleblue"}
@@ -351,6 +351,7 @@
 		flex-direction: column;
 		justify-content: center;
 	}
+
 	/* Allow a hero with a transparent background */
 	.ons-hero--transparent {
 		background: none;
