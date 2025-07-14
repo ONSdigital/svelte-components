@@ -64,6 +64,11 @@
 	 */
 	export let numeric = false;
 	/**
+	 * Set to `true` to give the input a disabled state
+	 * @type {boolean}
+	 */
+	export let disabled = false;
+	/**
 	 * Set to `true` to highlight border in red
 	 * @type {boolean}
 	 */
@@ -108,6 +113,7 @@
 					class:ons-input--error={error}
 					aria-labelledby="{id} {id}-unit"
 					aria-describedby={description ? `${id}-description-hint` : null}
+					{disabled}
 					on:change={(e) => dispatch("change", e)}
 				/>
 				<abbr
@@ -131,6 +137,7 @@
 				: ''}"
 			class:ons-input--error={error}
 			aria-describedby={description ? `${id}-description-hint` : null}
+			{disabled}
 			on:change={(e) => dispatch("change", e)}
 		/>
 	{/if}
