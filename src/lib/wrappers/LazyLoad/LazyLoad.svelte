@@ -36,7 +36,11 @@
 		observer.observe(el);
 	});
 
-	onDestroy(() => (observer?.unobserve ? observer.unobserve(el) : null));
+	onDestroy(() => {
+		if (el && observer) {
+			observer.unobserve(el);
+		}
+	});
 </script>
 
 {#if entered}
