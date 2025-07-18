@@ -36,7 +36,7 @@
 		observer.observe(el);
 	});
 
-	onDestroy(() => observer.unobserve(el));
+	onDestroy(() => (observer?.unobserve ? observer.unobserve(el) : null));
 </script>
 
 {#if entered}

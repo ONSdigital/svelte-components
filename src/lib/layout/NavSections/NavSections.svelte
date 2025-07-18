@@ -68,11 +68,9 @@
 		if (!noContents) {
 			$observer = new IntersectionObserver(
 				(entries, observer) => {
-					console.log(entries);
 					for (let i = 0; i < entries.length; i++) {
 						if (entries[i].isIntersecting) {
 							active = entries[i].target.id;
-							console.log({ active });
 							break;
 						}
 					}
