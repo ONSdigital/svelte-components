@@ -16,23 +16,23 @@
 		const map = new Map();
 
 		const observer = new IntersectionObserver(
-			(entries, observer) => {
-				entries.forEach((entry) => {
-					const update = map.get(entry.target);
-					const index = handlers.indexOf(update);
+		(entries, observer) => {
+			entries.forEach((entry) => {
+				const update = map.get(entry.target);
+				const index = handlers.indexOf(update);
 
-					if (entry.isIntersecting) {
-						if (index === -1) handlers.push(update);
-					} else {
-						update();
-						if (index !== -1) handlers.splice(index, 1);
-					}
-				});
-			},
-			{
-				rootMargin: "400px 0px" // TODO why 400?
-			}
-		);
+				if (entry.isIntersecting) {
+					if (index === -1) handlers.push(update);
+				} else {
+					update();
+					if (index !== -1) handlers.splice(index, 1);
+				}
+			});
+		},
+		{
+			rootMargin: "400px 0px"
+		}
+	);
 
 		manager = {
 			add: ({ outer, update }) => {
@@ -69,7 +69,7 @@
 </script>
 
 <script>
-	import { onMount, setContext, createEventDispatcher } from "svelte";
+	import { onMount, setContext, createEventDispatcher, onDestroy } from "svelte";
 	import { writable } from "svelte/store";
 
 	const dispatch = createEventDispatcher();
@@ -100,6 +100,16 @@
 	 * @type {number}
 	 */
 	export let threshold = 0.7;
+	/**
+	 * Container element to use for height calculations instead of viewport
+	 * @type {HTMLElement|null}
+	 */
+	export let container = null;
+	/**
+	 * CSS height value for the scroller when no container is provided
+	 * @type {string}
+	 */
+	export let height = "100vh";
 
 	let top = 0;
 	let bottom = 1;
@@ -154,14 +164,33 @@
 	let fixed;
 	let offset_top = 0;
 	let width = 1;
-	let height;
 	let inverted;
+	let containerHeight = 0;
+	let containerObserver;
 
-	$: top_px = Math.round(top * wh);
-	$: bottom_px = Math.round(bottom * wh);
-	$: threshold_px = Math.round(threshold * wh);
+	// Use container height if available, otherwise fall back to viewport height
+	$: effectiveHeight = container ? containerHeight : wh;
+	$: top_px = Math.round(top * effectiveHeight);
+	$: bottom_px = Math.round(bottom * effectiveHeight);
+	$: threshold_px = Math.round(threshold * effectiveHeight);
 
-	$: top, bottom, threshold, parallax, update();
+	// Update container height when container changes
+	$: if (container) {
+		updateContainerHeight();
+	}
+
+	$: top, bottom, threshold, parallax, effectiveHeight, update();
+
+	function updateContainerHeight() {
+		if (container) {
+			containerHeight = container.clientHeight;
+			
+			if (!container.hasScrollListener) {
+				container.addEventListener('scroll', update);
+				container.hasScrollListener = true;
+			}
+		}
+	}
 
 	$: style = `
 		position: ${fixed ? "fixed" : "absolute"};
@@ -198,7 +227,12 @@
 		const fg = foreground.getBoundingClientRect();
 		const bg = background.getBoundingClientRect();
 
-		const visible_new = fg.top < wh && fg.bottom > 0;
+		// Get container bounds if available
+		const containerBounds = container ? container.getBoundingClientRect() : { top: 0, bottom: effectiveHeight };
+		const referenceTop = container ? containerBounds.top : 0;
+		const referenceBottom = container ? containerBounds.bottom : effectiveHeight;
+
+		const visible_new = fg.bottom > referenceTop && fg.top < referenceBottom;
 		const entered = visible_new && !visible;
 		const exited = !visible_new && visible;
 		visible = visible_new;
@@ -224,39 +258,143 @@
 			fixed = true;
 		}
 
+
+		const containerThreshold = container ? 
+			containerBounds.top + (threshold * (containerBounds.bottom - containerBounds.top)) : 
+			threshold_px;
+
+		let currentSection = 0; // Default to first section	
+
+		// Replace the entire section detection loop with this:
 		for (let i = 0; i < $sections.length; i++) {
 			const section = $sections[i];
-			const { top } = section.getBoundingClientRect();
-
+			const sectionBounds = section.getBoundingClientRect();
+			
 			const next = $sections[i + 1];
-			const bottom = next ? next.getBoundingClientRect().top : fg.bottom;
-
-			offset = (threshold_px - top) / (bottom - top);
-			if (bottom >= threshold_px) {
-				if (index !== i) {
-					index = i;
-					sectionId = section.dataset.id ? section.dataset.id : null;
-					dispatch("change", { id, index, sectionId });
-				}
+			const nextTop = next ? next.getBoundingClientRect().top : fg.bottom;
+			
+			// For container mode, calculate position relative to container's scroll position
+			const containerScrollTop = container ? container.scrollTop : 0;
+			const containerClientHeight = container ? container.clientHeight : wh;
+			
+			// Get section position within the scrollable content
+			const sectionOffsetTop = section.offsetTop;
+			const nextOffsetTop = next ? next.offsetTop : foreground.offsetHeight;
+			
+			// Calculate threshold position within container
+			const thresholdPosition = containerScrollTop + (threshold * containerClientHeight);
+			
+			// Check if threshold is within this section's range
+			if (sectionOffsetTop <= thresholdPosition && nextOffsetTop > thresholdPosition) {
+				currentSection = i;
+				offset = (thresholdPosition - sectionOffsetTop) / (nextOffsetTop - sectionOffsetTop);
 				break;
 			}
+			
+			// const containerThresholdRelative = threshold * (containerBounds.bottom - containerBounds.top);
+			
+			// console.log(`Section ${i}:`, { 
+			// 	sectionTopRelative, 
+			// 	nextTopRelative, 
+			// 	containerThresholdRelative,
+			// 	isActive: sectionTopRelative <= containerThresholdRelative && nextTopRelative > containerThresholdRelative
+			// });
+			
+			// // Check if threshold is within this section's range
+			// if (sectionTopRelative <= containerThresholdRelative && nextTopRelative > containerThresholdRelative) {
+			// 	currentSection = i;
+			// 	offset = (containerThresholdRelative - sectionTopRelative) / (nextTopRelative - sectionTopRelative);
+			// 	break;
+			// }
+			
+			// If we've passed all sections, use the last one
+			if (i === $sections.length - 1) {
+				currentSection = i;
+			}
 		}
+			
+
+		// Update index if it changed
+		if (index !== currentSection) {
+			console.log(`Index changing from ${index} to ${currentSection}`);
+			index = currentSection;
+			sectionId = $sections[currentSection].dataset.id ? $sections[currentSection].dataset.id : null;
+			console.log(`Dispatching change event:`, { id, index, sectionId });
+			dispatch("change", { id, index, sectionId });
+		}
+			
+		// Add this right after the for loop in update()
+		// $:console.log("Debug info:", {
+		// sectionsCount: $sections.length,
+		// containerThreshold,
+		// currentIndex: index,
+		// containerBounds: container ? container.getBoundingClientRect() : null,
+		// foregroundBounds: fg
+		// });
 
 		if (entered) {
 			dispatch("enter", { id, index, sectionId });
 			dispatch("change", { id, index, sectionId });
 		}
 		if (exited) dispatch("exit", { id, index, sectionId });
+
+		// Add this after the containerThreshold calculation
+		// console.log("Container threshold:", containerThreshold);
+		// console.log("Sections:", $sections.length);
+		console.log("Current index:", index);
 	}
+
+	$: if (container && outer) {
+		setupContainerObserver();
+	}
+
+	function setupContainerObserver() {
+		if (containerObserver) {
+			containerObserver.disconnect();
+		}
+		
+		// For fixed containers, we need to listen to scroll events instead
+		if (container) {
+			container.addEventListener('scroll', update);
+			// Also set up resize observer for container size changes
+			if (typeof ResizeObserver !== 'undefined') {
+				const resizeObserver = new ResizeObserver(() => {
+					updateContainerHeight();
+					update();
+				});
+				resizeObserver.observe(container);
+			}
+		}
+	}
+
+	onDestroy(() => {
+		if (containerObserver) {
+			containerObserver.disconnect();
+		}
+	});
+
+	// $: console.log("Sections array updated:", $sections.length, $sections);
+
+	// Force reactivity when index changes
+	// $: if (index !== null) {
+	// 	console.log("Index reactive update:", index);
+	// 	// This ensures the parent component sees the change
+	// }
 </script>
 
 <svelte:window bind:innerHeight={wh} />
 
 {#if marginTop}
-	<div class="ons-u-mt-xl"></div>
+	<div class="ons-u-mt-xl" />
 {/if}
 
-<svelte-scroller-outer {id} bind:this={outer} class={cls} class:splitscreen>
+<svelte-scroller-outer
+	{id}
+	bind:this={outer}
+	class={cls}
+	class:splitscreen
+	style={container ? "" : `height: ${height};`}
+>
 	<svelte-scroller-background-container class="background-container" style="{style}{widthStyle}">
 		<svelte-scroller-background bind:this={background}>
 			<slot name="background" />
@@ -269,7 +407,7 @@
 </svelte-scroller-outer>
 
 {#if marginBottom}
-	<div class="ons-u-mb-xl"></div>
+	<div class="ons-u-mb-xl" />
 {/if}
 
 <style>
@@ -316,15 +454,15 @@
 	}
 
 	:global([slot="foreground"] section) {
-		padding: 40vh 0 100vh 0;
+		padding: var(--scroller-section-padding-top, 40vh) 0 var(--scroller-section-padding-bottom, 100vh) 0;
 	}
 
 	:global([slot="foreground"] section + section) {
-		padding: 0 0 100vh 0;
+		padding: 0 0 var(--scroller-section-padding-bottom, 100vh) 0;
 	}
 
 	:global([slot="foreground"] section:last-of-type) {
-		padding: 0 0 70vh 0;
+		padding: 0 0 var(--scroller-section-padding-last, 70vh) 0;
 	}
 
 	:global([slot="foreground"] section > div) {

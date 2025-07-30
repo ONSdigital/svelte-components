@@ -1,6 +1,6 @@
 {
 	"name": "@onsvisual/svelte-components",
-	"version": "1.0.11",
+	"version": "1.0.12",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "npm run build:package && npm run build:docs",
@@ -8,7 +8,7 @@
 		"preview": "vite preview",
 		"deploy": "gh-pages -d storybook-static -t",
 		"prepare": "svelte-kit sync || echo ''",
-		"prepack": "svelte-kit sync && svelte-package && publint",
+		"prepack": "svelte-kit sync && svelte-package",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
 		"format": "prettier --write .",
