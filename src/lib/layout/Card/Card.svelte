@@ -102,9 +102,7 @@
 				<h2 {id} class="ons-card__title ons-u-fs-m" class:ons-u-vh={hideTitle}>{title}</h2>
 			{/if}
 		{/if}
-		<p id="text1">
-			<slot />
-		</p>
+		<slot />
 	</div>
 </GridCell>
 

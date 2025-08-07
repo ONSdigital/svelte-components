@@ -9,9 +9,10 @@ Note: This component is experimental. Its attributes and options are likely to c
 </script>
 
 <DataCard
-  title="Consumer Price Index (CPI)",
-  value="up 2.5%",
-  caption="in 12 months to December 2024",
+  title="Consumer Price Index (CPI)"
+  subtitle="Consumer Price Index (CPI)"
+  value="up 2.5%"
+  caption="in 12 months to December 2024"
   source="Source: ONS"
 />
 ```

@@ -23,6 +23,7 @@
 	name="Big number"
 	args={{
 		title: "Consumer Price Index (CPI)",
+		subtitle: "United Kingdom",
 		value: "up 2.5%",
 		caption: "in 12 months to December 2024",
 		source: "Source: ONS"

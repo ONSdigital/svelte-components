@@ -51,16 +51,16 @@
 
 <Card {title} {href} mode="featured" {cls}>
 	{#if subtitle}
-		<p class="ons-u-fs-s">{subtitle}</p>
+		<p class="ons-card__subtitle ons-u-fs-s">{subtitle}</p>
 	{/if}
 	{#if mode === "sparkline" && data}
 		<Sparkline {data} />
 	{/if}
 	{#if value}
-		<p class="headline-figures__figure ons-u-fs-3xl ons-u-fs-2xl@m ons-u-mb-no">{value}</p>
+		<p class="ons-card__figure ons-u-fs-3xl ons-u-fw-b ons-u-mb-no">{value}</p>
 	{/if}
 	{#if caption}
-		<p class="headline-figures__supporting-text ons-u-fs-r ons-u-mt-2xs ons-u-mb-no">
+		<p class="ons-card__body">
 			{@html caption}
 		</p>
 	{/if}
