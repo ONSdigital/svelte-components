@@ -56,10 +56,30 @@ export const formatter = (dp = null) => {
 };
 
 export const ascending = (a, b) =>
-  a == null || b == null ? NaN : a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
+  a == null && b != null
+    ? 1
+    : b == null && a != null
+      ? -1
+      : a < b
+        ? -1
+        : a > b
+          ? 1
+          : a >= b
+            ? 0
+            : NaN;
 
 export const descending = (a, b) =>
-  a == null || b == null ? NaN : b < a ? -1 : b > a ? 1 : b >= a ? 0 : NaN;
+  a == null && b != null
+    ? 1
+    : b == null && a != null
+      ? -1
+      : b < a
+        ? -1
+        : b > a
+          ? 1
+          : b >= a
+            ? 0
+            : NaN;
 
 export const sleep = (ms = 1000) => new Promise((resolve) => setTimeout(resolve, ms));
 
