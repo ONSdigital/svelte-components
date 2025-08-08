@@ -16,6 +16,17 @@
 		{ key: "height", label: "Height in metres", numeric: true }
 	];
 
+	const dataAlt = [
+		{ measure: "First measure", value: 1 },
+		{ measure: "Second measure", value: 2 },
+		{ measure: "Third measure", value: null },
+		{ measure: "Fourth measure", value: 3 }
+	];
+	const columnsAlt = [
+		{ key: "measure", label: "Measure" },
+		{ key: "value", label: "Value", numeric: true }
+	];
+
 	const { Story } = defineMeta({
 		title: "Data visualisation/Table",
 		component: Table,
@@ -30,3 +41,8 @@
 <Story name="Fixed height with sticky header" args={{ data, columns, height: 200 }} />
 
 <Story name="Compact mode, sortable" args={{ data, columns, sortable: true, compact: true }} />
+
+<Story
+	name="Sortable with null values"
+	args={{ data: dataAlt, columns: columnsAlt, sortable: true }}
+/>

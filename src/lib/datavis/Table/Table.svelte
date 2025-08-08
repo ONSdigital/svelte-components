@@ -43,7 +43,7 @@
 	export let columns =
 		Array.isArray(data) && data[0] ? Object.keys(data[0]).map((key) => ({ key, label: key })) : [];
 	let _data = [...data];
-	let sort = columns.map((c) => "none");
+	let sort = columns.map(() => "none");
 	/**
 	 * Optional: Set an additional CSS class for the component
 	 * @type {string}
