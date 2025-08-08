@@ -11,9 +11,9 @@
 		{ country: "Northern Ireland", mountain: "Slieve Donard", height: 850 }
 	];
 	const columns = [
-		{ key: "country", label: "Country", sortable: true },
+		{ key: "country", label: "Country" },
 		{ key: "mountain", label: "Highest mountain" },
-		{ key: "height", label: "Height in metres", sortable: true, numeric: true }
+		{ key: "height", label: "Height in metres", numeric: true }
 	];
 
 	const { Story } = defineMeta({
@@ -29,4 +29,4 @@
 
 <Story name="Fixed height with sticky header" args={{ data, columns, height: 200 }} />
 
-<Story name="Compact mode" args={{ data, columns, compact: true }} />
+<Story name="Compact mode, sortable" args={{ data, columns, sortable: true, compact: true }} />

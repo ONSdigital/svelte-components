@@ -12,7 +12,7 @@ A table component with various customisation options.
   ];
   const columns = [
     { key: "col1", label: "Text column" },
-    { key: "col2", label: "Numeric column", numeric: true, sortable: true },
+    { key: "col2", label: "Numeric column", numeric: true},
   ];
 </script>
 

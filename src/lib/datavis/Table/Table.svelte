@@ -7,10 +7,15 @@
 	 */
 	export let title = "";
 	/**
-	 * Make the chart smaller/more compact
+	 * Make the table smaller/more compact
 	 * @type {boolean}
 	 */
 	export let compact = false;
+	/**
+	 * Make the table sortable
+	 * @type {boolean}
+	 */
+	export let sortable = false;
 	/**
 	 * Make the chart responsive (changes layout on narrow screens)
 	 * @type {boolean}
@@ -32,7 +37,7 @@
 	 */
 	export let data = [];
 	/**
-	 * Optional metadata for formatting columns. Array of {key, label, sortable?, numeric?, dp?} objects
+	 * Optional metadata for formatting columns. Array of {key, label, numeric?, dp?, formatter?} objects
 	 * @type {object[]}
 	 */
 	export let columns =
@@ -45,8 +50,7 @@
 	 */
 	export let cls = "";
 
-	$: sortable = columns.map((d) => d.sortable).includes(true);
-	$: formatters = columns.map((d) => formatter(d.dp));
+	$: formatters = columns.map((d) => d.formatter || formatter(d.dp));
 </script>
 
 <div
@@ -70,7 +74,7 @@
 		<thead class="ons-table__head">
 			<tr class="ons-table__row">
 				{#each columns as col, i}
-					{#if col.sortable}
+					{#if sortable}
 						<th
 							scope="col"
 							class="ons-table__header"
