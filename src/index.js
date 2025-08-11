@@ -11,7 +11,7 @@ export { default as Accordion } from "./layout/Accordion/Accordion.svelte";
 export { default as AccordionItem } from "./layout/Accordion/AccordionItem.svelte";
 export { default as AnalyticsBanner } from "./layout/AnalyticsBanner/AnalyticsBanner.svelte";
 export { analyticsEvent } from "./layout/AnalyticsBanner/AnalyticsBanner.svelte";
-export { default as Backlink } from "./layout/Backlink/Backlink.svelte";
+export { default as Backlink } from "./layout/Back/Back.svelte";
 export { default as Breadcrumb } from "./layout/Breadcrumb/Breadcrumb.svelte";
 export { default as Cards } from "./layout/Cards/Cards.svelte";
 export { default as Card } from "./layout/Cards/Card.svelte";

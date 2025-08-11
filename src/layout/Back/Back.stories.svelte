@@ -3,7 +3,7 @@
 
   // @ts-ignore
   import componentDocs from "./docs/component.md?raw";
-  import Backlink from "./Backlink.svelte";
+  import Backlink from "./Back.svelte";
   import { withComponentDocs } from "../../js/withParams.js";
 </script>
 
