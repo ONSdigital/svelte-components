@@ -55,31 +55,43 @@ export const formatter = (dp = null) => {
     : new Intl.NumberFormat("en-GB").format;
 };
 
+// Functions for natural sorting, regardless of type
+// Less performant than d3.ascending and d3.descending, but handles mixed types
+const collator = new Intl.Collator("en", { numeric: true });
+const isSortable = (a, b) =>
+  typeof a === typeof b &&
+  (["number", "string", "boolean"].includes(typeof a) ||
+    (typeof a.getMonth === "function" && typeof b.getMonth === "function"));
+
 export const ascending = (a, b) =>
-  a == null && b != null
+  a === b
+    ? 0
+    : a == null
     ? 1
-    : b == null && a != null
-      ? -1
-      : a < b
-        ? -1
-        : a > b
-          ? 1
-          : a >= b
-            ? 0
-            : NaN;
+    : b == null
+    ? -1
+    : !isSortable(a, b)
+    ? collator.compare(a, b)
+    : a < b
+    ? -1
+    : a > b
+    ? 1
+    : 0;
 
 export const descending = (a, b) =>
-  a == null && b != null
+  a === b
+    ? 0
+    : a == null
     ? 1
-    : b == null && a != null
-      ? -1
-      : b < a
-        ? -1
-        : b > a
-          ? 1
-          : b >= a
-            ? 0
-            : NaN;
+    : b == null
+    ? -1
+    : !isSortable(a, b)
+    ? collator.compare(b, a)
+    : b < a
+    ? -1
+    : b > a
+    ? 1
+    : 0;
 
 export const sleep = (ms = 1000) => new Promise((resolve) => setTimeout(resolve, ms));
 
