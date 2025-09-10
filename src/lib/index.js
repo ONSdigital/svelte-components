@@ -25,6 +25,7 @@ export { default as Document } from "./layout/DocumentList/Document.svelte";
 export { default as ErrorPage } from "./layout/ErrorPage/ErrorPage.svelte";
 export { default as Footer } from "./layout/Footer/Footer.svelte";
 export { default as Grid } from "./layout/Grid/Grid.svelte";
+export { default as Cards } from "./layout/Grid/Grid.svelte"; // Alias for Grid
 export { default as GridCell } from "./layout/Grid/GridCell.svelte";
 export { default as Header } from "./layout/Header/Header.svelte";
 export { default as Hero } from "./layout/Hero/Hero.svelte";
