@@ -21,6 +21,11 @@
 	 * @type {boolean}
 	 */
 	export let nowrap = true;
+	/**
+	 * Descriptive text for screen readers if not self-explanatory
+	 * @type {string|null}
+	 */
+	export let ariaLabel = null;
 
 	$: text = contrastColor(color);
 </script>
@@ -33,6 +38,7 @@
 	style:color={text}
 	style:font-size={fontSize}
 	role="presentation"
+	aria-label={ariaLabel}
 >
 	<slot />
 </mark>
