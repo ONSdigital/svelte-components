@@ -26,7 +26,7 @@
 	 */
 	export let titleBadge = null;
 	/**
-	 * Optional: Label and href for an action button in format {label, href}
+	 * Optional: Label and href for an action button in format {label, ariaLabel, href}
 	 * @type {object|null}
 	 */
 	export let actionButton = null;
@@ -103,7 +103,7 @@
 							<h1 class="ons-hero__title ons-u-fs-3xl">
 								{title}
 								{#if titleBadge}
-									<Em mode="badge" color={titleBadge.color} fontSize="1.125rem"
+									<Em mode="badge" color={titleBadge.color} ariaLabel={titleBadge.ariaLabel} fontSize="1.125rem"
 										>{titleBadge.label}</Em
 									>
 								{/if}
