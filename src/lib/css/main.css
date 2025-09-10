@@ -2,6 +2,18 @@
 @import url("https://cdn.ons.gov.uk/vendor/accessible-autocomplete/3.0.1/accessible-autocomplete.min.css");
 
 /* CSS rules missing from design system */
+.ons-grid--spaced {
+	margin-bottom: -1rem;
+}
+.ons-grid--gutterless {
+	margin-bottom: 0;
+}
+.ons-grid--tight {
+	margin-bottom: -0.5rem;
+}
+.ons-grid--loose {
+	margin-bottom: -2rem;
+}
 .ons-grid--loose .ons-grid__col {
 	padding-left: 2rem;
 }
