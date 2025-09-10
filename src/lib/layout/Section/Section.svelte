@@ -54,7 +54,7 @@
 </Container>
 
 <style>
-	.ons-section__text > :global(p:last-of-type) {
+	.ons-section__text > :global(*:last-child) {
 		margin-bottom: 0;
 	}
 </style>
