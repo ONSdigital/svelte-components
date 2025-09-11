@@ -15,14 +15,14 @@
 	export let page = getContext("page");
 	/**
 	 * Optional: Explicitly pass a page status number, eg. 404 or 500.
-	 * @type {number}
+	 * @type {number|null}
 	 */
-	export let status = $page ? $page?.status : null;
+	export let status = page?.status || null;
 	/**
 	 * Optional: Explicitly pass a page status message.
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let message = $page ? $page?.error?.message : "";
+	export let message = page?.error?.message || null;
 </script>
 
 <Container {width}>
