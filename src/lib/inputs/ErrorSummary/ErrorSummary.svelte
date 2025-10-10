@@ -3,9 +3,9 @@
 
 	/**
 	 * Defines the title of the error
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let title = "";
+	export let title = null;
 	/**
 	 * Define an array of errors/issues in the format {label, href?}
 	 * @type {object[]}
@@ -13,9 +13,9 @@
 	export let items = [];
 	/**
 	 * Optional: Set an additional CSS class for the component
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let cls = "";
+	export let cls = null;
 </script>
 
 <div aria-labelledby="alert" role="alert" tabindex="-1" class="ons-panel ons-panel--error {cls}">

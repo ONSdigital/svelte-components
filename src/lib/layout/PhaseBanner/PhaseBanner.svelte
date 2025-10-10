@@ -11,9 +11,9 @@
 	export let href = "https://www.ons.gov.uk/feedback";
 	/**
 	 * Optional: Set an additional CSS class for the component
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let cls = "";
+	export let cls = null;
 </script>
 
 <div class="ons-phase-banner {cls}">

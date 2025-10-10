@@ -4,9 +4,9 @@
 
 	/**
 	 * Sets the title of the accordion item
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let title = "";
+	export let title = null;
 	/**
 	 * Sets the unique ID of the accordion item
 	 * @type {string}

@@ -3,9 +3,9 @@
 
 	/**
 	 * An optional title for the table
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let title = "";
+	export let title = null;
 	/**
 	 * Make the table smaller/more compact
 	 * @type {boolean}
@@ -46,9 +46,9 @@
 	let sort = columns.map(() => "none");
 	/**
 	 * Optional: Set an additional CSS class for the component
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let cls = "";
+	export let cls = null;
 
 	$: formatters = columns.map((d) => d.formatter || formatter(d.dp));
 </script>

@@ -15,9 +15,9 @@
 	export let id = slugify(title);
 	/**
 	 * Optional: Set an additional CSS class for the section
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let cls = "";
+	export let cls = null;
 	/**
 	 * Allows the h2 title tag for the section to be visually hidden
 	 * @type {boolean}

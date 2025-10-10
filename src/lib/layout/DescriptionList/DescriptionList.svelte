@@ -1,9 +1,9 @@
 <script>
 	/**
 	 * Sets the title of the list (for screen readers)
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let title = "";
+	export let title = null;
 	/**
 	 * Array of items in format {key, value} where "value" may be an array of multiple values
 	 * @type {object[]}
@@ -16,9 +16,9 @@
 	export let mode = "default";
 	/**
 	 * Optional: Set an additional CSS class for the component
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let cls = "";
+	export let cls = null;
 </script>
 
 <dl

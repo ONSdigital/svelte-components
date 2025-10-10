@@ -28,9 +28,9 @@
 	export let allowClientOverrides = false;
 	/**
 	 * Optional: Set an additional CSS class for the theme container
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let cls = "";
+	export let cls = null;
 
 	function makeStyle(theme, overrides) {
 		if (theme) {

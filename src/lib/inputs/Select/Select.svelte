@@ -65,9 +65,9 @@
 	export let labelKey = "label";
 	/**
 	 * The attribute of an option that defines its group (optional)
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let groupKey = "";
+	export let groupKey = null;
 	/**
 	 * Optional: Minimum query length to return results
 	 * @type {number}
@@ -110,9 +110,9 @@
 	}
 	/**
 	 * Optional: Set an additional CSS class for the component
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let cls = "";
+	export let cls = null;
 
 	function inputValueTemplate(result) {
 		return result && result[labelKey];

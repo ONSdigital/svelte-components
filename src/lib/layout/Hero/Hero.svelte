@@ -12,14 +12,14 @@
 	export let title = "Page title";
 	/**
 	 * Optional: Page type to sit above title
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let pageType = "";
+	export let pageType = null;
 	/**
 	 * Descriptive text for page to sit below title
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let lede = "";
+	export let lede = null;
 	/**
 	 * Optional: Badge to appear next to the page title in format {label, color}
 	 * @type {object|null}
@@ -57,9 +57,9 @@
 	export let height = null;
 	/**
 	 * Optional: Set an additional CSS class for the component
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let cls = "";
+	export let cls = null;
 	/**
 	 * Sets a predefined theme
 	 * @type {"light"|"dark"|"blue"|"paleblue"|"navyblue"|"grey"|null}
@@ -103,8 +103,11 @@
 							<h1 class="ons-hero__title ons-u-fs-3xl">
 								{title}
 								{#if titleBadge}
-									<Em mode="badge" color={titleBadge.color} ariaLabel={titleBadge.ariaLabel} fontSize="1.125rem"
-										>{titleBadge.label}</Em
+									<Em
+										mode="badge"
+										color={titleBadge.color}
+										ariaLabel={titleBadge.ariaLabel}
+										fontSize="1.125rem">{titleBadge.label}</Em
 									>
 								{/if}
 							</h1>

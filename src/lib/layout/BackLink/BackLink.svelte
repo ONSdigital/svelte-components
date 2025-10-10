@@ -6,9 +6,9 @@
 	export let href = "#top";
 	/**
 	 * Optional: Add a CSS class to the link
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let cls = "";
+	export let cls = null;
 </script>
 
 <div class="ons-back-to-top ons-js-back-to-top ons-back-to-top__enabled ons-u-mb-l {cls || ''}">

@@ -1,9 +1,9 @@
 <script>
 	/**
 	 * Attribution for the quote.
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let attribution = "";
+	export let attribution = null;
 </script>
 
 <blockquote class="ons-quote">

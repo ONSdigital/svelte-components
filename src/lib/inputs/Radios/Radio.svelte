@@ -5,19 +5,19 @@
 
 	/**
 	 * Unique ID input
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let id = "";
+	export let id = null;
 	/**
 	 * Label for input
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let label = "";
+	export let label = null;
 	/**
 	 * Optional: Extended description for element
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let description = "";
+	export let description = null;
 	/**
 	 * Optional: Define the item as an object in the form {id, label, description?}
 	 * @type {object}
