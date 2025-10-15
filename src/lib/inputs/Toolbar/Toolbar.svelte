@@ -3,20 +3,14 @@
 	import { writable } from "svelte/store";
 
 	/**
-	 * Additional classes for the button
-	 * @type {string}
+	 * @typedef {object} ToolbarProps
+	 * @property {string | null} [classes=null] - Additional classes for the button
+	 * @property {string | null} [ariaLabel=null] - aria label for button
+	 * @property {'horizontal' | 'vertical'} [orientation='horizontal'] - Orientation of the toolbar
 	 */
-	export let classes = "";
-	/**
-	 * aria label for button
-	 * @type {string}
-	 */
-	export let ariaLabel = "";
-	/**
-	 * Orientation of the toolbar
-	 * @type {'horizontal' | 'vertical'}
-	 */
-	export let orientation = "horizontal";
+
+	/** @type {ToolbarProps} */
+	let { classes = null, ariaLabel = null, orientation = "horizontal" } = $props();
 
 	// Set context for child components
 	const orientationStore = writable(orientation);

@@ -5,18 +5,33 @@
 	import { nanoid } from "nanoid";
 
 	// Props for the ToolbarButton
-	export let id: string = nanoid(6);
-	export let icon: string = "";
-	export let label: string = "";
-	export let disabled: boolean = false;
-	export let classes: string = "";
-	export let helpText: string | null = null;
-	export let selected: boolean = false;
-	export let custom: boolean = false;
-	export let hasAriaControls: boolean = false;
-	export let sticky: boolean = false;
-	export let transient: boolean = false;
-	export let disableHelp: boolean = false;
+	let {
+		id = nanoid(6),
+		icon = "",
+		label = "",
+		disabled = false,
+		classes = "",
+		helpText = null,
+		selected = false,
+		custom = false,
+		hasAriaControls = false,
+		sticky = false,
+		transient = false,
+		disableHelp = false
+	}: {
+		id?: string;
+		icon?: string;
+		label?: string;
+		disabled?: boolean;
+		classes?: string;
+		helpText?: string | null;
+		selected?: boolean;
+		custom?: boolean;
+		hasAriaControls?: boolean;
+		sticky?: boolean;
+		transient?: boolean;
+		disableHelp?: boolean;
+	} = $props();
 
 	const dispatch = createEventDispatcher();
 

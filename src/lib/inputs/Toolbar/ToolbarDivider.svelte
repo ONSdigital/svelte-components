@@ -1,12 +1,10 @@
 <script lang="ts">
 	import { getContext } from "svelte";
-	import { subscribe } from "svelte/store";
-	import type { Readable } from "svelte/store";
 
-	export let classes: string = "";
+	let { classes = "" }: { classes?: string } = $props();
 
 	// Get the orientation store from context
-	const orientationStore = getContext<Readable<"horizontal" | "vertical">>("orientation");
+	const orientationStore = getContext("orientation");
 
 	// Subscribe to the store to get its value
 	const orientation = $derived(orientationStore);

@@ -23,14 +23,13 @@
 	});
 
 	const showHelpModals = writable(showHelpState);
+	// Set context for showHelpModals
+	setContext("showHelpModals", showHelpModals);
 
 	// Reactively update the initial state
 	$effect(() => {
 		showHelpModals.set(showHelpState);
 	});
-
-	// Set context for showHelpModals
-	setContext("showHelpModals", showHelpModals);
 
 	const activeModalStore = writable(null); // Tracks the ID of the active modal
 	setContext("activeModalId", activeModalStore);

@@ -6,8 +6,16 @@
 	import Button from "../Button/Button.svelte";
 
 	// --- Props ---
-	export let triggerElement: HTMLElement | null = null;
-	export let onClose: () => void;
+	// export let triggerElement: HTMLElement | null = null;
+	// export let onClose: () => void;
+
+	let {
+		triggerElement = null,
+		onClose = () => {}
+	}: {
+		triggerElement?: HTMLElement | null;
+		onClose?: () => void;
+	} = $props();
 
 	// --- Context ---
 	const activeModalId = getContext("activeModalId");
