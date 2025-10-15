@@ -1,33 +1,31 @@
 <script lang="ts">
-  import { getContext } from "svelte";
-  import { subscribe } from "svelte/store";
+	import { getContext } from "svelte";
+	import { subscribe } from "svelte/store";
+	import type { Readable } from "svelte/store";
 
-  export let classes: string = "";
+	export let classes: string = "";
 
-  // Get the orientation store from context
-  const orientationStore = getContext("orientation");
+	// Get the orientation store from context
+	const orientationStore = getContext<Readable<"horizontal" | "vertical">>("orientation");
 
-  // Subscribe to the store to get its value
-  let orientation;
-  orientationStore.subscribe((value) => {
-    orientation = value;
-  });
+	// Subscribe to the store to get its value
+	const orientation = $derived(orientationStore);
 </script>
 
-<div class="{`toolbar-divider ${orientation} ${classes}`}" aria-hidden="true"></div>
+<div class={`toolbar-divider ${orientation} ${classes}`} aria-hidden="true"></div>
 
 <style>
-  .toolbar-divider {
-    background-color: #ccc;
-  }
+	.toolbar-divider {
+		background-color: #ccc;
+	}
 
-  .toolbar-divider.horizontal {
-    width: 1px;
-  }
+	.toolbar-divider.horizontal {
+		width: 1px;
+	}
 
-  .toolbar-divider.vertical {
-    width: 100%;
-    height: 1px;
-    margin: 0.5rem 0;
-  }
+	.toolbar-divider.vertical {
+		width: 100%;
+		height: 1px;
+		margin: 0.5rem 0;
+	}
 </style>
