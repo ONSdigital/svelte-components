@@ -1,8 +1,9 @@
 <script>
-  import { getContext } from "svelte";
-  const activeModalId = getContext("activeModalId");
+	import { getContext } from "svelte";
+	const activeModalId = getContext("activeModalId");
+	const id = $derived(activeModalId);
 </script>
 
-{#if $activeModalId}
-  <slot />
+{#if id}
+	<slot />
 {/if}
