@@ -28,8 +28,8 @@
 	const showHelp = $derived(showHelpModals);
 
 	// --- Local state ---
-	let modalPosition = { top: 0, left: 0 };
-	let notchPosition = { left: 0 };
+	let modalPosition = { top: 50, left: -5 };
+	let notchPosition = { left: 10 };
 	let dontShowMeAgain = $state(false);
 
 	$effect(() => {
@@ -85,9 +85,9 @@
 
 	// Navigate to the next modal
 	function nextModal() {
-		const currentIndex = ids.indexOf(currentActiveId);
-		if (currentIndex !== -1 && currentIndex < ids.length - 1) {
-			activeModalId.set(ids[currentIndex + 1]);
+		const currentIndex = $ids.indexOf($currentActiveId);
+		if (currentIndex !== -1 && currentIndex < $ids.length - 1) {
+			activeModalId.set($ids[currentIndex + 1]);
 			// console.log("Navigating to next modal:", ids[currentIndex + 1]);
 		}
 		if (dontShowMeAgain) {
@@ -105,9 +105,9 @@
 
 	// Navigate to the previous modal
 	function previousModal() {
-		const currentIndex = ids.indexOf(currentActiveId);
+		const currentIndex = $ids.indexOf($currentActiveId);
 		if (currentIndex > 0) {
-			activeModalId.set(ids[currentIndex - 1]);
+			activeModalId.set($ids[currentIndex - 1]);
 			// console.log("Navigating to previous modal:", ids[currentIndex - 1]);
 		}
 		if (dontShowMeAgain) {
@@ -121,7 +121,7 @@
 </script>
 
 <svelte:window on:keydown={handleKeydown} />
-{#if showHelp}
+{#if $showHelp}
 	<div
 		class="help-modal-wrapper"
 		style="top: {modalPosition.top}px; left: {modalPosition.left}px;"
@@ -146,18 +146,18 @@
 					compact
 				/>
 			</div>
-			<div class="ons-grid--flex ons-grid--between ons-grid--vertical-center">
+			<div class="ons-grid-flex ons-grid-flex--between ons-grid-flex-vertical-center">
 				<button class="btn-link" on:click={handleSkip} aria-label="Skip instructions">Skip</button>
-				{#if ids.indexOf(currentActiveId) > 0}
+				{#if $ids.indexOf($currentActiveId) > 0}
 					<span style="margin-left:auto; margin-right:10px">
 						<Button variant="secondary" on:click={previousModal}>Back</Button>
 					</span>
 				{/if}
 
-				{#if ids.indexOf(currentActiveId) != ids.length - 1}
+				{#if $ids.indexOf($currentActiveId) != $ids.length - 1}
 					<Button on:click={nextModal}>Next</Button>
 				{/if}
-				{#if ids.indexOf(currentActiveId) == ids.length - 1}
+				{#if $ids.indexOf($currentActiveId) == $ids.length - 1}
 					<Button on:click={hideHelpModalsUntilRefresh}>Get started</Button>
 				{/if}
 			</div>

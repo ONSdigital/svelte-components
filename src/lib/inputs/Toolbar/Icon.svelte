@@ -71,7 +71,7 @@
 
 {#if paths[type]}
 	<svg
-		class="ons-svg-icon"
+		class="ons-svg-icon ons-svg-icon--m"
 		class:ons-u-ml-xs={marginLeft}
 		class:ons-u-mr-xs={marginRight}
 		class:selected

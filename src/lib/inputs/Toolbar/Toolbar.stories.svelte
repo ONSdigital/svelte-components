@@ -126,7 +126,7 @@
 				</ToolControl>
 			</ToolControls>
 		</Toolbar>
-		<Toolbar>
+		<Toolbar orientation={args.orientation}>
 			<ToolbarButton id="download" icon="download" label="Download area" />
 			<ToolbarButton id="upload" icon="upload" label="Upload a geometry" />
 			<ToolbarDivider />
@@ -141,41 +141,8 @@
 	</ToolbarsContainer>
 {/snippet}
 
+{#snippet transient(args)}{/snippet}
+
 <Story name="Default" args={{ ariaLabel: "Toolbar" }} {template} />
 
-<Story name="Vertical" args={{ orientation: "vertical" }} />
-
-<Story name="Sticky buttons">
-	<ToolbarsContainer>
-		<Toolbar>
-			<ToolbarButton id="move" icon="move" label="Move and Pan" sticky />
-			<ToolbarButton id="polygon" icon="polygon" label="Draw a polygon" sticky />
-			<ToolbarButton id="circle" icon="radius" label="Draw a circle" sticky />
-		</Toolbar>
-	</ToolbarsContainer>
-</Story>
-
-<Story name="Transient buttons">
-	<ToolbarsContainer>
-		<Toolbar>
-			<ToolbarButton id="zoomin" icon="zoomin" label="Zoom in" transient={true} selected={false} />
-			<ToolbarButton id="zoomout" icon="zoomout" label="zoom out" transient />
-		</Toolbar>
-	</ToolbarsContainer>
-</Story>
-
-<Story name="No help modal">
-	<ToolbarsContainer>
-		<Toolbar>
-			<ToolbarButton
-				id="zoomin"
-				icon="zoomin"
-				label="Zoom in"
-				transient={true}
-				selected={false}
-				disableHelp={true}
-			/>
-			<ToolbarButton id="zoomout" icon="zoomout" label="zoom out" disableHelp={true} transient />
-		</Toolbar>
-	</ToolbarsContainer>
-</Story>
+<Story name="Vertical" args={{ orientation: "vertical" }} {template} />

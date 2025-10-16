@@ -10,7 +10,7 @@
 	const orientation = $derived(orientationStore);
 </script>
 
-<div class={`toolbar-divider ${orientation} ${classes}`} aria-hidden="true"></div>
+<div class={`toolbar-divider ${$orientation} ${classes}`} aria-hidden="true"></div>
 
 <style>
 	.toolbar-divider {

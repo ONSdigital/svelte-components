@@ -50,3 +50,50 @@ Use the prop `hasAriaControls` on a button to link the controls to the button.
     </Toolbar>
   </ToolbarsContainer>
 ```
+
+## Sticky buttons
+
+```html
+<ToolbarsContainer>
+	<Toolbar>
+		<ToolbarButton id="move" icon="move" label="Move and Pan" sticky />
+		<ToolbarButton id="polygon" icon="polygon" label="Draw a polygon" sticky />
+		<ToolbarButton id="circle" icon="radius" label="Draw a circle" sticky />
+	</Toolbar>
+</ToolbarsContainer>
+```
+
+## Transient buttons
+
+```html
+<ToolbarsContainer>
+	<Toolbar>
+		<ToolbarButton
+			id="zoomin"
+			icon="zoomin"
+			label="Zoom in"
+			transient="{true}"
+			selected="{false}"
+		/>
+		<ToolbarButton id="zoomout" icon="zoomout" label="zoom out" transient />
+	</Toolbar>
+</ToolbarsContainer>
+```
+
+## No help modal
+
+```html
+<ToolbarsContainer>
+	<Toolbar>
+		<ToolbarButton
+			id="zoomin"
+			icon="zoomin"
+			label="Zoom in"
+			transient="{true}"
+			selected="{false}"
+			disableHelp="{true}"
+		/>
+		<ToolbarButton id="zoomout" icon="zoomout" label="zoom out" disableHelp="{true}" transient />
+	</Toolbar>
+</ToolbarsContainer>
+```

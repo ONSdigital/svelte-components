@@ -14,6 +14,7 @@
 
 	// Set context for child components
 	const orientationStore = writable(orientation);
+	setContext("orientation", orientationStore);
 
 	$effect(() => {
 		orientationStore.set(orientation);
@@ -35,7 +36,7 @@
 		<slot />
 	</div>
 
-	{#if !showHelp}
+	{#if !$showHelp}
 		<slot name="controls" />
 	{/if}
 </div>

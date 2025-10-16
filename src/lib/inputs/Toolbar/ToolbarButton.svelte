@@ -40,7 +40,7 @@
 	// Get activeModalId store from context
 	const activeModalId = getContext("activeModalId");
 	const currentActiveId = $derived(activeModalId);
-	const isActive = $derived(currentActiveId === id);
+	const isActive = $derived($currentActiveId === id);
 
 	// Retrieve button registry from context
 	const { register, unregister } = getContext("buttonIds");
@@ -54,9 +54,6 @@
 	onDestroy(() => {
 		unregister(id);
 	});
-
-	// Reactive store subscription
-	// $: isActive = $activeModalId === id;
 
 	// Subscribe to the store to determine if this modal is active
 	function handleClick() {
