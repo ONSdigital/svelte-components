@@ -5,10 +5,6 @@
 	import Checkbox from "../Checkbox/Checkbox.svelte";
 	import Button from "../Button/Button.svelte";
 
-	// --- Props ---
-	// export let triggerElement: HTMLElement | null = null;
-	// export let onClose: () => void;
-
 	let {
 		triggerElement = null,
 		onClose = () => {}
@@ -28,8 +24,8 @@
 	const showHelp = $derived(showHelpModals);
 
 	// --- Local state ---
-	let modalPosition = { top: 50, left: -5 };
-	let notchPosition = { left: 10 };
+	let modalPosition = $state({ top: 50, left: -5 });
+	let notchPosition = $state({ left: 17, right: "auto" });
 	let dontShowMeAgain = $state(false);
 
 	$effect(() => {
@@ -42,32 +38,26 @@
 		const spaceAbove = rect.top;
 		const spaceRight = window.innerWidth - rect.right;
 
-		// Default to position below the trigger element
-		modalPosition = {
-			// top: rect.bottom + window.scrollY + 10,
-			top: window.scrollY + 55,
+		let newLeft = window.scrollX - 10;
+		let newNotchLeft: number | "auto" = 17;
+		let newNotchRight: number | "auto" = "auto";
 
-			left: window.scrollX - 10
-		};
-		// Align notch with the center of the trigger element
-		notchPosition = {
-			left: window.scrollX - modalPosition.left + rect.width / 2 - 10, // Adjust for the notch width
-			right: "auto"
-		};
+		// if (spaceBelow < 200 && spaceAbove > 200) {
+		// 	newTop = rect.top + window.scrollY - 10;
+		// }
 
-		// If there's not enough space below, position above
-		if (spaceBelow < 200 && spaceAbove > 200) {
-			modalPosition.top = rect.top + window.scrollY - 10;
-		}
-
-		// Adjust if close to the right edge
 		if (spaceRight < 300) {
-			modalPosition.left = window.scrollX - 300; // Adjust for modal width
-			notchPosition = {
-				left: "auto",
-				right: -340
-			};
+			newLeft = window.scrollX - 325;
+			newNotchLeft = "auto";
+			newNotchRight = -350;
 		}
+
+		// modalPosition.top = newTop;
+		modalPosition.left = newLeft;
+		notchPosition.left = newNotchLeft;
+		notchPosition.right = newNotchRight;
+
+		// console.log(spaceRight, newLeft, modalPosition, notchPosition);
 	});
 
 	// Update localStorage if "Don't show me again" is checked
@@ -122,11 +112,7 @@
 
 <svelte:window on:keydown={handleKeydown} />
 {#if $showHelp}
-	<div
-		class="help-modal-wrapper"
-		style="top: {modalPosition.top}px; left: {modalPosition.left}px;"
-		transition:fly={{ duration: 200, y: 10 }}
-	>
+	<div class="help-modal-wrapper" style="top: {modalPosition.top}px; left: {modalPosition.left}px;">
 		<!-- Notch -->
 		<div
 			class="help-modal-notch"
