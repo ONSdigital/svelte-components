@@ -63,6 +63,16 @@ export { default as Radios } from "./inputs/Radios/Radios.svelte";
 export { default as Select } from "./inputs/Select/Select.svelte";
 export { default as AccessibleSelect } from "./inputs/Select/Select.svelte"; // Alias for Select
 export { default as Textarea } from "./inputs/Textarea/Textarea.svelte";
+export { default as HelpModal } from "./inputs/Toolbar/HelpModal.svelte";
+export { default as Icon } from "./inputs/Toolbar/Icon.svelte";
+export { default as Toolbar } from "./inputs/Toolbar/Toolbar.svelte";
+export { default as ToolbarButton } from "./inputs/Toolbar/ToolbarButton.svelte";
+export { default as ToolbarDivider } from "./inputs/Toolbar/ToolbarDivider.svelte";
+export { default as ToolbarsContainer } from "./inputs/Toolbar/ToolbarsContainer.svelte";
+export { default as ToolControl } from "./inputs/Toolbar/ToolControl.svelte";
+export { default as ToolControls } from "./inputs/Toolbar/ToolControls.svelte";
+export { default as ButtonGroup } from "./inputs/ButtonGroup/ButtonGroup.svelte";
+export { default as ButtonGroupItem } from "./inputs/ButtonGroup/ButtonGroupItem.svelte";
 
 // Decorators
 export { default as Blockquote } from "./decorators/Blockquote/Blockquote.svelte";
