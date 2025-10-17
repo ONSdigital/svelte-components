@@ -4,14 +4,14 @@
 
 	/**
 	 * Optional: Sets the unique ID of the section
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let id = "";
+	export let id = null;
 	/**
 	 * Optional: Set an additional CSS class for the component
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let cls = "";
+	export let cls = null;
 	/**
 	 * Sets the width of the section
 	 * @type {"narrow"|"medium"|"wide"|"wider"|"full"}
@@ -19,9 +19,9 @@
 	export let width = "wide";
 	/**
 	 * Sets the title of the section
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let title = "";
+	export let title = null;
 	/**
 	 * Allows the h2 title tag for the section to be visually hidden
 	 * @type {boolean}
@@ -29,9 +29,9 @@
 	export let hideTitle = false;
 	/**
 	 * Optional: Caption for the grid (if used as a media container, eg. for an image)
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let caption = "";
+	export let caption = null;
 	/**
 	 * Adds margin above section
 	 * @type {boolean}

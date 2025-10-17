@@ -3,14 +3,14 @@
 
 	/**
 	 * Optional: Set the unique ID of the section
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let id = "";
+	export let id = null;
 	/**
 	 * Optional: Set an additional CSS class for the section
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let cls = "";
+	export let cls = null;
 	/**
 	 * Applies a larger default text size (by default)
 	 * @type {boolean}

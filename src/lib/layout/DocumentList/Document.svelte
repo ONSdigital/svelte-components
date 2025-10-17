@@ -1,9 +1,9 @@
 <script>
 	/**
 	 * The title of the document
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let title = "";
+	export let title = null;
 	/**
 	 * Set the heading level for the title
 	 * @type {"h2"|"h3"}
@@ -11,14 +11,14 @@
 	export let headingTag = "h2";
 	/**
 	 * The URL of the document
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let href = "";
+	export let href = null;
 	/**
 	 * A description of the document
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let description = "";
+	export let description = null;
 	/**
 	 * Optional: URL of image to represent the document (use "true" for a placeholder)
 	 * @type {string|boolean}
@@ -31,9 +31,9 @@
 	export let featured = false;
 	/**
 	 * Metadata about the type of document linked to (can include HTML)
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let meta = "";
+	export let meta = null;
 </script>
 
 <li class="ons-document-list__item" class:ons-document-list__item--featured={featured}>

@@ -1,14 +1,14 @@
 <script>
 	/**
 	 * Set an error message
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let message = "";
+	export let message = null;
 	/**
 	 * Optional: Set an additional CSS class for the component
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let cls = "";
+	export let cls = null;
 </script>
 
 <div class="ons-panel ons-panel--error ons-panel--no-title {cls}" id="number-of-employees-error">

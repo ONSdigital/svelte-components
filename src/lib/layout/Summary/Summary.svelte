@@ -5,14 +5,14 @@
 
 	/**
 	 * A unique ID for the summary table
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let id = "";
+	export let id = null;
 	/**
 	 * Title for summary table
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let title = "";
+	export let title = null;
 	/**
 	 * Array of items in format {key, value, href?}
 	 * @type {object[]}
@@ -20,9 +20,9 @@
 	export let items = [];
 	/**
 	 * Optional: Set an additional CSS class for the component
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let cls = "";
+	export let cls = null;
 
 	function handleChange(item) {
 		dispatch("change", { item });

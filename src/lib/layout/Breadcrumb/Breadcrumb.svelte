@@ -8,9 +8,9 @@
 	export let links = [];
 	/**
 	 * Optional: Link href if component is used for a single back-link
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let backHref = "";
+	export let backHref = null;
 	/**
 	 * Sets the width of the container
 	 * @type {"narrow"|"medium"|"wide"|"wider"|"full"}
@@ -18,9 +18,9 @@
 	export let width = "wide";
 	/**
 	 * Optional: Set an additional CSS class for the component
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let cls = "";
+	export let cls = null;
 	/**
 	 * Optional: Sets a base theme ("light", "dark", null etc)
 	 * @type {"light"|"dark"|"paleblue"|"blue"|"navyblue"|"grey"|null}

@@ -10,9 +10,9 @@
 	export let id = "toc";
 	/**
 	 * Optional: Set an additional CSS class for the section
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let cls = "";
+	export let cls = null;
 	/**
 	 * Sets the width of the container
 	 * @type {"narrow"|"medium"|"wide"|"wider"|"full"}

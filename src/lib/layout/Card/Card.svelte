@@ -3,19 +3,19 @@
 
 	/**
 	 * Sets the unique ID of the section
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let id = "";
+	export let id = null;
 	/**
 	 * Optional: Set an additional CSS class for the section
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let cls = "";
+	export let cls = null;
 	/**
 	 * Sets the title of the card
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let title = "";
+	export let title = null;
 	/**
 	 * Allows the h2 title tag for the card to be visually hidden
 	 * @type {boolean}
@@ -38,19 +38,19 @@
 	export let baseline = false;
 	/**
 	 * Optional: URL for title/image link
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let href = "";
+	export let href = null;
 	/**
 	 * Optional: URL for image
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let image = "";
+	export let image = null;
 	/**
 	 * Optional: Alt text for image
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let imageAlt = "";
+	export let imageAlt = null;
 	/**
 	 * (If used in grid) How many columns the card should span across
 	 * @type {number}

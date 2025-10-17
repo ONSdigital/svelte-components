@@ -16,14 +16,14 @@
 	export let links = [];
 	/**
 	 * An anchor link URL to the main content of the page (to skip contents)
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let skipHref = "";
+	export let skipHref = null;
 	/**
 	 * Optional: Set an additional CSS class for the component
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let cls = "";
+	export let cls = null;
 </script>
 
 <aside class="ons-table-of-contents-container {cls}" role="complementary">

@@ -11,9 +11,9 @@
 	export let id = slugify();
 	/**
 	 * Optional: Set an additional CSS class for the component
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let cls = "";
+	export let cls = null;
 	/**
 	 * Option to include a "show all" toggle above the accordion
 	 * @type {boolean}
