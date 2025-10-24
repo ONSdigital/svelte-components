@@ -26,8 +26,10 @@
 	</div>
 {/snippet}
 
+<Story name="Default" args={{ id: "default", label: "Select an option", options }} {template} />
+
 <Story
-	name="Default"
+	name="Pre-selected value"
 	args={{ id: "default", value: options[0], label: "Select an option", options }}
 	{template}
 />
