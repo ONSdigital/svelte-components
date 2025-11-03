@@ -34,8 +34,8 @@
 		const rect = triggerElement.getBoundingClientRect();
 
 		// Calculate the modal's position
-		// const spaceBelow = window.innerHeight - rect.bottom;
-		// const spaceAbove = rect.top;
+		const spaceBelow = window.innerHeight - rect.bottom;
+		const spaceAbove = rect.top;
 		const spaceRight = window.innerWidth - rect.right;
 
 		let newLeft = window.scrollX - 10;
@@ -56,6 +56,8 @@
 		modalPosition.left = newLeft;
 		notchPosition.left = newNotchLeft;
 		notchPosition.right = newNotchRight;
+
+		// console.log(spaceRight, newLeft, modalPosition, notchPosition);
 	});
 
 	// Update localStorage if "Don't show me again" is checked
