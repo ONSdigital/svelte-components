@@ -33,20 +33,18 @@
 </script>
 
 <div {id} class="ons-accordion {cls}" bind:this={el}>
-	{#if showToggle}
-		<button
-			type="button"
-			class="ons-btn ons-accordion__toggle-all ons-u-mb-s ons-u-d-no ons-btn--secondary ons-btn--small"
-			class:hide-toggle={!showToggle}
-			data-close-all="Hide all"
-			data-group={id}
-			bind:this={buttonEl}
+	<button
+		type="button"
+		class="ons-btn ons-accordion__toggle-all ons-u-mb-s ons-u-d-no ons-btn--secondary ons-btn--small"
+		class:hide-toggle={!showToggle}
+		data-close-all="Hide all"
+		data-group={id}
+		bind:this={buttonEl}
+	>
+		<span class="ons-btn__inner ons-accordion__toggle-all-inner"
+			><span class="ons-btn__text">Show all</span></span
 		>
-			<span class="ons-btn__inner ons-accordion__toggle-all-inner"
-				><span class="ons-btn__text">Show all</span></span
-			>
-		</button>
-	{/if}
+	</button>
 	<slot />
 </div>
 
