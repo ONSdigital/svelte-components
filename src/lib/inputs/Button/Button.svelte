@@ -1,6 +1,7 @@
 <script>
 	import { createEventDispatcher } from "svelte";
 	import Icon from "$lib/decorators/Icon/Icon.svelte";
+	import { contrastColor, darkenColor } from "../../js/utils";
 
 	const dispatch = createEventDispatcher();
 
@@ -55,6 +56,11 @@
 	 */
 	export let download = null;
 	/**
+	 * Set a colour for the button
+	 * @type {string|null}
+	 */
+	export let color = null;
+	/**
 	 * Optional: Set an additional CSS class for the component
 	 * @type {string|null}
 	 */
@@ -74,7 +80,12 @@
 		on:click={(e) => dispatch("click", e)}
 		aria-label={arialabel}
 	>
-		<span class="ons-btn__inner">
+		<span
+			class="ons-btn__inner"
+			style:background={color}
+			style:color={color ? contrastColor(color) : null}
+			style:box-shadow={color ? `0 0.1875rem 0 ${darkenColor(color)}` : null}
+		>
 			{#if iconPosition === "before"}
 				<slot name="icon">
 					{#if icon}
@@ -104,7 +115,12 @@
 		on:click={(e) => dispatch("click", e)}
 		aria-label={arialabel}
 	>
-		<span class="ons-btn__inner">
+		<span
+			class="ons-btn__inner"
+			style:background={color}
+			style:color={color ? contrastColor(color) : null}
+			style:box-shadow={color ? `0 0.1875rem 0 ${darkenColor(color)}` : null}
+		>
 			{#if iconPosition === "before"}
 				<slot name="icon">
 					{#if icon}
