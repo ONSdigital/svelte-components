@@ -31,6 +31,9 @@ body {
 .ons-hero {
 	overflow: visible;
 }
+.ons-btn__inner .ons-icon {
+	fill: currentColor;
+}
 
 /* Backfills for legacy website */
 .primary-nav__item:hover > ul,
