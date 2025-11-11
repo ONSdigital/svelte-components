@@ -28,9 +28,9 @@
 	export let marginBottom = true;
 	/**
 	 * Optional: Set an additional CSS class for the component
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let cls = "";
+	export let cls = null;
 </script>
 
 <Container {width} {marginTop} {marginBottom} {cls}>

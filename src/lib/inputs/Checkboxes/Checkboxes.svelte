@@ -5,9 +5,9 @@
 
 	/**
 	 * Title/legend for parent <fieldset>
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let title = "";
+	export let title = null;
 	/**
 	 * Visually hide the title/legend
 	 * @type {boolean}
@@ -15,9 +15,9 @@
 	export let hideTitle = false;
 	/**
 	 * Descriptive "how to" label for inputs
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let label = "";
+	export let label = null;
 	/** Optional: Define the checkboxes as an array of {id, label, checked, description?}
 	 * @type {object[]|null}
 	 */
@@ -32,9 +32,9 @@
 	export let value = [];
 	/**
 	 * Optional: Set an additional CSS class for the component
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let cls = "";
+	export let cls = null;
 
 	const checkboxes = writable([]);
 	setContext("checkboxes", checkboxes);

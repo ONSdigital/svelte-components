@@ -13,9 +13,9 @@
 	export let mode = "default";
 	/**
 	 * Override the font size of the surrounding text
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let fontSize = "";
+	export let fontSize = null;
 	/**
 	 * Don't break text across lines
 	 * @type {boolean}

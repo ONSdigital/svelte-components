@@ -3,9 +3,9 @@
 
 	/**
 	 * Title/legend for parent <fieldset>
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let title = "";
+	export let title = null;
 	/**
 	 * Visually hide the title/legend
 	 * @type {boolean}
@@ -18,9 +18,9 @@
 	export let id = "name";
 	/**
 	 * Descriptive "how to" label for inputs
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let label = "";
+	export let label = null;
 	/**
 	 * Binding for ID of selected option
 	 * @type {object|null}
@@ -37,9 +37,9 @@
 	export let compact = false;
 	/**
 	 * Optional: Set an additional CSS class for the component
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let cls = "";
+	export let cls = null;
 </script>
 
 <fieldset class="ons-fieldset {cls}">

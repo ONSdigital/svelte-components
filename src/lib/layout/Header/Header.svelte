@@ -12,14 +12,14 @@
 	export let compact = false;
 	/**
 	 * Optional product title
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let title = "";
+	export let title = null;
 	/**
 	 * Optional link for product title
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let titleHref = "";
+	export let titleHref = null;
 	/**
 	 * Sets a predefined theme
 	 * @type {"light"|"dark"|"paleblue"|"blue"|"navyblue"|"grey"|null}

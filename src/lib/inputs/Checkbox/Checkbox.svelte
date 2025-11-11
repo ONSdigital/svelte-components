@@ -15,9 +15,9 @@
 	export let label;
 	/**
 	 * Optional: Extended description for element
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let description = "";
+	export let description = null;
 	/**
 	 * Binding for checked state of input
 	 * @type {boolean}
@@ -35,9 +35,9 @@
 	export let item = { id, label, description, checked, disabled };
 	/**
 	 * Optional: Name of checkbox group
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let groupName = "";
+	export let groupName = null;
 	/**
 	 * Binding for checked state of input
 	 * @type {object[]|null}
@@ -55,9 +55,9 @@
 	export let compact = false;
 	/**
 	 * Optional: Set an additional CSS class for the component
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let cls = "";
+	export let cls = null;
 
 	const checkboxes = getContext("checkboxes");
 

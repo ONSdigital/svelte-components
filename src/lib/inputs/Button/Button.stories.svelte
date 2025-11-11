@@ -63,3 +63,9 @@
 	args={{ text: "Search", icon: "search", hideLabel: true }}
 	{template}
 />
+
+<Story
+	name="Custom colour button"
+	args={{ text: "Small button", icon: "cross", color: "#00a3a6", small: true }}
+	{template}
+/>

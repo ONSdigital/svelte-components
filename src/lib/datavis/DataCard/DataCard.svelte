@@ -4,24 +4,24 @@
 
 	/**
 	 * Title of card
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let title = "";
+	export let title = null;
 	/**
 	 * Optional: Subtitle of card
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let subtitle = "";
+	export let subtitle = null;
 	/**
 	 * Optional: URL link for card title
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let href = "";
+	export let href = null;
 	/**
 	 * Big number (expects a pre-formatted text string)
-	 * @type {string|number}
+	 * @type {string|number|null}
 	 */
-	export let value = "";
+	export let value = null;
 	/**
 	 * Mode for the data tile
 	 * @type {"number"|"sparkline"|"bar"}
@@ -29,9 +29,9 @@
 	export let mode = "number";
 	/**
 	 * Text caption describing the number
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let caption = "";
+	export let caption = null;
 	/**
 	 * An array of data (required for charts)
 	 * @type {object[]|null}
@@ -39,14 +39,14 @@
 	export let data = null;
 	/**
 	 * Text describing the source of the data
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let source = "";
+	export let source = null;
 	/**
 	 * Optional: Set an additional CSS class for the component
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let cls = "";
+	export let cls = null;
 </script>
 
 <Card {title} {href} mode="featured" {cls}>

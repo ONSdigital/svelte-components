@@ -105,6 +105,16 @@ export const contrastColor = (color) => {
 	return "black";
 };
 
+export const darkenColor = (color, factor = 0.5) => {
+	if (!color || typeof color !== "string") return color;
+	const hsl = parse(color).hsl;
+	if (hsl) {
+		hsl[2] = hsl[2] * factor;
+		return `hsl(${hsl[0]}, ${hsl[1]}%, ${hsl[2]}%)`;
+	}
+	return color;
+};
+
 export const lipsum = (sentences = 4, offset = 0) => {
 	const texts = [
 		"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",

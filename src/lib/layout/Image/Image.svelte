@@ -1,24 +1,24 @@
 <script>
 	/**
 	 * The URL of the image
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let src = "";
+	export let src = null;
 	/**
 	 * An alternative text for the image
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let alt = "";
+	export let alt = null;
 	/**
 	 * A visible caption for the image
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let caption = "";
+	export let caption = null;
 	/**
 	 * Optional: Set an additional CSS class for the component
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let cls = "";
+	export let cls = null;
 </script>
 
 <figure class="ons-image {cls}">

@@ -1,9 +1,9 @@
 <script>
 	/**
 	 * Title of timeline item
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let title = "";
+	export let title = null;
 </script>
 
 <div class="ons-timeline__item">

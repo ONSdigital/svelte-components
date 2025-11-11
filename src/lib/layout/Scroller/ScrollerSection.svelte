@@ -4,14 +4,14 @@
 
 	/**
 	 * Sets the unique ID of the section (identifiable in associated scroll events)
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let id = "";
+	export let id = null;
 	/**
 	 * Optional: Sets the title of the section
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let title = "";
+	export let title = null;
 	/**
 	 * Allows the h2 title tag for the section to be visually hidden
 	 * @type {boolean}
@@ -19,9 +19,9 @@
 	export let hideTitle = false;
 	/**
 	 * Optional: Set an additional CSS class for the component
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let cls = "";
+	export let cls = null;
 
 	let section;
 

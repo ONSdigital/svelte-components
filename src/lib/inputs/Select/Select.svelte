@@ -65,9 +65,9 @@
 	export let labelKey = "label";
 	/**
 	 * The attribute of an option that defines its group (optional)
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let groupKey = "";
+	export let groupKey = null;
 	/**
 	 * Optional: Minimum query length to return results
 	 * @type {number}
@@ -100,19 +100,23 @@
 	 * @type {function}
 	 */
 	export async function clearInput() {
+		await setInputValue(null);
+		dispatch("clear", null);
+	}
+	/**
+	 * Optional: Set an additional CSS class for the component
+	 * @type {string|null}
+	 */
+	export let cls = null;
+
+	async function setInputValue(textValue) {
 		hideMenu = true;
-		inputElement.value = "";
+		inputElement.value = textValue || "";
 		await sleep(110);
 		inputElement.focus({ preventScroll: true });
 		inputElement.blur();
 		hideMenu = false;
-		dispatch("clear", value);
 	}
-	/**
-	 * Optional: Set an additional CSS class for the component
-	 * @type {string}
-	 */
-	export let cls = "";
 
 	function inputValueTemplate(result) {
 		return result && result[labelKey];
@@ -138,11 +142,13 @@
 	}
 
 	async function select(option) {
-		value = option;
-		dispatch("change", value);
-		if (value && autoClear) {
-			await sleep(0);
-			clearInput();
+		if (option && value !== option) {
+			value = option;
+			dispatch("change", value);
+			if (value && autoClear) {
+				await sleep(0);
+				clearInput();
+			}
 		}
 	}
 
@@ -163,7 +169,6 @@
 			id,
 			name: `${id}-input`,
 			source: loadOptions,
-			defaultValue: value?.[labelKey] || "",
 			autoselect: true,
 			onConfirm: select,
 			confirmOnBlur: false,
@@ -177,9 +182,20 @@
 				suggestion: suggestionTemplate
 			}
 		});
-		inputElement = document.getElementById(id);
+		inputElement = element.querySelector(`#${id}`);
+		setInputValue(value?.[labelKey] || "");
 		inputElement.addEventListener("blur", inputChange);
 	}
+
+	// In case input value is updated from outside component
+	function bindInputValue(value) {
+		if (inputElement) {
+			const textValue = value?.[labelKey];
+			if (textValue && inputElement.value !== textValue) setInputValue(textValue);
+			else if (!value && inputElement.value) setInputValue("");
+		}
+	}
+	$: bindInputValue(value);
 
 	onMount(handleScriptLoad);
 </script>

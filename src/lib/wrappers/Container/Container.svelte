@@ -3,14 +3,14 @@
 
 	/**
 	 * Optional: Set the unique ID of the container
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let id = "";
+	export let id = null;
 	/**
 	 * Optional: Set an additional CSS class for the container
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let cls = "";
+	export let cls = null;
 	/**
 	 * Sets the width of the container
 	 * @type {"narrow"|"medium"|"wide"|"wider"|"full"}

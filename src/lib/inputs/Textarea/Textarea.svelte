@@ -5,14 +5,14 @@
 
 	/**
 	 * ID for &lt;textarea&gt; element
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let id = "";
+	export let id = null;
 	/**
 	 * A prop to bind to for the entered value
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let value = "";
+	export let value = null;
 	/**
 	 * A label to describe the &lt;textarea&gt; element (expected for accessibility)
 	 * @type {string}
@@ -25,9 +25,9 @@
 	export let hideLabel = false;
 	/**
 	 * An optional description to help users know what to enter
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let description = "";
+	export let description = null;
 	/**
 	 * The maximum number of characters that can be entered (optional)
 	 * @type {number|null}
@@ -45,9 +45,9 @@
 	export let width = 30;
 	/**
 	 * Optional: Set an additional CSS class for the component
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let cls = "";
+	export let cls = null;
 
 	$: remaining = charLimit && value.length ? charLimit - value.length : charLimit || null;
 </script>

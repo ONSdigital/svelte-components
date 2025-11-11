@@ -16,9 +16,9 @@
 	export let related = [{ title, links }];
 	/**
 	 * Optional: Set an additional CSS class for the component
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let cls = "";
+	export let cls = null;
 </script>
 
 <aside class="ons-related-content {cls}" aria-label="Related content">

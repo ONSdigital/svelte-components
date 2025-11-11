@@ -138,9 +138,9 @@
 	export let visible = false;
 	/**
 	 * Optional: Set an additional CSS class for the component
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let cls = "";
+	export let cls = null;
 
 	const sections = writable([]);
 	setContext("sections", sections);

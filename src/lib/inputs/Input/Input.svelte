@@ -5,14 +5,14 @@
 
 	/**
 	 * ID for &lt;input&gt; element
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let id = "";
+	export let id = null;
 	/**
 	 * A prop to bind to for the entered value
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let value = "";
+	export let value = null;
 	/**
 	 * A label to describe the &lt;input&gt; element (expected for accessibility)
 	 * @type {string}
@@ -25,9 +25,9 @@
 	export let hideLabel = false;
 	/**
 	 * An optional description to help users know what to enter
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let description = "";
+	export let description = null;
 	/**
 	 * The maximum number of characters that can be entered (optional)
 	 * @type {number}
@@ -40,14 +40,14 @@
 	export let width = null;
 	/**
 	 * An optional prefix (eg. £) to appear on the left of the input
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let prefix = "";
+	export let prefix = null;
 	/**
 	 * An optional suffix (eg. %) to appear on the right of the input
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let suffix = "";
+	export let suffix = null;
 	/**
 	 * An optional hidden description of the prefix (for accessibility)
 	 * @type {string}
@@ -55,9 +55,9 @@
 	export let unitLabel = prefix || suffix || "";
 	/**
 	 * An optional regex pattern foto limit the input (not currently used)
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let pattern = "";
+	export let pattern = null;
 	/**
 	 * Set to `true` if the value should be a number
 	 * @type {boolean}
@@ -75,9 +75,9 @@
 	export let error = false;
 	/**
 	 * Optional: Set an additional CSS class for the component
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let cls = "";
+	export let cls = null;
 </script>
 
 <div class="ons-field {cls}">

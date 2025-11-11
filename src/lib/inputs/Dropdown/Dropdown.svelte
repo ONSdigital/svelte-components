@@ -5,14 +5,14 @@
 
 	/**
 	 * Unique id for the &lt;select&gt; element
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let id = "";
+	export let id = null;
 	/**
 	 * A label to describe the &lt;select&gt; element (expected for accessibility)
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let label = "";
+	export let label = null;
 	/**
 	 * Visually hide the label
 	 * @type {boolean}
@@ -35,9 +35,9 @@
 	export let options = [];
 	/**
 	 * Optional: Set an additional CSS class for the component
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let cls = "";
+	export let cls = null;
 </script>
 
 <div class="ons-field {cls}">
