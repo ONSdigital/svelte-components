@@ -48,7 +48,7 @@
 		"@onsvisual/svelte-charts": "^0.4.11",
 		"@storybook/addon-a11y": "^9.0.11",
 		"@storybook/addon-docs": "^9.0.11",
-		"@storybook/addon-svelte-csf": "^5.0.10",
+		"@storybook/addon-svelte-csf": "^5.0.3",
 		"@storybook/addon-vitest": "^9.0.11",
 		"@storybook/sveltekit": "^9.0.11",
 		"@sveltejs/adapter-static": "^3.0.8",
