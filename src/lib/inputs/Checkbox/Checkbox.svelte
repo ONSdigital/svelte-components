@@ -77,12 +77,21 @@
 	}
 
 	function doChange(e) {
-		checked = item.checked;
+		checked = _checked = item.checked;
 		if (Array.isArray(group) && Array.isArray($checkboxes)) {
 			updateGroup();
 		}
 		dispatch("change", { item, e });
 	}
+
+	// Track changes to checked from bind:checked outside component
+	let _checked = item.checked;
+	function trackChecked(checked) {
+		if (_checked !== checked) {
+			item.checked = _checked = checked;
+		}
+	}
+	$: trackChecked(checked);
 
 	onMount(() => {
 		if (Array.isArray(group) && Array.isArray($checkboxes)) {
