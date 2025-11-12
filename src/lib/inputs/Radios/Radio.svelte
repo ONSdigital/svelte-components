@@ -1,5 +1,5 @@
 <script>
-	import { createEventDispatcher } from "svelte";
+	import { onMount, createEventDispatcher } from "svelte";
 
 	const dispatch = createEventDispatcher();
 
@@ -38,6 +38,12 @@
 	 * @type {boolean}
 	 */
 	export let compact = false;
+
+	let el;
+
+	onMount(() => {
+		if (value?.id === item.id) el.checked = true;
+	});
 </script>
 
 <span class="ons-radios__item" class:ons-radios__item--no-border={compact}>
@@ -54,6 +60,7 @@
 					dispatch("change", { value, e });
 				}
 			}}
+			bind:this={el}
 		/>
 		<label
 			class="ons-radio__label"
