@@ -21,6 +21,16 @@
 	 */
 	export let href = null;
 	/**
+	 * File name if link is used for a file download (only if href is also specified)
+	 * @type {string|null}
+	 */
+	export let download = null;
+	/**
+	 * Don't scroll when link is followed (only if href is also specified)
+	 * @type {boolean}
+	 */
+	export let noScroll = false;
+	/**
 	 * Make button smaller
 	 * @type {boolean}
 	 */
@@ -46,15 +56,10 @@
 	 */
 	export let hideLabel = false;
 	/**
-	 * aria label for button
+	 * Aria label for button
 	 * @type {string|null}
 	 */
 	export let arialabel = null;
-	/**
-	 * filename if link is used for a file download
-	 * @type {string|null}
-	 */
-	export let download = null;
 	/**
 	 * Set a colour for the button
 	 * @type {string|null}
@@ -79,6 +84,7 @@
 		class:ons-btn--disabled={disabled}
 		on:click={(e) => dispatch("click", e)}
 		aria-label={arialabel}
+		data-sveltekit-noscroll={noScroll}
 	>
 		<span
 			class="ons-btn__inner"
