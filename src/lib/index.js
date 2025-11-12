@@ -64,7 +64,7 @@ export { default as Select } from "./inputs/Select/Select.svelte";
 export { default as AccessibleSelect } from "./inputs/Select/Select.svelte"; // Alias for Select
 export { default as Textarea } from "./inputs/Textarea/Textarea.svelte";
 export { default as HelpModal } from "./inputs/Toolbar/HelpModal.svelte";
-export { default as Icon } from "./inputs/Toolbar/Icon.svelte";
+export { default as ToolbarIcon } from "./inputs/Toolbar/ToolbarIcon.svelte";
 export { default as Toolbar } from "./inputs/Toolbar/Toolbar.svelte";
 export { default as ToolbarButton } from "./inputs/Toolbar/ToolbarButton.svelte";
 export { default as ToolbarDivider } from "./inputs/Toolbar/ToolbarDivider.svelte";

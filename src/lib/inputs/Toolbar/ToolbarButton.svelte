@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount, onDestroy, createEventDispatcher, getContext } from "svelte";
-	import Icon from "./Icon.svelte";
+	import Icon from "./ToolbarIcon.svelte";
 	import HelpModal from "./HelpModal.svelte";
 	import { nanoid } from "nanoid";
 
