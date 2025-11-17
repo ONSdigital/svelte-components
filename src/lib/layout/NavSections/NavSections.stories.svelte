@@ -6,17 +6,20 @@
 	import componentDocs from "./docs/component.md?raw";
 	import { lipsum } from "$lib/js/utils.js";
 
+	const parameters = { ...withComponentDocs(componentDocs), layout: "fullscreen" };
+	parameters.docs.story = { inline: false, iframeHeight: 600 };
+
 	const { Story } = defineMeta({
 		title: "Layout/NavSections",
 		component: NavSections,
 		tags: ["autodocs"],
 		argTypes: {},
-		parameters: withComponentDocs(componentDocs)
+		parameters
 	});
 </script>
 
 {#snippet template(args)}
-	<NavSections>
+	<NavSections {...args}>
 		<NavSection title="Section one">
 			<p>
 				{lipsum()}

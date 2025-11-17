@@ -18,16 +18,15 @@
 	import ScrollerSection from "$lib/layout/Scroller/ScrollerSection.svelte";
 	import Footer from "$lib/layout/Footer/Footer.svelte";
 
+	const parameters = { ...withComponentDocs(componentDocs), layout: "fullscreen" };
+	parameters.docs.story = { inline: false, iframeHeight: 600 };
+
 	const { Story } = defineMeta({
 		title: "Templates/Feature article",
 		component: Header,
 		tags: ["autodocs"],
 		argTypes: {},
-		parameters: {
-			...withComponentDocs(componentDocs),
-			layout: "fullscreen",
-			docs: { story: { inline: false, iframeHeight: 600 } }
-		}
+		parameters
 	});
 </script>
 

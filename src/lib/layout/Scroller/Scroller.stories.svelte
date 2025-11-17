@@ -7,16 +7,15 @@
 	import Em from "$lib/decorators/Em/Em.svelte";
 	import componentDocs from "./docs/component.md?raw";
 
+	const parameters = { ...withComponentDocs(componentDocs), layout: "fullscreen" };
+	parameters.docs.story = { inline: false, iframeHeight: 600 };
+
 	const { Story } = defineMeta({
 		title: "Layout/Scroller",
 		component: Scroller,
 		tags: ["autodocs"],
 		argTypes: {},
-		parameters: {
-			...withComponentDocs(componentDocs),
-			layout: "fullscreen",
-			docs: { story: { inline: false, iframeHeight: 600 } }
-		}
+		parameters
 	});
 </script>
 

@@ -1,6 +1,4 @@
-Components for adding scrollytelling sections to a feature article.
-
-Note: These examples will not preview correctly in the iframes on this page. You can select the examples from the menu instead.
+Components for adding interactive scrollytelling sections to a feature article.
 
 <!-- prettier-ignore -->
 ```html
