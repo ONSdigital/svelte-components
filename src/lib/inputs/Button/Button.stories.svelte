@@ -19,7 +19,6 @@
 				control: { type: "select" }
 			},
 			icon: {
-				options: ["", "arrow", "search", "download", "tick", "print", "externalLink"],
 				control: { type: "select" }
 			},
 			iconPosition: {

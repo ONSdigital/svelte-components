@@ -37,7 +37,7 @@
 	export let small = false;
 	/**
 	 * Icon on button, eg. "arrow", "search"
-	 * @type {"arrow"|"external"|"signout"|"print"|"download"|"tick"|"search"|null}
+	 * @type {"arrow"|"carret"|"cross"|"external"|"signout"|"print"|"download"|"tick"|"search"|"pin"|"cog"|null}
 	 */
 	export let icon = null;
 	/**
