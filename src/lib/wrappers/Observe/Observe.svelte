@@ -27,7 +27,7 @@
 		observer.observe(el);
 	});
 
-	onDestroy(() => observer.unobserve(el));
+	onDestroy(() => observer?.unobserve?.(el));
 </script>
 
 <div bind:this={el}>
