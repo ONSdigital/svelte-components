@@ -15,3 +15,16 @@ This component will display a cookie banner and export a function that allows yo
 <AnalyticsBanner analyticsId="{id_string}" />
 <!-- Rest of page content -->
 ```
+
+An example analytics events. See this [doc](https://officenationalstatistics.sharepoint.com/:w:/r/sites/digpub/_layouts/15/Doc.aspx?sourcedoc=%7BBA405554-4040-4B61-9559-851F5C55DA39%7D&file=Google%20Analytics%20-%20GTM%20requirements.docx&action=default&mobileredirect=true) for more details (need to be on network).
+
+```javascript
+analyticsEvent({
+	event: "interaction",
+	interactionType: "accordion",
+	interactionValue: e?.detail?.open ? "open" : "close",
+	label,
+	sectionTitle,
+	sectionNumber
+});
+```
