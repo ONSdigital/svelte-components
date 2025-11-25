@@ -49,11 +49,26 @@
 				"This handbook explains what the census is, why it matters to everyone and how we can work together to spread the word within your community."
 		}
 	];
+
+	const items3 = [
+		{
+			title: "Including everyone in Census",
+			href: "#0",
+			meta: "Poster, PDF, 499KB, 1 page"
+		},
+		{
+			title: "Community handbook for Census 2021",
+			href: "#0",
+			meta: "Booklet,PDF, 3.3MB, 16 pages"
+		}
+	];
 </script>
 
 <Story name="Document list with images" args={{ items: items1 }} />
 
 <Story name="Article list with featured item" args={{ items: items2 }} />
+
+<Story name="Compact list, no description" args={{ items: items3, compact: true }} />
 
 <Story name="Individually defined documents" asChild parameters={withStoryDocs(exampleDocs)}>
 	<DocumentList>

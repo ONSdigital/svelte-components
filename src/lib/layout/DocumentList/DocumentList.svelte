@@ -5,6 +5,10 @@
 	 * @type {object[]|null}
 	 */
 	export let items = null;
+	/** Compact mode. Removes horizonatal lines between documents
+	 * @type {boolean}
+	 */
+	export let compact = false;
 	/**
 	 * Optional: Set an additional CSS class for the component
 	 * @type {string|null}
@@ -12,7 +16,7 @@
 	export let cls = null;
 </script>
 
-<ul class="ons-document-list {cls}">
+<ul class="ons-document-list {cls}" class:ons-document-list--compact={compact}>
 	<slot />
 	{#if Array.isArray(items)}
 		{#each items as item}
@@ -20,3 +24,10 @@
 		{/each}
 	{/if}
 </ul>
+
+<style>
+	.ons-document-list--compact > :global(.ons-document-list__item) {
+		padding-bottom: 0;
+		border: none;
+	}
+</style>
