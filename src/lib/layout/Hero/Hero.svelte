@@ -340,7 +340,9 @@
 						</svg>
 					</div>
 				{/if}
-				<DescriptionList items={meta || []} mode="inline" />
+				{#if Array.isArray(meta)}
+					<DescriptionList items={meta} mode="inline" />
+				{/if}
 				<slot name="after" />
 			</div>
 		</Container>
