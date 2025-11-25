@@ -2,6 +2,8 @@
 	// @ts-nocheck
 
 	import { onMount, createEventDispatcher } from "svelte";
+	import Dropdown from "../Dropdown/Dropdown.svelte";
+	import Input from "../Input/Input.svelte";
 
 	const dispatch = createEventDispatcher();
 	const sleep = (ms = 1000) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -69,6 +71,11 @@
 	 */
 	export let groupKey = null;
 	/**
+	 * When using SSR or pre-rendering, this option will render a text input or dropdown before the page is hydrated (allows for progressive enhancement).
+	 * @type {boolean}
+	 */
+	export let renderFallback = false;
+	/**
 	 * Optional: Minimum query length to return results
 	 * @type {number}
 	 */
@@ -92,23 +99,22 @@
 	 */
 	export let scriptUrl =
 		"https://cdn.ons.gov.uk/vendor/accessible-autocomplete/3.0.1/accessible-autocomplete.min.js";
-
-	// This clearing method is a bit of a hack, but no better options available at present
-	// https://github.com/alphagov/accessible-autocomplete/issues/390
 	/**
 	 * Call this function externally to clear the input
 	 * @type {function}
 	 */
-	export async function clearInput() {
+	export let clearInput = async () => {
 		await setInputValue(null);
 		dispatch("clear", null);
-	}
+	};
 	/**
 	 * Optional: Set an additional CSS class for the component
 	 * @type {string|null}
 	 */
 	export let cls = null;
 
+	// This method is a bit of a hack, but no better options available at present
+	// https://github.com/alphagov/accessible-autocomplete/issues/390
 	async function setInputValue(textValue) {
 		hideMenu = true;
 		inputElement.value = textValue || "";
@@ -204,35 +210,48 @@
 	<script src={scriptUrl} on:load={handleScriptLoad}></script>
 </svelte:head>
 
-<div class="ons-field {cls}">
-	{#if label}<label for={id} class="ons-label" class:ons-u-vh={hideLabel}>{label}</label>{/if}
-	<div class="ons-autocomplete-wrapper">
-		{#if scriptLoaded}
-			<div
-				id="{id}-container"
-				class="ons-autocomplete"
-				class:hide-menu={hideMenu}
-				use:initAutocomplete
-			></div>
-			{#if clearable && !autoClear && value}
-				<button
-					type="reset"
-					title="Clear selection"
-					aria-label="Clear selection"
-					on:click={clearInput}
-					class="ons-autocomplete-clear"
-				>
-					<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="0 0 14 14" width="18">
-						<path
-							fill="currentColor"
-							d="M13.6 1 l -0.71 -0.71 a 0.5 0.5 0 0 0 -0.71 0 l -5.25 5.25 l -5.25 -5.25 a 0.51 0.51 0 0 0 -0.71 0 l -0.71 0.71 a 0.5 0.5 0 0 0 0 0.71 l 5.25 5.25 l -5.25 5.25 a 0.5 0.5 0 0 0 0 0.71 l 0.71 0.71 a 0.5 0.5 0 0 0 0.71 0 l 5.25 -5.25 l 5.25 5.25 a 0.5 0.5 0 0 0 0.71 0 l 0.71 -0.71 a 0.5 0.5 0 0 0 0 -0.71 l -5.25 -5.25 l 5.25 -5.25 a 0.5 0.5 0 0 0 0 -0.71Z"
-						></path>
-					</svg>
-				</button>
+{#if renderFallback && !scriptLoaded}
+	{#if mode === "search"}
+		<Input {id} {label} {hideLabel} value={value?.[labelKey]} />
+	{:else}
+		<Dropdown {id} {options} {label} {hideLabel} {placeholder} {value} />
+	{/if}
+{:else}
+	<div class="ons-field {cls}">
+		{#if label}<label for={id} class="ons-label" class:ons-u-vh={hideLabel}>{label}</label>{/if}
+		<div class="ons-autocomplete-wrapper">
+			{#if scriptLoaded}
+				<div
+					id="{id}-container"
+					class="ons-autocomplete"
+					class:hide-menu={hideMenu}
+					use:initAutocomplete
+				></div>
+				{#if clearable && !autoClear && value}
+					<button
+						type="reset"
+						title="Clear selection"
+						aria-label="Clear selection"
+						on:click={clearInput}
+						class="ons-autocomplete-clear"
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							aria-hidden="true"
+							viewBox="0 0 14 14"
+							width="18"
+						>
+							<path
+								fill="currentColor"
+								d="M13.6 1 l -0.71 -0.71 a 0.5 0.5 0 0 0 -0.71 0 l -5.25 5.25 l -5.25 -5.25 a 0.51 0.51 0 0 0 -0.71 0 l -0.71 0.71 a 0.5 0.5 0 0 0 0 0.71 l 5.25 5.25 l -5.25 5.25 a 0.5 0.5 0 0 0 0 0.71 l 0.71 0.71 a 0.5 0.5 0 0 0 0.71 0 l 5.25 -5.25 l 5.25 5.25 a 0.5 0.5 0 0 0 0.71 0 l 0.71 -0.71 a 0.5 0.5 0 0 0 0 -0.71 l -5.25 -5.25 l 5.25 -5.25 a 0.5 0.5 0 0 0 0 -0.71Z"
+							></path>
+						</svg>
+					</button>
+				{/if}
 			{/if}
-		{/if}
+		</div>
 	</div>
-</div>
+{/if}
 
 <style>
 	.ons-autocomplete-wrapper {
