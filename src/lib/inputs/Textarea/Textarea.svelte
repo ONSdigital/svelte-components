@@ -9,6 +9,11 @@
 	 */
 	export let id = null;
 	/**
+	 * Name for &lt;textarea&gt; element
+	 * @type {string|null}
+	 */
+	export let name = id;
+	/**
 	 * A prop to bind to for the entered value
 	 * @type {string|null}
 	 */
@@ -68,11 +73,11 @@
 	{/if}
 	<textarea
 		{id}
+		{name}
 		bind:value
 		class="ons-input ons-input--textarea {Number.isInteger(width) ? `ons-input--w-${width}` : null}"
 		class:ons-js-char-limit-input={charLimit}
 		class:ons-input--limit-reached={remaining === 0}
-		name={id}
 		{rows}
 		maxlength={charLimit}
 		data-char-limit-ref="{id}-lim"

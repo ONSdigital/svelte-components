@@ -16,10 +16,15 @@
 	let hideMenu = false;
 
 	/**
-	 * Unique id for the element
+	 * Unique id for the HTML element
 	 * @type {string}
 	 */
 	export let id = "autocomplete";
+	/**
+	 * Name for the HTML element
+	 * @type {string}
+	 */
+	export let name = id;
 	/**
 	 * The mode can be either "default" or "search"
 	 * @type {"default"|"search"}
@@ -173,7 +178,7 @@
 		accessibleAutocomplete({
 			element,
 			id,
-			name: `${id}-input`,
+			name,
 			source: loadOptions,
 			autoselect: true,
 			onConfirm: select,
@@ -212,9 +217,9 @@
 
 {#if renderFallback && !scriptLoaded}
 	{#if mode === "search"}
-		<Input {id} {label} {hideLabel} value={value?.[labelKey]} />
+		<Input {id} {name} {label} {hideLabel} value={value?.[labelKey]} />
 	{:else}
-		<Dropdown {id} {options} {label} {hideLabel} {placeholder} {value} />
+		<Dropdown {id} {name} {options} {label} {hideLabel} {placeholder} {value} />
 	{/if}
 {:else}
 	<div class="ons-field {cls}">

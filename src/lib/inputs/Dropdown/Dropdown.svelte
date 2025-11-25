@@ -9,6 +9,11 @@
 	 */
 	export let id = null;
 	/**
+	 * Name for the &lt;select&gt; element
+	 * @type {string|null}
+	 */
+	export let name = id;
+	/**
 	 * A label to describe the &lt;select&gt; element (expected for accessibility)
 	 * @type {string|null}
 	 */
@@ -46,7 +51,7 @@
 	{/if}
 	<select
 		{id}
-		name={id}
+		{name}
 		class="ons-input ons-input--select"
 		bind:value
 		on:change={(e) => dispatch("change", e)}

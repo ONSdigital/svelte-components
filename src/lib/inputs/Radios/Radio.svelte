@@ -24,7 +24,7 @@
 	 */
 	export let item = { id, label, description };
 	/**
-	 * ID for radio group (required)
+	 * ID/name for radio group (required)
 	 * @type {string}
 	 */
 	export let groupId;

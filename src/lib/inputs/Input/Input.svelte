@@ -9,6 +9,11 @@
 	 */
 	export let id = null;
 	/**
+	 * Name attribute for &lt;input&gt; element
+	 * @type {string|null}
+	 */
+	export let name = id;
+	/**
 	 * A prop to bind to for the entered value
 	 * @type {string|null}
 	 */
@@ -103,6 +108,7 @@
 				<input
 					type="text"
 					{id}
+					{name}
 					bind:value
 					maxlength={charLimit}
 					pattern={pattern ? pattern : numeric ? "[0-9]*" : null}
@@ -129,6 +135,7 @@
 		<input
 			type="text"
 			{id}
+			{name}
 			bind:value
 			pattern={pattern ? pattern : numeric ? "[0-9]*" : null}
 			inputmode={numeric ? "numeric" : null}

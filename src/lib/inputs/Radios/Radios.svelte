@@ -12,10 +12,10 @@
 	 */
 	export let hideTitle = false;
 	/**
-	 * Unique ID for radio group (required)
+	 * Unique ID/name for radio group (required)
 	 * @type {string}
 	 */
-	export let id = "name";
+	export let id = "radios";
 	/**
 	 * Descriptive "how to" label for inputs
 	 * @type {string|null}
