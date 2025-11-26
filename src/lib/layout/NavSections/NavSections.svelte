@@ -134,9 +134,7 @@
 		</div>
 		<div class="ons-grid__col ons-col-8@m">
 			<slot name="before" />
-			<!-- {#if $observer} -->
 			<slot />
-			<!-- {/if} -->
 			<slot name="after" />
 		</div>
 	</div>
