@@ -33,12 +33,15 @@
 	const observer = getContext("observer");
 	const tocId = getContext("tocId");
 
+	let section;
 	let mounted = false;
 	let observed = false;
 
-	// This allows the table of contents (toc) to render before hydration
-	let section = { id, dataset: { title, subsection: String(subsection) } };
-	$sections = [...$sections.filter((s) => s.id !== section.id), section];
+	// This should allow the table of contents (toc) to render before hydration
+	$sections = [
+		...$sections.filter((s) => s.id !== id),
+		{ id, dataset: { title, subsection: String(subsection) } }
+	];
 
 	// This allows sections to be highlighted on the toc after hydration,
 	// and for sections to be added/removed gracefully from the DOM

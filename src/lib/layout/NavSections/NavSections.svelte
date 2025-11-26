@@ -62,7 +62,6 @@
 		}
 		return [...secs, sec];
 	}
-	$: formattedSections = formatSections($sections);
 
 	onMount(() => {
 		if (!noContents) {
@@ -96,36 +95,34 @@
 							<h2 class="ons-table-of-contents__title ons-u-fs-r--b ons-u-mb-s">Contents</h2>
 						{/if}
 						<ol class="ons-list ons-u-mb-l ons-list--dashed">
-							{#if formattedSections}
-								{#each formattedSections as section}
-									<li class="ons-list__item">
-										{#if section.id && section.title}
-											<a
-												href="#{section.id}"
-												class="ons-list__link"
-												class:ons-table-of-contents__link-active={section.id === active}
-											>
-												{section.title}
-											</a>
-										{/if}
-										{#if section.subsections.length > 0}
-											<ol class="ons-list ons-u-mb-no ons-list--dashed">
-												{#each section.subsections as subsection}
-													<li class="ons-list__item">
-														<a
-															href="#{subsection.id}"
-															class="ons-list__link"
-															class:ons-table-of-contents__link-active={subsection.id === active}
-														>
-															{subsection.title}
-														</a>
-													</li>
-												{/each}
-											</ol>
-										{/if}
-									</li>
-								{/each}
-							{/if}
+							{#each formatSections($sections) as section}
+								<li class="ons-list__item">
+									{#if section.id && section.title}
+										<a
+											href="#{section.id}"
+											class="ons-list__link"
+											class:ons-table-of-contents__link-active={section.id === active}
+										>
+											{section.title}
+										</a>
+									{/if}
+									{#if section.subsections.length > 0}
+										<ol class="ons-list ons-u-mb-no ons-list--dashed">
+											{#each section.subsections as subsection}
+												<li class="ons-list__item">
+													<a
+														href="#{subsection.id}"
+														class="ons-list__link"
+														class:ons-table-of-contents__link-active={subsection.id === active}
+													>
+														{subsection.title}
+													</a>
+												</li>
+											{/each}
+										</ol>
+									{/if}
+								</li>
+							{/each}
 						</ol>
 					</nav>
 				{/if}
