@@ -33,22 +33,32 @@
 	const observer = getContext("observer");
 	const tocId = getContext("tocId");
 
-	let section;
+	let mounted = false;
+	let observed = false;
 
-	onMount(() => {
-		if (sections && observer) {
+	// This allows the table of contents (toc) to render before hydration
+	let section = { id, dataset: { title, subsection: String(subsection) } };
+	$sections = [...$sections.filter((s) => s.id !== section.id), section];
+
+	// This allows sections to be highlighted on the toc after hydration,
+	// and for sections to be added/removed gracefully from the DOM
+	function addToObserver(observer, mounted) {
+		if (mounted && observer && !observed) {
 			$sections = [...section.parentElement.getElementsByTagName("section")].filter(
 				(s) => s.dataset.type === "NavSection"
 			);
-			$observer.observe(section);
+			observer.observe(section);
+			observed = true;
 		}
-	});
+	}
+	$: addToObserver($observer, mounted);
+
+	onMount(() => (mounted = true));
 
 	onDestroy(() => {
-		if (sections && observer) {
-			$sections = $sections.filter((s) => s.id !== id);
-			$observer.unobserve(section);
-		}
+		if ($observer) $observer.unobserve(section);
+		if ($sections) $sections = $sections.filter((s) => s.id !== id);
+		mounted = observed = false;
 	});
 </script>
 

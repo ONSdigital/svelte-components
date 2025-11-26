@@ -77,7 +77,7 @@
 				},
 				{
 					root: null,
-					rootMargin: "-20% 0px -80%",
+					rootMargin: "-25% 0px -75%",
 					threshold: 0
 				}
 			);
@@ -134,9 +134,9 @@
 		</div>
 		<div class="ons-grid__col ons-col-8@m">
 			<slot name="before" />
-			{#if $observer}
-				<slot />
-			{/if}
+			<!-- {#if $observer} -->
+			<slot />
+			<!-- {/if} -->
 			<slot name="after" />
 		</div>
 	</div>
