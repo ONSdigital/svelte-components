@@ -39,7 +39,9 @@
 	 */
 	export let marginBottom = true;
 
+	let el;
 	let active;
+	let mounted = false;
 
 	setContext("tocId", id);
 
@@ -50,6 +52,7 @@
 	setContext("observer", observer);
 
 	function formatSections(sections) {
+		if (sections.length === 0) return [];
 		const secs = [];
 		let sec = { subsections: [] };
 		for (const section of sections) {
@@ -81,12 +84,25 @@
 				}
 			);
 		}
+		// The table of contents doesn't populate unless it's after the main content
+		// This is a trick to flip the order when the page hydrates
+		el.prepend(el.lastElementChild);
+		mounted = true;
 	});
 </script>
 
 <Container {cls} {width} {marginTop} {marginBottom}>
-	<div class="ons-grid ons-grid--spaced ons-grid--loose ons-js-toc-container">
-		<div class="ons-grid__col ons-grid__col--sticky@m ons-col-4@m">
+	<div
+		class="ons-grid ons-grid--spaced ons-grid--loose ons-js-toc-container"
+		class:flip-display-order={!mounted}
+		bind:this={el}
+	>
+		<div class="ons-nav-sections-content ons-grid__col ons-col-8@m">
+			<slot name="before" />
+			<slot />
+			<slot name="after" />
+		</div>
+		<div class="ons-nav-sections-toc ons-grid__col ons-grid__col--sticky@m ons-col-4@m">
 			<aside class="ons-table-of-contents-container" role="complementary">
 				<slot name="before-nav" />
 				{#if !noContents}
@@ -129,11 +145,16 @@
 				<slot name="after-nav" />
 			</aside>
 		</div>
-		<div class="ons-grid__col ons-col-8@m">
-			<slot name="before" />
-			<slot />
-			<slot name="after" />
-		</div>
 	</div>
 	<slot name="footer" />
 </Container>
+
+<style>
+	/* These classes force the table of contents to render on the left of the page before hydration */
+	.flip-display-order {
+		direction: rtl;
+	}
+	.flip-display-order > * {
+		direction: initial;
+	}
+</style>
