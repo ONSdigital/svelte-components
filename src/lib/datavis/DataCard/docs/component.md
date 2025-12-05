@@ -1,3 +1,5 @@
+<span class="ons-warning">This component is experimental</span>
+
 A component for presenting key facts and figures as a grid of "cards".
 
 Note: This component is experimental. Its attributes and options are likely to change. The intention is to include a range of simple chart types.

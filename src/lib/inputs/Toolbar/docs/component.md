@@ -1,3 +1,5 @@
+<span class="ons-warning">This component is experimental</span>
+
 A toolbar component. Use `ToolbarsContainer` even if using one toolbar as it contains a store for all the IDs and the activeID.
 
 There's a slot on ToolbarButton if you want to put in custom help text otherwise, there's the prop `helpText`.

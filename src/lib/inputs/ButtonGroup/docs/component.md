@@ -1,3 +1,5 @@
+<span class="ons-warning">This component is experimental</span>
+
 Radio inputs dressed up as a button group.
 
 <!-- prettier-ignore -->
