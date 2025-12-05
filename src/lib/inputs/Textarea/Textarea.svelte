@@ -20,7 +20,7 @@
 	export let value = null;
 	/**
 	 * A label to describe the &lt;textarea&gt; element (expected for accessibility)
-	 * @type {string}
+	 * @type {string|null}
 	 */
 	export let label = "Enter some text";
 	/**

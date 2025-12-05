@@ -7,7 +7,7 @@
 
 	/**
 	 * Type of button
-	 * @type {"button"|"sumbit"|"reset"}
+	 * @type {"button"|"submit"|"reset"}
 	 */
 	export let type = "button";
 	/**

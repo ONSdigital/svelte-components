@@ -20,9 +20,9 @@
 	export let value = null;
 	/**
 	 * A label to describe the &lt;input&gt; element (expected for accessibility)
-	 * @type {string}
+	 * @type {string|null}
 	 */
-	export let label = "Enter some text";
+	export let label = null;
 	/**
 	 * Visually hide the label
 	 * @type {boolean}

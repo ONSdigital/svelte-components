@@ -42,7 +42,7 @@
 	export let autoClear = mode === "search";
 	/**
 	 * A label to describe the element (expected for accessibility)
-	 * @type {string}
+	 * @type {string|null}
 	 */
 	export let label = mode === "search" ? "Type to select" : "Select an option";
 	/**
