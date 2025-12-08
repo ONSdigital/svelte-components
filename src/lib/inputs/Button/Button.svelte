@@ -37,7 +37,7 @@
 	export let small = false;
 	/**
 	 * Icon on button, eg. "arrow", "search"
-	 * @type {"arrow"|"carret"|"cross"|"external"|"signout"|"print"|"download"|"tick"|"search"|"pin"|"cog"|null}
+	 * @type {"arrow"|"chevron"|"carret"|"cross"|"external"|"signout"|"print"|"download"|"tick"|"search"|"pin"|"cog"|null}
 	 */
 	export let icon = null;
 	/**
@@ -135,7 +135,7 @@
 			{#if iconPosition === "before"}
 				<slot name="icon">
 					{#if icon}
-						<Icon type={icon} marginRight={!hideLabel} />
+						<Icon type={icon} marginRight={!hideLabel} rotation={iconRotation} />
 					{/if}
 				</slot>
 			{/if}
@@ -143,7 +143,7 @@
 			{#if iconPosition === "after"}
 				<slot name="icon">
 					{#if icon}
-						<Icon type={icon} marginLeft={!hideLabel} />
+						<Icon type={icon} marginLeft={!hideLabel} rotation={iconRotation} />
 					{/if}
 				</slot>
 			{/if}
