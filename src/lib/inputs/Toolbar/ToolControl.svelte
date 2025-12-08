@@ -9,7 +9,7 @@
 	let { id = "" } = $props();
 </script>
 
-{#if currentModalId === id && !showHelp}
+{#if $currentModalId === id && !$showHelp}
 	<div class="tool-control" role="tabpanel" aria-labelledby={`button-${id}`} id={`panel-${id}`}>
 		<slot />
 	</div>
