@@ -46,6 +46,11 @@
 	 */
 	export let iconPosition = "before";
 	/**
+	 * Rotation of icon in degrees (clockwise)
+	 * @type {number}
+	 */
+	export let iconRotation = 0;
+	/**
 	 * Show button as disabled
 	 * @type {boolean}
 	 */
@@ -95,7 +100,7 @@
 			{#if iconPosition === "before"}
 				<slot name="icon">
 					{#if icon}
-						<Icon type={icon} marginRight={!hideLabel} />
+						<Icon type={icon} marginRight={!hideLabel} rotation={iconRotation} />
 					{/if}
 				</slot>
 			{/if}
@@ -103,7 +108,7 @@
 			{#if iconPosition === "after"}
 				<slot name="icon">
 					{#if icon}
-						<Icon type={icon} marginLeft={!hideLabel} />
+						<Icon type={icon} marginLeft={!hideLabel} rotation={iconRotation} />
 					{/if}
 				</slot>
 			{/if}
