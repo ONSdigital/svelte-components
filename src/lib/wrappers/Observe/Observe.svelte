@@ -8,6 +8,11 @@
 	 * @type {boolean}
 	 */
 	export let visible = false;
+	/**
+	 * Number of pixels before/after the viewport that component is considered "visible" (default = 0).
+	 * @type {number}
+	 */
+	export let rootMargin = 0;
 
 	let el, observer;
 
@@ -21,7 +26,7 @@
 	};
 
 	onMount(() => {
-		let options = {};
+		let options = { root: document, rootMargin: `${rootMargin}px` };
 
 		observer = new IntersectionObserver(callback, options);
 		observer.observe(el);
