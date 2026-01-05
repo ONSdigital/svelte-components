@@ -19,9 +19,14 @@
 	const callback = (entries) => {
 		entries.forEach((entry) => {
 			let intersecting = entry.isIntersecting;
-			if (!visible && intersecting) dispatch("enter", entry);
-			if (visible && !intersecting) dispatch("exit", entry);
-			visible = intersecting;
+			if (!visible && intersecting) {
+				dispatch("enter", entry);
+				visible = true;
+			}
+			if (visible && !intersecting) {
+				dispatch("exit", entry);
+				visible = false;
+			}
 		});
 	};
 
