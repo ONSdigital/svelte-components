@@ -2,7 +2,7 @@
 	import { setContext } from "svelte";
 	import { writable } from "svelte/store";
 
-	let { name = "", legend = "", value, visuallyHideLegend = false } = $props();
+	let { name = "", legend = "", value = $bindable(), visuallyHideLegend = false } = $props();
 
 	// create the store
 	const selectedValue = writable(value);
