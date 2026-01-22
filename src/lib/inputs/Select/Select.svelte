@@ -108,8 +108,8 @@
 	 * Call this function externally to clear the input
 	 * @type {function}
 	 */
-	export let clearInput = async () => {
-		await setInputValue(null);
+	export let clearInput = () => {
+		value = null;
 		dispatch("clear", null);
 	};
 	/**
@@ -179,6 +179,7 @@
 			element,
 			id,
 			name,
+			defaultValue: value?.[labelKey] || undefined,
 			source: loadOptions,
 			autoselect: true,
 			onConfirm: select,
@@ -194,7 +195,7 @@
 			}
 		});
 		inputElement = element.querySelector(`#${id}`);
-		setInputValue(value?.[labelKey] || "");
+		// setInputValue(value?.[labelKey] || "");
 		inputElement.addEventListener("blur", inputChange);
 	}
 
