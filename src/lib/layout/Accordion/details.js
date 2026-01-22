@@ -1,5 +1,5 @@
 export default class Details {
-	constructor(detailsElement) {
+	constructor(detailsElement, callback = null) {
 		this.saveState = detailsElement.getAttribute("data-save-state") === "true";
 		this.open = detailsElement.getAttribute("data-open") === "true";
 		this.group = detailsElement.getAttribute("data-group");
@@ -11,14 +11,15 @@ export default class Details {
 		this.detailsTitle = this.details.querySelector(".ons-js-corrections-details-title");
 
 		// Initialise
-		const detailsId = detailsElement.getAttribute("id");
+		this.detailsId = detailsElement.getAttribute("id");
+		this.callback = callback;
 
 		this.details.setAttribute("role", "group");
 		this.detailsHeader.setAttribute("role", "link");
-		this.detailsHeader.setAttribute("aria-controls", detailsId);
+		this.detailsHeader.setAttribute("aria-controls", this.detailsId);
 		this.detailsHeader.setAttribute("tabindex", 0);
 
-		if (localStorage.getItem(detailsId) || this.open) {
+		if (localStorage.getItem(this.detailsId) || this.open) {
 			this.setOpen(true);
 		} else {
 			this.setOpen(false);
@@ -32,6 +33,8 @@ export default class Details {
 	toggle(event) {
 		event.preventDefault();
 		this.setOpen(!this.isOpen);
+
+		if (typeof this.callback === "function") this.callback({ id: this.detailsId, open: this.isOpen });
 	}
 
 	setOpen(open) {

@@ -1,8 +1,10 @@
 <script>
-	import { onMount, setContext } from "svelte";
+	import { onMount, setContext, createEventDispatcher } from "svelte";
 	import Accordion from "./accordion.js";
 	import Details from "./details.js";
 	import { slugify, sleep } from "$lib/js/utils.js";
+
+	const dispatch = createEventDispatcher();
 
 	/**
 	 * Optional: Set the unique ID of the accordion
@@ -27,7 +29,9 @@
 	onMount(async () => {
 		await sleep(0);
 		const detailsComponents = [...el.querySelectorAll(".ons-js-details")];
-		const detailsEls = detailsComponents.map((element) => new Details(element));
+		const detailsEls = detailsComponents.map(
+			(el) => new Details(el, (data) => dispatch("toggle", { ...data, el }))
+		);
 		new Accordion(buttonEl, detailsEls);
 	});
 </script>
