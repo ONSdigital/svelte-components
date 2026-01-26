@@ -1,7 +1,7 @@
 <script>
 	import { getContext } from "svelte";
 
-	let { value = "", label = "" } = $props();
+	let { value = "", label = value } = $props();
 
 	// Get the parent ButtonGroup context
 	const buttonGroup = getContext("buttonGroup");
@@ -11,31 +11,11 @@
 	const currentSelected = $derived(selectedValue);
 	const selected = $derived($currentSelected === value);
 
-	function handleClick() {
+	function handleChange() {
 		selectedValue.set(value); // Update the store
 	}
 
 	let buttonRef;
-
-	function handleKeydown(event) {
-		const buttons = Array.from(document.querySelectorAll(`[name="${groupName}"]`));
-		const currentIndex = buttons.indexOf(buttonRef);
-
-		let newIndex = -1;
-
-		if (event.key === "ArrowRight" || event.key === "ArrowDown") {
-			newIndex = (currentIndex + 1) % buttons.length;
-		} else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
-			newIndex = (currentIndex - 1 + buttons.length) % buttons.length;
-		} else if (event.key === "Enter" || event.key === " ") {
-			handleClick();
-			return;
-		}
-
-		if (newIndex !== -1) {
-			buttons[newIndex].focus();
-		}
-	}
 </script>
 
 <div class="button-container">
@@ -46,14 +26,12 @@
 		{value}
 		checked={selected}
 		class="radio-input"
-		on:click={handleClick}
-		on:keydown={handleKeydown}
+		onchange={handleChange}
 		aria-checked={selected}
-		tabindex="0"
 		bind:this={buttonRef}
 	/>
-	<label for={value} class="button" class:selected on:click={handleClick}>
-		{label || value}
+	<label for={value} class="radio-label">
+		{label}
 	</label>
 </div>
 
@@ -69,7 +47,7 @@
 		height: 0;
 	}
 
-	.button {
+	.radio-label {
 		flex-grow: 0;
 		padding: 4px 8px;
 		border: none;
@@ -84,18 +62,19 @@
 		text-align: center;
 	}
 
-	.button:hover {
+	.radio-label:hover {
 		background-color: #e8e8e8;
 	}
 
-	.button:focus {
-		box-shadow: orange 0 0 0 2px;
-	}
-
-	.button.selected {
+	.radio-input:checked + .radio-label {
 		background: white;
 		font-weight: bold;
-		color: #206095;
+		color: var(--ons-color-text-link);
 		box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+	}
+
+	.radio-input:focus + .radio-label {
+		background: var(--ons-color-focus);
+		color: var(--ons-color-text);
 	}
 </style>

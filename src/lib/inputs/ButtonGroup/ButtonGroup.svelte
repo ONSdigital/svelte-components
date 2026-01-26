@@ -2,7 +2,13 @@
 	import { setContext } from "svelte";
 	import { writable } from "svelte/store";
 
-	let { name = "", legend = "", value = $bindable(), visuallyHideLegend = false } = $props();
+	let {
+		name = "",
+		legend = "",
+		value = $bindable(),
+		visuallyHideLegend = false,
+		children
+	} = $props();
 
 	// create the store
 	const selectedValue = writable(value);
@@ -32,13 +38,13 @@
 		<legend class:ons-u-vh={visuallyHideLegend}>{legend}</legend>
 	{/if}
 	<div class="buttons">
-		<slot />
+		{@render children?.()}
 	</div>
 </fieldset>
 
 <style>
 	.button-group {
-		display: inline-block;
+		display: block;
 	}
 
 	legend {
@@ -47,7 +53,7 @@
 	}
 
 	.buttons {
-		display: flex;
+		display: inline-flex;
 		gap: 8px;
 		background: #f5f5f6;
 		padding: 4px;
