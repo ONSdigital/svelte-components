@@ -15,6 +15,16 @@
 	 */
 	export let rotation = 0;
 	/**
+	 * (Optional) Provide a custom SVG path string for the icon (overrides "type")
+	 * @type {string|null}
+	 */
+	export let svgPath = null;
+	/**
+	 * (Optional) If using a custom SVG path, specify the viewBox of the SVG
+	 * @type {string}
+	 */
+	export let svgViewBox = "0 0 24 24";
+	/**
 	 * Add a small margin on the left of the icon
 	 * @type {boolean}
 	 */
@@ -94,12 +104,12 @@
 		class="ons-icon {size ? `ons-icon--${size}` : ''}"
 		class:ons-u-ml-2xs={marginLeft}
 		class:ons-u-mr-2xs={marginRight}
-		viewBox={paths[type].viewBox}
+		viewBox={svgPath && svgViewBox ? svgViewBox : paths[type].viewBox}
 		xmlns="http://www.w3.org/2000/svg"
 		focusable="false"
 		fill="currentColor"
 		style:transform={rotation ? `rotate(${rotation}deg)` : null}
 	>
-		<path d={paths[type].d}></path>
+		<path d={svgPath || paths[type].d}></path>
 	</svg>
 {/if}
