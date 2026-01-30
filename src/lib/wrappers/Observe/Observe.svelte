@@ -1,5 +1,5 @@
 <script>
-	import { onMount, onDestroy, createEventDispatcher } from "svelte";
+	import { createEventDispatcher } from "svelte";
 
 	const dispatch = createEventDispatcher();
 
@@ -13,8 +13,6 @@
 	 * @type {number}
 	 */
 	export let rootMargin = 0;
-
-	let el, observer;
 
 	const callback = (entries) => {
 		entries.forEach((entry) => {
@@ -30,16 +28,18 @@
 		});
 	};
 
-	onMount(() => {
+	function initObserver(el) {
 		let options = { root: document, rootMargin: `${rootMargin}px` };
 
-		observer = new IntersectionObserver(callback, options);
+		const observer = new IntersectionObserver(callback, options);
 		observer.observe(el);
-	});
 
-	onDestroy(() => observer?.unobserve?.(el));
+		return {
+			destroy: () => observer?.unobserve?.(el)
+		};
+	}
 </script>
 
-<div bind:this={el}>
+<div use:initObserver>
 	<slot />
 </div>

@@ -1,6 +1,4 @@
 <script>
-	import { onMount, onDestroy } from "svelte";
-
 	/**
 	 * Bind to this variable to monitor whether the component has entered the viewport (boolean true/false).
 	 * @type {boolean}
@@ -17,34 +15,31 @@
 	 */
 	export let rootMargin = 200;
 
-	let el, observer;
-
 	const callback = (entries, observer) => {
 		entries.forEach((entry) => {
+			console.log(entry);
 			let intersecting = entry.isIntersecting;
 			if (!entered && intersecting) {
-				observer.unobserve(el);
+				observer.unobserve(entry.target);
 				entered = true;
 			}
 		});
 	};
 
-	onMount(() => {
+	function initObserver(el) {
 		let options = { root: document, rootMargin: `${rootMargin}px` };
 
-		observer = new IntersectionObserver(callback, options);
+		const observer = new IntersectionObserver(callback, options);
 		observer.observe(el);
-	});
 
-	onDestroy(() => {
-		if (el && observer) {
-			observer.unobserve(el);
-		}
-	});
+		return {
+			destroy: () => observer?.unobserve?.(el)
+		};
+	}
 </script>
 
 {#if entered}
 	<slot />
 {:else}
-	<div bind:this={el} style:height="{+initialHeight || 100}px"></div>
+	<div use:initObserver style:height="{+initialHeight || 100}px"></div>
 {/if}

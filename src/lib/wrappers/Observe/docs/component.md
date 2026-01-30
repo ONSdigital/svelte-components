@@ -4,16 +4,21 @@ This component can be useful for triggering actions such as lazy loading of data
 
 This component has **enter** and **exit** events, triggered when it enters or leaves the viewport. It also has a **visible** binding which has a value of **true** when it is within the viewport.
 
+In this demo, you can open your browser's developer console (**F12**) to see the logs for elements entering and existing the viewport.
+
 <!-- prettier-ignore -->
 ```html
 <script>
   import { Observe } from "@onsvisual/svelte-components";
+
+  let visible;
 
   const colors = ["yellow", "green", "blue", "purple", "red", "orange"];
 </script>
 
 {#each colors as color}
 <Observe
+  bind:visible
   on:enter={() => console.log(`${color} entered`)}
   on:exit={() => console.log(`${color} exited`)}>
   <div class="section" style:background={color} style:height="400px"/>
