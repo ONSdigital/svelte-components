@@ -1,10 +1,9 @@
 <script module>
 	import { defineMeta } from "@storybook/addon-svelte-csf";
-	import { withComponentDocs, withStoryDocs } from "../../js/withParams.js";
+	import { withComponentDocs } from "../../js/withParams.js";
 	import Document from "./Document.svelte";
 	import DocumentList from "./DocumentList.svelte";
 	import componentDocs from "./docs/component.md?raw";
-	import exampleDocs from "./docs/example.md?raw";
 
 	const { Story } = defineMeta({
 		title: "Layout/DocumentList",
@@ -70,7 +69,7 @@
 
 <Story name="Compact list, no description" args={{ items: items3, compact: true }} />
 
-<Story name="Individually defined documents" asChild parameters={withStoryDocs(exampleDocs)}>
+<Story name="Individually defined documents" asChild>
 	<DocumentList>
 		<Document
 			href="#0"

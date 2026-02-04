@@ -1,10 +1,9 @@
 <script module>
 	import { defineMeta } from "@storybook/addon-svelte-csf";
-	import { withComponentDocs, withStoryDocs } from "../../js/withParams.js";
+	import { withComponentDocs } from "../../js/withParams.js";
 	import List from "./List.svelte";
 	import Li from "./Li.svelte";
 	import componentDocs from "./docs/component.md?raw";
-	import exampleDocs from "./docs/example.md?raw";
 
 	const { Story } = defineMeta({
 		title: "Layout/List",
@@ -36,5 +35,4 @@
 <Story
 	name="List with items defined by an array"
 	args={{ items: ["<strong>First</strong> list item", "Second list item", "Third list item"] }}
-	parameters={withStoryDocs(exampleDocs)}
 />

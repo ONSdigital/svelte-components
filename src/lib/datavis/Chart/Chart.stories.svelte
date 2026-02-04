@@ -1,9 +1,8 @@
 <script module>
 	import { defineMeta } from "@storybook/addon-svelte-csf";
-	import { withComponentDocs, withStoryDocs } from "../../js/withParams.js";
+	import { withComponentDocs } from "../../js/withParams.js";
 	import { Chart } from "@onsvisual/svelte-charts";
 	import componentDocs from "./docs/component.md?raw";
-	import exampleDocs from "./docs/example.md?raw";
 
 	const barData = [
 		{ x: 5315, y: "Portsmouth" },
@@ -107,7 +106,6 @@
 			"padding-left": "120"
 		}
 	}}
-	parameters={withStoryDocs(exampleDocs)}
 />
 
 <Story

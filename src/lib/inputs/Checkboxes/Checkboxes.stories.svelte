@@ -1,10 +1,9 @@
 <script module>
 	import { defineMeta } from "@storybook/addon-svelte-csf";
-	import { withComponentDocs, withStoryDocs } from "../../js/withParams.js";
+	import { withComponentDocs } from "../../js/withParams.js";
 	import Checkbox from "../Checkbox/Checkbox.svelte";
 	import Checkboxes from "./Checkboxes.svelte";
 	import componentDocs from "./docs/component.md?raw";
-	import exampleDocs from "./docs/example.md?raw";
 
 	const { Story } = defineMeta({
 		title: "Inputs/Checkboxes",
@@ -25,7 +24,7 @@
 
 <Story name="Compact without label" args={{ items, compact: true }} />
 
-<Story name="Individually defined checkboxes" asChild parameters={withStoryDocs(exampleDocs)}>
+<Story name="Individually defined checkboxes" asChild>
 	<Checkboxes label="Select items">
 		<Checkbox id="ice-cream" label="Ice cream" />
 		<Checkbox id="sprinkles" label="Sprinkles" description="Highly recommended!" />

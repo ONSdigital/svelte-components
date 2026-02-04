@@ -1,10 +1,9 @@
 <script module>
 	import { defineMeta } from "@storybook/addon-svelte-csf";
-	import { withComponentDocs, withStoryDocs } from "../../js/withParams.js";
+	import { withComponentDocs } from "../../js/withParams.js";
 	import Timeline from "./Timeline.svelte";
 	import TimelineItem from "./TimelineItem.svelte";
 	import componentDocs from "./docs/component.md?raw";
-	import exampleDocs from "./docs/example.md?raw";
 
 	const { Story } = defineMeta({
 		title: "Layout/Timeline",
@@ -29,7 +28,7 @@
 
 <Story name="Default" args={{ items }} />
 
-<Story name="Individually defined timeline items" asChild parameters={withStoryDocs(exampleDocs)}>
+<Story name="Individually defined timeline items" asChild>
 	<Timeline>
 		<TimelineItem title="November 2020">
 			<p>ONS to provide you with content for magazines and publications</p>

@@ -1,9 +1,8 @@
 <script module>
 	import { defineMeta } from "@storybook/addon-svelte-csf";
-	import { withComponentDocs, withStoryDocs } from "../../js/withParams.js";
+	import { withComponentDocs } from "../../js/withParams.js";
 	import ErrorSummary from "./ErrorSummary.svelte";
 	import componentDocs from "./docs/component.md?raw";
-	import exampleDocs from "./docs/example.md?raw";
 
 	const { Story } = defineMeta({
 		title: "Inputs/ErrorSummary",
@@ -27,7 +26,7 @@
 
 <Story name="Default" args={{ title: "There are 2 problems with your answer", items }} {template} />
 
-<Story name="Error defined as text" asChild parameters={withStoryDocs(exampleDocs)}>
+<Story name="Error defined as text" asChild>
 	<div style:padding="12px">
 		<ErrorSummary title="There was an error">This is a text to describe the error.</ErrorSummary>
 	</div>

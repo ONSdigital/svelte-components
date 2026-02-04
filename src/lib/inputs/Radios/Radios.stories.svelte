@@ -1,10 +1,9 @@
 <script module>
 	import { defineMeta } from "@storybook/addon-svelte-csf";
-	import { withComponentDocs, withStoryDocs } from "../../js/withParams.js";
+	import { withComponentDocs } from "../../js/withParams.js";
 	import Radio from "./Radio.svelte";
 	import Radios from "./Radios.svelte";
 	import componentDocs from "./docs/component.md?raw";
-	import exampleDocs from "./docs/example.md?raw";
 
 	const { Story } = defineMeta({
 		title: "Inputs/Radios",
@@ -35,7 +34,7 @@
 
 <Story name="Compact without label" args={{ id: "radios", items, compact: true }} {template} />
 
-<Story name="Individually defined radios" asChild parameters={withStoryDocs(exampleDocs)}>
+<Story name="Individually defined radios" asChild>
 	<div style:padding="12px">
 		<Radios label="Select one">
 			<Radio
