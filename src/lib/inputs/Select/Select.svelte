@@ -1,7 +1,6 @@
 <script>
 	// @ts-nocheck
 	import { onMount, createEventDispatcher } from "svelte";
-	import accessibleAutocomplete from "accessible-autocomplete";
 	import Dropdown from "../Dropdown/Dropdown.svelte";
 	import Input from "../Input/Input.svelte";
 
@@ -12,6 +11,7 @@
 
 	let mounted = false;
 	let inputElement;
+	let accessibleAutocomplete;
 	let hideMenu = false;
 
 	/**
@@ -160,7 +160,9 @@
 		if (!e.target.value) select(null);
 	}
 
-	function initAutocomplete(element) {
+	async function initAutocomplete(element) {
+		if (!accessibleAutocomplete) accessibleAutocomplete = (await import("accessible-autocomplete")).default;
+
 		accessibleAutocomplete({
 			element,
 			id,
@@ -195,7 +197,9 @@
 	}
 	$: bindInputValue(value);
 
-	onMount(() => mounted = true);
+	onMount(async () => {
+		mounted = true;
+	});
 </script>
 
 {#if renderFallback && !mounted}
