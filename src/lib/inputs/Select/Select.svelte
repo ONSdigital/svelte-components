@@ -200,9 +200,9 @@
 
 {#if renderFallback && !mounted}
 	{#if mode === "search"}
-		<Input {id} {name} {label} {hideLabel} value={value?.[labelKey]} />
+		<Input {id} {name} {label} {hideLabel} value={value?.[labelKey]} width={null}/>
 	{:else}
-		<Dropdown {id} {name} {options} {label} {hideLabel} {placeholder} {value} />
+		<Dropdown {id} {name} {options} {label} {hideLabel} {placeholder} {value} width={null} />
 	{/if}
 {:else}
 	<div class="ons-field {cls}">

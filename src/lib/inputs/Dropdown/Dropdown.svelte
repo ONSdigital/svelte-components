@@ -39,6 +39,11 @@
 	 */
 	export let options = [];
 	/**
+	 * The width of the &lt;input&gt; in characters or a valid css width string (eg. "100px")
+	 * @type {number|string|null}
+	 */
+	export let width = 20;
+	/**
 	 * Optional: Set an additional CSS class for the component
 	 * @type {string|null}
 	 */
@@ -52,7 +57,10 @@
 	<select
 		{id}
 		{name}
-		class="ons-input ons-input--select"
+		class="ons-input ons-input--select {Number.isInteger(width)
+			? `ons-input--w-${width}`
+			: ''}"
+		style:width={typeof width === "string" ? width : null}
 		bind:value
 		on:change={(e) => dispatch("change", e)}
 	>
@@ -64,3 +72,9 @@
 		{/each}
 	</select>
 </div>
+
+<style>
+	.ons-input--select {
+		width: 100%;
+	}
+</style>
