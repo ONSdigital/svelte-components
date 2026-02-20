@@ -31,6 +31,10 @@ body {
 .ons-hero {
 	overflow: visible;
 }
+.ons-btn:focus > .ons-btn__inner {
+	color: var(--ons-color-text) !important;
+	background: var(--ons-color-focus) !important;
+}
 .ons-btn__inner .ons-icon {
 	fill: currentColor;
 }
