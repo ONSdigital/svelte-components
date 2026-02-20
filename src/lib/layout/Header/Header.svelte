@@ -241,7 +241,8 @@
 		Search: "Chwilio",
 		Menu: "Dewislen",
 		"Hide search": "Cuddio",
-		"Office for National Statistics logo - Homepage": "Logo Swyddfa Ystadegau Gwladol - Hafan",
+		"Office for National Statistics logo": "Logo Swyddfa Ystadegau Gwladol",
+		Homepage: "Hafan",
 		"Search for a keyword(s) or time series ID": "Chwilio am allweddair neu ID cyfres amser"
 	};
 
@@ -290,7 +291,11 @@
 							class="ons-header__grid-top ons-grid ons-grid-flex ons-grid-flex--between ons-grid-flex--vertical-center ons-grid-flex--no-wrap ons-grid--gutterless"
 						>
 							<div class="ons-grid__col ons-col-auto">
-								<a class="ons-header__org-logo-link" href={baseurl}>
+								<a
+									class="ons-header__org-logo-link"
+									href={baseurl}
+									aria-label="{i18n('Office for National Statistics logo')} - {i18n('Homepage')}"
+								>
 									<div class="ons-header__org-logo ons-header__org-logo--large">
 										<svg
 											class="ons-icon--logo"
@@ -301,7 +306,9 @@
 											aria-labelledby="ons-logo-en-alt"
 											role="img"
 										>
-											<title id="ons-logo-en-alt"> Office for National Statistics homepage </title>
+											<title id="ons-logo-en-alt"
+												>{i18n("Office for National Statistics logo")} - {i18n("Homepage")}</title
+											>
 											<g
 												class="ons-icon--logo__group ons-icon--logo__group--secondary"
 												fill="#a8bd3a"
@@ -414,7 +421,7 @@
 											role="img"
 										>
 											<title id="ons-logo-stacked-en-alt">
-												Office for National Statistics logo
+												{i18n("Office for National Statistics logo")}
 											</title>
 											<g
 												class="ons-icon--logo__group ons-icon--logo__group--secondary"
@@ -448,7 +455,10 @@
 				<div class="ons-container">
 					<div class="header col-wrap">
 						<div class="col col--lg-one-third col--md-one-third">
-							<a href="{baseurl}/">
+							<a
+								href="{baseurl}/"
+								aria-label="{i18n('Office for National Statistics logo')} - {i18n('Homepage')}"
+							>
 								<svg
 									version="1.1"
 									xmlns="http://www.w3.org/2000/svg"
@@ -457,7 +467,7 @@
 									aria-hidden="true"
 									class="logo"
 								>
-									<title>Office for National Statistics logo - Homepage</title>
+									<title>{i18n("Office for National Statistics logo")} - {i18n("Homepage")}</title>
 									<path
 										class="ons-icon--logo__group ons-icon--logo__group--secondary"
 										d="M0,70.5c1.8-3.7,3.6-7.2,5.6-10.7C3.3,54.2,1.5,48.5,0,42.6V70.5 M10.9,0C10.9,0,0,0,0,13.5v7.2
