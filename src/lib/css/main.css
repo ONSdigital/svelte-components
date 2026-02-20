@@ -37,7 +37,8 @@ body {
 
 /* Backfills for legacy website */
 .primary-nav__item:hover > ul,
-.primary-nav__link:focus + ul {
+.primary-nav__link:focus + ul,
+.primary-nav__item--focus > ul {
 	top: 100%;
 }
 .primary-nav__link:focus.hide-children + ul {
@@ -267,7 +268,8 @@ body {
 		display: block;
 		padding-left: 16px;
 	}
-	.primary-nav__item:hover > ul {
+	.primary-nav__item:hover > ul,
+	.primary-nav__item--focus > ul {
 		width: 100%;
 	}
 	.primary-nav__link {
@@ -349,7 +351,8 @@ body {
 		justify-content: center;
 		flex-wrap: nowrap;
 	}
-	.primary-nav__item:hover > ul {
+	.primary-nav__item:hover > ul,
+	.primary-nav__item--focus > ul {
 		width: unset;
 	}
 	.search__form {
@@ -453,15 +456,20 @@ body {
 	.primary-nav__item:nth-child(6) {
 		border-right: 1px solid #323132;
 	}
-	.primary-nav__item:hover > ul {
+	.primary-nav__item:hover > ul,
+	.primary-nav__item--focus > ul {
 		background-color: #323132;
 		color: #fff;
 		text-decoration: none;
 		display: block;
 		width: 32.75%;
 	}
+	.primary-nav__item:hover > a,
+	.primary-nav__item:hover > button.ons-btn__btn--link,
 	.primary-nav__item:focus > a,
-	.primary-nav__item:hover > a {
+	.primary-nav__item:focus > button.ons-btn__btn--link,
+	.primary-nav__item--focus > a,
+	.primary-nav__item--focus > button.ons-btn__btn--link {
 		border-left: 1px solid #323132;
 		background-color: #323132;
 		color: #fff;

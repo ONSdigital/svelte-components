@@ -1,5 +1,6 @@
 <script>
 	import { onMount, getContext } from "svelte";
+	import initNav from "./nav.js";
 	import Theme from "$lib/wrappers/Theme/Theme.svelte";
 	import SkipLink from "$lib/layout/SkipLink/SkipLink.svelte";
 
@@ -46,15 +47,11 @@
 	let baseother = "https://cy.ons.gov.uk";
 	let path = "";
 
-	let menuExpanded = false;
-	let searchExpanded = false;
-
 	const menu = [
 		{
 			label_en: "Business, industry and trade",
 			label_cy: "Busnes, diwydiant a masnach",
 			url: "/businessindustryandtrade",
-			expanded: false,
 			children: [
 				{ label_en: "Business", label_cy: "Busnes", url: "/businessindustryandtrade/business" },
 				{
@@ -98,7 +95,6 @@
 			label_en: "Economy",
 			label_cy: "Yr economi",
 			url: "/economy",
-			expanded: false,
 			children: [
 				{
 					label_en: "Economic output and productivity",
@@ -151,7 +147,6 @@
 			label_en: "Employment and labour market",
 			label_cy: "Cyflogaeth a'r farchnad lafur",
 			url: "/employmentandlabourmarket",
-			expanded: false,
 			children: [
 				{
 					label_en: "People in work",
@@ -169,7 +164,6 @@
 			label_en: "People, population and community",
 			label_cy: "Pobl, y boblogaeth a chymunedau",
 			url: "/peoplepopulationandcommunity",
-			expanded: false,
 			children: [
 				{
 					label_en: "Births, deaths and marriages",
@@ -251,118 +245,6 @@
 		"Search for a keyword(s) or time series ID": "Chwilio am allweddair neu ID cyfres amser"
 	};
 
-	function toggle_sm(e, i) {
-		if (window.matchMedia("(max-width:767px)").matches) {
-			e.preventDefault();
-			menu[i].expanded = !menu[i].expanded;
-		}
-	}
-
-	function handleKeydown(event) {
-		const target = event.currentTarget;
-		// Find the currently focused expandable child link within the navigation item
-		const focusedExpandableChild = target.querySelector(".js-expandable__child a:focus");
-
-		// Find all child links in the current navigation item
-		const childLinks = Array.from(target.querySelectorAll(".js-expandable__child a"));
-
-		// Close any expanded items from mouse events
-		const allExpandedItems = document.querySelectorAll(".js-expandable-active");
-		allExpandedItems.forEach((item) => {
-			if (item !== target) {
-				item.classList.remove("js-expandable-active");
-				const content = item.querySelector(".js-expandable__content");
-				if (content) {
-					content.classList.add("js-nav-hidden");
-					content.setAttribute("aria-expanded", "false");
-				}
-			}
-		});
-
-		switch (event.key) {
-			case "Tab":
-				if (focusedExpandableChild) {
-					target.classList.remove("primary-nav__item--focus");
-				}
-				break;
-
-			case "Escape":
-				event.preventDefault();
-				target.classList.remove("primary-nav__item--focus");
-				const firstNavLink = target.closest(".js-nav").querySelector("a:first-child");
-				if (firstNavLink) {
-					firstNavLink.classList.add("hide-children");
-					firstNavLink.focus();
-					firstNavLink.addEventListener(
-						"focusout",
-						() => {
-							firstNavLink.classList.remove("hide-children");
-						},
-						{ once: true }
-					);
-				}
-				break;
-
-			case "ArrowDown":
-				event.preventDefault();
-				if (!focusedExpandableChild) {
-					// If no child is focused, focus the first child. Needs to start from 0 as first child is link to primary nav.
-					const firstChild = childLinks[1];
-					if (firstChild) {
-						console.log("add focus");
-						target.classList.add("primary-nav__item--focus");
-						firstChild.focus({ focusVisible: true });
-					}
-				} else {
-					// Find the current index and move to the next child
-					const currentIndex = childLinks.indexOf(focusedExpandableChild);
-					if (currentIndex < childLinks.length - 1) {
-						childLinks[currentIndex + 1].focus();
-					}
-				}
-				break;
-
-			case "ArrowUp":
-				event.preventDefault();
-
-				if (focusedExpandableChild) {
-					const currentIndex = childLinks.indexOf(focusedExpandableChild);
-					if (currentIndex > 0) {
-						// Move to previous child
-						childLinks[currentIndex - 1].focus();
-					} else {
-						// If at first child, move focus back to main nav link
-						target.classList.remove("primary-nav__item--focus");
-						const mainLink = target.querySelector("a:first-child");
-						if (mainLink) {
-							mainLink.focus();
-						}
-					}
-				}
-				break;
-
-			case "ArrowRight":
-				event.preventDefault();
-				target.classList.remove("primary-nav__item--focus");
-				const nextNav = target.closest(".js-nav").nextElementSibling;
-				if (nextNav) {
-					const firstLink = nextNav.querySelector("a:first-child");
-					if (firstLink) firstLink.focus();
-				}
-				break;
-
-			case "ArrowLeft":
-				event.preventDefault();
-				target.classList.remove("primary-nav__item--focus");
-				const prevNav = target.closest(".js-nav").previousElementSibling;
-				if (prevNav) {
-					const firstLink = prevNav.querySelector("a:first-child");
-					if (firstLink) firstLink.focus();
-				}
-				break;
-		}
-	}
-
 	function setPaths() {
 		const url = page?.url || document.location;
 		lang = url.host.startsWith("cy") ? "cy" : "en";
@@ -372,18 +254,7 @@
 	}
 	onMount(() => {
 		setPaths();
-
-		/// Add keyboard event listeners
-		const navItems = document.querySelectorAll(".js-nav");
-		navItems.forEach((item) => {
-			item.addEventListener("keydown", handleKeydown);
-		});
-
-		return () => {
-			navItems.forEach((item) => {
-				item.removeEventListener("keydown", handleKeydown);
-			});
-		};
+		initNav();
 	});
 
 	$: i18n = (text) => (lang === "cy" && texts[text] ? texts[text] : text);
@@ -683,46 +554,35 @@
 					<!-- Controls -->
 					<nav aria-label="Header links">
 						<ul class="nav--controls">
-							<li class="nav--controls__item" class:menu-is-expanded={menuExpanded}>
+							<li class="nav--controls__item">
 								<a
 									href="#nav-primary"
 									id="menu-toggle"
 									aria-controls="nav-primary"
-									aria-expanded={menuExpanded}
+									aria-expanded="false"
 									class="nav--controls__menu"
-									on:click|preventDefault={() => {
-										menuExpanded = !menuExpanded;
-										searchExpanded = false;
-									}}
 								>
 									<span class="nav--controls__text">{i18n("Menu")}</span>
 								</a>
 							</li>
-							<li class="nav--controls__item" class:search-is-expanded={searchExpanded}>
+							<li class="nav--controls__item">
 								<a
 									href="#nav-search"
 									id="search-toggle"
 									aria-controls="nav-search"
-									aria-expanded={searchExpanded}
+									aria-expanded="false"
 									class="nav--controls__search"
-									on:click|preventDefault={() => {
-										searchExpanded = !searchExpanded;
-										menuExpanded = false;
-									}}
 								>
-									<span class="nav--controls__text"
-										>{searchExpanded ? i18n("Hide search") : i18n("Search")}</span
-									>
+									<span class="nav--controls__text">{i18n("Search")}</span>
 								</a>
 							</li>
 						</ul>
 
 						<!-- Main Navigation -->
 						<ul
-							class="ons-container primary-nav__list"
-							class:nav-main--hidden={!menuExpanded}
+							class="ons-container nav-main--hidden primary-nav__list"
 							id="nav-primary"
-							aria-expanded={menuExpanded}
+							aria-expanded="false"
 						>
 							<!-- Home Link -->
 							<li class="primary-nav__item js-nav">
@@ -732,14 +592,9 @@
 							</li>
 
 							<!-- Menu Items -->
-							{#each [...menu
-									.filter((d) => d.children)
-									.sort( (a, b) => a["label_" + lang].localeCompare(b["label_" + lang]) ), ...menu.filter((d) => !d.children)] as item, i}
+							{#each menu.filter((d) => !d.secondary) as item, i}
 								{#if item.children}
-									<li
-										class="primary-nav__item js-nav js-expandable"
-										class:js-expandable-active={item.expanded}
-									>
+									<li class="primary-nav__item js-nav js-expandable">
 										<a
 											class="primary-nav__link col col--md-8 col--lg-10"
 											href="{baseurl}{item.url}"
@@ -753,16 +608,10 @@
 											</span>
 										</a>
 										<ul
-											class="primary-nav__child-list col col--md-16 col--lg-20 js-expandable__content jsEnhance"
-											class:js-nav-hidden={!item.expanded}
-											aria-expanded={item.expanded}
+											class="primary-nav__child-list col col--md-16 col--lg-20 js-expandable__content js-nav-hidden jsEnhance"
+											aria-expanded="false"
 											aria-label="submenu"
 										>
-											<li class="primary-nav__child-item js-expandable__child hide--md">
-												<a class="primary-nav__child-link" tabindex="-1" href="{baseurl}{item.url}"
-													>{item[`label_${lang}`]}</a
-												>
-											</li>
 											{#each [...item.children].sort( (a, b) => a[`label_${lang}`].localeCompare(b[`label_${lang}`]) ) as child}
 												<li class="primary-nav__child-item js-expandable__child">
 													<a
@@ -775,7 +624,7 @@
 										</ul>
 									</li>
 								{:else}
-									<li class="primary-nav__item js-nav" class:hide--md={item.secondary}>
+									<li class="primary-nav__item js-nav">
 										<a
 											class="primary-nav__link col col--md-8 col--lg-10"
 											href="{baseurl}{item.url}"
@@ -799,7 +648,7 @@
 						</ul>
 					</nav>
 				</div>
-				<div class="search print--hide" class:nav-search--hidden={!searchExpanded} id="searchBar">
+				<div class="search nav-search--hidden print--hide" id="searchBar">
 					<div class="ons-container" role="search">
 						<form class="col-wrap search__form" action="{baseurl}/search">
 							<label class="search__label col col--md-23 col--lg-24" for="nav-search"
