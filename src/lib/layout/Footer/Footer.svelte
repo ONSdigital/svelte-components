@@ -72,9 +72,7 @@
 									>
 								</li>
 								<li class="ons-list__item">
-									<a href="{baseurl}/manage-cookie-settings/" class="ons-list__link"
-										>{i18n("Cookies")}</a
-									>
+									<a href="{baseurl}/cookies" class="ons-list__link">{i18n("Cookies")}</a>
 								</li>
 								<li class="ons-list__item">
 									<a href="{baseurl}/help/privacynotice" class="ons-list__link">{i18n("Privacy")}</a
