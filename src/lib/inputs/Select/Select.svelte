@@ -90,7 +90,7 @@
 	 */
 	export let loadOptions = (query, populateResults) => {
 		const filteredResults =
-			mode !== "search" && options.map((opt) => opt[labelKey]).includes(query)
+			mode !== "search" && (!query || options.map((opt) => opt[labelKey]).includes(query))
 				? options
 				: options.filter((opt) =>
 						opt[labelKey].match(new RegExp(`\\b${query.replace(/[^\w\s]/gi, "")}`, "i"))
@@ -135,14 +135,11 @@
 
 	function suggestionTemplate(result) {
 		const query = inputElement?.value || "";
-		return (
-			result &&
-			(groupKey
-				? `${highlight(result?.[labelKey] || "", query)} <span class="muted-text">${
-						result[groupKey]
-					}</span>`
-				: highlight(result?.[labelKey] || "", query))
-		);
+		return groupKey && result[groupKey]
+			? `${highlight(result?.[labelKey] || "", query)} <span class="muted-text">${
+					result[groupKey]
+				}</span>`
+			: highlight(result?.[labelKey] || "", query);
 	}
 
 	async function select(option) {
@@ -161,7 +158,8 @@
 	}
 
 	async function initAutocomplete(element) {
-		if (!accessibleAutocomplete) accessibleAutocomplete = (await import("accessible-autocomplete")).default;
+		if (!accessibleAutocomplete)
+			accessibleAutocomplete = (await import("accessible-autocomplete")).default;
 
 		accessibleAutocomplete({
 			element,
@@ -204,7 +202,7 @@
 
 {#if renderFallback && !mounted}
 	{#if mode === "search"}
-		<Input {id} {name} {label} {hideLabel} value={value?.[labelKey]} width={null}/>
+		<Input {id} {name} {label} {hideLabel} value={value?.[labelKey]} width={null} />
 	{:else}
 		<Dropdown {id} {name} {options} {label} {hideLabel} {placeholder} {value} width={null} />
 	{/if}
