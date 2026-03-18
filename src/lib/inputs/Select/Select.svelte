@@ -1,6 +1,5 @@
 <script>
 	// @ts-nocheck
-
 	import { onMount, createEventDispatcher } from "svelte";
 	import Dropdown from "../Dropdown/Dropdown.svelte";
 	import Input from "../Input/Input.svelte";
@@ -10,8 +9,8 @@
 	const chevron = (opts) =>
 		`<svg class="${opts?.className}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="0 0 11.75 7.7" width="18" style="z-index:1"><path fill="currentColor" d="m1.37.15 4.5 5.1 4.5-5.1a.37.37 0 0 1 .6 0l.7.7a.45.45 0 0 1 0 .5l-5.5 6.2a.37.37 0 0 1-.6 0l-5.5-6.1a.64.64 0 0 1 0-.6l.7-.7a.64.64 0 0 1 .6 0Z"></path></svg>`;
 
+	let mounted = false;
 	let inputElement;
-	let scriptLoaded;
 	let accessibleAutocomplete;
 	let hideMenu = false;
 
@@ -91,19 +90,13 @@
 	 */
 	export let loadOptions = (query, populateResults) => {
 		const filteredResults =
-			mode !== "search" && options.map((opt) => opt[labelKey]).includes(query)
+			mode !== "search" && (!query || options.map((opt) => opt[labelKey]).includes(query))
 				? options
 				: options.filter((opt) =>
 						opt[labelKey].match(new RegExp(`\\b${query.replace(/[^\w\s]/gi, "")}`, "i"))
 					);
 		populateResults(filteredResults);
 	};
-	/**
-	 * Optional: Override the default CDN URL for the accessible-autocomplete script
-	 * @type {string}
-	 */
-	export let scriptUrl =
-		"https://cdn.ons.gov.uk/vendor/accessible-autocomplete/3.0.1/accessible-autocomplete.min.js";
 	/**
 	 * Call this function externally to clear the input
 	 * @type {function}
@@ -142,14 +135,11 @@
 
 	function suggestionTemplate(result) {
 		const query = inputElement?.value || "";
-		return (
-			result &&
-			(groupKey
-				? `${highlight(result?.[labelKey] || "", query)} <span class="muted-text">${
-						result[groupKey]
-					}</span>`
-				: highlight(result?.[labelKey] || "", query))
-		);
+		return groupKey && result[groupKey]
+			? `${highlight(result?.[labelKey] || "", query)} <span class="muted-text">${
+					result[groupKey]
+				}</span>`
+			: highlight(result?.[labelKey] || "", query);
 	}
 
 	async function select(option) {
@@ -167,14 +157,10 @@
 		if (!e.target.value) select(null);
 	}
 
-	function handleScriptLoad() {
-		if (!scriptLoaded && window?.accessibleAutocomplete) {
-			accessibleAutocomplete = window.accessibleAutocomplete;
-			scriptLoaded = true;
-		}
-	}
+	async function initAutocomplete(element) {
+		if (!accessibleAutocomplete)
+			accessibleAutocomplete = (await import("accessible-autocomplete")).default;
 
-	function initAutocomplete(element) {
 		accessibleAutocomplete({
 			element,
 			id,
@@ -209,24 +195,22 @@
 	}
 	$: bindInputValue(value);
 
-	onMount(handleScriptLoad);
+	onMount(async () => {
+		mounted = true;
+	});
 </script>
 
-<svelte:head>
-	<script src={scriptUrl} on:load={handleScriptLoad}></script>
-</svelte:head>
-
-{#if renderFallback && !scriptLoaded}
+{#if renderFallback && !mounted}
 	{#if mode === "search"}
-		<Input {id} {name} {label} {hideLabel} value={value?.[labelKey]} />
+		<Input {id} {name} {label} {hideLabel} value={value?.[labelKey]} width={null} />
 	{:else}
-		<Dropdown {id} {name} {options} {label} {hideLabel} {placeholder} {value} />
+		<Dropdown {id} {name} {options} {label} {hideLabel} {placeholder} {value} width={null} />
 	{/if}
 {:else}
 	<div class="ons-field {cls}">
 		{#if label}<label for={id} class="ons-label" class:ons-u-vh={hideLabel}>{label}</label>{/if}
 		<div class="ons-autocomplete-wrapper">
-			{#if scriptLoaded}
+			{#if mounted}
 				<div
 					id="{id}-container"
 					class="ons-autocomplete"

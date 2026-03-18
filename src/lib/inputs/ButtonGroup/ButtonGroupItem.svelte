@@ -1,7 +1,7 @@
 <script>
 	import { getContext } from "svelte";
 
-	let { value = "", label = value } = $props();
+	let { value = "", id = value, label = value } = $props();
 
 	// Get the parent ButtonGroup context
 	const buttonGroup = getContext("buttonGroup");
@@ -21,7 +21,7 @@
 <div class="button-container">
 	<input
 		type="radio"
-		id={value}
+		{id}
 		name={groupName}
 		{value}
 		checked={selected}
@@ -30,7 +30,7 @@
 		aria-checked={selected}
 		bind:this={buttonRef}
 	/>
-	<label for={value} class="radio-label">
+	<label for={id} class="radio-label">
 		{label}
 	</label>
 </div>

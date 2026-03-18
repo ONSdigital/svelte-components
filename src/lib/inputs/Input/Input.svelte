@@ -35,14 +35,14 @@
 	export let description = null;
 	/**
 	 * The maximum number of characters that can be entered (optional)
-	 * @type {number}
+	 * @type {number|null}
 	 */
 	export let charLimit = null;
 	/**
-	 * The width of the &lt;input&gt; in characters
-	 * @type {number}
+	 * The width of the &lt;input&gt; in characters or a valid css width string (eg. "100px")
+	 * @type {number|string|null}
 	 */
-	export let width = null;
+	export let width = 20;
 	/**
 	 * An optional prefix (eg. £) to appear on the left of the input
 	 * @type {string|null}
@@ -116,6 +116,7 @@
 					class="ons-input ons-input--text ons-input-type__input {Number.isInteger(width)
 						? `ons-input--w-${width}`
 						: ''}"
+					style:width={typeof width === "string" ? width : null}
 					class:ons-input--error={error}
 					aria-labelledby="{id} {id}-unit"
 					aria-describedby={description ? `${id}-description-hint` : null}
@@ -142,6 +143,7 @@
 			class="ons-input ons-input--text ons-input-type__input {Number.isInteger(width)
 				? `ons-input--w-${width}`
 				: ''}"
+			style:width={typeof width === "string" ? width : null}
 			class:ons-input--error={error}
 			aria-describedby={description ? `${id}-description-hint` : null}
 			{disabled}
@@ -149,3 +151,9 @@
 		/>
 	{/if}
 </div>
+
+<style>
+	.ons-input--text {
+		width: 100%;
+	}
+</style>
