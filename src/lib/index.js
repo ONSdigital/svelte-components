@@ -13,6 +13,7 @@ export { default as Accordion } from "./layout/Accordion/Accordion.svelte";
 export { default as AccordionItem } from "./layout/Accordion/AccordionItem.svelte";
 export { default as AnalyticsBanner } from "./layout/AnalyticsBanner/AnalyticsBanner.svelte";
 export { analyticsEvent } from "./layout/AnalyticsBanner/AnalyticsBanner.svelte";
+export { default as AnnouncementBanner } from "./layout/AnnouncementBanner/AnnouncementBanner.svelte";
 export { default as BackLink } from "./layout/BackLink/BackLink.svelte";
 export { default as Breadcrumb } from "./layout/Breadcrumb/Breadcrumb.svelte";
 export { default as Card } from "./layout/Card/Card.svelte";
