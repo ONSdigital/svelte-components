@@ -28,13 +28,19 @@
 		"Footer links": "",
 		Help: "Cymorth",
 		Accessibility: "Hygyrchedd",
+		"Accessibility statement": "Datganiad hygyrchedd",
+		Browsers: "Porwyr",
 		Cookies: "Cwcis",
+		"Fair use policy": "Polisi defnydd teg",
 		Privacy: "Preifatrwydd",
+		"Privacy notice": "Hysbysiad preifatrwydd",
 		"Terms and conditions": "Telerau ac amodau",
 		"About ONS": "Ynglŷn ag SYG",
+		"About us": "Amdanom ni",
 		"What we do": "Beth rydym yn ei wneud",
 		Careers: "Gyrfaoedd",
 		"Contact us": "Cysylltu â ni",
+		Media: "Cyfryngau",
 		News: "Newyddion",
 		"Freedom of Information": "Rhyddid Gwybodaeth",
 		"Connect with us": "Cysylltu â ni",
@@ -68,14 +74,23 @@
 							<ul class="ons-list ons-u-mb-no ons-list--bare">
 								<li class="ons-list__item">
 									<a href="{baseurl}/help/accessibility" class="ons-list__link"
-										>{i18n("Accessibility")}</a
+										>{i18n("Accessibility statement")}</a
 									>
+								</li>
+								<li class="ons-list__item">
+									<a href="{baseurl}/browsers" class="ons-list__link">{i18n("Browsers")}</a>
 								</li>
 								<li class="ons-list__item">
 									<a href="{baseurl}/cookies" class="ons-list__link">{i18n("Cookies")}</a>
 								</li>
 								<li class="ons-list__item">
-									<a href="{baseurl}/help/privacynotice" class="ons-list__link">{i18n("Privacy")}</a
+									<a href="{baseurl}/help/fairusepolicy" class="ons-list__link"
+										>{i18n("Fair use policy")}</a
+									>
+								</li>
+								<li class="ons-list__item">
+									<a href="{baseurl}/help/privacynotice" class="ons-list__link"
+										>{i18n("Privacy notice")}</a
 									>
 								</li>
 								<li class="ons-list__item">
@@ -87,12 +102,10 @@
 						</div>
 						<!-- Full footer columns -->
 						<div class="ons-grid__col ons-col-4@m ons-u-mt-l@2xs@m">
-							<h2 class="ons-footer__heading ons-u-fs-r--b">{i18n("About ONS")}</h2>
+							<h2 class="ons-footer__heading ons-u-fs-r--b">{i18n("About us")}</h2>
 							<ul class="ons-list ons-u-mb-no ons-list--bare">
 								<li class="ons-list__item">
-									<a href="{baseurl}/aboutus/whatwedo" class="ons-list__link"
-										>{i18n("What we do")}</a
-									>
+									<a href="{baseurl}/aboutus" class="ons-list__link">{i18n("About us")}</a>
 								</li>
 								<li class="ons-list__item">
 									<a href="https://careers.ons.gov.uk" class="ons-list__link">{i18n("Careers")}</a>
@@ -103,7 +116,10 @@
 									>
 								</li>
 								<li class="ons-list__item">
-									<a href="{baseurl}/news" class="ons-list__link">{i18n("News")}</a>
+									<a href="{baseurl}/news" class="ons-list__link">{i18n("Media")}</a>
+								</li>
+								<li class="ons-list__item">
+									<a href="https://blog.ons.gov.uk" class="ons-list__link">{i18n("Blog")}</a>
 								</li>
 								<li class="ons-list__item">
 									<a
