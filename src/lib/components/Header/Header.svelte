@@ -44,7 +44,7 @@
 	export let bilingual = true;
 	/**
 	 * Anchor link to skip to main body content (default "#main")
-	 * @type {string}
+	 * @type {string|null}
 	 */
 	export let skipHref = "#main";
 
