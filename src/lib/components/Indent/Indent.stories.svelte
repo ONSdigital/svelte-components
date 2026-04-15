@@ -5,7 +5,7 @@
 	import componentDocs from "./docs/component.md?raw";
 
 	const { Story } = defineMeta({
-		title: "Information and media/Indent",
+		title: "Decorators/Indent",
 		component: Indent,
 		tags: ["autodocs"],
 		argTypes: {},
