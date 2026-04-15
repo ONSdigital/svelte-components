@@ -2,13 +2,13 @@
 	import { defineMeta } from "@storybook/addon-svelte-csf";
 	import { withComponentDocs } from "../../js/withParams.js";
 	import componentDocs from "./docs/component.md?raw";
-	import Header from "../../layout/Header/Header.svelte";
-	import Breadcrumb from "../../layout/Breadcrumb/Breadcrumb.svelte";
-	import Hero from "../../layout/Hero/Hero.svelte";
-	import Section from "../../layout/Section/Section.svelte";
-	import Grid from "../../layout/Grid/Grid.svelte";
-	import Blockquote from "../../decorators/Blockquote/Blockquote.svelte";
-	import Footer from "../../layout/Footer/Footer.svelte";
+	import Header from "../../components/Header/Header.svelte";
+	import Breadcrumb from "../../components/Breadcrumb/Breadcrumb.svelte";
+	import Hero from "../../components/Hero/Hero.svelte";
+	import Section from "../../components/Section/Section.svelte";
+	import Grid from "../../components/Grid/Grid.svelte";
+	import Blockquote from "../../components/Blockquote/Blockquote.svelte";
+	import Footer from "../../components/Footer/Footer.svelte";
 
 	const { Story } = defineMeta({
 		title: "Templates/Standard article",

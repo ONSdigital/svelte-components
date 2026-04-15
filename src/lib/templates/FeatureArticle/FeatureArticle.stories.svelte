@@ -3,20 +3,20 @@
 	import { withComponentDocs } from "../../js/withParams.js";
 	import componentDocs from "./docs/component.md?raw";
 
-	import Main from "$lib/wrappers/Main/Main.svelte";
-	import Header from "$lib/layout/Header/Header.svelte";
-	import Hero from "$lib/layout/Hero/Hero.svelte";
-	import Container from "$lib/wrappers/Container/Container.svelte";
-	import Highlight from "$lib/layout/Highlight/Highlight.svelte";
-	import Section from "$lib/layout/Section/Section.svelte";
-	import Grid from "$lib/layout/Grid/Grid.svelte";
-	import GridCell from "$lib/layout/Grid/GridCell.svelte";
-	import Blockquote from "$lib/decorators/Blockquote/Blockquote.svelte";
-	import Em from "$lib/decorators/Em/Em.svelte";
-	import Divider from "$lib/decorators/Divider/Divider.svelte";
-	import Scroller from "$lib/layout/Scroller/Scroller.svelte";
-	import ScrollerSection from "$lib/layout/Scroller/ScrollerSection.svelte";
-	import Footer from "$lib/layout/Footer/Footer.svelte";
+	import Main from "$lib/components/Main/Main.svelte";
+	import Header from "$lib/components/Header/Header.svelte";
+	import Hero from "$lib/components/Hero/Hero.svelte";
+	import Container from "$lib/components/Container/Container.svelte";
+	import Highlight from "$lib/components/Highlight/Highlight.svelte";
+	import Section from "$lib/components/Section/Section.svelte";
+	import Grid from "$lib/components/Grid/Grid.svelte";
+	import GridCell from "$lib/components/Grid/GridCell.svelte";
+	import Blockquote from "$lib/components/Blockquote/Blockquote.svelte";
+	import Em from "$lib/components/Em/Em.svelte";
+	import Divider from "$lib/components/Divider/Divider.svelte";
+	import Scroller from "$lib/components/Scroller/Scroller.svelte";
+	import ScrollerSection from "$lib/components/Scroller/ScrollerSection.svelte";
+	import Footer from "$lib/components/Footer/Footer.svelte";
 
 	const parameters = { ...withComponentDocs(componentDocs), layout: "fullscreen" };
 	parameters.docs.story = { inline: false, iframeHeight: 600 };

@@ -2,11 +2,11 @@
 	import { defineMeta } from "@storybook/addon-svelte-csf";
 	import { withComponentDocs } from "$lib/js/withParams.js";
 	import componentDocs from "./docs/component.md?raw";
-	import Embed from "$lib/wrappers/Embed/Embed.svelte";
-	import Highlight from "$lib/layout/Highlight/Highlight.svelte";
-	import Section from "$lib/layout/Section/Section.svelte";
-	import Grid from "$lib/layout/Grid/Grid.svelte";
-	import Select from "$lib/inputs/Select/Select.svelte";
+	import Embed from "$lib/components/Embed/Embed.svelte";
+	import Highlight from "$lib/components/Highlight/Highlight.svelte";
+	import Section from "$lib/components/Section/Section.svelte";
+	import Grid from "$lib/components/Grid/Grid.svelte";
+	import Select from "$lib/components/Select/Select.svelte";
 
 	const { Story } = defineMeta({
 		title: "Templates/Embedded article",

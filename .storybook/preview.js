@@ -16,9 +16,11 @@ const preview = {
 					"Templates",
 					"Wrappers",
 					"Layout",
-					"Inputs",
+					"Navigation",
+					"Form elements",
+					"Information and media",
 					"Decorators",
-					"Data visualisation",
+					"Charts",
 					"*"
 				]
 			}
