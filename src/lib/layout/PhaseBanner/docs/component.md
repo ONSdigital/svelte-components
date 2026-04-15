@@ -1,4 +1,4 @@
-Dispay a phase banner on prototypes, alpha and beta products.
+Display a phase banner on prototypes, alpha and beta products.
 
 Based on this [ONS Design System component](https://service-manual.ons.gov.uk/design-system/components/phase-banner).
 
