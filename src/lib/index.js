@@ -38,6 +38,7 @@ export { default as Li } from "./layout/List/Li.svelte";
 export { default as NavSection } from "./layout/NavSections/NavSection.svelte";
 export { default as NavSections } from "./layout/NavSections/NavSections.svelte";
 export { default as Notice } from "./layout/Notice/Notice.svelte";
+export { default as Paginator } from "./layout/Paginator/Paginator.svelte";
 export { default as PhaseBanner } from "./layout/PhaseBanner/PhaseBanner.svelte";
 export { default as RelatedContent } from "./layout/RelatedContent/RelatedContent.svelte";
 export { default as Scroller } from "./layout/Scroller/Scroller.svelte";
