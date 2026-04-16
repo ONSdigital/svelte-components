@@ -5,6 +5,12 @@
 	 */
 	export let phase = "Beta";
 	/**
+	 * Message to describe the phase
+	 * @type {string}
+	 */
+	export let description =
+		phase === "Prototype" ? "This is a prototype." : "This is a new service.";
+	/**
 	 * URL of feedback form (relative or absolute)
 	 * @type {string}
 	 */
@@ -26,7 +32,7 @@
 			</div>
 			<div class="ons-grid__col ons-col-auto ons-u-flex-shrink">
 				<p class="ons-phase-banner__desc ons-u-fs-s ons-u-mb-no">
-					This is a {phase === "Prototype" ? "new service" : "prototype"}.
+					{description}
 					{#if href}
 						To help us improve it, <a
 							{href}
