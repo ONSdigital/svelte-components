@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from "svelte";
-	import initNav from "./nav.js";
+	import initNav from "./navLegacy.js";
 
 	export let bilingual = true;
 	export let lang = "en";
@@ -8,6 +8,8 @@
 	export let baseother = "https://cy.ons.gov.uk";
 	export let path = "";
 	export let i18n = (text) => text;
+
+	let el;
 
 	const menu = [
 		{

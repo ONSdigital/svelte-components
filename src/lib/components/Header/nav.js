@@ -1,271 +1,245 @@
-function getBoolFromString(stringToConvert) {
-	return stringToConvert === "true";
-}
+import { AddTick } from "tick-manager";
+import { getViewportDetails } from "viewport-details";
 
-function toggleSubnav(element) {
-	const subnav = element;
-	subnav.classList.toggle("js-expandable-active");
-	subnav.querySelectorAll(".js-expandable__content").forEach((el) => {
-		el.classList.toggle("js-nav-hidden");
-	});
+const callbacks = [];
+let running = false;
 
-	const elementAria = getBoolFromString(element.querySelector("a:first-child").ariaExpanded);
-	subnav.querySelector("a:first-child").ariaExpanded = !elementAria;
-	const subnavAria = getBoolFromString(
-		element.querySelector(".js-expandable__content").ariaExpanded
-	);
-	subnav.querySelector(".js-expandable__content").ariaExpanded = !subnavAria;
-}
+function onViewportChange(callback) {
+	callbacks.push(callback);
 
-function toggleMenu(toggleElement, menuElement) {
-	const toggle = toggleElement;
-	const menu = menuElement;
-	toggle.classList.toggle("menu-is-expanded");
-	const toggleAriaState = getBoolFromString(toggle.querySelector("a").ariaExpanded);
-	toggle.querySelector("a").ariaExpanded = !toggleAriaState;
-	menu.classList.toggle("nav-main--hidden");
-	const menuAriaState = getBoolFromString(menuElement.ariaExpanded);
-	menu.ariaExpanded = !menuAriaState;
-}
-
-function toggleSearch(toggleElement, searchElement) {
-	const toggle = toggleElement;
-	const search = searchElement;
-	const langAttribute = document.documentElement.lang;
-	toggle.classList.toggle("search-is-expanded");
-	const toggleAriaState = getBoolFromString(toggle.querySelector("a").ariaExpanded);
-	toggle.querySelector("a").ariaExpanded = !toggleAriaState;
-	let searchStr = "";
-	if (langAttribute === "en") {
-		searchStr = "Hide search";
-		if (toggle.querySelector(".nav--controls__text").textContent.includes("Hide")) {
-			searchStr = "Search";
-		}
-	} else {
-		searchStr = "Cuddio";
-		if (toggle.querySelector(".nav--controls__text").textContent.includes("Cuddio")) {
-			searchStr = "Chwilio";
-		}
-	}
-	toggle.querySelector(".nav--controls__text").textContent = searchStr;
-	search.classList.toggle("nav-search--hidden");
-	const searchAriaState = getBoolFromString(search.ariaExpanded);
-	search.ariaExpanded = !searchAriaState;
-}
-
-function cloneSecondaryNav() {
-	// On mobile move secondary nav items in header to primary nav
-	const navLink = document.querySelectorAll(".js-nav-clone__link");
-	const navList = document.querySelector(".js-nav-clone__list");
-
-	if (
-		document.body.classList.contains("viewport-sm") &&
-		navList.querySelectorAll(".js-nav-clone__link").length > 0
-	) {
-		// Remove from separate UL and add into primary
-		navLink.forEach((l) => {
-			const link = l;
-			link.parentNode.style.display = "none";
-			const newNavItem = document.createElement("li");
-			newNavItem.classList.add("primary-nav__item");
-
-			link.classList.remove("secondary-nav__link");
-			link.classList.add("primary-nav__link", "col");
-
-			newNavItem.insertAdjacentElement("beforeend", link);
-
-			const primaryNavList = document.querySelector(".primary-nav__list li.primary-nav__language");
-			primaryNavList.insertAdjacentElement("beforebegin", newNavItem);
-		});
-	} else if (
-		!document.body.classList.contains("viewport-sm") &&
-		document.querySelector(".secondary-nav__item").style.display === "none"
-	) {
-		// Remove from primary nav and add into separate secondary list
-		navLink.forEach((l, i) => {
-			const index = i + 1;
-			const link = l;
-			link.classList.add("secondary-nav__link");
-			link.classList.remove("primary-nav__link", "col");
-			link.parentNode.remove();
-			const cloneList = document.querySelector(`.js-nav-clone__list li:nth-child(${index})`);
-			cloneList.insertAdjacentElement("beforeend", link);
-			link.parentNode.style.display = "block";
-		});
+	if (!running) {
+		running = true;
+		AddTick(tick);
 	}
 }
 
-function clonePrimaryItems() {
-	const detectDuplicate = document.querySelectorAll(".js-nav__duplicate");
-	const expandableList = document.querySelectorAll(".js-expandable");
+function tick() {
+	const viewportDetails = getViewportDetails();
 
-	// Clone primary nav items into sub-menu on mobile, so it can still be selected on mobile
-	if (document.body.classList.contains("viewport-sm") && detectDuplicate.length === 0) {
-		expandableList.forEach((item) => {
-			const href = item.querySelector("a").getAttribute("href");
-			const text = item.querySelector(".submenu-title").innerText;
-			const childList = item.querySelector(".js-expandable__content");
-
-			const newLink = document.createElement("a");
-			newLink.classList.add("primary-nav__child-link");
-			newLink.href = href;
-			newLink.innerText = text.trim();
-
-			const newItem = document.createElement("li");
-			newItem.classList.add("primary-nav__child-item", "js-nav__duplicate", "js-expandable__child");
-			newItem.insertAdjacentElement("beforeend", newLink);
-			childList.insertBefore(newItem, childList.firstChild);
-		});
-	} else if (!document.body.classList.contains("viewport-sm") && detectDuplicate.length > 0) {
-		detectDuplicate.forEach((duplicate) => {
-			duplicate.remove();
-		});
+	if (viewportDetails.resized) {
+		callbacks.forEach((callback) => callback(viewportDetails));
 	}
 }
 
-export default function initNav() {
-	window.addEventListener("resize", () => {
-		clonePrimaryItems();
-		cloneSecondaryNav();
-	});
+const attrExpanded = "aria-expanded";
+const attrHidden = "aria-hidden";
+const attrDisabled = "aria-disabled";
 
-	document.addEventListener("keydown", (e) => {
-		if (e.key === "Escape") {
-			// Find all nav items currently hovered (with open submenu)
-			document.querySelectorAll(".primary-nav__item:hover > ul").forEach((submenu) => {
-				submenu.classList.add("ons-u-hidden");
-				const parentItem = submenu.closest(".primary-nav__item");
-				// Handler to restore submenu on mouse leave
-				const handleMouseLeave = () => {
-					submenu.classList.remove("ons-u-hidden");
-					parentItem.removeEventListener("mouseleave", handleMouseLeave);
-				};
-				parentItem.addEventListener("mouseleave", handleMouseLeave, { once: true });
-			});
+class NavigationToggle {
+	constructor(el, toggle, navigation, hideClass) {
+		this.toggle = toggle;
+		this.navigation = navigation;
+		this.hideClass = hideClass;
+		this.searchToggleBtn = el.querySelector(".ons-js-toggle-header-search");
+		this.menuBtn = el.querySelector(".ons-js-toggle-nav-menu");
+		this.menuEl = el.querySelector(".ons-js-nav-menu");
+		this.searchBtn = el.querySelector(".ons-btn--search");
+		this.searchEl = el.querySelector(".ons-js-header-search");
+
+		this.toggle.classList.remove("ons-u-d-no");
+		this.toggle.classList.remove("disabled");
+		this.setAria();
+		onViewportChange(this.setAria.bind(this));
+	}
+
+	registerEvents() {
+		this.toggle.addEventListener("click", this.toggleNav.bind(this));
+	}
+
+	toggleNav() {
+		if (this.navigation.getAttribute(attrHidden) === "false") {
+			this.closeNav();
+		} else {
+			this.openNav();
 		}
-	});
+	}
 
-	const primaryNav = document.querySelector("#nav-primary");
-	const searchBar = document.querySelector("#searchBar");
-	const navItem = document.querySelectorAll(".js-nav");
-	const expandableItems = document.querySelectorAll(".js-expandable");
+	openNav() {
+		const input = [...this.navigation.getElementsByTagName("INPUT")][0];
 
-	clonePrimaryItems();
-	cloneSecondaryNav();
+		this.toggle.classList.add("active");
+		this.navigation.setAttribute(attrHidden, "false");
+		this.navigation.classList.remove(this.hideClass);
 
-	primaryNav.classList.add("nav-main--hidden");
-	primaryNav.ariaExpanded = false;
-
-	expandableItems.forEach((item) => {
-		item.addEventListener("click", (event) => {
-			if (document.body.classList.contains("viewport-sm")) {
-				event.preventDefault();
-				toggleSubnav(item);
-			}
-		});
-	});
-
-	// stop parent element from taking over all click events
-	document.querySelectorAll(".js-expandable > .js-expandable__content").forEach((elem) => {
-		elem.addEventListener("click", (event) => {
-			event.stopPropagation();
-		});
-	});
-
-	navItem.forEach((item) => {
-		item.addEventListener("keydown", (e) => {
-			const focusedItem = document.querySelector(".js-expandable__child a:focus"); // only selects child item that is in focus
-			const keycode = e.keyCode;
-			const up = 38;
-			const down = 40;
-			const right = 39;
-			const left = 37;
-			const esc = 27;
-			const tab = 9;
-			if (keycode === tab && focusedItem) {
-				item.classList.remove("primary-nav__item--focus");
-				item.nextElementSibling?.focus();
-			}
-			if (keycode === esc) {
-				item.classList.remove("primary-nav__item--focus");
-				const closestNav = item.closest(".js-nav");
-				const link = closestNav.querySelector("a");
-				link.classList.add("hide-children");
-				link.focus();
-				link.addEventListener("focusout", () => {
-					link.classList.remove("hide-children");
-				});
-			}
-			if (keycode === down) {
-				e.preventDefault();
-				item.classList.add("primary-nav__item--focus");
-				if (focusedItem) {
-					focusedItem.parentElement.nextElementSibling?.querySelector("a").focus();
-				} else {
-					item.querySelector(".js-expandable__child a")?.focus();
-				}
-			}
-			if (keycode === up) {
-				e.preventDefault();
-				if (focusedItem && focusedItem.parentElement.previousElementSibling) {
-					focusedItem.parentElement.previousElementSibling?.querySelector("a").focus();
-				} else {
-					item.classList.remove("primary-nav__item--focus");
-					item.querySelector("a")?.focus();
-				}
-			}
-			if (keycode === right) {
-				e.preventDefault();
-				item.classList.remove("primary-nav__item--focus");
-				const closestNav = item.closest(".js-nav");
-				closestNav.nextElementSibling?.querySelector("a").focus();
-			}
-			if (keycode === left) {
-				e.preventDefault();
-				item.classList.remove("primary-nav__item--focus");
-				const closestNav = item.closest(".js-nav");
-				closestNav.previousElementSibling?.querySelector("a").focus();
-			}
-		});
-	});
-
-	const expandBehaviour = (item, expandedBool) => {
-		if (!document.body.classList.contains("viewport-sm")) {
-			const navLink = item.querySelector(".primary-nav__link");
-			navLink.ariaExpanded = expandedBool;
-			const expandable = item.querySelector(".js-expandable__content");
-			expandable.ariaExpanded = expandedBool;
+		if (input) {
+			input.focus();
 		}
-	};
 
-	expandableItems.forEach((item) => {
-		item.addEventListener("focusin", () => expandBehaviour(item, true));
-		item.addEventListener("pointerenter", () => expandBehaviour(item, true));
-	});
-
-	expandableItems.forEach((item) => {
-		item.addEventListener("focusout", () => expandBehaviour(item, false));
-		item.addEventListener("pointerleave", () => expandBehaviour(item, false));
-	});
-
-	const menuToggle = document.querySelector("#menu-toggle");
-	const menuToggleContainer = menuToggle.parentNode;
-	const searchToggle = document.querySelector("#search-toggle");
-	const searchToggleContainer = searchToggle.parentNode;
-
-	menuToggle.addEventListener("click", (event) => {
-		event.preventDefault();
-		if (!searchBar.classList.contains("nav-search--hidden")) {
-			toggleSearch(searchToggleContainer, searchBar);
+		if (this.toggle === this.searchToggleBtn) {
+			this.updateSearchIcon(true, this.toggle);
 		}
-		toggleMenu(menuToggleContainer, primaryNav);
-	});
 
-	searchToggle.addEventListener("click", (event) => {
-		event.preventDefault();
-		if (!primaryNav.classList.contains("nav-main--hidden")) {
-			toggleMenu(menuToggleContainer, primaryNav);
+		this.toggle.setAttribute(attrExpanded, "true");
+
+		this.toggleMenuAndSearch();
+	}
+
+	closeNav() {
+		this.toggle.classList.remove("active");
+		this.navigation.setAttribute(attrHidden, "true");
+		this.navigation.classList.add(this.hideClass);
+
+		if (this.toggle === this.searchToggleBtn) {
+			this.updateSearchIcon(false, this.toggle);
 		}
-		toggleSearch(searchToggleContainer, searchBar);
-	});
+
+		this.toggle.setAttribute(attrExpanded, "false");
+	}
+
+	updateSearchIcon(isOpen, toggle) {
+		const icons = {
+			open: `
+                <span class="ons-btn__inner">
+                    <svg class="ons-icon ons-icon--close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" focusable="false" fill="currentColor" role="img" title="ons-icon-close">
+                        <path d="M12 0C5.4 0 0 5.4 0 12C0 18.6 5.4 24 12 24C18.6 24 24 18.6 24 12C24 5.4 18.6 0 12 0ZM17.3143 15.5143C17.6571 15.8571 17.6571 16.3714 17.3143 16.7143L16.7143 17.3143C16.3714 17.6571 15.8571 17.6571 15.5143 17.3143L12 13.8L8.48571 17.3143C8.14286 17.6571 7.62857 17.6571 7.28571 17.3143L6.68571 16.7143C6.34286 16.3714 6.34286 15.8571 6.68571 15.5143L10.2 12L6.68571 8.48571C6.34286 8.14286 6.34286 7.62857 6.68571 7.28571L7.28571 6.68571C7.62857 6.34286 8.14286 6.34286 8.48571 6.68571L12 10.2L15.5143 6.68571C15.8571 6.34286 16.3714 6.34286 16.7143 6.68571L17.3143 7.28571C17.6571 7.62857 17.6571 8.14286 17.3143 8.48571L13.8 12L17.3143 15.5143Z"/>
+                    </svg>
+                    <span class="ons-btn__text"></span>
+                </span>`,
+			close: `
+                <span class="ons-btn__inner">
+                    <svg class="ons-icon ons-icon--search ons-u-mr-2xs" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor" role="img" title="ons-icon-search">
+                        <path d="M11.86 10.23 8.62 6.99a4.63 4.63 0 1 0-6.34 1.64 4.55 4.55 0 0 0 2.36.64 4.65 4.65 0 0 0 2.33-.65l3.24 3.23a.46.46 0 0 0 .65 0l1-1a.48.48 0 0 0 0-.62Zm-5-3.32a3.28 3.28 0 0 1-2.31.93 3.22 3.22 0 1 1 2.35-.93Z"></path>
+                    </svg>
+                    <span class="ons-btn__text"></span>
+                </span>`
+		};
+		if (isOpen != null) {
+			toggle.innerHTML = isOpen ? icons.open : icons.close;
+			toggle.classList.toggle("ons-btn--close", isOpen);
+			toggle.classList.toggle("ons-btn--search-icon", !isOpen);
+		}
+	}
+
+	isHidden(el) {
+		if (!el) {
+			return true;
+		}
+
+		const style = window.getComputedStyle(el);
+		if (style.display === "none") {
+			return true;
+		}
+
+		// `offsetParent` can be `null` for reasons other than `display: none` (e.g. fixed positioning),
+		// so use layout rects as a more reliable proxy for visibility.
+		return el.getClientRects().length === 0;
+	}
+
+	setAria(viewportDetails = null) {
+		const isToggleHidden = this.isHidden(this.toggle);
+		this.toggle.setAttribute(attrDisabled, "false");
+
+		this.searchToggleBtn?.setAttribute(attrDisabled, "false");
+
+		// iOS Safari/Chrome can change viewport height during scroll when the browser chrome
+		// hides/shows, which can trigger resize events. If the user has the navigation open
+		// on a small screen, don't force-close it in response to these resizes.
+		if (
+			viewportDetails &&
+			!isToggleHidden &&
+			this.navigation.getAttribute(attrHidden) === "false"
+		) {
+			return;
+		}
+
+		if (!isToggleHidden) {
+			// close nav by default if toggle button is visible
+			this.closeNav();
+		} else {
+			// if toggle is hidden, set nav to open (for visible desktop nav)
+			this.toggle.setAttribute(attrExpanded, "false"); // set mobile menu expanded to false if hidden
+			this.navigation.removeAttribute(attrHidden);
+			this.navigation.classList.remove(this.hideClass);
+
+			if (this.hideClass !== "ons-u-d-no") {
+				this.navigation.classList.remove(this.hideClass);
+			} else {
+				this.closeNav();
+			}
+		}
+	}
+
+	toggleMenuAndSearch() {
+		if (this.menuBtn) {
+			const isMenuOpen = this.menuBtn.getAttribute("aria-expanded") === "true";
+
+			if (isMenuOpen && this.toggle == this.menuBtn && this.searchBtn) {
+				this.updateSearchIcon(false, this.searchToggleBtn && this.searchBtn);
+				this.searchBtn.setAttribute("aria-expanded", "false");
+				this.searchEl.setAttribute("aria-hidden", "true");
+				this.searchEl.classList.add("ons-u-d-no");
+				this.searchToggleBtn.classList.remove("active");
+			}
+		}
+
+		if (this.searchBtn) {
+			const isSearchOpen = this.searchBtn.getAttribute("aria-expanded") === "true";
+
+			if (isSearchOpen && this.toggle == this.searchToggleBtn && this.menuBtn) {
+				this.menuBtn.setAttribute("aria-expanded", "false");
+				this.menuEl.setAttribute("aria-hidden", "true");
+				this.menuEl.classList.add("ons-u-d-no");
+				this.menuBtn.classList.remove("active");
+			}
+		}
+	}
+}
+
+export default async function initNav(el) {
+	const toggleNavigationBtn = el.querySelector(".ons-js-navigation-button");
+	const navigationEl = el.querySelector(".ons-js-navigation");
+	const navigationHideClass = "ons-u-d-no@2xs@l";
+	const toggleSubNavigationBtn = el.querySelector(".ons-js-sub-navigation-button");
+	const subNavigationEl = el.querySelector(".ons-js-secondary-nav");
+	const subNavigationHideClass = "ons-u-d-no";
+	const toggleSearchBtn = el.querySelector(".ons-js-toggle-search");
+	const searchEl = el.querySelector(".ons-js-navigation-search");
+	const searchHideClass = "ons-u-d-no@xs@l";
+	const toggleServicesBtn = el.querySelector(".ons-js-toggle-services");
+	const servicesEl = el.querySelector(".ons-js-services-mobile-nav");
+	const servicesHideClass = "ons-u-d-no";
+	const toggleHeaderSearchBtn = el.querySelector(".ons-js-toggle-header-search");
+	const headerSearchHideClass = "ons-u-d-no";
+	const headerSearchEl = el.querySelector(".ons-js-header-search");
+	const menuEl = el.querySelector(".ons-js-nav-menu");
+	const toggleHeaderMenuBtn = el.querySelector(".ons-js-toggle-nav-menu");
+
+	if (toggleNavigationBtn) {
+		new NavigationToggle(
+			el,
+			toggleNavigationBtn,
+			navigationEl,
+			navigationHideClass
+		).registerEvents();
+	}
+
+	if (toggleSubNavigationBtn) {
+		new NavigationToggle(
+			el,
+			toggleSubNavigationBtn,
+			subNavigationEl,
+			subNavigationHideClass
+		).registerEvents();
+	}
+
+	if (toggleSearchBtn) {
+		new NavigationToggle(el, toggleSearchBtn, searchEl, searchHideClass).registerEvents();
+	}
+
+	if (toggleHeaderSearchBtn) {
+		new NavigationToggle(
+			el,
+			toggleHeaderSearchBtn,
+			headerSearchEl,
+			headerSearchHideClass
+		).registerEvents();
+	}
+
+	if (toggleHeaderMenuBtn) {
+		new NavigationToggle(el, toggleHeaderMenuBtn, menuEl, headerSearchHideClass).registerEvents();
+	}
+
+	if (toggleServicesBtn) {
+		new NavigationToggle(el, toggleServicesBtn, servicesEl, servicesHideClass).registerEvents();
+	}
 }

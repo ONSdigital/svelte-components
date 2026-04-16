@@ -3,6 +3,7 @@
 	import Theme from "$lib/components/Theme/Theme.svelte";
 	import SkipLink from "$lib/components/SkipLink/SkipLink.svelte";
 	import HeaderNav from "./HeaderNav.svelte";
+	import HeaderNavCompact from "./HeaderNavCompact.svelte";
 	import HeaderNavLegacy from "./HeaderNavLegacy.svelte";
 
 	const page = getContext("page");
@@ -16,7 +17,12 @@
 	 * Use the legacy nav header
 	 * @type {boolean}
 	 */
-	export let legacy = true;
+	export let legacy = false;
+	/**
+	 * Include a border/line under the header
+	 * @type {boolean}
+	 */
+	export let border = false;
 	/**
 	 * Optional product title
 	 * @type {string|null}
@@ -64,11 +70,15 @@
 	const texts = {
 		Home: "Hafan",
 		Search: "Chwilio",
+		"Search the ONS": "Chwiliwch y SYG",
 		Menu: "Dewislen",
 		"Hide search": "Cuddio",
 		"Office for National Statistics logo": "Logo Swyddfa Ystadegau Gwladol",
 		Homepage: "Hafan",
-		"Search for a keyword(s) or time series ID": "Chwilio am allweddair neu ID cyfres amser"
+		"Search for a keyword(s) or time series ID": "Chwilio am allweddair neu ID cyfres amser",
+		"Popular searches": "Chwiliadau poblogaidd",
+		Cymraeg: "English",
+		"Newid iaith i": "Change language to"
 	};
 
 	$: i18n = (text) => (lang === "cy" && texts[text] ? texts[text] : text);
@@ -83,12 +93,18 @@
 		<SkipLink href={skipHref} />
 	{/if}
 	<slot name="before" />
-	<Theme {theme} overrides={themeOverrides}>
+	<Theme
+		{theme}
+		overrides={themeOverrides}
+		cls={["dark", "blue", "navyblue"].includes(theme) ? "dark-mode" : null}
+	>
 		<!-- <div id="pagePath" class="hide">{path}</div> -->
-		{#if legacy && !compact}
-			<HeaderNavLegacy {bilingual} {lang} {baseurl} {baseother} {path} {i18n} />
+		{#if compact}
+			<HeaderNavCompact {border} {baseurl} {i18n} />
+		{:else if !legacy}
+			<HeaderNav {border} {bilingual} {lang} {baseurl} {baseother} {path} {i18n} />
 		{:else}
-			<HeaderNav {compact} {title} {baseurl} {i18n} />
+			<HeaderNavLegacy {bilingual} {lang} {baseurl} {baseother} {path} {i18n} />
 		{/if}
 		{#if title}
 			<div class="ons-header__main">
@@ -111,16 +127,3 @@
 		{/if}
 	</Theme>
 </header>
-
-<style>
-	.ons-header__top {
-		background: var(--ons-color-page-light);
-	}
-	.ons-icon--logo__group--primary,
-	.ons-icon--logo__group--text {
-		fill: var(--ons-color-text-link-hover);
-	}
-	.ons-header__top--compact {
-		border-bottom: 1px solid var(--ons-color-borders);
-	}
-</style>

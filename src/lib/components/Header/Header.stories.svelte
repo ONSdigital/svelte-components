@@ -19,8 +19,12 @@
 
 <Story name="Default" args={{}} />
 
-<Story name="Compact" args={{ compact: true }} />
+<Story name="Dark mode" args={{ theme: "dark" }} />
+
+<Story name="Compact" args={{ compact: true, border: true }} />
 
 <Story name="Compact with page title" args={{ compact: true, title: "Page title" }} />
 
 <Story name="Compact dark theme" args={{ compact: true, title: "Page title", theme: "dark" }} />
+
+<Story name="Legacy header" args={{ legacy: true }} />
