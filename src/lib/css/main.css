@@ -20,6 +20,10 @@
 .ons-grid--spaced.ons-grid--loose .ons-grid__col {
 	margin-bottom: 2rem;
 }
+.ons-header-nav-menu,
+.ons-header-nav-search {
+	border-top: 1px solid var(--ons-color-ocean-blue);
+}
 
 /* Fixes for unexpected behaviour in design system */
 body {

@@ -3,7 +3,6 @@
 	import initNav from "./nav.js";
 
 	export let search = true;
-	export let border = false;
 	export let bilingual = true;
 	export let lang = "en";
 	export let baseurl = "https://www.ons.gov.uk";
@@ -254,7 +253,7 @@
 		</p>
 	</div>
 </div>
-<div class="ons-header__top" class:ons-header__top--border={border}>
+<div class="ons-header__top">
 	<div class="ons-container">
 		<div
 			class="ons-header__grid-top ons-grid ons-grid-flex ons-grid-flex--between ons-grid-flex--vertical-center ons-grid-flex--no-wrap ons-grid--gutterless"
@@ -530,10 +529,10 @@
 </nav>
 {#if search}
 	<nav
-		class="ons-js-header-search ons-header-nav-search"
+		class="ons-js-header-search ons-header-nav-search ons-u-d-no"
 		id="search"
 		aria-label="Nav Search"
-		aria-hidden="false"
+		aria-hidden="true"
 	>
 		<div class="ons-container">
 			<form
@@ -604,9 +603,6 @@
 	.ons-icon--logo__group--primary,
 	.ons-icon--logo__group--text {
 		fill: var(--ons-color-text-link-hover);
-	}
-	.ons-header__top--border {
-		border-bottom: 1px solid var(--ons-color-borders);
 	}
 	.ons-header__language {
 		display: block;

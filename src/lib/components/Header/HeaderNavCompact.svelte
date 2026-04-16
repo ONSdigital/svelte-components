@@ -1,5 +1,4 @@
 <script>
-	export let border = false;
 	export let baseurl = "https://www.ons.gov.uk";
 	export let i18n = (text) => text;
 </script>
@@ -16,7 +15,7 @@
 		</p>
 	</div>
 </div>
-<div class="ons-header__top" class:ons-header__top--border={border}>
+<div class="ons-header__top">
 	<div class="ons-container">
 		<div
 			class="ons-header__grid-top ons-grid ons-grid-flex ons-grid-flex--between ons-grid-flex--vertical-center ons-grid-flex--no-wrap ons-grid--gutterless"
@@ -178,8 +177,5 @@
 	.ons-icon--logo__group--primary,
 	.ons-icon--logo__group--text {
 		fill: var(--ons-color-text-link-hover);
-	}
-	.ons-header__top--border {
-		border-bottom: 1px solid var(--ons-color-borders);
 	}
 </style>

@@ -94,7 +94,7 @@
 	});
 </script>
 
-<header class="ons-header" role="banner">
+<header class="ons-header" class:ons-header--border={border && !title} role="banner">
 	{#if skipHref}
 		<SkipLink href={skipHref} />
 	{/if}
@@ -106,14 +106,14 @@
 	>
 		<!-- <div id="pagePath" class="hide">{path}</div> -->
 		{#if compact}
-			<HeaderNavCompact {border} {baseurl} {i18n} />
+			<HeaderNavCompact {baseurl} {i18n} />
 		{:else if !legacy}
-			<HeaderNav {search} {border} {bilingual} {lang} {baseurl} {baseother} {path} {i18n} />
+			<HeaderNav {search} {bilingual} {lang} {baseurl} {baseother} {path} {i18n} />
 		{:else}
 			<HeaderNavLegacy {search} {bilingual} {lang} {baseurl} {baseother} {path} {i18n} />
 		{/if}
 		{#if title}
-			<div class="ons-header__main">
+			<div class="ons-header__main" class:ons-header--border={border}>
 				<div class="ons-container">
 					<div
 						class="ons-grid ons-grid-flex ons-grid-flex--between ons-grid-flex--vertical-center ons-grid-flex--no-wrap ons-grid--gutterless"
@@ -133,3 +133,9 @@
 		{/if}
 	</Theme>
 </header>
+
+<style>
+	.ons-header--border {
+		border-bottom: 1px solid var(--ons-color-borders);
+	}
+</style>
