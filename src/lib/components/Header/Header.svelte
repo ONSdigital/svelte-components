@@ -73,6 +73,7 @@
 		"Search the ONS": "Chwiliwch y SYG",
 		Menu: "Dewislen",
 		"Hide search": "Cuddio",
+		"Office for National Statistics": "Swyddfa Ystadegau Gwladol",
 		"Office for National Statistics logo": "Logo Swyddfa Ystadegau Gwladol",
 		Homepage: "Hafan",
 		"Search for a keyword(s) or time series ID": "Chwilio am allweddair neu ID cyfres amser",

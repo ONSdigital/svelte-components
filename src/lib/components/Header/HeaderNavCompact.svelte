@@ -25,7 +25,7 @@
 				<a
 					class="ons-header__org-logo-link"
 					href={baseurl}
-					aria-label="{i18n('Office for National Statistics logo')} - {i18n('Homepage')}"
+					aria-label="{i18n('Office for National Statistics')} - {i18n('Homepage')}"
 				>
 					<div class="ons-header__org-logo ons-header__org-logo--large">
 						<svg
