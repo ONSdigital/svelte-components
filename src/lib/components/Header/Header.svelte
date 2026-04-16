@@ -9,21 +9,6 @@
 	const page = getContext("page");
 
 	/**
-	 * Display compact header without menus
-	 * @type {boolean}
-	 */
-	export let compact = false;
-	/**
-	 * Use the legacy nav header
-	 * @type {boolean}
-	 */
-	export let legacy = false;
-	/**
-	 * Include a border/line under the header
-	 * @type {boolean}
-	 */
-	export let border = false;
-	/**
 	 * Optional product title
 	 * @type {string|null}
 	 */
@@ -44,10 +29,30 @@
 	 */
 	export let themeOverrides = {};
 	/**
+	 * Display compact header without menus
+	 * @type {boolean}
+	 */
+	export let compact = false;
+	/**
+	 * Include site search
+	 * @type {boolean}
+	 */
+	export let search = true;
+	/**
 	 * Set to true to include an English/Welsh language link
 	 * @type {boolean}
 	 */
 	export let bilingual = true;
+	/**
+	 * Include a border/line under the header
+	 * @type {boolean}
+	 */
+	export let border = false;
+	/**
+	 * Use the legacy nav header
+	 * @type {boolean}
+	 */
+	export let legacy = false;
 	/**
 	 * Anchor link to skip to main body content (default "#main")
 	 * @type {string|null}
@@ -103,9 +108,9 @@
 		{#if compact}
 			<HeaderNavCompact {border} {baseurl} {i18n} />
 		{:else if !legacy}
-			<HeaderNav {border} {bilingual} {lang} {baseurl} {baseother} {path} {i18n} />
+			<HeaderNav {search} {border} {bilingual} {lang} {baseurl} {baseother} {path} {i18n} />
 		{:else}
-			<HeaderNavLegacy {bilingual} {lang} {baseurl} {baseother} {path} {i18n} />
+			<HeaderNavLegacy {search} {bilingual} {lang} {baseurl} {baseother} {path} {i18n} />
 		{/if}
 		{#if title}
 			<div class="ons-header__main">

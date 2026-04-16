@@ -2,7 +2,7 @@
 	import { onMount } from "svelte";
 	import initNav from "./nav.js";
 
-	export let darkMode = false;
+	export let search = true;
 	export let border = false;
 	export let bilingual = true;
 	export let lang = "en";
@@ -431,31 +431,33 @@
 						>
 					</button>
 				</div>
-				<div class="ons-header__links ons-grid__col ons-header__menu-link">
-					<button
-						type="button"
-						class="ons-btn ons-u-fs-s--b ons-js-toggle-header-search ons-btn--close ons-btn--search-icon active disabled ons-btn--search"
-						aria-label="Toggle search"
-						aria-controls="search"
-						aria-expanded="true"
-						aria-disabled="true"
-					>
-						<span class="ons-btn__inner"
-							><svg
-								class="ons-icon ons-u-mr-2xs"
-								viewBox="0 0 12 12"
-								xmlns="http://www.w3.org/2000/svg"
-								aria-hidden="true"
-								fill="currentColor"
-								role="img"
-							>
-								<path
-									d="M11.86 10.23 8.62 6.99a4.63 4.63 0 1 0-6.34 1.64 4.55 4.55 0 0 0 2.36.64 4.65 4.65 0 0 0 2.33-.65l3.24 3.23a.46.46 0 0 0 .65 0l1-1a.48.48 0 0 0 0-.62Zm-5-3.32a3.28 3.28 0 0 1-2.31.93 3.22 3.22 0 1 1 2.35-.93Z"
-								/>
-							</svg><span class="ons-btn__text"></span></span
+				{#if search}
+					<div class="ons-header__links ons-grid__col ons-header__menu-link">
+						<button
+							type="button"
+							class="ons-btn ons-u-fs-s--b ons-js-toggle-header-search ons-btn--close ons-btn--search-icon active disabled ons-btn--search"
+							aria-label="Toggle search"
+							aria-controls="search"
+							aria-expanded="true"
+							aria-disabled="true"
 						>
-					</button>
-				</div>
+							<span class="ons-btn__inner"
+								><svg
+									class="ons-icon ons-u-mr-2xs"
+									viewBox="0 0 12 12"
+									xmlns="http://www.w3.org/2000/svg"
+									aria-hidden="true"
+									fill="currentColor"
+									role="img"
+								>
+									<path
+										d="M11.86 10.23 8.62 6.99a4.63 4.63 0 1 0-6.34 1.64 4.55 4.55 0 0 0 2.36.64 4.65 4.65 0 0 0 2.33-.65l3.24 3.23a.46.46 0 0 0 .65 0l1-1a.48.48 0 0 0 0-.62Zm-5-3.32a3.28 3.28 0 0 1-2.31.93 3.22 3.22 0 1 1 2.35-.93Z"
+									/>
+								</svg><span class="ons-btn__text"></span></span
+							>
+						</button>
+					</div>
+				{/if}
 				{#if bilingual}
 					<div class="ons-grid__col ons-col-auto">
 						<div class="ons-header__language">
@@ -526,65 +528,71 @@
 		</ul>
 	</div>
 </nav>
-<nav
-	class="ons-js-header-search ons-header-nav-search"
-	id="search"
-	aria-label="Nav Search"
-	aria-hidden="false"
->
-	<div class="ons-container">
-		<form class="ons-header-nav-search__input" method="get" action="https://www.ons.gov.uk/search">
-			<div class="ons-field">
-				<label class="ons-label" for="search-field" id="header-search-input-label"
-					>{i18n("Search the ONS")}</label
-				>
-				<span
-					class="ons-grid-flex ons-grid-flex--vertical-top ons-input_search-button ons-input__button--header-search"
-				>
-					<input
-						type="search"
-						id="search-field"
-						class="ons-input ons-input--text ons-input-type__input ons-search__input ons-input--header-search ons-input--w-full"
-						name="q"
-					/>
-					<button type="submit" class="ons-btn ons-search__btn ons-btn--header-search">
-						<span class="ons-btn__inner"
-							><svg
-								class="ons-icon"
-								viewBox="0 0 12 12"
-								xmlns="http://www.w3.org/2000/svg"
-								aria-hidden="true"
-								fill="currentColor"
-								role="img"
-							>
-								<path
-									d="M11.86 10.23 8.62 6.99a4.63 4.63 0 1 0-6.34 1.64 4.55 4.55 0 0 0 2.36.64 4.65 4.65 0 0 0 2.33-.65l3.24 3.23a.46.46 0 0 0 .65 0l1-1a.48.48 0 0 0 0-.62Zm-5-3.32a3.28 3.28 0 0 1-2.31.93 3.22 3.22 0 1 1 2.35-.93Z"
-								/>
-							</svg><span class="ons-btn__text ons-u-vh@2xs@s"
-								><span class="ons-u-vh">{i18n("Search")}</span></span
-							></span
-						>
-					</button>
-				</span>
-			</div>
-		</form>
-	</div>
-	<div class="ons-container">
-		<h2 class="ons-u-fs-r--b ons-u-mb-s ons-header-nav-search__heading">
-			{i18n("Popular searches")}
-		</h2>
-		<ul class="ons-list ons-list--bare ons-list--inline">
-			{#each menu.searches as item (item.label_en)}
-				<li class="ons-list__item">
-					<a
-						href="{baseurl}search?q={item[`label_${lang}`]}"
-						class="ons-u-fs-r ons-header-nav-search__text">{item[`label_${lang}`]}</a
+{#if search}
+	<nav
+		class="ons-js-header-search ons-header-nav-search"
+		id="search"
+		aria-label="Nav Search"
+		aria-hidden="false"
+	>
+		<div class="ons-container">
+			<form
+				class="ons-header-nav-search__input"
+				method="get"
+				action="https://www.ons.gov.uk/search"
+			>
+				<div class="ons-field">
+					<label class="ons-label" for="search-field" id="header-search-input-label"
+						>{i18n("Search the ONS")}</label
 					>
-				</li>
-			{/each}
-		</ul>
-	</div>
-</nav>
+					<span
+						class="ons-grid-flex ons-grid-flex--vertical-top ons-input_search-button ons-input__button--header-search"
+					>
+						<input
+							type="search"
+							id="search-field"
+							class="ons-input ons-input--text ons-input-type__input ons-search__input ons-input--header-search ons-input--w-full"
+							name="q"
+						/>
+						<button type="submit" class="ons-btn ons-search__btn ons-btn--header-search">
+							<span class="ons-btn__inner"
+								><svg
+									class="ons-icon"
+									viewBox="0 0 12 12"
+									xmlns="http://www.w3.org/2000/svg"
+									aria-hidden="true"
+									fill="currentColor"
+									role="img"
+								>
+									<path
+										d="M11.86 10.23 8.62 6.99a4.63 4.63 0 1 0-6.34 1.64 4.55 4.55 0 0 0 2.36.64 4.65 4.65 0 0 0 2.33-.65l3.24 3.23a.46.46 0 0 0 .65 0l1-1a.48.48 0 0 0 0-.62Zm-5-3.32a3.28 3.28 0 0 1-2.31.93 3.22 3.22 0 1 1 2.35-.93Z"
+									/>
+								</svg><span class="ons-btn__text ons-u-vh@2xs@s"
+									><span class="ons-u-vh">{i18n("Search")}</span></span
+								></span
+							>
+						</button>
+					</span>
+				</div>
+			</form>
+		</div>
+		<div class="ons-container">
+			<h2 class="ons-u-fs-r--b ons-u-mb-s ons-header-nav-search__heading">
+				{i18n("Popular searches")}
+			</h2>
+			<ul class="ons-list ons-list--bare ons-list--inline">
+				{#each menu.searches as item (item.label_en)}
+					<li class="ons-list__item">
+						<a
+							href="{baseurl}search?q={item[`label_${lang}`]}"
+							class="ons-u-fs-r ons-header-nav-search__text">{item[`label_${lang}`]}</a
+						>
+					</li>
+				{/each}
+			</ul>
+		</div>
+	</nav>
+{/if}
 
 <style>
 	.ons-header__grid-top {

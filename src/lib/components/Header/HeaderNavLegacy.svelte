@@ -2,6 +2,7 @@
 	import { onMount } from "svelte";
 	import initNav from "./navLegacy.js";
 
+	export let search = true;
 	export let bilingual = true;
 	export let lang = "en";
 	export let baseurl = "https://www.ons.gov.uk";
@@ -404,41 +405,43 @@
 		</ul>
 	</nav>
 </div>
-<div class="search nav-search--hidden print--hide" id="searchBar">
-	<div class="ons-container" role="search">
-		<form class="col-wrap search__form" action="{baseurl}/search">
-			<label class="search__label col col--md-23 col--lg-24" for="nav-search"
-				>{i18n("Search for a keyword(s) or time series ID")}</label
-			>
-			<input
-				type="search"
-				autocomplete="off"
-				class="search__input col col--md-21 col--lg-32"
-				id="nav-search"
-				name="q"
-				value=""
-			/>
-			<button
-				type="submit"
-				class="search__button col--md-3 col--lg-3"
-				id="nav-search-submit"
-				aria-label={i18n("Search")}
-			>
-				<span class="icon-search--light">
-					<svg
-						class="ons-svg-icon ons-svg-icon--m"
-						viewBox="0 0 12 12"
-						xmlns="http://www.w3.org/2000/svg"
-						aria-hidden="true"
-						fill="currentColor"
-					>
-						<path
-							d="M11.86 10.23 8.62 6.99a4.63 4.63 0 1 0-6.34 1.64 4.55 4.55 0 0 0 2.36.64 4.65 4.65 0 0 0 2.33-.65l3.24 3.23a.46.46 0 0
+{#if search}
+	<div class="search nav-search--hidden print--hide" id="searchBar">
+		<div class="ons-container" role="search">
+			<form class="col-wrap search__form" action="{baseurl}/search">
+				<label class="search__label col col--md-23 col--lg-24" for="nav-search"
+					>{i18n("Search for a keyword(s) or time series ID")}</label
+				>
+				<input
+					type="search"
+					autocomplete="off"
+					class="search__input col col--md-21 col--lg-32"
+					id="nav-search"
+					name="q"
+					value=""
+				/>
+				<button
+					type="submit"
+					class="search__button col--md-3 col--lg-3"
+					id="nav-search-submit"
+					aria-label={i18n("Search")}
+				>
+					<span class="icon-search--light">
+						<svg
+							class="ons-svg-icon ons-svg-icon--m"
+							viewBox="0 0 12 12"
+							xmlns="http://www.w3.org/2000/svg"
+							aria-hidden="true"
+							fill="currentColor"
+						>
+							<path
+								d="M11.86 10.23 8.62 6.99a4.63 4.63 0 1 0-6.34 1.64 4.55 4.55 0 0 0 2.36.64 4.65 4.65 0 0 0 2.33-.65l3.24 3.23a.46.46 0 0
 								0 .65 0l1-1a.48.48 0 0 0 0-.62Zm-5-3.32a3.28 3.28 0 0 1-2.31.93 3.22 3.22 0 1 1 2.35-.93Z"
-						></path>
-					</svg>
-				</span>
-			</button>
-		</form>
+							></path>
+						</svg>
+					</span>
+				</button>
+			</form>
+		</div>
 	</div>
-</div>
+{/if}
