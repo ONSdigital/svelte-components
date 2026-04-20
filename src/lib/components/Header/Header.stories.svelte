@@ -21,7 +21,7 @@
 
 <Story name="Dark mode" args={{ theme: "dark" }} />
 
-<Story name="Compact" args={{ compact: true, border: true }} />
+<Story name="Compact" args={{ compact: true, headerBorder: true }} />
 
 <Story name="Compact with page title" args={{ compact: true, title: "Page title" }} />
 

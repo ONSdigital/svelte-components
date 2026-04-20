@@ -1,21 +1,10 @@
 <script>
+	export let headerBorder = false;
 	export let baseurl = "https://www.ons.gov.uk";
 	export let i18n = (text) => text;
 </script>
 
-<div class="ons-browser-banner">
-	<div class="ons-container">
-		<p class="ons-browser-banner__content">
-			<span class="ons-browser-banner__lead">This website no longer supports your browser.</span
-			><span class="ons-browser-banner__cta">
-				You can <a class="ons-browser-banner__link" href="https://www.ons.gov.uk/help/browsers"
-					>upgrade your browser to the latest version</a
-				>.</span
-			>
-		</p>
-	</div>
-</div>
-<div class="ons-header__top">
+<div class="ons-header__top" class:ons-header--border={headerBorder}>
 	<div class="ons-container">
 		<div
 			class="ons-header__grid-top ons-grid ons-grid-flex ons-grid-flex--between ons-grid-flex--vertical-center ons-grid-flex--no-wrap ons-grid--gutterless"
@@ -177,5 +166,8 @@
 	.ons-icon--logo__group--primary,
 	.ons-icon--logo__group--text {
 		fill: var(--ons-color-text-link-hover);
+	}
+	.ons-header--border {
+		border-bottom: 1px solid var(--ons-color-borders);
 	}
 </style>

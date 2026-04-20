@@ -2,6 +2,8 @@
 	import { onMount } from "svelte";
 	import initNav from "./nav.js";
 
+	export let headerBorder = false;
+	export let menuBorder = false;
 	export let search = true;
 	export let bilingual = true;
 	export let lang = "en";
@@ -241,19 +243,7 @@
 	});
 </script>
 
-<div class="ons-browser-banner" bind:this={el}>
-	<div class="ons-container">
-		<p class="ons-browser-banner__content">
-			<span class="ons-browser-banner__lead">This website no longer supports your browser.</span
-			><span class="ons-browser-banner__cta">
-				You can <a class="ons-browser-banner__link" href="https://www.ons.gov.uk/help/browsers"
-					>upgrade your browser to the latest version</a
-				>.</span
-			>
-		</p>
-	</div>
-</div>
-<div class="ons-header__top">
+<div class="ons-header__top" class:ons-header--border={headerBorder} bind:this={el}>
 	<div class="ons-container">
 		<div
 			class="ons-header__grid-top ons-grid ons-grid-flex ons-grid-flex--between ons-grid-flex--vertical-center ons-grid-flex--no-wrap ons-grid--gutterless"
@@ -480,6 +470,7 @@
 </div>
 <nav
 	class="ons-js-nav-menu ons-header-nav-menu ons-u-pt-2xl ons-u-d-no"
+	class:ons-header-menu--border={menuBorder}
 	id="menu-links"
 	aria-label="Menu navigation"
 	aria-hidden="true"
@@ -530,6 +521,7 @@
 {#if search}
 	<nav
 		class="ons-js-header-search ons-header-nav-search ons-u-d-no"
+		class:ons-header-menu--border={menuBorder}
 		id="search"
 		aria-label="Nav Search"
 		aria-hidden="true"
@@ -607,6 +599,13 @@
 	.ons-header__language {
 		display: block;
 		margin-top: 0.85em;
+	}
+	.ons-header--border {
+		border-bottom: 1px solid var(--ons-color-borders);
+	}
+
+	.ons-header-menu--border {
+		border-bottom: 1px solid var(--ons-color-ocean-blue);
 	}
 	:global(.dark-mode .ons-header-nav-menu, .dark-mode .ons-header-nav-search) {
 		background-color: var(--ons-color-branded-secondary);

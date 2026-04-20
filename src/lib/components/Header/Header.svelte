@@ -44,10 +44,15 @@
 	 */
 	export let bilingual = true;
 	/**
-	 * Include a border/line under the header
+	 * Include a border/line under the header. For use if hero is transparent
 	 * @type {boolean}
 	 */
-	export let border = false;
+	export let headerBorder = false;
+	/**
+	 * Include a border/line under the menu when open. For use if hero colour matches menu
+	 * @type {boolean}
+	 */
+	export let menuBorder = true;
 	/**
 	 * Use the legacy nav header
 	 * @type {boolean}
@@ -94,7 +99,7 @@
 	});
 </script>
 
-<header class="ons-header" class:ons-header--border={border && !title} role="banner">
+<header class="ons-header" role="banner">
 	{#if skipHref}
 		<SkipLink href={skipHref} />
 	{/if}
@@ -105,15 +110,37 @@
 		cls={["dark", "blue", "navyblue"].includes(theme) ? "dark-mode" : null}
 	>
 		<!-- <div id="pagePath" class="hide">{path}</div> -->
+		<div class="ons-browser-banner">
+			<div class="ons-container">
+				<p class="ons-browser-banner__content">
+					<span class="ons-browser-banner__lead">This website no longer supports your browser.</span
+					><span class="ons-browser-banner__cta">
+						You can <a class="ons-browser-banner__link" href="https://www.ons.gov.uk/help/browsers"
+							>upgrade your browser to the latest version</a
+						>.</span
+					>
+				</p>
+			</div>
+		</div>
 		{#if compact}
-			<HeaderNavCompact {baseurl} {i18n} />
+			<HeaderNavCompact {headerBorder} {baseurl} {i18n} />
 		{:else if !legacy}
-			<HeaderNav {search} {bilingual} {lang} {baseurl} {baseother} {path} {i18n} />
+			<HeaderNav
+				{headerBorder}
+				{menuBorder}
+				{search}
+				{bilingual}
+				{lang}
+				{baseurl}
+				{baseother}
+				{path}
+				{i18n}
+			/>
 		{:else}
 			<HeaderNavLegacy {search} {bilingual} {lang} {baseurl} {baseother} {path} {i18n} />
 		{/if}
 		{#if title}
-			<div class="ons-header__main" class:ons-header--border={border}>
+			<div class="ons-header__main">
 				<div class="ons-container">
 					<div
 						class="ons-grid ons-grid-flex ons-grid-flex--between ons-grid-flex--vertical-center ons-grid-flex--no-wrap ons-grid--gutterless"
@@ -133,9 +160,3 @@
 		{/if}
 	</Theme>
 </header>
-
-<style>
-	.ons-header--border {
-		border-bottom: 1px solid var(--ons-color-borders);
-	}
-</style>

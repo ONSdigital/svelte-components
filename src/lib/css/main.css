@@ -22,7 +22,8 @@
 }
 .ons-header-nav-menu,
 .ons-header-nav-search {
-	border-top: 1px solid var(--ons-color-ocean-blue);
+	/* border-top: 1px solid var(--ons-color-ocean-blue); */
+	border-top: none !important;
 }
 
 /* Fixes for unexpected behaviour in design system */
