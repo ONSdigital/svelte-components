@@ -600,7 +600,7 @@
 		display: block;
 		margin-top: 0.85em;
 	}
-	.ons-header--border {
+	.ons-header--border:has(+ .ons-u-d-no) {
 		border-bottom: 1px solid var(--ons-color-borders);
 	}
 
