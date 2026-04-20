@@ -52,7 +52,7 @@
 	 * Include a border/line under the menu when open. For use if hero colour matches menu
 	 * @type {boolean}
 	 */
-	export let menuBorder = true;
+	export let menuBorder = false;
 	/**
 	 * Use the legacy nav header
 	 * @type {boolean}
