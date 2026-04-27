@@ -1,7 +1,7 @@
 <script>
 	/**
 	 * Set the type of icon
-	 * @type {"arrow"|"carret"|"chevron"|"code"|"cog"|"cross"|"download"|"expand"|"external"|"pin"|"print"|"search"|"shrink"|"signout"|"tick"}
+	 * @type {"arrow"|"carret"|"chevron"|"code"|"cog"|"copy"|"cross"|"download"|"expand"|"external"|"pin"|"print"|"search"|"shrink"|"signout"|"tick"}
 	 */
 	export let type = "arrow";
 	/**
@@ -56,6 +56,10 @@
 			d: "M9.4 16.6 4.8 12l4.6-4.6L8 6l-6 6 6 6zm5.2 0 4.6-4.6-4.6-4.6L16 6l6 6-6 6z",
 			viewBox: "2 2 20 20"
 		},
+		copy: {
+			d: "M15 20H5V7c0-.55-.45-1-1-1s-1 .45-1 1v13c0 1.1.9 2 2 2h10c.55 0 1-.45 1-1s-.45-1-1-1m5-4V4c0-1.1-.9-2-2-2H9c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h9c1.1 0 2-.9 2-2m-2 0H9V4h9z",
+			viewBox: "2 2 20 20"
+		},
 		cross: {
 			d: "M12 1.2086L10.7914 0L6 4.79155L1.20857 0L0 1.2086L4.79143 6.00015L0 10.7917L1.20857 12.0003L6 7.20875L10.7914 12.0003L12 10.7917L7.20857 6.00015L12 1.2086Z",
 			viewBox: "0 0 12 12"
@@ -74,7 +78,7 @@
 		},
 		pin: {
 			d: "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7m0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5Z",
-			viewBox: "2 2 20 20"
+			viewBox: "4 4 16 16"
 		},
 		print: {
 			d: "M17 4H3C1.3 4 0 5.2 0 6.8v5.5h4V16h12v-3.7h4V6.8C20 5.2 18.7 4 17 4zm-3 10H6V9h8v5zm3-6a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm-1-8H4v3h12V0z",
