@@ -22,7 +22,7 @@
 	 * A label for the page contents nav
 	 * @type {string}
 	 */
-	export let contentsLabel = "Page contents";
+	export let contentsLabel = "Contents";
 	/**
 	 * Don't include table of contents (allows for custom uses of nav panel)
 	 * @type {boolean}
@@ -108,7 +108,7 @@
 				{#if !noContents}
 					<nav class="ons-table-of-contents" aria-label="Sections in this page">
 						{#if contentsLabel}
-							<h2 class="ons-table-of-contents__title ons-u-fs-r--b ons-u-mb-s">Contents</h2>
+							<h2 class="ons-table-of-contents__title ons-u-fs-r--b ons-u-mb-s">{contentsLabel}</h2>
 						{/if}
 						<ol class="ons-list ons-u-mb-l ons-list--dashed">
 							{#each formatSections($sections) as section}
