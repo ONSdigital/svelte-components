@@ -2,11 +2,11 @@
 	import { onMount, onDestroy, createEventDispatcher, getContext } from "svelte";
 	import Icon from "./ToolbarIcon.svelte";
 	import HelpModal from "./HelpModal.svelte";
-	import { nanoid } from "nanoid";
+	import { slugify } from "$lib/js/utils.js";
 
 	// Props for the ToolbarButton
 	let {
-		id = nanoid(6),
+		id = slugify(),
 		icon = "",
 		label = "",
 		disabled = false,
