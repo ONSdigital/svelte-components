@@ -117,3 +117,9 @@
 		<path d={svgPath || paths[type].d}></path>
 	</svg>
 {/if}
+
+<style>
+	.ons-icon {
+		overflow: visible;
+	}
+</style>
