@@ -1,4 +1,6 @@
 <script>
+	import Container from "../Container/Container.svelte";
+
 	/**
 	 * Phase of project (alpha, beta, prototype etc.)
 	 * @type {string}
@@ -16,14 +18,19 @@
 	 */
 	export let href = "https://www.ons.gov.uk/feedback";
 	/**
+	 * Sets the width of the banner
+	 * @type {"narrow"|"medium"|"wide"|"wider"|"full"}
+	 */
+	export let width = "wide";
+	/**
 	 * Optional: Set an additional CSS class for the component
 	 * @type {string|null}
 	 */
 	export let cls = null;
 </script>
 
-<div class="ons-phase-banner {cls}">
-	<div class="ons-container">
+<div class="ons-phase-banner {cls}" class:ons-phase-banner__full={width === "full"}>
+	<Container {width}>
 		<div
 			class="ons-grid ons-grid-flex ons-grid--gutterless ons-grid-flex--vertical-center ons-grid-flex--no-wrap"
 		>
@@ -68,5 +75,11 @@
 				</p>
 			</div>
 		</div>
-	</div>
+	</Container>
 </div>
+
+<style>
+	.ons-phase-banner__full :global(.ons-page__container) {
+		padding: 0 12px;
+	}
+</style>
