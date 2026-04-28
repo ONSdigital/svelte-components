@@ -1,11 +1,14 @@
 <script>
+	import Container from "../Container/Container.svelte";
+
+	export let width = "wide";
 	export let headerBorder = false;
 	export let baseurl = "https://www.ons.gov.uk";
 	export let i18n = (text) => text;
 </script>
 
 <div class="ons-header__top" class:ons-header--border={headerBorder}>
-	<div class="ons-container">
+	<Container {width}>
 		<div
 			class="ons-header__grid-top ons-grid ons-grid-flex ons-grid-flex--between ons-grid-flex--vertical-center ons-grid-flex--no-wrap ons-grid--gutterless"
 		>
@@ -156,7 +159,7 @@
 				</a>
 			</div>
 		</div>
-	</div>
+	</Container>
 </div>
 
 <style>

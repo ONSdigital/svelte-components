@@ -1,6 +1,7 @@
 <script>
 	import { onMount, getContext } from "svelte";
 	import Theme from "$lib/components/Theme/Theme.svelte";
+	import Container from "../Container/Container.svelte";
 	import SkipLink from "$lib/components/SkipLink/SkipLink.svelte";
 	import HeaderNav from "./HeaderNav.svelte";
 	import HeaderNavCompact from "./HeaderNavCompact.svelte";
@@ -18,6 +19,11 @@
 	 * @type {string|null}
 	 */
 	export let titleHref = null;
+	/**
+	 * Sets the width of the header (does not apply to legacy mode)
+	 * @type {"narrow"|"medium"|"wide"|"wider"|"full"}
+	 */
+	export let width = "wide";
 	/**
 	 * Sets a predefined theme
 	 * @type {"light"|"dark"|"paleblue"|"blue"|"navyblue"|"grey"|null}
@@ -99,7 +105,7 @@
 	});
 </script>
 
-<header class="ons-header" role="banner">
+<header class="ons-header" class:ons-header__full={width === "full"} role="banner">
 	{#if skipHref}
 		<SkipLink href={skipHref} />
 	{/if}
@@ -111,7 +117,7 @@
 	>
 		<!-- <div id="pagePath" class="hide">{path}</div> -->
 		<div class="ons-browser-banner">
-			<div class="ons-container">
+			<Container {width}>
 				<p class="ons-browser-banner__content">
 					<span class="ons-browser-banner__lead">This website no longer supports your browser.</span
 					><span class="ons-browser-banner__cta">
@@ -120,12 +126,13 @@
 						>.</span
 					>
 				</p>
-			</div>
+			</Container>
 		</div>
 		{#if compact}
-			<HeaderNavCompact {headerBorder} {baseurl} {i18n} />
+			<HeaderNavCompact {width} {headerBorder} {baseurl} {i18n} />
 		{:else if !legacy}
 			<HeaderNav
+				{width}
 				{headerBorder}
 				{menuBorder}
 				{search}
@@ -141,7 +148,7 @@
 		{/if}
 		{#if title}
 			<div class="ons-header__main">
-				<div class="ons-container">
+				<Container {width}>
 					<div
 						class="ons-grid ons-grid-flex ons-grid-flex--between ons-grid-flex--vertical-center ons-grid-flex--no-wrap ons-grid--gutterless"
 					>
@@ -155,8 +162,14 @@
 							{/if}
 						</div>
 					</div>
-				</div>
+				</Container>
 			</div>
 		{/if}
 	</Theme>
 </header>
+
+<style>
+	.ons-header__full :global(.ons-page__container) {
+		padding: 0 12px;
+	}
+</style>

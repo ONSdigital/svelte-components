@@ -1,7 +1,9 @@
 <script>
 	import { onMount } from "svelte";
+	import Container from "../Container/Container.svelte";
 	import initNav from "./nav.js";
 
+	export let width = "wide";
 	export let headerBorder = false;
 	export let menuBorder = false;
 	export let search = true;
@@ -244,7 +246,7 @@
 </script>
 
 <div class="ons-header__top" class:ons-header--border={headerBorder} bind:this={el}>
-	<div class="ons-container">
+	<Container {width}>
 		<div
 			class="ons-header__grid-top ons-grid ons-grid-flex ons-grid-flex--between ons-grid-flex--vertical-center ons-grid-flex--no-wrap ons-grid--gutterless"
 		>
@@ -466,7 +468,7 @@
 				{/if}
 			</div>
 		</div>
-	</div>
+	</Container>
 </div>
 <nav
 	class="ons-js-nav-menu ons-header-nav-menu ons-u-pt-2xl ons-u-d-no"
@@ -475,7 +477,7 @@
 	aria-label="Menu navigation"
 	aria-hidden="true"
 >
-	<div class="ons-container">
+	<Container {width}>
 		<ul class="ons-grid ons-header-nav-menu__key-list">
 			{#each menu.main as item (item.url)}
 				<li class="ons-grid__col ons-col-4@m ons-header-nav-menu__col">
@@ -490,8 +492,8 @@
 				</li>
 			{/each}
 		</ul>
-	</div>
-	<div class="ons-container">
+	</Container>
+	<Container {width}>
 		<ul class="ons-grid ons-list ons-list--bare">
 			{#each columns as col, i (i)}
 				<li class="ons-grid__col ons-col-4@m ons-u-mb-no ons-header-nav-menu__col">
@@ -516,7 +518,7 @@
 				</li>
 			{/each}
 		</ul>
-	</div>
+	</Container>
 </nav>
 {#if search}
 	<nav
@@ -526,7 +528,7 @@
 		aria-label="Nav Search"
 		aria-hidden="true"
 	>
-		<div class="ons-container">
+		<Container {width}>
 			<form
 				class="ons-header-nav-search__input"
 				method="get"
@@ -566,8 +568,8 @@
 					</span>
 				</div>
 			</form>
-		</div>
-		<div class="ons-container">
+		</Container>
+		<Container {width}>
 			<h2 class="ons-u-fs-r--b ons-u-mb-s ons-header-nav-search__heading">
 				{i18n("Popular searches")}
 			</h2>
@@ -581,7 +583,7 @@
 					</li>
 				{/each}
 			</ul>
-		</div>
+		</Container>
 	</nav>
 {/if}
 

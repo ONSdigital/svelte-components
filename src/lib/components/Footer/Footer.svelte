@@ -1,6 +1,7 @@
 <script>
 	import { onMount, getContext } from "svelte";
 	import Theme from "$lib/components/Theme/Theme.svelte";
+	import Container from "$lib/components/Container/Container.svelte";
 
 	const page = getContext("page");
 
@@ -9,6 +10,11 @@
 	 * @type {boolean}
 	 */
 	export let compact = false;
+	/**
+	 * Sets the width of the header (does not apply to legacy mode)
+	 * @type {"narrow"|"medium"|"wide"|"wider"|"full"}
+	 */
+	export let width = "wide";
 	/**
 	 * Sets a predefined theme
 	 * @type {"light"|"dark"|"paleblue"|"blue"|"navyblue"|"grey"|null}
@@ -22,7 +28,6 @@
 
 	let lang = "en";
 	let baseurl = "https://www.ons.gov.uk";
-	let path = "";
 
 	const texts = {
 		"Footer links": "",
@@ -58,15 +63,14 @@
 		const url = page?.url || document.location;
 		lang = url.host.startsWith("cy") ? "cy" : "en";
 		baseurl = lang === "cy" ? "https://cy.ons.gov.uk" : "https://www.ons.gov.uk";
-		path = url.pathname;
 	}
 	onMount(setPaths);
 </script>
 
 <Theme {theme} overrides={themeOverrides}>
-	<footer class="ons-footer">
+	<footer class="ons-footer" class:ons-footer__full={width === "full"}>
 		<div class="ons-footer__body" data-analytics="footer">
-			<div class="ons-container">
+			<Container {width}>
 				{#if !compact}
 					<div class="ons-grid">
 						<div class="ons-grid__col ons-col-4@m">
@@ -366,12 +370,15 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			</Container>
 		</div>
 	</footer>
 </Theme>
 
 <style>
+	.ons-footer__full :global(.ons-page__container) {
+		padding: 0 12px;
+	}
 	/* Reassignment of variables for theming */
 	.ons-footer .ons-icon,
 	.ons-footer .ons-icon--logo__group {
