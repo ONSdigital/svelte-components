@@ -6,6 +6,7 @@
 
 <script>
 	import { onMount, getContext } from "svelte";
+	import Container from "$lib/components/Container/Container.svelte";
 
 	/**
 	 * Google analytics/tags manager ID
@@ -34,7 +35,7 @@
 	export let usageCookies = false;
 	/**
 	 * Set the width of the banner
-	 * @type {"wide"|"wider"}
+	 * @type {"narrow"|"medium"|"wide"|"wider"|"full"}
 	 */
 	export let width = "wide";
 	/**
@@ -202,6 +203,7 @@
 {#if showBanner && !hideBanner}
 	<div
 		class="ons-cookies-banner"
+		class:ons-cookies-banner__full={width === "full"}
 		role="region"
 		aria-label="Cookies banner"
 		style:display={showBanner ? "block" : null}
@@ -213,10 +215,7 @@
 				id="global-cookie-message"
 				aria-label="cookie banner"
 			>
-				<div
-					class="ons-container ons-cookies-banner__primary"
-					class:ons-page__container--wider={width === "wider"}
-				>
+				<Container {width} cls="ons-cookies-banner__primary">
 					<div class="ons-grid">
 						<div class="ons-grid__col ons-col-8@m">
 							<h2 class="ons-cookies-banner__title ons-u-mb-xs">{i18n("Cookies on ons.gov.uk")}</h2>
@@ -236,7 +235,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="ons-grid ons-grid--flex ons-u-mt-s">
+					<div class="ons-grid ons-grid-flex ons-u-mt-s">
 						<div class="ons-grid__col">
 							<button
 								type="submit"
@@ -267,13 +266,10 @@
 							>
 						</div>
 					</div>
-				</div>
+				</Container>
 			</form>
 		{:else}
-			<div
-				class="ons-container ons-cookies-banner__confirmation"
-				class:ons-page__container--wider={width === "wider"}
-			>
+			<Container {width} cls="ons-cookies-banner__confirmation">
 				<div
 					class="ons-grid ons-grid--flex ons-grid--between ons-grid--gutterless ons-grid--no-wrap@s ons-grid--vertical-center"
 				>
@@ -298,7 +294,7 @@
 						</button>
 					</div>
 				</div>
-			</div>
+			</Container>
 		{/if}
 	</div>
 {/if}
@@ -308,7 +304,7 @@
 		/* padding: 0; */
 		background: var(--pale, #f0f0f0) !important;
 	}
-	.ons-page__container--wider {
-		max-width: 1240px;
+	.ons-cookies-banner__full :global(.ons-page__container) {
+		padding: 0 12px;
 	}
 </style>
