@@ -105,7 +105,12 @@
 	});
 </script>
 
-<header class="ons-header" class:ons-header__full={width === "full"} role="banner">
+<header
+	class="ons-header"
+	class:ons-header--basic={!compact && !legacy}
+	class:ons-header__full={width === "full"}
+	role="banner"
+>
 	{#if skipHref}
 		<SkipLink href={skipHref} />
 	{/if}

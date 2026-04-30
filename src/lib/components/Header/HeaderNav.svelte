@@ -241,6 +241,10 @@
 	const columns = [[menu.topics[0]], [menu.topics[1], menu.topics[2]], [menu.topics[3]]];
 
 	onMount(() => {
+		const hasBodyClass = "className" in document?.body || {};
+		const bodyClassString = document?.body?.className || "";
+		if (hasBodyClass && !bodyClassString.includes("ons-js-enabled"))
+			document.body.className = bodyClassString + " ons-js-enabled";
 		initNav(el?.parentElement || document);
 	});
 </script>
@@ -398,10 +402,10 @@
 				<div class="ons-header__links ons-grid__col">
 					<button
 						type="button"
-						class="ons-btn ons-u-fs-s--b ons-js-toggle-nav-menu button-nav active disabled ons-btn--menu"
+						class="ons-btn ons-u-fs-r--b ons-js-toggle-nav-menu ons-u-db-no-js_disabled button-nav ons-btn--menu"
 						aria-label="Toggle menu"
 						aria-controls="menu-links"
-						aria-expanded="true"
+						aria-expanded="false"
 						aria-disabled="true"
 					>
 						<span class="ons-btn__inner"
@@ -423,10 +427,10 @@
 					</button>
 				</div>
 				{#if search}
-					<div class="ons-header__links ons-grid__col ons-header__menu-link">
+					<div class="ons-header__links ons-grid__col ons-header__menu-links">
 						<button
 							type="button"
-							class="ons-btn ons-u-fs-s--b ons-js-toggle-header-search ons-btn--close ons-btn--search-icon active disabled ons-btn--search"
+							class="ons-btn ons-u-fs-s--b ons-js-toggle-header-search ons-u-db-no-js_disabled ons-btn--search-icon ons-btn--search"
 							aria-label="Toggle search"
 							aria-controls="search"
 							aria-expanded="true"
@@ -449,24 +453,26 @@
 						</button>
 					</div>
 				{/if}
-				{#if bilingual}
-					<div class="ons-grid__col ons-col-auto">
-						<div class="ons-header__language">
-							<ul class="ons-language-links">
-								<li class="ons-language-links__item">
-									<a
-										href="{baseother}{path}"
-										class="language__link"
-										lang={lang == "en" ? "cy" : "en"}
-									>
-										<span class="ons-u-vh">{i18n("Newid iaith i")} </span>{i18n("Cymraeg")}
-									</a>
-								</li>
-							</ul>
-						</div>
-					</div>
-				{/if}
 			</div>
+			{#if bilingual}
+				<div
+					class="ons-header__links ons-grid__col ons-col-auto ons-header__links--language-section ons-u-d-no@2xs@m"
+				>
+					<div class="ons-header__language ons-u-fs-r--b">
+						<ul class="ons-language-links">
+							<li class="ons-language-links__item">
+								<a
+									href="{baseother}{path}"
+									class="language__link"
+									lang={lang == "en" ? "cy" : "en"}
+								>
+									<span class="ons-u-vh">{i18n("Newid iaith i")} </span>{i18n("Cymraeg")}
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			{/if}
 		</div>
 	</Container>
 </div>
@@ -478,6 +484,15 @@
 	aria-hidden="true"
 >
 	<Container {width}>
+		<div class="ons-header-nav-menu__language ons-u-fs-s--b ons-u-d-no@m ons-u-d-no@2xl">
+			<ul class="ons-language-links">
+				<li class="ons-language-links__item">
+					<a href="{baseother}{path}" lang={lang == "en" ? "cy" : "en"}>
+						<span class="ons-u-vh">{i18n("Newid iaith i")} </span>{i18n("Cymraeg")}
+					</a>
+				</li>
+			</ul>
+		</div>
 		<ul class="ons-grid ons-header-nav-menu__key-list">
 			{#each menu.main as item (item.url)}
 				<li class="ons-grid__col ons-col-4@m ons-header-nav-menu__col">
@@ -597,10 +612,6 @@
 	.ons-icon--logo__group--primary,
 	.ons-icon--logo__group--text {
 		fill: var(--ons-color-text-link-hover);
-	}
-	.ons-header__language {
-		display: block;
-		margin-top: 0.85em;
 	}
 	.ons-header--border:has(+ .ons-u-d-no) {
 		border-bottom: 1px solid var(--ons-color-borders);
