@@ -477,7 +477,7 @@
 	</Container>
 </div>
 <nav
-	class="ons-js-nav-menu ons-header-nav-menu ons-u-pt-2xl ons-u-d-no"
+	class="ons-js-nav-menu ons-header-nav-menu ons-u-pt-2xl ons-u-d-no disabled"
 	class:ons-header-menu--border={menuBorder}
 	id="menu-links"
 	aria-label="Menu navigation"
@@ -537,7 +537,7 @@
 </nav>
 {#if search}
 	<nav
-		class="ons-js-header-search ons-header-nav-search ons-u-d-no"
+		class="ons-js-header-search ons-header-nav-search ons-u-d-no disabled"
 		class:ons-header-menu--border={menuBorder}
 		id="search"
 		aria-label="Nav Search"
