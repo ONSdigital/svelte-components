@@ -25,6 +25,17 @@
 	/* border-top: 1px solid var(--ons-color-ocean-blue); */
 	border-top: none !important;
 }
+.ons-header--basic .ons-header__grid-top {
+	padding: 0;
+}
+.ons-header--basic .ons-header__org-logo {
+	padding: 1.25rem 0;
+}
+@media only screen and (min-width: 980px) {
+	.ons-header--basic .ons-header__org-logo {
+		padding: 1.5rem 0;
+	}
+}
 
 /* Fixes for unexpected behaviour in design system */
 body {

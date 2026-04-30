@@ -603,9 +603,6 @@
 {/if}
 
 <style>
-	.ons-header__grid-top {
-		padding: 0;
-	}
 	.ons-header__top {
 		background: var(--ons-color-page-light);
 	}
