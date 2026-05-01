@@ -241,8 +241,8 @@
 	const columns = [[menu.topics[0]], [menu.topics[1], menu.topics[2]], [menu.topics[3]]];
 
 	onMount(() => {
-		const hasBodyClass = "className" in document?.body || {};
-		const bodyClassString = document?.body?.className || "";
+		const hasBodyClass = "className" in document.body || {};
+		const bodyClassString = document.body?.className || "";
 		if (hasBodyClass && !bodyClassString.includes("ons-js-enabled"))
 			document.body.className = bodyClassString + " ons-js-enabled";
 		initNav(el?.parentElement || document);
@@ -629,5 +629,14 @@
 	}
 	:global(.dark-mode .ons-search__input) {
 		color: var(--ons-color-black);
+	}
+
+	/* Fixes for no JS styling issue */
+	.ons-header__grid-top {
+		flex-direction: inherit;
+		align-items: center;
+	}
+	.ons-header__grid-top .ons-header__menu-links {
+		width: auto;
 	}
 </style>
