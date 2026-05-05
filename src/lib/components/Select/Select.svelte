@@ -40,6 +40,11 @@
 	 */
 	export let autoClear = mode === "search";
 	/**
+	 * Auto focus the search input when it is created
+	 * @type {boolean}
+	 */
+	export let autoFocus = false;
+	/**
 	 * A label to describe the element (expected for accessibility)
 	 * @type {string|null}
 	 */
@@ -183,6 +188,7 @@
 		inputElement = element.querySelector(`#${id}`);
 		// setInputValue(value?.[labelKey] || "");
 		inputElement.addEventListener("blur", inputChange);
+		if (autoFocus) inputElement.focus();
 	}
 
 	// In case input value is updated from outside component
