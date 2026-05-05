@@ -52,18 +52,6 @@
 />
 
 <Story
-	name="Search mode with autofocus"
-	args={{
-		id: "search",
-		mode: "search",
-		label: "Type to select",
-		options,
-		autoFocus: true
-	}}
-	{template}
-/>
-
-<Story
 	name="Options with group as suffix"
 	args={{
 		id: "group-suffix",
