@@ -15,6 +15,7 @@
 		selected = false,
 		custom = false,
 		hasAriaControls = false,
+		hasTooltip = true,
 		sticky = false,
 		transient = false,
 		disableHelp = false
@@ -28,6 +29,7 @@
 		selected?: boolean;
 		custom?: boolean;
 		hasAriaControls?: boolean;
+		hasTooltip?: boolean;
 		sticky?: boolean;
 		transient?: boolean;
 		disableHelp?: boolean;
@@ -41,6 +43,9 @@
 	const activeModalId = getContext("activeModalId");
 	const currentActiveId = $derived(activeModalId);
 	const isActive = $derived($currentActiveId === id);
+	const orientation = getContext("orientation");
+	const currentOrientation = $derived(orientation);
+	let showTooltip = $state(false);
 
 	// Retrieve button registry from context
 	const { register, unregister } = getContext("buttonIds");
@@ -76,7 +81,7 @@
 
 <div class="toolbar-button-wrapper">
 	{#if custom}
-		<div on:click={handleClick} bind:this={buttonElement}>
+		<div onclick={handleClick} bind:this={buttonElement}>
 			<slot name="custom" />
 		</div>
 	{:else}
@@ -86,14 +91,22 @@
 			class={`toolbar-button ${disabled ? "disabled" : ""} ${
 				isActive && !transient ? "selected" : ""
 			} ${classes}`}
-			on:click={handleClick}
+			onclick={handleClick}
+			onmouseover={() => (showTooltip = true)}
+			onmouseout={() => (showTooltip = false)}
+			onfocus={() => (showTooltip = true)}
+			onblur={() => (showTooltip = false)}
 			{disabled}
 			bind:this={buttonElement}
 			id={`button-${id}`}
 			aria-controls={hasAriaControls ? `panel-${id}` : undefined}
 		>
 			{#if icon}
-				<Icon type={icon} selected={!transient ? (isActive ? true : false) : false} {disabled} />
+				<Icon
+					type={icon}
+					selected={!transient ? (isActive ? true : false) : false}
+					{disabled}
+				/><span class="ons-u-vh">{label}</span>
 			{:else}
 				{label}
 			{/if}
@@ -110,6 +123,15 @@
 				<slot />
 			</HelpModal>
 		{/if}
+	{/if}
+
+	{#if hasTooltip && showTooltip}
+		<div
+			class="toolbar-tooltip ons-u-fs-s"
+			class:toolbar-tooltip-vertical={$currentOrientation === "vertical"}
+		>
+			{label}
+		</div>
 	{/if}
 </div>
 
@@ -163,6 +185,44 @@ button:hover:disabled {
 	.toolbar-button.disabled {
 		/* opacity: 0.5; */
 		cursor: not-allowed;
+	}
+	.toolbar-tooltip {
+		position: absolute;
+		z-index: 10;
+		pointer-events: none;
+		text-align: center;
+		width: calc(100% + 40px);
+		top: calc(100% + 8px);
+		left: 50%;
+		transform: translate(-50%, 0);
+		color: var(--ons-color-page-light);
+		background: var(--ons-color-text);
+		padding: 4px;
+		border-radius: 4px;
+		box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.25);
+	}
+	.toolbar-tooltip-vertical {
+		left: calc(100% + 8px);
+		top: 50%;
+		transform: translate(0, -50%);
+	}
+	.toolbar-tooltip::before {
+		content: " ";
+		position: absolute;
+		bottom: calc(100% - 1px); /* At the top of the tooltip */
+		right: 50%;
+		border-width: 8px;
+		border-style: solid;
+		border-color: transparent transparent var(--ons-color-text) transparent;
+		pointer-events: none;
+		transform: translate(50%, 0);
+	}
+	.toolbar-tooltip-vertical::before {
+		bottom: 50%;
+		right: 100%;
+		border-width: 8px;
+		border-color: transparent var(--ons-color-text) transparent transparent;
+		transform: translate(0, 50%);
 	}
 
 	.selected {
