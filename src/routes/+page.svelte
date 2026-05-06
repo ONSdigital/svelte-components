@@ -6,7 +6,7 @@
 	import Notice from "$lib/components/Notice/Notice.svelte";
 </script>
 
-<Header legacy={false} title="Svelte components library" />
+<Header skipHref={null} legacy={false} title="Svelte components library" />
 
 <Section marginTop>
 	<p>Welcome to the ONS Svelte components library.</p>
