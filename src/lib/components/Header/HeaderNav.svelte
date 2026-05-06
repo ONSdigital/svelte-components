@@ -433,7 +433,7 @@
 							class="ons-btn ons-u-fs-s--b ons-js-toggle-header-search ons-u-db-no-js_disabled ons-btn--search-icon ons-btn--search"
 							aria-label="Toggle search"
 							aria-controls="search"
-							aria-expanded="true"
+							aria-expanded="false"
 							aria-disabled="true"
 						>
 							<span class="ons-btn__inner"
@@ -638,5 +638,8 @@
 	}
 	.ons-header__grid-top .ons-header__menu-links {
 		width: auto;
+	}
+	.ons-header__language {
+		display: block;
 	}
 </style>
