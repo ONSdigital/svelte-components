@@ -300,10 +300,6 @@
 {/if}
 
 <style>
-	.ons-cookies-banner {
-		/* padding: 0; */
-		background: var(--pale, #f0f0f0) !important;
-	}
 	.ons-cookies-banner__full :global(.ons-page__container) {
 		padding: 0 12px;
 	}

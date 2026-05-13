@@ -332,7 +332,7 @@
 	}
 
 	:global([slot="foreground"] section > div:before) {
-		background-color: var(--background, white);
+		background-color: var(--ons-color-page-light);
 		opacity: 80%;
 	}
 
@@ -362,7 +362,7 @@
 			width: 480px;
 			max-width: 35%;
 			margin: 0 auto 0 0;
-			background-color: var(--background, white);
+			background-color: var(--ons-color-page-light);
 		}
 	}
 </style>

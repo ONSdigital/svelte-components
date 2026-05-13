@@ -102,7 +102,7 @@
 
 <style>
 	.ons-input--textarea {
-		background: var(--background, white);
+		background: var(--ons-color-page-light);
 		border-color: currentColor;
 	}
 	.ons-input--textarea:focus {

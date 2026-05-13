@@ -208,7 +208,7 @@
 
 	button.btn-link {
 		line-height: 1.3;
-		color: var(--link, #206095);
+		color: var(--ons-color-text-link, #206095);
 		background: none;
 		margin: 0;
 		padding: 0;
@@ -218,7 +218,7 @@
 		text-underline-position: under;
 	}
 	button.btn-link:hover {
-		color: var(--link-hover, #003c57) !important;
+		color: var(--ons-color-text-link-hover, #003c57) !important;
 		text-decoration-thickness: 2px;
 	}
 	button.btn-link:focus {
