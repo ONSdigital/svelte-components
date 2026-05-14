@@ -142,20 +142,25 @@
 	 */
 	export let cls = null;
 
-	const sections = writable([]);
-	setContext("sections", sections);
-
 	let scroller;
 	let outer;
 	let foreground;
 	let background;
 	let left;
 	let wh = 0;
+	let ww = 0;
 	let fixed;
 	let offset_top = 0;
 	let width = 1;
 	let height;
 	let inverted;
+
+	const sections = writable([]);
+	setContext("sections", sections);
+
+	const isSplit = writable();
+	$: isSplit.set(splitscreen && ww >= 992);
+	setContext("isSplit", isSplit);
 
 	$: top_px = Math.round(top * wh);
 	$: bottom_px = Math.round(bottom * wh);
@@ -250,7 +255,7 @@
 	}
 </script>
 
-<svelte:window bind:innerHeight={wh} />
+<svelte:window bind:innerHeight={wh} bind:innerWidth={ww} />
 
 {#if marginTop}
 	<div class="ons-u-mt-xl"></div>

@@ -26,6 +26,7 @@
 	let section;
 
 	const sections = getContext("sections");
+	const isSplit = getContext("isSplit");
 
 	onMount(() => {
 		if (sections) {
@@ -41,7 +42,7 @@
 </script>
 
 <section data-id={id} bind:this={section} class={cls}>
-	<Container width="narrow">
+	<Container width={$isSplit ? "wider" : "narrow"}>
 		<div class="ons-scroller-section">
 			{#if title}
 				<h2 class="section-title" class:ons-u-vh={hideTitle}>{title}</h2>
