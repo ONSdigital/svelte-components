@@ -57,12 +57,12 @@
 	<select
 		{id}
 		{name}
-		class="ons-input ons-input--select {Number.isInteger(width)
-			? `ons-input--w-${width}`
-			: ''}"
+		class="ons-input ons-input--select {Number.isInteger(width) ? `ons-input--w-${width}` : ''}"
 		style:width={typeof width === "string" ? width : null}
 		bind:value
-		on:change={(e) => dispatch("change", e)}
+		on:change={(e) => dispatch("change", { value, e })}
+		on:input={(e) => dispatch("input", { value, e })}
+		on:blur={(e) => dispatch("blur", { value, e })}
 	>
 		{#if placeholder}
 			<option value={null} selected disabled>{placeholder}</option>

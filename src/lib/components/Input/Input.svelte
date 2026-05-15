@@ -121,7 +121,9 @@
 					aria-labelledby="{id} {id}-unit"
 					aria-describedby={description ? `${id}-description-hint` : null}
 					{disabled}
-					on:change={(e) => dispatch("change", e)}
+					on:change={(e) => dispatch("change", { value, e })}
+					on:input={(e) => dispatch("input", { value, e })}
+					on:blur={(e) => dispatch("blur", { value, e })}
 				/>
 				<abbr
 					id="{id}-unit"
@@ -147,7 +149,9 @@
 			class:ons-input--error={error}
 			aria-describedby={description ? `${id}-description-hint` : null}
 			{disabled}
-			on:change={(e) => dispatch("change", e)}
+			on:change={(e) => dispatch("change", { value, e })}
+			on:input={(e) => dispatch("input", { value, e })}
+			on:blur={(e) => dispatch("blur", { value, e })}
 		/>
 	{/if}
 </div>
