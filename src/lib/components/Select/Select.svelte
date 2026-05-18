@@ -132,7 +132,7 @@
 	}
 
 	function highlight(text, query = "") {
-		return text.replace(
+		return (text || "").replace(
 			new RegExp(`\\b${query.replace(/[^\w\s]/gi, "")}`, "i"),
 			(str) => `<b>${str}</b>`
 		);
