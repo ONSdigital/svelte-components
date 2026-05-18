@@ -128,7 +128,7 @@
 	}
 
 	function inputValueTemplate(result) {
-		return result && result[labelKey];
+		return result?.[labelKey] || result || "";
 	}
 
 	function highlight(text, query = "") {
@@ -140,11 +140,11 @@
 
 	function suggestionTemplate(result) {
 		const query = inputElement?.value || "";
-		return groupKey && result[groupKey]
+		return groupKey && result?.[groupKey]
 			? `${highlight(result?.[labelKey] || "", query)} <span class="muted-text">${
 					result[groupKey]
 				}</span>`
-			: highlight(result?.[labelKey] || "", query);
+			: highlight(result?.[labelKey] || result || "", query);
 	}
 
 	async function select(option) {
@@ -170,7 +170,7 @@
 			element,
 			id,
 			name,
-			defaultValue: value?.[labelKey] || undefined,
+			defaultValue: value?.[labelKey] || value || undefined,
 			source: loadOptions,
 			autoselect: true,
 			onConfirm: select,
