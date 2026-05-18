@@ -29,10 +29,10 @@
 	 */
 	export let disabled = false;
 	/**
-	 * Optional: Define the item as an object in the form {id, label, description?}
+	 * Optional: Define the item as an object in the form {id, label, description?, checked?}
 	 * @type {object}
 	 */
-	export let item = { id, label, description, checked, disabled };
+	export let item = { id, label, description, checked };
 	/**
 	 * Optional: Name of checkbox group
 	 * @type {string|null}
@@ -122,8 +122,8 @@
 			value={item}
 			bind:checked={item.checked}
 			class="ons-checkbox__input ons-js-checkbox"
-			disabled={item.disabled}
-			aria-disabled={item.disabled}
+			{disabled}
+			aria-disabled={disabled}
 			on:change={doChange}
 			bind:this={el}
 		/>
