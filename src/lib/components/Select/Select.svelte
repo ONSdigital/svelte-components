@@ -132,10 +132,12 @@
 	}
 
 	function highlight(text, query = "") {
-		return (text || "").replace(
-			new RegExp(`\\b${query.replace(/[^\w\s]/gi, "")}`, "i"),
-			(str) => `<b>${str}</b>`
-		);
+		return typeof text === "string"
+			? text.replace(
+					new RegExp(`\\b${query.replace(/[^\w\s]/gi, "")}`, "i"),
+					(str) => `<b>${str}</b>`
+				)
+			: "";
 	}
 
 	function suggestionTemplate(result) {
