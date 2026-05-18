@@ -94,13 +94,13 @@
 	 * @type {function}
 	 */
 	export let loadOptions = (query, populateResults) => {
-		const filteredResults =
-			mode !== "search" && (!query || options.map((opt) => opt[labelKey]).includes(query))
-				? options
-				: options.filter((opt) =>
-						opt[labelKey].match(new RegExp(`\\b${query.replace(/[^\w\s]/gi, "")}`, "i"))
-					);
-		populateResults(filteredResults);
+		if (mode !== "search" && (!query || options.map((opt) => opt?.[labelKey]).includes(query)))
+			populateResults(options);
+		else {
+			const regex = new RegExp(`\\b${query.replace(/[^\w\s]/gi, "")}`, "i");
+			const filteredResults = options.filter((opt) => regex.test(opt?.[labelKey]));
+			populateResults(filteredResults);
+		}
 	};
 	/**
 	 * Call this function externally to clear the input
