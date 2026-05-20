@@ -12,7 +12,8 @@
 		disabled = false,
 		classes = "",
 		helpText = null,
-		selected = false,
+		selected = $bindable(false),
+		toggle = false,
 		custom = false,
 		hasAriaControls = false,
 		hasTooltip = true,
@@ -27,6 +28,7 @@
 		classes?: string;
 		helpText?: string | null;
 		selected?: boolean;
+		toggle?: boolean;
 		custom?: boolean;
 		hasAriaControls?: boolean;
 		hasTooltip?: boolean;
@@ -67,6 +69,10 @@
 				// If it's a transient button, just trigger the action and return
 				dispatch("click");
 				return;
+			} else if (toggle) {
+				selected = !selected;
+				dispatch("click");
+				return;
 			}
 
 			dispatch("click");
@@ -81,16 +87,50 @@
 
 <div class="toolbar-button-wrapper">
 	{#if custom}
-		<div onclick={handleClick} bind:this={buttonElement}>
+		<div
+			tabindex="0"
+			onclick={handleClick}
+			onmouseover={() => (showTooltip = true)}
+			onmouseout={() => (showTooltip = false)}
+			onfocus={() => (showTooltip = true)}
+			onblur={() => (showTooltip = false)}
+			bind:this={buttonElement}
+		>
 			<slot name="custom" />
 		</div>
+	{:else if toggle}
+		<input
+			type="checkbox"
+			class="ons-u-vh"
+			onclick={handleClick}
+			onfocus={() => (showTooltip = true)}
+			onblur={() => (showTooltip = false)}
+			{disabled}
+			bind:this={buttonElement}
+			id={`button-${id}`}
+			checked={selected}
+		/>
+		<label
+			for={`button-${id}`}
+			class="toolbar-button {classes}"
+			onmouseover={() => (showTooltip = true)}
+			onmouseout={() => (showTooltip = false)}
+			class:selected={selected || (isActive && !transient)}
+		>
+			{#if icon}
+				<Icon type={icon} selected={selected || (isActive && !transient)} {disabled} /><span
+					class="ons-u-vh">{label}</span
+				>
+			{:else}
+				{label}
+			{/if}
+		</label>
 	{:else}
 		<button
 			type="button"
 			aria-label={label}
-			class={`toolbar-button ${disabled ? "disabled" : ""} ${
-				isActive && !transient ? "selected" : ""
-			} ${classes}`}
+			class="toolbar-button {classes}"
+			class:selected={selected || (isActive && !transient)}
 			onclick={handleClick}
 			onmouseover={() => (showTooltip = true)}
 			onmouseout={() => (showTooltip = false)}
@@ -102,11 +142,9 @@
 			aria-controls={hasAriaControls ? `panel-${id}` : undefined}
 		>
 			{#if icon}
-				<Icon
-					type={icon}
-					selected={!transient ? (isActive ? true : false) : false}
-					{disabled}
-				/><span class="ons-u-vh">{label}</span>
+				<Icon type={icon} selected={selected || (isActive && !transient)} {disabled} /><span
+					class="ons-u-vh">{label}</span
+				>
 			{:else}
 				{label}
 			{/if}
@@ -135,37 +173,6 @@
 	{/if}
 </div>
 
-<!-- 
-
-/* /* Slightly darker gray when clicked */
-
-/* 
-button:active {
-  background-color: #d6d6d6; 
-}
-
-button.active {
-  background-color: #ddd; /* Selected button background */
-  border: 2px solid #333; /* Active button border */
-}
-
-button:hover:active {
-  background-color: #ccc; /* Slightly more contrast when active */
-}
-
-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  background-color: #f2f2f2;
-  border: 1px solid #ddd;
-}
-
-button:hover:disabled {
-  background-color: #f2f2f2; /* Keep it the same so disabled buttons don’t change on hover */
-  border: 1px solid #ddd;
-} */
- -->
-
 <style>
 	.toolbar-button-wrapper {
 		position: relative;
@@ -182,7 +189,8 @@ button:hover:disabled {
 		flex-grow: 0;
 	}
 
-	.toolbar-button.disabled {
+	button.toolbar-button[disabled="disabled"],
+	button.toolbar-button:disabled {
 		/* opacity: 0.5; */
 		cursor: not-allowed;
 	}
@@ -230,15 +238,19 @@ button:hover:disabled {
 		border-radius: 8px;
 	}
 
-	button:hover {
+	.toolbar-button:hover {
 		background-color: #f5f5f6;
 		border-radius: 8px;
 	}
 
-	button:focus {
+	.toolbar-button:focus,
+	input:focus + .toolbar-button {
 		outline: 2px solid #fbc900;
 		outline-offset: 2px;
 		box-shadow: 0 0 2px 2px #222222;
 		border-radius: 8px;
+	}
+	input[type="checkbox"] {
+		appearance: none;
 	}
 </style>
