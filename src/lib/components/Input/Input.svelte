@@ -69,6 +69,11 @@
 	 */
 	export let numeric = false;
 	/**
+	 * Set to `true` to make the input read-only
+	 * @type {boolean}
+	 */
+	export let readonly = false;
+	/**
 	 * Set to `true` to give the input a disabled state
 	 * @type {boolean}
 	 */
@@ -121,6 +126,7 @@
 					aria-labelledby="{id} {id}-unit"
 					aria-describedby={description ? `${id}-description-hint` : null}
 					{disabled}
+					{readonly}
 					on:change={(e) => dispatch("change", { value, e })}
 					on:input={(e) => dispatch("input", { value, e })}
 					on:blur={(e) => dispatch("blur", { value, e })}
@@ -149,6 +155,7 @@
 			class:ons-input--error={error}
 			aria-describedby={description ? `${id}-description-hint` : null}
 			{disabled}
+			{readonly}
 			on:change={(e) => dispatch("change", { value, e })}
 			on:input={(e) => dispatch("input", { value, e })}
 			on:blur={(e) => dispatch("blur", { value, e })}

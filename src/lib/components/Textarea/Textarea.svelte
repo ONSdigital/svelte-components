@@ -49,6 +49,16 @@
 	 */
 	export let width = 30;
 	/**
+	 * Set to `true` to make the input read-only
+	 * @type {boolean}
+	 */
+	export let readonly = false;
+	/**
+	 * Set to `true` to give the input a disabled state
+	 * @type {boolean}
+	 */
+	export let disabled = false;
+	/**
 	 * Optional: Set an additional CSS class for the component
 	 * @type {string|null}
 	 */
@@ -82,6 +92,8 @@
 		maxlength={charLimit}
 		data-char-limit-ref="{id}-lim"
 		aria-describedby="textarea-char-limit-lim"
+		{disabled}
+		{readonly}
 	></textarea>
 	{#if Number.isInteger(remaining)}
 		<span
