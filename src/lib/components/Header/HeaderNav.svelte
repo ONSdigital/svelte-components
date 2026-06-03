@@ -131,17 +131,17 @@
 					{
 						label_en: "Construction industry",
 						label_cy: "Diwydiant adeiladu",
-						url: "/businessindustryandtrade/itandinternetindustry"
+						url: "/businessindustryandtrade/constructionindustry"
 					},
 					{
 						label_en: "International trade",
 						label_cy: "Masnach ryngwladol",
-						url: "/businessindustryandtrade/constructionindustry"
+						url: "/businessindustryandtrade/internationaltrade"
 					},
 					{
 						label_en: "IT and internet industry",
 						label_cy: "Y diwydiant TGCh a'r rhyngrwyd",
-						url: "/businessindustryandtrade/internationaltrade"
+						url: "/businessindustryandtrade/itandinternetindustry"
 					},
 					{
 						label_en: "Manufacturing and production industry",
@@ -584,7 +584,7 @@
 				</div>
 			</form>
 		</Container>
-		<Container {width}>
+		<!-- <Container {width}>
 			<h2 class="ons-u-fs-r--b ons-u-mb-s ons-header-nav-search__heading">
 				{i18n("Popular searches")}
 			</h2>
@@ -598,7 +598,7 @@
 					</li>
 				{/each}
 			</ul>
-		</Container>
+		</Container> -->
 	</nav>
 {/if}
 
@@ -641,5 +641,10 @@
 	}
 	.ons-header__language {
 		display: block;
+	}
+	.ons-header-nav-search__input {
+		/* This is a shim to avoid having a redundant border under the search box */
+		border-bottom: none;
+		padding-bottom: 0 !important;
 	}
 </style>
