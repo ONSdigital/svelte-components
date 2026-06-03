@@ -3,6 +3,11 @@
 	import pym from "pym.js";
 
 	/**
+	 * (Optional) ID for embed
+	 * @type {string|null}
+	 */
+	export let id = null;
+	/**
 	 * Binding for pymChild element (can be used to send messages to parent of iframe)
 	 * @type {object}
 	 */
@@ -16,7 +21,7 @@
 	const dispatch = createEventDispatcher();
 
 	onMount(() => {
-		pymChild = new pym.Child();
+		pymChild = id ? new pym.Child({ id }) : new pym.Child();
 
 		if (polling) {
 			setInterval(() => {
