@@ -592,7 +592,7 @@
 				{#each menu.searches as item (item.label_en)}
 					<li class="ons-list__item">
 						<a
-							href="{baseurl}search?q={item[`label_${lang}`]}"
+							href="{baseurl}/search?q={item[`label_${lang}`]}"
 							class="ons-u-fs-r ons-header-nav-search__text">{item[`label_${lang}`]}</a
 						>
 					</li>
