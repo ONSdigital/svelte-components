@@ -17,11 +17,21 @@
 	 * @type {"h2"|"h3"}
 	 */
 	export let headingTag = "h2";
+	/**
+	 * Set the initial status of the accordion item to open (non-reactive)
+	 * @type {boolean}
+	 */
+	export let open = false;
 
 	const dataGroup = getContext("dataGroup");
 </script>
 
-<div {id} class="ons-details ons-js-details ons-details--accordion" data-group={dataGroup}>
+<div
+	{id}
+	class="ons-details ons-js-details ons-details--accordion"
+	data-group={dataGroup}
+	data-open={open}
+>
 	<div class="ons-details__heading ons-js-details-heading" role="button">
 		{#if headingTag === "h3"}
 			<h3 class="ons-details__title ons-u-fs-r--b">{title}</h3>
