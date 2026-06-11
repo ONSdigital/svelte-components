@@ -26,6 +26,11 @@
 	 */
 	export let download = null;
 	/**
+	 * HTML "rel" attribute for hyperlinks (Eg. rel="nofollow")
+	 * @type {string|null}
+	 */
+	export let rel = null;
+	/**
 	 * Don't scroll when link is followed (only if href is also specified)
 	 * @type {boolean}
 	 */
@@ -82,6 +87,7 @@
 		href={!disabled ? href : null}
 		role="button"
 		{download}
+		{rel}
 		class="ons-btn ons-btn--link ons-js-submit-btn {cls}"
 		class:ons-btn--small={small}
 		class:ons-btn--secondary={variant === "secondary"}
