@@ -106,7 +106,7 @@
 						</div>
 						<!-- Full footer columns -->
 						<div class="ons-grid__col ons-col-4@m ons-u-mt-l@2xs@m">
-							<h2 class="ons-footer__heading ons-u-fs-r--b">{i18n("About us")}</h2>
+							<h2 class="ons-footer__heading ons-u-fs-r--b">{i18n("About ONS")}</h2>
 							<ul class="ons-list ons-u-mb-no ons-list--bare">
 								<li class="ons-list__item">
 									<a href="{baseurl}/aboutus" class="ons-list__link">{i18n("About us")}</a>

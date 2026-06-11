@@ -42,6 +42,122 @@
 		],
 		topics: [
 			{
+				label_en: "Business, industry and trade",
+				label_cy: "Busnes, diwydiant a masnach",
+				url: "/businessindustryandtrade",
+				children: [
+					{
+						label_en: "Business",
+						label_cy: "Busnes",
+						url: "/businessindustryandtrade/business"
+					},
+					{
+						label_en: "Changes to business",
+						label_cy: "Newidiadau i fusnesau",
+						url: "/businessindustryandtrade/changestobusiness"
+					},
+					{
+						label_en: "Construction industry",
+						label_cy: "Diwydiant adeiladu",
+						url: "/businessindustryandtrade/constructionindustry"
+					},
+					{
+						label_en: "IT and internet industry",
+						label_cy: "Y diwydiant TGCh a'r rhyngrwyd",
+						url: "/businessindustryandtrade/itandinternetindustry"
+					},
+					{
+						label_en: "International trade",
+						label_cy: "Masnach ryngwladol",
+						url: "/businessindustryandtrade/internationaltrade"
+					},
+					{
+						label_en: "Manufacturing and production industry",
+						label_cy: "Y diwydiant gweithgynhyrchu a chynhyrchu",
+						url: "/businessindustryandtrade/manufacturingandproductionindustry"
+					},
+					{
+						label_en: "Retail industry",
+						label_cy: "Y diwydiant manwerthu",
+						url: "/businessindustryandtrade/retailindustry"
+					},
+					{
+						label_en: "Tourism industry",
+						label_cy: "Y diwydiant twristiaeth",
+						url: "/businessindustryandtrade/tourismindustry"
+					}
+				]
+			},
+			{
+				label_en: "Economy",
+				label_cy: "Yr economi",
+				url: "/economy",
+				children: [
+					{
+						label_en: "Economic output and productivity",
+						label_cy: "Allbwn economaidd a chynhyrchiant",
+						url: "/economy/economicoutputandproductivity"
+					},
+					{
+						label_en: "Government, public sector and taxes",
+						label_cy: "Llywodraeth, y sector cyhoeddus a threthi",
+						url: "/economy/governmentpublicsectorandtaxes"
+					},
+					{
+						label_en: "Gross Value Added (GVA)",
+						label_cy: "Gwerth Ychwanegol Gros",
+						url: "/economy/grossvalueaddedgva"
+					},
+					{
+						label_en: "Investments, pensions and trusts",
+						label_cy: "Buddsoddiadau, pensiynau ac ymddiriedolaethau",
+						url: "/economy/investmentspensionsandtrusts"
+					},
+					{
+						label_en: "Regional accounts",
+						label_cy: "Cyfrifon rhanbarthol",
+						url: "/economy/regionalaccounts"
+					},
+					{
+						label_en: "Environmental accounts",
+						label_cy: "Cyfrifon amgylcheddol",
+						url: "/economy/environmentalaccounts"
+					},
+					{
+						label_en: "Gross Domestic Product (GDP)",
+						label_cy: "Cynnyrch Domestig Gros (CDG)",
+						url: "/economy/grossdomesticproductgdp"
+					},
+					{
+						label_en: "Inflation and price indices",
+						label_cy: "Chwyddiant a mynegrifau prisiau",
+						url: "/economy/inflationandpriceindices"
+					},
+					{
+						label_en: "National Accounts",
+						label_cy: "Cyfrifon gwladol",
+						url: "/economy/nationalaccounts"
+					}
+				]
+			},
+			{
+				label_en: "Employment and labour market",
+				label_cy: "Cyflogaeth a'r farchnad lafur",
+				url: "/employmentandlabourmarket",
+				children: [
+					{
+						label_en: "People in work",
+						label_cy: "Pobl mewn gwaith",
+						url: "/employmentandlabourmarket/peopleinwork"
+					},
+					{
+						label_en: "People not in work",
+						label_cy: "Pobl nad ydynt mewn gwaith",
+						url: "/employmentandlabourmarket/peoplenotinwork"
+					}
+				]
+			},
+			{
 				label_en: "People, population and community",
 				label_cy: "Pobl, y boblogaeth a chymunedau",
 				url: "/peoplepopulationandcommunity",
@@ -97,6 +213,11 @@
 						url: "/peoplepopulationandcommunity/leisureandtourism"
 					},
 					{
+						label_en: "Measuring progress, well-being and beyond GDP",
+						label_cy: "Lles",
+						url: "/peoplepopulationandcommunity/wellbeing"
+					},
+					{
 						label_en: "Personal and household finances",
 						label_cy: "Cyllid personol a chyllid aelwydydd",
 						url: "/peoplepopulationandcommunity/personalandhouseholdfinances"
@@ -105,127 +226,6 @@
 						label_en: "Population and migration",
 						label_cy: "Poblogaeth ac ymfudo",
 						url: "/peoplepopulationandcommunity/populationandmigration"
-					},
-					{
-						label_en: "Well-being",
-						label_cy: "Lles",
-						url: "/peoplepopulationandcommunity/wellbeing"
-					}
-				]
-			},
-			{
-				label_en: "Business, industry and trade",
-				label_cy: "Busnes, diwydiant a masnach",
-				url: "/businessindustryandtrade",
-				children: [
-					{
-						label_en: "Business",
-						label_cy: "Busnes",
-						url: "/businessindustryandtrade/business"
-					},
-					{
-						label_en: "Changes to business",
-						label_cy: "Newidiadau i fusnesau",
-						url: "/businessindustryandtrade/changestobusiness"
-					},
-					{
-						label_en: "Construction industry",
-						label_cy: "Diwydiant adeiladu",
-						url: "/businessindustryandtrade/constructionindustry"
-					},
-					{
-						label_en: "International trade",
-						label_cy: "Masnach ryngwladol",
-						url: "/businessindustryandtrade/internationaltrade"
-					},
-					{
-						label_en: "IT and internet industry",
-						label_cy: "Y diwydiant TGCh a'r rhyngrwyd",
-						url: "/businessindustryandtrade/itandinternetindustry"
-					},
-					{
-						label_en: "Manufacturing and production industry",
-						label_cy: "Y diwydiant gweithgynhyrchu a chynhyrchu",
-						url: "/businessindustryandtrade/manufacturingandproductionindustry"
-					},
-					{
-						label_en: "Retail industry",
-						label_cy: "Y diwydiant manwerthu",
-						url: "/businessindustryandtrade/retailindustry"
-					},
-					{
-						label_en: "Tourism industry",
-						label_cy: "Y diwydiant twristiaeth",
-						url: "/businessindustryandtrade/tourismindustry"
-					}
-				]
-			},
-			{
-				label_en: "Employment and labour market",
-				label_cy: "Cyflogaeth a'r farchnad lafur",
-				url: "/employmentandlabourmarket",
-				children: [
-					{
-						label_en: "People in work",
-						label_cy: "Pobl mewn gwaith",
-						url: "/employmentandlabourmarket/peopleinwork"
-					},
-					{
-						label_en: "People not in work",
-						label_cy: "Pobl nad ydynt mewn gwaith",
-						url: "/employmentandlabourmarket/peoplenotinwork"
-					}
-				]
-			},
-			{
-				label_en: "Economy",
-				label_cy: "Yr economi",
-				url: "/economy",
-				children: [
-					{
-						label_en: "Economic output and productivity",
-						label_cy: "Allbwn economaidd a chynhyrchiant",
-						url: "/economy/economicoutputandproductivity"
-					},
-					{
-						label_en: "Government, public sector and taxes",
-						label_cy: "Llywodraeth, y sector cyhoeddus a threthi",
-						url: "/economy/governmentpublicsectorandtaxes"
-					},
-					{
-						label_en: "Gross Value Added (GVA)",
-						label_cy: "Gwerth Ychwanegol Gros",
-						url: "/economy/grossvalueaddedgva"
-					},
-					{
-						label_en: "Investments, pensions and trusts",
-						label_cy: "Buddsoddiadau, pensiynau ac ymddiriedolaethau",
-						url: "/economy/investmentspensionsandtrusts"
-					},
-					{
-						label_en: "Regional accounts",
-						label_cy: "Cyfrifon rhanbarthol",
-						url: "/economy/regionalaccounts"
-					},
-					{
-						label_en: "Environmental accounts",
-						label_cy: "Cyfrifon amgylcheddol",
-						url: "/economy/environmentalaccounts"
-					},
-					{
-						label_en: "Gross Domestic Product (GDP)",
-						label_cy: "Cynnyrch Domestig Gros (CDG)",
-						url: "/economy/grossdomesticproductgdp"
-					},
-					{
-						label_en: "Inflation and price indices",
-						label_cy: "Chwyddiant a mynegrifau prisiau",
-						url: "/economy/inflationandpriceindices"
-					},
-					{
-						label_en: "National Accounts",
-						label_cy: "Cyfrifon gwladol",
-						url: "/economy/nationalaccounts"
 					}
 				]
 			}
