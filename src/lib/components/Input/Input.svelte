@@ -35,6 +35,11 @@
 	export let description = null;
 	/**
 	 * The maximum number of characters that can be entered (optional)
+	 * @type {string|null}
+	 */
+	export let placeholder = null;
+	/**
+	 * A placeholder text for the input (optional)
 	 * @type {number|null}
 	 */
 	export let charLimit = null;
@@ -115,6 +120,7 @@
 					{id}
 					{name}
 					bind:value
+					{placeholder}
 					maxlength={charLimit}
 					pattern={pattern ? pattern : numeric ? "[0-9]*" : null}
 					inputmode={numeric ? "numeric" : null}
@@ -146,6 +152,7 @@
 			{id}
 			{name}
 			bind:value
+			{placeholder}
 			pattern={pattern ? pattern : numeric ? "[0-9]*" : null}
 			inputmode={numeric ? "numeric" : null}
 			class="ons-input ons-input--text ons-input-type__input {Number.isInteger(width)
