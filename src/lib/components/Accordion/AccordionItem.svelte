@@ -1,6 +1,6 @@
 <script>
 	import { getContext } from "svelte";
-	import { slugify } from "$lib/js/utils.js";
+	import { slugify, sleep } from "$lib/js/utils.js";
 
 	/**
 	 * Sets the title of the accordion item
@@ -24,6 +24,18 @@
 	export let open = false;
 
 	const dataGroup = getContext("dataGroup");
+
+	// Sync open state to allow binding
+	// Note: This is a one-way binding. Changing the state from outside does not open/close
+	let lastState = open ? "Open panel" : "Close panel";
+	async function syncOpenState(e) {
+		await sleep(0);
+		const state = e?.target?.dataset?.gaAction;
+		if (state !== lastState) {
+			open = state === "Open panel" ? true : false;
+			lastState = state;
+		}
+	}
 </script>
 
 <div
@@ -32,9 +44,16 @@
 	data-group={dataGroup}
 	data-open={open}
 >
-	<div class="ons-details__heading ons-js-details-heading" role="button">
+	<div
+		class="ons-details__heading ons-js-details-heading"
+		role="button"
+		on:click={syncOpenState}
+		on:keyup={syncOpenState}
+	>
 		{#if headingTag === "h3"}
-			<h3 class="ons-details__title ons-u-fs-r--b">{title}</h3>
+			<h3 class="ons-details__title ons-u-fs-r--b">
+				{title}
+			</h3>
 		{:else}
 			<h2 class="ons-details__title ons-u-fs-r--b">{title}</h2>
 		{/if}
