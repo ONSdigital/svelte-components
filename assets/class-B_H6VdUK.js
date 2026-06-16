@@ -1,1 +1,0 @@
-import{a as g}from"./attributes-DayBpKoh.js";import{C as l}from"./iframe-BXhLknc8.js";function S(r,a,f,b,t,i){var A=r[l];if(A!==f||A===void 0){var o=g(f,b,i);o==null?r.removeAttribute("class"):a?r.className=o:r.setAttribute("class",o),r[l]=f}else if(i&&t!==i)for(var u in i){var C=!!i[u];(t==null||C!==!!t[u])&&r.classList.toggle(u,C)}return i}export{S as s};
