@@ -9,7 +9,7 @@
 	export let id = null;
 	/**
 	 * Binding for pymChild element (can be used to send messages to parent of iframe)
-	 * @type {object}
+	 * @type {object|null}
 	 */
 	export let pymChild = null;
 	/**
@@ -35,6 +35,13 @@
 		const href = document.location.href;
 		const parentUrl = new URLSearchParams(document.location.search).get("parentUrl");
 		dispatch("load", { href, parentUrl, pymChild });
+
+		return {
+			destroy: () => {
+				pymChild?.remove?.();
+				pymChild = null;
+			}
+		};
 	});
 </script>
 
