@@ -14,6 +14,11 @@
 	 * @type {number|null}
 	 */
 	export let width = null;
+	/**
+	 * Set z-index of tooltip, to ensure it appears in front of other elements
+	 * @type {number}
+	 */
+	export let zIndex = 1;
 
 	let isHovered = false;
 
@@ -39,6 +44,7 @@
 	{#if isHovered}
 		<div
 			class="tooltip tooltip-{position}"
+			style:z-index={zIndex}
 			style:width={width != null ? `${width}px` : null}
 			style:white-space={width == null ? "nowrap" : "wrap"}
 		>
