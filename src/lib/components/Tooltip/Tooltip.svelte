@@ -13,47 +13,22 @@
 	 * Set a maximum width for the tooltip (beyond this width text will wrap)
 	 * @type {number|null}
 	 */
-	export let maxWidth = null;
+	export let width = null;
 
 	let isHovered = false;
-	let currentPos = {};
 
-	function mouseOver(event) {
-		const bboxEl = event.target.getBoundingClientRect();
-		const bboxPt = event?.target?.offsetParent?.getBoundingClientRect?.() || { top: 0, left: 0 };
-		const x = window.pageXOffset;
-		const y = window.pageYOffset;
-		const bbox = {
-			top: bboxEl.top - bboxPt.top - y,
-			bottom: bboxEl.bottom - bboxPt.top - y,
-			left: bboxEl.left - bboxPt.left - x,
-			right: bboxEl.right - bboxPt.left - x
-		};
-		currentPos = {
-			top:
-				(position === "bottom"
-					? bbox.bottom
-					: position === "top"
-						? bbox.top
-						: (bbox.top + bbox.bottom) / 2) + window.pageYOffset,
-			left:
-				(position === "right"
-					? bbox.right
-					: position === "left"
-						? bbox.left
-						: (bbox.left + bbox.right) / 2) + window.pageXOffset
-		};
+	function mouseOver() {
 		isHovered = true;
+		console.log("hovered");
 	}
 	function mouseLeave() {
 		isHovered = false;
-	}
-	function renderDim(dim) {
-		return dim ? `${dim}px` : null;
+		console.log("unhovered");
 	}
 </script>
 
 <div
+	role="tooltip"
 	class="tooltip-wrapper"
 	on:mouseenter={mouseOver}
 	on:mouseleave={mouseLeave}
@@ -61,23 +36,21 @@
 	on:focusout={mouseLeave}
 >
 	<slot />
+	{#if isHovered}
+		<div
+			class="tooltip tooltip-{position}"
+			style:width={width != null ? `${width}px` : null}
+			style:white-space={width == null ? "nowrap" : "wrap"}
+		>
+			{text}
+		</div>
+	{/if}
 </div>
-{#if isHovered}
-	<div
-		class="tooltip tooltip-{position}"
-		style:left={renderDim(currentPos.left)}
-		style:right={renderDim(currentPos.right)}
-		style:top={renderDim(currentPos.top)}
-		style:bottom={renderDim(currentPos.bottom)}
-		style:max-width={renderDim(maxWidth)}
-	>
-		{text}
-	</div>
-{/if}
 
 <style>
 	.tooltip-wrapper {
 		display: inline-block;
+		position: relative;
 	}
 	.tooltip {
 		position: absolute;
@@ -89,21 +62,32 @@
 		padding: 4px 6px;
 		border-radius: 4px;
 		box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.25);
+		word-break: keep-all;
 	}
 	.tooltip-top {
-		transform: translate(-50%, -100%) translateY(-8px);
+		bottom: calc(100% + 8px);
+		left: 50%;
+		transform: translateX(-50%);
 	}
 	.tooltip-bottom {
-		transform: translate(-50%, 8px);
+		top: calc(100% + 8px);
+		left: 50%;
+		transform: translateX(-50%);
 	}
 	.tooltip-left {
-		transform: translate(-100%, -50%) translateX(-8px);
+		top: 50%;
+		right: calc(100% + 8px);
+		transform: translateY(-50%);
 	}
 	.tooltip-right {
-		transform: translate(8px, -50%);
+		top: 50%;
+		left: calc(100% + 8px);
+		transform: translateY(-50%);
 	}
 	.tooltip-middle {
-		transform: translate(-50%, 8px);
+		top: calc(50% + 8px);
+		left: 50%;
+		transform: translateX(-50%);
 	}
 	.tooltip::before {
 		content: " ";
