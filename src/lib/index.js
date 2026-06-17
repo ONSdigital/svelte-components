@@ -76,7 +76,6 @@ export { default as DocumentList } from "./components/DocumentList/DocumentList.
 export { default as Document } from "./components/DocumentList/Document.svelte";
 export { default as ErrorPage } from "./components/ErrorPage/ErrorPage.svelte";
 export { default as Image } from "./components/Image/Image.svelte";
-export { default as Indent } from "./components/Indent/Indent.svelte";
 export { default as Notice } from "./components/Notice/Notice.svelte";
 export { default as ShareButtons } from "./components/ShareButtons/ShareButtons.svelte";
 export { default as Summary } from "./components/Summary/Summary.svelte";
@@ -90,3 +89,5 @@ export { default as Table } from "./components/Table/Table.svelte";
 // Decorators
 export { default as Em } from "./components/Em/Em.svelte";
 export { default as Icon } from "./components/Icon/Icon.svelte";
+export { default as Indent } from "./components/Indent/Indent.svelte";
+export { default as Tooltip } from "./components/Tooltip/Tooltip.svelte";
