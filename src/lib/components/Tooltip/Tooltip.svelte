@@ -24,11 +24,9 @@
 
 	function mouseOver() {
 		isHovered = true;
-		console.log("hovered");
 	}
 	function mouseLeave() {
 		isHovered = false;
-		console.log("unhovered");
 	}
 </script>
 

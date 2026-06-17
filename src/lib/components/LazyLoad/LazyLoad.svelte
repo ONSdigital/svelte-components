@@ -17,7 +17,6 @@
 
 	const callback = (entries, observer) => {
 		entries.forEach((entry) => {
-			console.log(entry);
 			let intersecting = entry.isIntersecting;
 			if (!entered && intersecting) {
 				observer.unobserve(entry.target);
