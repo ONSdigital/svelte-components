@@ -1,7 +1,5 @@
 <script>
-	import { onMount } from "svelte";
 	import Container from "../Container/Container.svelte";
-	import initNav from "./nav.js";
 
 	export let width = "wide";
 	export let headerBorder = false;
@@ -13,8 +11,6 @@
 	export let baseother = "https://cy.ons.gov.uk";
 	export let path = "";
 	export let i18n = (text) => text;
-
-	let el; // Header HTML element
 
 	const menu = {
 		main: [
@@ -239,17 +235,9 @@
 		]
 	};
 	const columns = [[menu.topics[0]], [menu.topics[1], menu.topics[2]], [menu.topics[3]]];
-
-	onMount(() => {
-		const hasBodyClass = "className" in document.body || {};
-		const bodyClassString = document.body?.className || "";
-		if (hasBodyClass && !bodyClassString.includes("ons-js-enabled"))
-			document.body.className = bodyClassString + " ons-js-enabled";
-		initNav(el?.parentElement || document);
-	});
 </script>
 
-<div class="ons-header__top" class:ons-header--border={headerBorder} bind:this={el}>
+<div class="ons-header__top" class:ons-header--border={headerBorder}>
 	<Container {width}>
 		<div
 			class="ons-header__grid-top ons-grid ons-grid-flex ons-grid-flex--between ons-grid-flex--vertical-center ons-grid-flex--no-wrap ons-grid--gutterless"

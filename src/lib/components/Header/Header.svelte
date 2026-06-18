@@ -1,13 +1,12 @@
 <script>
 	import { onMount, getContext } from "svelte";
+	import initNav from "./nav.js";
 	import Theme from "$lib/components/Theme/Theme.svelte";
 	import Container from "../Container/Container.svelte";
 	import SkipLink from "$lib/components/SkipLink/SkipLink.svelte";
 	import HeaderNav from "./HeaderNav.svelte";
 	import HeaderNavCompact from "./HeaderNavCompact.svelte";
 	import HeaderNavLegacy from "./HeaderNavLegacy.svelte";
-
-	const page = getContext("page");
 
 	/**
 	 * Optional product title
@@ -65,10 +64,22 @@
 	 */
 	export let legacy = false;
 	/**
+	 * Optional: Pass the "page" store from "$app/state" in SvelteKit (gets read from context by default if it exists)
+	 * @type {any}
+	 */
+	export let page = getContext("page");
+	/**
 	 * Anchor link to skip to main body content (default "#main")
 	 * @type {string|null}
 	 */
 	export let skipHref = "#main";
+	/**
+	 * Optional: Nav links below title (only works in combination with title block). An array of links in the format {label, href}
+	 * @type {{label: string, href: string}[]|null}
+	 */
+	export let navLinks = null;
+
+	let el; // Header HTML element
 
 	let lang = "en";
 	let baseurl = "https://www.ons.gov.uk";
@@ -99,9 +110,18 @@
 	};
 
 	$: i18n = (text) => (lang === "cy" && texts[text] ? texts[text] : text);
+	$: route = page?.subscribe ? $page.route?.id : page?.route?.id || "";
 
 	onMount(() => {
 		setPaths();
+
+		if ((!compact && !legacy) || (title && Array.isArray(navLinks))) {
+			const hasBodyClass = "className" in document.body || {};
+			const bodyClassString = document.body?.className || "";
+			if (hasBodyClass && !bodyClassString.includes("ons-js-enabled"))
+				document.body.className = bodyClassString + " ons-js-enabled";
+			initNav(el?.parentElement || document);
+		}
 	});
 </script>
 
@@ -110,6 +130,7 @@
 	class:ons-header--basic={!compact && !legacy}
 	class:ons-header__full={width === "full"}
 	role="banner"
+	bind:this={el}
 >
 	{#if skipHref}
 		<SkipLink href={skipHref} />
@@ -166,9 +187,60 @@
 								<div class="ons-header__title">{title}</div>
 							{/if}
 						</div>
+						{#if Array.isArray(navLinks)}
+							<div class="ons-grid__col ons-col-auto ons-u-flex-no-shrink ons-u-d-no@l">
+								<button
+									type="submit"
+									class="ons-btn ons-u-ml-2xs ons-u-d-no ons-js-navigation-button ons-u-d-no@l ons-btn--mobile ons-btn--ghost"
+									aria-label="Toggle main menu"
+									aria-controls="main-nav"
+									aria-expanded="false"
+								>
+									<span class="ons-btn__inner"
+										><span class="ons-btn__text">Menu</span><svg
+											class="ons-icon ons-u-ml-2xs"
+											viewBox="0 0 8 13"
+											xmlns="http://www.w3.org/2000/svg"
+											focusable="false"
+											fill="currentColor"
+											role="img"
+											aria-hidden="true"
+										>
+											<path
+												d="M5.74,14.28l-.57-.56a.5.5,0,0,1,0-.71h0l5-5-5-5a.5.5,0,0,1,0-.71h0l.57-.56a.5.5,0,0,1,.71,0h0l5.93,5.93a.5.5,0,0,1,0,.7L6.45,14.28a.5.5,0,0,1-.71,0Z"
+												transform="translate(-5.02 -1.59)"
+											/>
+										</svg></span
+									>
+								</button>
+							</div>
+						{/if}
 					</div>
 				</Container>
 			</div>
+			{#if Array.isArray(navLinks)}
+				<div class="ons-navigation-wrapper">
+					<div class="ons-container ons-container--gutterless@2xs@l">
+						<nav
+							class="ons-navigation ons-navigation--main ons-js-navigation"
+							id="main-nav"
+							aria-label="Main menu"
+							data-analytics="header-navigation"
+						>
+							<ul class="ons-navigation__list">
+								{#each navLinks as link (link.href)}
+									<li
+										class="ons-navigation__item"
+										class:ons-navigation__item--active={route.endsWith(link.href)}
+									>
+										<a class="ons-navigation__link" href={link.href}> {link.label} </a>
+									</li>
+								{/each}
+							</ul>
+						</nav>
+					</div>
+				</div>
+			{/if}
 		{/if}
 	</Theme>
 </header>

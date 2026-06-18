@@ -25,6 +25,19 @@
 
 <Story name="Compact with page title" args={{ compact: true, title: "Page title" }} />
 
+<Story
+	name="Compact with page title and nav links"
+	args={{
+		compact: true,
+		title: "Page title",
+		navLinks: [
+			{ label: "Home", href: "" },
+			{ label: "Some page", href: "#0" },
+			{ label: "Another page", href: "#1" }
+		]
+	}}
+/>
+
 <Story name="Compact dark theme" args={{ compact: true, title: "Page title", theme: "dark" }} />
 
 <Story name="Legacy header" args={{ legacy: true }} />
