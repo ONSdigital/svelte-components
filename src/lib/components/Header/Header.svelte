@@ -81,17 +81,23 @@
 
 	let el; // Header HTML element
 
+	let url = null;
 	let lang = "en";
 	let baseurl = "https://www.ons.gov.uk";
 	let baseother = "https://cy.ons.gov.uk";
 	let path = "";
 
 	function setPaths() {
-		const url = page?.url || document.location;
+		url = page?.url || document.location;
 		lang = url.host.startsWith("cy") ? "cy" : "en";
 		baseurl = lang === "cy" ? "https://cy.ons.gov.uk" : "https://www.ons.gov.uk";
 		baseother = lang === "cy" ? "https://www.ons.gov.uk" : "https://cy.ons.gov.uk";
 		path = url.pathname;
+	}
+
+	function getActiveLink(navLinks, path) {
+		const candidates = navLinks.filter((link) => path.endsWith(link.href));
+		return candidates.length ? candidates[candidates.length - 1] : null;
 	}
 
 	const texts = {
@@ -110,7 +116,8 @@
 	};
 
 	$: i18n = (text) => (lang === "cy" && texts[text] ? texts[text] : text);
-	$: route = page?.subscribe ? $page.route?.id : page?.route?.id || "";
+	$: activeLink =
+		Array.isArray(navLinks) && url?.pathname ? getActiveLink(navLinks, url.pathname) : null;
 
 	onMount(() => {
 		setPaths();
@@ -220,7 +227,7 @@
 			</div>
 			{#if Array.isArray(navLinks)}
 				<div class="ons-navigation-wrapper">
-					<div class="ons-container ons-container--gutterless@2xs@l">
+					<Container {width}>
 						<nav
 							class="ons-navigation ons-navigation--main ons-js-navigation"
 							id="main-nav"
@@ -231,14 +238,14 @@
 								{#each navLinks as link (link.href)}
 									<li
 										class="ons-navigation__item"
-										class:ons-navigation__item--active={route.endsWith(link.href)}
+										class:ons-navigation__item--active={activeLink?.href === link.href}
 									>
 										<a class="ons-navigation__link" href={link.href}> {link.label} </a>
 									</li>
 								{/each}
 							</ul>
 						</nav>
-					</div>
+					</Container>
 				</div>
 			{/if}
 		{/if}
