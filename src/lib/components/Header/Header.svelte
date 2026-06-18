@@ -96,7 +96,7 @@
 	}
 
 	function getActiveLink(navLinks, path) {
-		const candidates = navLinks.filter((link) => path.endsWith(link.href));
+		const candidates = navLinks.filter((link) => path.includes(link.href));
 		return candidates.length ? candidates[candidates.length - 1] : null;
 	}
 
