@@ -81,18 +81,19 @@
 
 	let el; // Header HTML element
 
-	let url = null;
 	let lang = "en";
 	let baseurl = "https://www.ons.gov.uk";
 	let baseother = "https://cy.ons.gov.uk";
 	let path = "";
+	let activeLink = null;
 
 	function setPaths() {
-		url = page?.url || document.location;
+		const url = page?.url || document.location;
 		lang = url.host.startsWith("cy") ? "cy" : "en";
 		baseurl = lang === "cy" ? "https://cy.ons.gov.uk" : "https://www.ons.gov.uk";
 		baseother = lang === "cy" ? "https://www.ons.gov.uk" : "https://cy.ons.gov.uk";
 		path = url.pathname;
+		activeLink = Array.isArray(navLinks) ? getActiveLink(navLinks, path) : null;
 	}
 
 	function getActiveLink(navLinks, path) {
@@ -116,8 +117,6 @@
 	};
 
 	$: i18n = (text) => (lang === "cy" && texts[text] ? texts[text] : text);
-	$: activeLink =
-		Array.isArray(navLinks) && url?.pathname ? getActiveLink(navLinks, url.pathname) : null;
 
 	onMount(() => {
 		setPaths();
@@ -131,6 +130,8 @@
 		}
 	});
 </script>
+
+<svelte:window onpopstate={setPaths} />
 
 <header
 	class="ons-header"
