@@ -81,7 +81,6 @@
 
 	let el; // Header HTML element
 
-	let _page;
 	let lang = "en";
 	let baseurl = "https://www.ons.gov.uk";
 	let baseother = "https://cy.ons.gov.uk";
@@ -120,8 +119,7 @@
 	$: i18n = (text) => (lang === "cy" && texts[text] ? texts[text] : text);
 
 	onMount(() => {
-		_page = page || { url: document?.location };
-		setPaths();
+		setPaths(page || { url: document?.location });
 
 		if ((!compact && !legacy) || (title && Array.isArray(navLinks))) {
 			const hasBodyClass = "className" in document?.body || {};
@@ -131,7 +129,7 @@
 			initNav(el?.parentElement || document);
 		}
 	});
-	$: setPaths(_page);
+	$: setPaths(page);
 </script>
 
 <header
