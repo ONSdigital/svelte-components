@@ -34,6 +34,11 @@
 	 */
 	export let themeOverrides = {};
 	/**
+	 * Optional: Set an additional CSS class for the container
+	 * @type {string|null}
+	 */
+	export let cls = null;
+	/**
 	 * Display compact header without menus
 	 * @type {boolean}
 	 */
@@ -133,7 +138,7 @@
 </script>
 
 <header
-	class="ons-header"
+	class="ons-header {cls}"
 	class:ons-header--basic={!compact && !legacy}
 	class:ons-header__full={width === "full"}
 	role="banner"
@@ -250,6 +255,7 @@
 			{/if}
 		{/if}
 	</Theme>
+	<slot name="after" />
 </header>
 
 <style>
