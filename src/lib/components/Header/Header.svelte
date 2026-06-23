@@ -64,7 +64,7 @@
 	 */
 	export let legacy = false;
 	/**
-	 * Optional: Pass the "page" store from "$app/state" in SvelteKit (gets read from context by default if it exists)
+	 * Optional: Pass the "page" state from "$app/state" in SvelteKit (gets read from context by default if it exists)
 	 * @type {any}
 	 */
 	export let page = getContext("page");
@@ -81,14 +81,16 @@
 
 	let el; // Header HTML element
 
+	let _page;
 	let lang = "en";
 	let baseurl = "https://www.ons.gov.uk";
 	let baseother = "https://cy.ons.gov.uk";
 	let path = "";
 	let activeLink = null;
 
-	function setPaths() {
-		const url = page?.url || document.location;
+	function setPaths(page) {
+		if (!page) return;
+		const url = page.url;
 		lang = url.host.startsWith("cy") ? "cy" : "en";
 		baseurl = lang === "cy" ? "https://cy.ons.gov.uk" : "https://www.ons.gov.uk";
 		baseother = lang === "cy" ? "https://www.ons.gov.uk" : "https://cy.ons.gov.uk";
@@ -115,23 +117,22 @@
 		Cymraeg: "English",
 		"Newid iaith i": "Change language to"
 	};
-
 	$: i18n = (text) => (lang === "cy" && texts[text] ? texts[text] : text);
 
 	onMount(() => {
+		_page = page || { url: document?.location };
 		setPaths();
 
 		if ((!compact && !legacy) || (title && Array.isArray(navLinks))) {
-			const hasBodyClass = "className" in document.body || {};
-			const bodyClassString = document.body?.className || "";
+			const hasBodyClass = "className" in document?.body || {};
+			const bodyClassString = document?.body?.className || "";
 			if (hasBodyClass && !bodyClassString.includes("ons-js-enabled"))
 				document.body.className = bodyClassString + " ons-js-enabled";
 			initNav(el?.parentElement || document);
 		}
 	});
+	$: setPaths(_page);
 </script>
-
-<svelte:window onpopstate={setPaths} />
 
 <header
 	class="ons-header"
