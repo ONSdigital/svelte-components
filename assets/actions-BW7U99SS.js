@@ -1,0 +1,1 @@
+import{o,u as c,r as i,q as d,v as u}from"./iframe-DJEpfYGL.js";function q(e,n,f){o(()=>{var r=c(()=>n(e,f==null?void 0:f())||{});if(f&&(r!=null&&r.update)){var a=!1,t={};i(()=>{var s=f();d(s),a&&u(t,s)&&(t=s,r.update(s))}),a=!0}if(r!=null&&r.destroy)return()=>r.destroy()})}export{q as a};
