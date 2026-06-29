@@ -1,4 +1,7 @@
 <script>
+	import { onMount } from "svelte";
+	import { createPopper } from "@popperjs/core";
+
 	/**
 	 * Define the text to be displayed on the tooltip
 	 * @type {string}
@@ -6,7 +9,7 @@
 	export let text = "";
 	/**
 	 * Define the position of the tooltip relative to the element
-	 * @type {"top"|"bottom"|"left"|"right"|"middle"}
+	 * @type {"top"|"bottom"|"left"|"right"}
 	 */
 	export let position = "bottom";
 	/**
@@ -20,45 +23,78 @@
 	 */
 	export let zIndex = 1;
 
-	let isHovered = false;
+	let wrapper, tooltip; // HTML element bindings
+	let showToolip = null;
 
-	function mouseOver() {
-		isHovered = true;
+	function init() {
+		const popper = createPopper(wrapper, tooltip, {
+			placement: position,
+			modifiers: [
+				{
+					name: "offset",
+					options: {
+						offset: [0, 8]
+					}
+				}
+			]
+		});
+
+		function show() {
+			// Make the tooltip visible
+			showToolip = "";
+
+			// Enable the event listeners
+			popper.setOptions((options) => ({
+				...options,
+				modifiers: [...options.modifiers, { name: "eventListeners", enabled: true }]
+			}));
+
+			// Update its position
+			popper.update();
+		}
+
+		function hide() {
+			// Hide the tooltip
+			showToolip = null;
+
+			// Disable the event listeners
+			popper.setOptions((options) => ({
+				...options,
+				modifiers: [...options.modifiers, { name: "eventListeners", enabled: false }]
+			}));
+		}
+
+		const showEvents = ["mouseenter", "focus"];
+		const hideEvents = ["mouseleave", "blur"];
+
+		for (const event of showEvents) wrapper.addEventListener(event, show);
+		for (const event of hideEvents) wrapper.addEventListener(event, hide);
+
+		return {
+			destroy: () => {
+				for (const event of showEvents) wrapper.removeEventListener(event, show);
+				for (const event of hideEvents) wrapper.removeEventListener(event, hide);
+				popper.destroy();
+			}
+		};
 	}
-	function mouseLeave() {
-		isHovered = false;
-	}
+	onMount(init);
 </script>
 
-<div
-	role="tooltip"
-	class="tooltip-wrapper"
-	on:mouseenter={mouseOver}
-	on:mouseleave={mouseLeave}
-	on:focusin={mouseOver}
-	on:focusout={mouseLeave}
->
+<div class="tooltip-wrapper" bind:this={wrapper}>
 	<slot />
-	{#if isHovered}
-		<div
-			class="tooltip tooltip-{position}"
-			style:z-index={zIndex}
-			style:width={width != null ? `${width}px` : null}
-			style:white-space={width == null ? "nowrap" : "wrap"}
-		>
-			{text}
-		</div>
-	{/if}
+</div>
+
+<div class="tooltip" role="tooltip" data-show={showToolip} bind:this={tooltip}>
+	{text}
+	<div class="tooltip-arrow" data-popper-arrow></div>
 </div>
 
 <style>
 	.tooltip-wrapper {
 		display: inline-block;
-		position: relative;
 	}
 	.tooltip {
-		position: absolute;
-		pointer-events: none;
 		font-size: 14px;
 		line-height: 1.4;
 		color: var(--ons-color-page-light);
@@ -67,61 +103,42 @@
 		border-radius: 4px;
 		box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.25);
 		word-break: keep-all;
+		display: none;
 	}
-	.tooltip-top {
-		bottom: calc(100% + 8px);
-		left: 50%;
-		transform: translateX(-50%);
+	.tooltip[data-show] {
+		display: block;
 	}
-	.tooltip-bottom {
-		top: calc(100% + 8px);
-		left: 50%;
-		transform: translateX(-50%);
-	}
-	.tooltip-left {
-		top: 50%;
-		right: calc(100% + 8px);
-		transform: translateY(-50%);
-	}
-	.tooltip-right {
-		top: 50%;
-		left: calc(100% + 8px);
-		transform: translateY(-50%);
-	}
-	.tooltip-middle {
-		top: calc(50% + 8px);
-		left: 50%;
-		transform: translateX(-50%);
-	}
-	.tooltip::before {
-		content: " ";
+	.tooltip-arrow,
+	.tooltip-arrow::before {
 		position: absolute;
-		border-width: 8px;
-		border-style: solid;
+		width: 10px;
+		height: 10px;
+		background: inherit;
 	}
-	.tooltip-bottom::before,
-	.tooltip-middle::before {
-		bottom: calc(100% - 1px);
-		right: 50%;
-		border-color: transparent transparent var(--ons-color-text) transparent;
-		transform: translateX(50%);
+
+	.tooltip-arrow {
+		visibility: hidden;
 	}
-	.tooltip-top::before {
-		top: calc(100% - 1px);
-		right: 50%;
-		border-color: var(--ons-color-text) transparent transparent transparent;
-		transform: translateX(50%);
+
+	.tooltip-arrow::before {
+		visibility: visible;
+		content: "";
+		transform: rotate(45deg);
 	}
-	.tooltip-left::before {
-		left: calc(100% - 1px);
-		top: 50%;
-		border-color: transparent transparent transparent var(--ons-color-text);
-		transform: translateY(-50%);
+
+	:global(.tooltip[data-popper-placement^="top"] > .tooltip-arrow) {
+		bottom: -5px;
 	}
-	.tooltip-right::before {
-		right: calc(100% - 1px);
-		top: 50%;
-		border-color: transparent var(--ons-color-text) transparent transparent;
-		transform: translateY(-50%);
+
+	:global(.tooltip[data-popper-placement^="bottom"] > .tooltip-arrow) {
+		top: -5px;
+	}
+
+	:global(.tooltip[data-popper-placement^="left"] > .tooltip-arrow) {
+		right: -5px;
+	}
+
+	:global(.tooltip[data-popper-placement^="right"] > .tooltip-arrow) {
+		left: -5px;
 	}
 </style>
