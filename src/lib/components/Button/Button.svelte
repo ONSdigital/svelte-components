@@ -42,7 +42,7 @@
 	export let small = false;
 	/**
 	 * Icon on button, eg. "arrow", "search"
-	 * @type {"arrow"|"carret"|"chevron"|"code"|"cog"|"copy"|"cross"|"delete"|"download"|"edit"|"expand"|"external"|"pin"|"print"|"save"|"saveas"|"search"|"shrink"|"signout"|"tick"|"upload"|null}
+	 * @type {"arrow"|"carret"|"chevron"|"code"|"cog"|"copy"|"cross"|"delete"|"download"|"edit"|"expand"|"external"|"minus"|"pin"|"plus"|"print"|"save"|"saveas"|"search"|"shrink"|"signout"|"tick"|"upload"|null}
 	 */
 	export let icon = null;
 	/**
