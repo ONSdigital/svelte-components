@@ -6,6 +6,11 @@
 	 * @type {number}
 	 */
 	export let colspan = 1;
+	/**
+	 * (Optional) override column class
+	 * @type {string|null}
+	 */
+	export let cls = null;
 
 	const classes = {
 		narrow: {
@@ -46,11 +51,13 @@
 	const width = getContext("width") || "wide";
 	const colWidth = getContext("colWidth") || null;
 	const rowHeight = getContext("rowHeight") || null;
-	const colClass = colWidth
-		? calcSpans(classes?.[width]?.[colWidth] || [], colspan)
-				.map((c) => `ons-col-${c}`)
-				.join(" ")
-		: "";
+	const colClass = cls
+		? cls
+		: colWidth
+			? calcSpans(classes?.[width]?.[colWidth] || [], colspan)
+					.map((c) => `ons-col-${c}`)
+					.join(" ")
+			: "";
 </script>
 
 {#if colWidth}
