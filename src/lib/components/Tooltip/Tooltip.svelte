@@ -19,9 +19,9 @@
 	export let width = null;
 	/**
 	 * Set z-index of tooltip, to ensure it appears in front of other elements
-	 * @type {number}
+	 * @type {number|null}
 	 */
-	export let zIndex = 1;
+	export let zIndex = null;
 
 	let wrapper, tooltip; // HTML element bindings
 	let showToolip = null;
@@ -85,7 +85,13 @@
 	<slot />
 </div>
 
-<div class="tooltip" role="tooltip" data-show={showToolip} bind:this={tooltip}>
+<div
+	class="tooltip"
+	role="tooltip"
+	data-show={showToolip}
+	bind:this={tooltip}
+	style:z-index={zIndex}
+>
 	{text}
 	<div class="tooltip-arrow" data-popper-arrow></div>
 </div>
