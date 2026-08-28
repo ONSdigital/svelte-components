@@ -33,16 +33,16 @@
 	</Grid>
 {/snippet}
 
-{#snippet threeColumnsTemplate(args)}
-	<Grid colWidth="medium" {...args}>
+{#snippet threeColumnsTemplate()}
+	<Grid colWidth="medium">
 		<GridCell><div class="grid-cell">Grid cell one</div></GridCell>
 		<GridCell><div class="grid-cell">Grid cell two</div></GridCell>
 		<GridCell><div class="grid-cell">Grid cell three</div></GridCell>
 	</Grid>
 {/snippet}
 
-{#snippet threeColumnsClassTemplate(args)}
-	<Grid {...args}>
+{#snippet threeColumnsClassTemplate()}
+	<Grid>
 		<GridCell cls="ons-col-4@m"><div class="grid-cell">Grid cell one</div></GridCell>
 		<GridCell cls="ons-col-4@m"><div class="grid-cell">Grid cell two</div></GridCell>
 		<GridCell cls="ons-col-4@m"><div class="grid-cell">Grid cell three</div></GridCell>
