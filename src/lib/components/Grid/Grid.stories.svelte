@@ -33,6 +33,22 @@
 	</Grid>
 {/snippet}
 
+{#snippet threeColumnsTemplate(args)}
+	<Grid colWidth="medium" {...args}>
+		<GridCell><div class="grid-cell">Grid cell one</div></GridCell>
+		<GridCell><div class="grid-cell">Grid cell two</div></GridCell>
+		<GridCell><div class="grid-cell">Grid cell three</div></GridCell>
+	</Grid>
+{/snippet}
+
+{#snippet threeColumnsClassTemplate(args)}
+	<Grid {...args}>
+		<GridCell cls="ons-col-4@m"><div class="grid-cell">Grid cell one</div></GridCell>
+		<GridCell cls="ons-col-4@m"><div class="grid-cell">Grid cell two</div></GridCell>
+		<GridCell cls="ons-col-4@m"><div class="grid-cell">Grid cell three</div></GridCell>
+	</Grid>
+{/snippet}
+
 <Story name="Default" args={{}} {template} />
 
 <Story name="Wide columns" args={{ colWidth: "wide" }} {template} />
@@ -40,6 +56,10 @@
 <Story name="Narrow columns" args={{ colWidth: "narrow" }} {template} />
 
 <Story name="Full width columns" args={{ colWidth: "full" }} {template} />
+
+<Story name="Three columns with medium column width" args={{}} template={threeColumnsTemplate} />
+
+<Story name="Three columns with GridCell class override" args={{}} template={threeColumnsClassTemplate} />
 
 <style>
 	.grid-cell {
