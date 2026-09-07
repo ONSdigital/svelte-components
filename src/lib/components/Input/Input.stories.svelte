@@ -13,6 +13,7 @@
 	});
 </script>
 
+
 {#snippet template(args)}
 	<div style:padding="12px">
 		<Input {...args} />
@@ -71,3 +72,4 @@
 	}}
 	{template}
 />
+
