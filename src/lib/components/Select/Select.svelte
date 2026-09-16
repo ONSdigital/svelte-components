@@ -55,6 +55,11 @@
 	 */
 	export let hideLabel = false;
 	/**
+	 * An optional description to help users know what to enter
+	 * @type {string|null}
+	 */
+	export let description = null;
+	/**
 	 * An optional placeholder text
 	 * @type {string}
 	 */
@@ -217,6 +222,10 @@
 {:else}
 	<div class="ons-field {cls}">
 		{#if label}<label for={id} class="ons-label" class:ons-u-vh={hideLabel}>{label}</label>{/if}
+		{#if description}<span
+				id="description-hint"
+				class="ons-label__description ons-input--with-description">{description}</span
+			>{/if}
 		<div class="ons-autocomplete-wrapper">
 			{#if mounted}
 				<div
