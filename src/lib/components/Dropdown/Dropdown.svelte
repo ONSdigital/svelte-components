@@ -56,11 +56,22 @@
 </script>
 
 <div class="ons-field {cls}">
-	{#if label}<label class="ons-label" for={id} class:ons-u-vh={hideLabel}>{label}</label>{/if}
-	{#if description}<span
-			id="description-hint"
-			class="ons-label__description ons-input--with-description">{description}</span
-		>{/if}
+	{#if label}
+		<label
+			class="ons-label"
+			class:ons-label--with-description={description}
+			class:ons-u-vh={hideLabel}
+			aria-describedby={description ? `${id}-description-hint` : null}
+			for={id}
+		>
+			{label}
+		</label>
+	{/if}
+	{#if description}
+		<span id="{id}-description-hint" class="ons-label__description ons-input--with-description">
+			{description}
+		</span>
+	{/if}
 	<select
 		{id}
 		{name}
