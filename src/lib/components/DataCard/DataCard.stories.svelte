@@ -7,7 +7,7 @@
 	import data from "../../demo-data/data-scatter.js";
 
 	const { Story } = defineMeta({
-		title: "Charts/DataCard",
+		title: "Data visualisation/DataCard",
 		component: DataCard,
 		tags: ["autodocs"],
 		argTypes: {

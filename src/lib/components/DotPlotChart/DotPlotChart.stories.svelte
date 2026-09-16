@@ -6,7 +6,7 @@
 	import componentDocs from "./docs/component.md?raw";
 
 	const { Story } = defineMeta({
-		title: "Charts/DotPlotChart",
+		title: "Data visualisation/DotPlotChart",
 		component: DotPlotChart,
 		tags: ["autodocs"],
 		argTypes: {},

@@ -5,7 +5,7 @@
 	import componentDocs from "./docs/component.md?raw";
 
 	const { Story } = defineMeta({
-		title: "Information and media/ChangeStat",
+		title: "Data visualisation/ChangeStat",
 		component: ChangeStat,
 		tags: ["autodocs"],
 		argTypes: {

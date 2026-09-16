@@ -6,7 +6,7 @@
 	import componentDocs from "./docs/component.md?raw";
 
 	const { Story } = defineMeta({
-		title: "Charts/BarChart",
+		title: "Data visualisation/BarChart",
 		component: BarChart,
 		tags: ["autodocs"],
 		argTypes: {
