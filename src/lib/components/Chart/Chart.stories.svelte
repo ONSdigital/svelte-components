@@ -73,7 +73,7 @@
 	];
 
 	const { Story } = defineMeta({
-		title: "Charts/Chart",
+		title: "Data visualisation/Chart",
 		component: Chart,
 		tags: ["autodocs"],
 		argTypes: {},
