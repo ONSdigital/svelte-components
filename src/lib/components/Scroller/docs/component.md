@@ -13,7 +13,7 @@ Components for adding interactive scrollytelling sections to a feature article.
   }
 </script>
 
-<Scroller on:change="{updateScroller}" id="{any_unique_id}">
+<Scroller on:change="{updateScroller}" id="{any_unique_id}" fullBleed="{true}">
   <div slot="background">
     <!--
       The <Container> component is optional here.
@@ -37,3 +37,5 @@ Components for adding interactive scrollytelling sections to a feature article.
   </div>
 </Scroller>
 ```
+
+Use `fullBleed="{true}"` when the scroller is embedded inside an existing content column but should fill the viewport width. The background slot should still provide its own viewport height, for example with `<Container width="full" height="full">`. Avoid placing the embed inside an ancestor with `overflow: hidden`, as that can clip the viewport-width breakout.

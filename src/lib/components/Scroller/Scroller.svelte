@@ -86,6 +86,11 @@
 	 */
 	export let splitscreen = false;
 	/**
+	 * Allows the scroller to break out of an inline content column and fill the viewport width
+	 * @type {boolean}
+	 */
+	export let fullBleed = false;
+	/**
 	 * Adds a margin under the scroller section
 	 * @type {boolean}
 	 */
@@ -261,7 +266,13 @@
 	<div class="ons-u-mt-xl"></div>
 {/if}
 
-<svelte-scroller-outer {id} bind:this={outer} class={cls} class:splitscreen>
+<svelte-scroller-outer
+	{id}
+	bind:this={outer}
+	class={cls}
+	class:splitscreen
+	class:fullbleed={fullBleed}
+>
 	<svelte-scroller-background-container class="background-container" style="{style}{widthStyle}">
 		<svelte-scroller-background bind:this={background}>
 			<slot name="background" />
@@ -281,6 +292,13 @@
 	svelte-scroller-outer {
 		display: block;
 		position: relative;
+	}
+
+	svelte-scroller-outer.fullbleed {
+		width: 100vw;
+		max-width: 100vw;
+		margin-left: calc(50% - 50vw);
+		margin-right: calc(50% - 50vw);
 	}
 
 	svelte-scroller-background {
@@ -320,37 +338,37 @@
 		pointer-events: all !important;
 	}
 
-	:global([slot="foreground"] section) {
+	:global(svelte-scroller-foreground section) {
 		padding: 40vh 0 100vh 0;
 	}
 
-	:global([slot="foreground"] section + section) {
+	:global(svelte-scroller-foreground section + section) {
 		padding: 0 0 100vh 0;
 	}
 
-	:global([slot="foreground"] section:last-of-type) {
+	:global(svelte-scroller-foreground section:last-of-type) {
 		padding: 0 0 70vh 0;
 	}
 
-	:global([slot="foreground"] section > div) {
+	:global(svelte-scroller-foreground section > div) {
 		position: relative;
 	}
 
-	:global([slot="foreground"] section > div:before) {
+	:global(svelte-scroller-foreground section > div:before) {
 		background-color: var(--ons-color-page-light);
 		opacity: 80%;
 	}
 
-	:global([slot="foreground"] section div p) {
+	:global(svelte-scroller-foreground section div p) {
 		margin: 0;
 	}
 
-	:global([slot="foreground"] section div p + p) {
+	:global(svelte-scroller-foreground section div p + p) {
 		margin-top: 30px;
 	}
 
-	:global([slot="foreground"] section div h2),
-	:global([slot="foreground"] section div h3) {
+	:global(svelte-scroller-foreground section div h2),
+	:global(svelte-scroller-foreground section div h3) {
 		margin: 10px 0 20px 0;
 	}
 
@@ -360,10 +378,10 @@
 			min-width: 65%;
 			margin: 0 0 0 auto;
 		}
-		:global(.splitscreen [slot="foreground"] section div::before) {
+		:global(.splitscreen svelte-scroller-foreground section div::before) {
 			opacity: 0;
 		}
-		:global(.splitscreen [slot="foreground"] section) {
+		:global(.splitscreen svelte-scroller-foreground section) {
 			width: 480px;
 			max-width: 35%;
 			margin: 0 auto 0 0;

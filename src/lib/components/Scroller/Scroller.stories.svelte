@@ -58,3 +58,5 @@
 <Story name="Default" args={{}} {template} />
 
 <Story name="Split-screen mode" args={{ splitscreen: true }} {template} />
+
+<Story name="Full-bleed embedded mode" args={{ fullBleed: true }} {template} />
