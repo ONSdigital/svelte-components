@@ -7,10 +7,15 @@
 	 */
 	export let colspan = 1;
 	/**
-	 * (Optional) override column class
+	 * Optional: Add additional classes
 	 * @type {string|null}
 	 */
 	export let cls = null;
+	/**
+	 * Optional: Override default grid column class
+	 * @type {string|null}
+	 */
+	export let colCls = null;
 
 	const classes = {
 		narrow: {
@@ -61,14 +66,14 @@
 
 {#if colWidth}
 	<div
-		class="ons-grid__col {cls || colClass}"
+		class="ons-grid__col {colCls || colClass} {cls}"
 		style:height={typeof rowHeight === "number" ? `${rowHeight}px` : rowHeight}
 	>
 		<slot />
 	</div>
-{:else if cls}
+{:else if colCls}
 	<div
-		class="ons-grid__col {cls}"
+		class="ons-grid__col {colCls} {cls}"
 		style:height={typeof rowHeight === "number" ? `${rowHeight}px` : rowHeight}
 	>
 		<slot />

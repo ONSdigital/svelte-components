@@ -12,6 +12,11 @@
 	 */
 	export let cls = null;
 	/**
+	 * Optional: Override default column class for the card
+	 * @type {string|null}
+	 */
+	export let colCls = null;
+	/**
 	 * Sets the title of the card
 	 * @type {string|null}
 	 */
@@ -58,7 +63,7 @@
 	export let colspan = 1;
 </script>
 
-<GridCell {colspan}>
+<GridCell {colspan} {colCls}>
 	<div
 		class="ons-card ons-u-mb-no {cls}"
 		class:ons-card--feature={mode === "featured"}
