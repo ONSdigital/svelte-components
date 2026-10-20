@@ -4,6 +4,10 @@
 
 A library of ONS Svelte components for projects large and small. You can find documentation and examples of how to use these components on the [Storybook pages](https://onsdigital.github.io/svelte-components).
 
+This library targets Svelte 5. Where supported, components expose both callback props and dispatched events for event handling; this does not guarantee compatibility with Svelte 3 or 4.
+
+The interactive component workbench is available locally at `http://localhost:5173/svelte-components/workbench/` after running `npm run dev`, and on the [GitHub Pages site](https://onsdigital.github.io/svelte-components/workbench/). Use it to manually exercise components during migration; automated behavior checks remain in Vitest.
+
 This component library is inspired by Reuters' fantastic [graphics-components](https://github.com/reuters-graphics/graphics-components) library. The components are adapted from the [ONS Design System](https://service-manual.ons.gov.uk/design-system/).
 
 **To update the components:**
@@ -20,5 +24,5 @@ This component library is inspired by Reuters' fantastic [graphics-components](h
 
 1. Update story files (.stories.svelte .stories.mdx etc)
 2. Commit + push changes to GitHub
-3. ```npm run build:docs``` (build the docs)
+3. ```npm run build:docs``` (build Storybook and the component workbench)
 4. ```npm run deploy``` (publish docs to GitHub Pages)
