@@ -30,4 +30,18 @@ describe("ChangeStat", () => {
 
 		expect(screen.getByText("unchanged")).toBeInTheDocument();
 	});
+
+	test("updates its derived label when props change", async () => {
+		const { rerender } = render(ChangeStat, {
+			props: { value: "4%", direction: "up" }
+		});
+
+		expect(screen.getByText("higher")).toBeInTheDocument();
+
+		await rerender({ value: "2%", direction: "down", label: "reduced" });
+
+		expect(screen.getByText("2%")).toBeInTheDocument();
+		expect(screen.getByText("reduced")).toBeInTheDocument();
+		expect(screen.queryByText("higher")).not.toBeInTheDocument();
+	});
 });

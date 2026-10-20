@@ -1,41 +1,16 @@
 <script>
-	/**
-	 * Last updated date or label to display when the content is not recent
-	 * @type {string|null}
-	 */
-	export let date = null;
-	/**
-	 * Whether the content has been updated recently
-	 * @type {boolean}
-	 */
-	export let recent = false;
-	/**
-	 * Label used when recent is true
-	 * @type {string}
-	 */
-	export let recentLabel = "Updated this week";
-	/**
-	 * Prefix used when showing the date
-	 * @type {string}
-	 */
-	export let prefix = "Last updated:";
-	/**
-	 * Message shown when no date is available
-	 * @type {string}
-	 */
-	export let missingLabel = "No update date provided";
-	/**
-	 * Whether to show the status dot for recent updates
-	 * @type {boolean}
-	 */
-	export let showRecentDot = true;
-	/**
-	 * Optional: Set an additional CSS class for the component
-	 * @type {string|null}
-	 */
-	export let cls = null;
+	/** @type {{ date?: string | null; recent?: boolean; recentLabel?: string; prefix?: string; missingLabel?: string; showRecentDot?: boolean; cls?: string | null }} */
+	let {
+		date = null,
+		recent = false,
+		recentLabel = "Updated this week",
+		prefix = "Last updated:",
+		missingLabel = "No update date provided",
+		showRecentDot = true,
+		cls = null
+	} = $props();
 
-	$: hasDate = typeof date === "string" ? date.trim().length > 0 : date != null;
+	let hasDate = $derived(typeof date === "string" ? date.trim().length > 0 : date != null);
 </script>
 
 <div class="ons-update-status-container {cls}">

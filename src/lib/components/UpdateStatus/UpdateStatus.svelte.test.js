@@ -28,4 +28,17 @@ describe("UpdateStatus", () => {
 
 		expect(screen.getByText("No update date provided")).toBeInTheDocument();
 	});
+
+	test("updates its date state when props change", async () => {
+		const { container, rerender } = render(UpdateStatus, {
+			props: { date: "1 September 2026" }
+		});
+
+		expect(screen.getByText("Last updated: 1 September 2026")).toBeInTheDocument();
+
+		await rerender({ recent: true, recentLabel: "Updated today", showRecentDot: false });
+
+		expect(screen.getByText("Updated today")).toBeInTheDocument();
+		expect(container.querySelector(".ons-update-status__dot")).not.toBeInTheDocument();
+	});
 });

@@ -1,39 +1,14 @@
 <script>
-	/**
-	 * Set the type of icon
-	 * @type {"arrow"|"carret"|"chevron"|"code"|"cog"|"copy"|"cross"|"delete"|"download"|"edit"|"edit-text"|"expand"|"external"|"minus"|"pin"|"plus"|"print"|"save"|"saveas"|"search"|"shrink"|"signout"|"tick"|"upload"}
-	 */
-	export let type = "arrow";
-	/**
-	 * Set the size of the icon
-	 * @type {"s"|"m"|"l"|"xl"|"2xl"|"3xl"|null}
-	 */
-	export let size = null;
-	/**
-	 * Rotation in degrees (clockwise)
-	 * @type {number}
-	 */
-	export let rotation = 0;
-	/**
-	 * (Optional) Provide a custom SVG path string for the icon (overrides "type")
-	 * @type {string|null}
-	 */
-	export let svgPath = null;
-	/**
-	 * (Optional) If using a custom SVG path, specify the viewBox of the SVG
-	 * @type {string}
-	 */
-	export let svgViewBox = "0 0 24 24";
-	/**
-	 * Add a small margin on the left of the icon
-	 * @type {boolean}
-	 */
-	export let marginLeft = false;
-	/**
-	 * Add a small margin on the right of the icon
-	 * @type {boolean}
-	 */
-	export let marginRight = false;
+	/** @type {{ type?: "arrow" | "carret" | "chevron" | "code" | "cog" | "copy" | "cross" | "delete" | "download" | "edit" | "edit-text" | "expand" | "external" | "minus" | "pin" | "plus" | "print" | "save" | "saveas" | "search" | "shrink" | "signout" | "tick" | "upload"; size?: "s" | "m" | "l" | "xl" | "2xl" | "3xl" | null; rotation?: number; svgPath?: string | null; svgViewBox?: string; marginLeft?: boolean; marginRight?: boolean }} */
+	let {
+		type = "arrow",
+		size = null,
+		rotation = 0,
+		svgPath = null,
+		svgViewBox = "0 0 24 24",
+		marginLeft = false,
+		marginRight = false
+	} = $props();
 
 	const paths = {
 		arrow: {

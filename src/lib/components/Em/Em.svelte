@@ -1,33 +1,17 @@
 <script>
 	import { contrastColor } from "../../js/utils";
 
-	/**
-	 * Any valid CSS colour
-	 * @type {string}
-	 */
-	export let color = "lightgrey";
-	/**
-	 * Any valid CSS colour (CSS variables will not be parsed)
-	 * @type {"default"|"badge"}
-	 */
-	export let mode = "default";
-	/**
-	 * Override the font size of the surrounding text
-	 * @type {string|null}
-	 */
-	export let fontSize = null;
-	/**
-	 * Don't break text across lines
-	 * @type {boolean}
-	 */
-	export let nowrap = true;
-	/**
-	 * Descriptive text for screen readers if not self-explanatory
-	 * @type {string|null}
-	 */
-	export let ariaLabel = null;
+	/** @type {{ children?: import("svelte").Snippet; color?: string; mode?: "default" | "badge"; fontSize?: string | null; nowrap?: boolean; ariaLabel?: string | null }} */
+	let {
+		children,
+		color = "lightgrey",
+		mode = "default",
+		fontSize = null,
+		nowrap = true,
+		ariaLabel = null
+	} = $props();
 
-	$: text = contrastColor(color);
+	let text = $derived(contrastColor(color));
 </script>
 
 <mark
@@ -40,7 +24,7 @@
 	role="presentation"
 	aria-label={ariaLabel}
 >
-	<slot />
+	{@render children?.()}
 </mark>
 
 <style>

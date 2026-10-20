@@ -1,36 +1,15 @@
 <script>
 	import Container from "$lib/components/Container/Container.svelte";
 
-	/**
-	 * Optional: Include a horizontal rule
-	 * @type {"narrow"|"full"|null}
-	 */
-	export let hr = "full";
-	/**
-	 * Sets the width of the container
-	 * @type {"narrow"|"medium"|"wide"|"wider"|"full"}
-	 */
-	export let width = "wide";
-	/**
-	 * Sets the mode/colour of the line
-	 * @type {"dark"|"light"}
-	 */
-	export let mode = "dark";
-	/**
-	 * Adds margin above section
-	 * @type {boolean}
-	 */
-	export let marginTop = !!hr;
-	/**
-	 * Adds margin below section
-	 * @type {boolean}
-	 */
-	export let marginBottom = true;
-	/**
-	 * Optional: Set an additional CSS class for the component
-	 * @type {string|null}
-	 */
-	export let cls = null;
+	/** @type {{ hr?: "narrow" | "full" | null; width?: "narrow" | "medium" | "wide" | "wider" | "full"; mode?: "dark" | "light"; marginTop?: boolean; marginBottom?: boolean; cls?: string | null }} */
+	let {
+		hr = "full",
+		width = "wide",
+		mode = "dark",
+		marginTop = !!hr,
+		marginBottom = true,
+		cls = null
+	} = $props();
 </script>
 
 <Container {width} {marginTop} {marginBottom} {cls}>

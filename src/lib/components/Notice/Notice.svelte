@@ -1,14 +1,6 @@
 <script>
-	/**
-	 * Sets the mode/colour of the notice
-	 * @type {"info"|"success"|"error"|"warning"}
-	 */
-	export let mode = "info";
-	/**
-	 * Optional: Set an additional CSS class for the component
-	 * @type {string|null}
-	 */
-	export let cls = null;
+	/** @type {{ children?: import("svelte").Snippet; mode?: "info" | "success" | "error" | "warning"; cls?: string | null }} */
+	let { children, mode = "info", cls = null } = $props();
 </script>
 
 <div
@@ -49,7 +41,7 @@
 		{/if}
 		<div class="ons-panel__body">
 			<div class="default-line-height" class:ons-u-fs-r={mode !== "warning"}>
-				<slot />
+				{@render children?.()}
 			</div>
 		</div>
 	</div>

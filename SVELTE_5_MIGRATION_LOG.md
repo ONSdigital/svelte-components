@@ -46,4 +46,27 @@ This log records migration decisions, component changes, verification results, a
 
 ### Follow-up
 
-- Steps 1-4 are complete. Start component block A only after reviewing the migration contract and baseline record above.
+- Steps 1-4 are complete. Continue with component block 5A.
+
+## 2026-10-20: Component Block 5A
+
+### Components
+
+- Migrated `ChangeStat`, `UpdateStatus`, `Icon`, `BackLink`, `Notice`, `Section`, `Divider`, `Em`, and `ErrorPanel` props to Svelte 5 `$props()`.
+- Replaced derived `$:` state with `$derived()` in `ChangeStat`, `UpdateStatus`, and `Em`.
+- Replaced default slots with optional `children` snippet rendering in `Notice`, `Section`, `Em`, and `ErrorPanel`; ordinary default child content remains supported.
+- Preserved component prop names, defaults, classes, and existing presentation behavior.
+- Added configurable workbench fixtures for all nine components.
+
+### Verification
+
+- Focused block A tests: 15 passed across `ChangeStat`, `UpdateStatus`, and the remaining seven presentational components.
+- `npm run check`: remains at the pre-migration baseline of 482 errors and 27 warnings in 94 files; block A and workbench add no diagnostics.
+- Targeted Prettier check: passed for all block A and workbench files.
+- Targeted ESLint: passed for all block A and workbench files.
+- `npm run build:workbench`, `npm run build:docs`, and `npm run build:package`: passed; `publint` reported all good.
+- Deployed workbench includes all block A components. Live interactions verified for ChangeStat direction, Notice mode, Section title/visibility, and ErrorPanel message.
+
+### Follow-up
+
+- Block 5A is complete. Proceed to block 5B only after confirming this log entry and the deployed workbench.

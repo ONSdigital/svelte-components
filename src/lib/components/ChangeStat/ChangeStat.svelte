@@ -1,34 +1,13 @@
 <script>
-	/**
-	 * Highlighted change value, for example "7%" or "1.3pp"
-	 * @type {string|number|null}
-	 */
-	export let value = null;
-	/**
-	 * Direction of change
-	 * @type {"up"|"down"|"neutral"}
-	 */
-	export let direction = "neutral";
-	/**
-	 * Optional override for the descriptive label
-	 * @type {string|null}
-	 */
-	export let label = null;
-	/**
-	 * Optional trailing context, for example "than last year"
-	 * @type {string|null}
-	 */
-	export let context = null;
-	/**
-	 * Optional colour treatment
-	 * @type {"default"|"positive"|"negative"|"subtle"}
-	 */
-	export let tone = "default";
-	/**
-	 * Optional: Set an additional CSS class for the component
-	 * @type {string|null}
-	 */
-	export let cls = null;
+	/** @type {{ value?: string | number | null; direction?: "up" | "down" | "neutral"; label?: string | null; context?: string | null; tone?: "default" | "positive" | "negative" | "subtle"; cls?: string | null }} */
+	let {
+		value = null,
+		direction = "neutral",
+		label = null,
+		context = null,
+		tone = "default",
+		cls = null
+	} = $props();
 
 	const directionLabels = {
 		up: "higher",
@@ -36,8 +15,8 @@
 		neutral: "unchanged"
 	};
 
-	$: hasValue = value !== null && value !== undefined && `${value}`.trim().length > 0;
-	$: resolvedLabel = label || directionLabels[direction] || "";
+	let hasValue = $derived(value !== null && value !== undefined && `${value}`.trim().length > 0);
+	let resolvedLabel = $derived(label || directionLabels[direction] || "");
 </script>
 
 <p
@@ -58,7 +37,13 @@
 				viewBox="0 0 12 14"
 				aria-hidden="true"
 			>
-				<path d="M2 7H10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+				<path
+					d="M2 7H10"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+				/>
 			</svg>
 		{:else if direction !== "neutral"}
 			<svg

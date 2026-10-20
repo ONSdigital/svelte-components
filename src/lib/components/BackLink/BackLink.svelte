@@ -1,14 +1,6 @@
 <script>
-	/**
-	 * Href for top of page or contents section
-	 * @type {string}
-	 */
-	export let href = "#top";
-	/**
-	 * Optional: Add a CSS class to the link
-	 * @type {string|null}
-	 */
-	export let cls = null;
+	/** @type {{ href?: string; cls?: string | null }} */
+	let { href = "#top", cls = null } = $props();
 </script>
 
 <div class="ons-back-to-top ons-js-back-to-top ons-back-to-top__enabled ons-u-mb-l {cls || ''}">

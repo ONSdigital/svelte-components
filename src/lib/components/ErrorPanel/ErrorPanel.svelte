@@ -1,14 +1,6 @@
 <script>
-	/**
-	 * Set an error message
-	 * @type {string|null}
-	 */
-	export let message = null;
-	/**
-	 * Optional: Set an additional CSS class for the component
-	 * @type {string|null}
-	 */
-	export let cls = null;
+	/** @type {{ children?: import("svelte").Snippet; message?: string | null; cls?: string | null }} */
+	let { children, message = null, cls = null } = $props();
 </script>
 
 <div class="ons-panel ons-panel--error ons-panel--no-title {cls}" id="number-of-employees-error">
@@ -19,6 +11,6 @@
 				<strong>{message}</strong>
 			</p>
 		{/if}
-		<slot />
+		{@render children?.()}
 	</div>
 </div>
