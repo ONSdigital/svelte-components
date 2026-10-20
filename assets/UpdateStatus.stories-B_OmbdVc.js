@@ -1,0 +1,22 @@
+import{ab as F,p as r,i as S,t as c,a as l,ad as V,f as d,g as D,ae as J,c as f,e as M,ah as m,s as k,b as C,ag as K,av as P}from"./iframe-DjMvT2c-.js";import{c as Q,w as T,i as W,d as X}from"./create-runtime-stories-myTZTF-x.js";import{s as R}from"./class-PrT4n0Js.js";import{s as Y}from"./style-CM3dwi71.js";import"./preload-helper-Dp1pzeXC.js";import"./attributes-DayBpKoh.js";var Z=d('<span class="ons-update-status__dot svelte-1lkebev" aria-hidden="true"></span>'),$=d("<!> <span> </span>",1),ee=d("<div><p><!></p></div>");function h(i,e){F(e,!0);let t=r(e,"date",3,null),s=r(e,"recent",3,!1),o=r(e,"recentLabel",3,"Updated this week"),p=r(e,"prefix",3,"Last updated:"),y=r(e,"missingLabel",3,"No update date provided"),E=r(e,"showRecentDot",3,!0),O=r(e,"cls",3,null),x=J(()=>typeof t()=="string"?t().trim().length>0:t()!=null);var _=ee(),w=f(_);let U;var j=f(w);{var q=a=>{var n=$(),L=M(n);{var B=b=>{var I=Z();l(b,I)};S(L,b=>{E()&&b(B)})}var G=m(L,2),H=f(G);c(()=>k(H,o())),l(a,n)},z=a=>{var n=C();c(()=>k(n,y())),l(a,n)},A=a=>{var n=C();c(()=>k(n,`${p()??""} ${t()??""}`)),l(a,n)};S(j,a=>{s()?a(q):D(x)?a(A,-1):a(z,1)})}c(()=>{R(_,1,`ons-update-status-container ${O()??""}`,"svelte-1lkebev"),U=R(w,1,"ons-update-status ons-u-fs-s svelte-1lkebev",null,U,{"ons-update-status--recent":s(),"ons-update-status--missing":!s()&&!D(x)})}),l(i,_),V()}h.__docgen={data:[{name:"date",visibility:"public",keywords:[],kind:"let",type:{kind:"type",type:"string",text:"string"},static:!1,readonly:!1,defaultValue:"null"},{name:"recent",visibility:"public",keywords:[],kind:"let",type:{kind:"type",type:"boolean",text:"boolean"},static:!1,readonly:!1,defaultValue:"false"},{name:"recentLabel",visibility:"public",keywords:[],kind:"let",type:{kind:"type",type:"string",text:"string"},static:!1,readonly:!1,defaultValue:'"Updated this week"'},{name:"prefix",visibility:"public",keywords:[],kind:"let",type:{kind:"type",type:"string",text:"string"},static:!1,readonly:!1,defaultValue:'"Last updated:"'},{name:"missingLabel",visibility:"public",keywords:[],kind:"let",type:{kind:"type",type:"string",text:"string"},static:!1,readonly:!1,defaultValue:'"No update date provided"'},{name:"showRecentDot",visibility:"public",keywords:[],kind:"let",type:{kind:"type",type:"boolean",text:"boolean"},static:!1,readonly:!1,defaultValue:"true"},{name:"cls",visibility:"public",keywords:[],kind:"let",type:{kind:"type",type:"string",text:"string"},static:!1,readonly:!1,defaultValue:"null"}],name:"UpdateStatus.svelte"};const te=`Shows a short status message for recently updated content, or falls back to a standard "Last updated" label.\r
+\r
+Useful for dashboard cards and article metadata where the recency logic is handled outside the component.\r
+\r
+<!-- prettier-ignore -->\r
+\`\`\`html\r
+<script>\r
+  import { UpdateStatus } from "@onsvisual/svelte-components";\r
+<\/script>\r
+\r
+<UpdateStatus recent />\r
+<UpdateStatus date="1 September 2026" />\r
+\`\`\`\r
+`,u=(i,e=K)=>{var t=se();Y(t,"",{},{padding:"12px"});var s=f(t);h(s,P(e)),l(i,t)},ae={title:"Data visualisation/UpdateStatus",component:h,tags:["autodocs"],parameters:T(te)},{Story:v}=X();var se=d("<div><!></div>"),ne=d("<!> <!> <!> <!>",1);function N(i,e){F(e,!1),W();var t=ne(),s=M(t);v(s,{name:"Recent flag",args:{recent:!0},get template(){return u},parameters:{__svelteCsf:{rawCode:`<div style:padding="12px">\r
+	<UpdateStatus {...args} />\r
+</div>`}}});var o=m(s,2);v(o,{name:"Last updated date",args:{date:"1 September 2026"},get template(){return u},parameters:{__svelteCsf:{rawCode:`<div style:padding="12px">\r
+	<UpdateStatus {...args} />\r
+</div>`}}});var p=m(o,2);v(p,{name:"Custom recent label",args:{recent:!0,recentLabel:"Updated recently"},get template(){return u},parameters:{__svelteCsf:{rawCode:`<div style:padding="12px">\r
+	<UpdateStatus {...args} />\r
+</div>`}}});var y=m(p,2);v(y,{name:"Missing date fallback",args:{date:null},get template(){return u},parameters:{__svelteCsf:{rawCode:`<div style:padding="12px">\r
+	<UpdateStatus {...args} />\r
+</div>`}}}),l(i,t),V()}N.__docgen={data:[],name:"UpdateStatus.stories.svelte"};const g=Q(N,ae),ce=["RecentFlag","LastUpdatedDate","CustomRecentLabel","MissingDateFallback"],ue={...g.RecentFlag,tags:["svelte-csf-v5"]},ve={...g.LastUpdatedDate,tags:["svelte-csf-v5"]},fe={...g.CustomRecentLabel,tags:["svelte-csf-v5"]},me={...g.MissingDateFallback,tags:["svelte-csf-v5"]};export{fe as CustomRecentLabel,ve as LastUpdatedDate,me as MissingDateFallback,ue as RecentFlag,ce as __namedExportsOrder,ae as default};
