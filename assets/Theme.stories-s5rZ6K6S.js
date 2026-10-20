@@ -1,0 +1,41 @@
+import{ab as c,e as _,al as f,ae as s,a as d,ad as k,f as v,av as y}from"./iframe-BqRfKcLk.js";import{c as B,w as D,i as w,d as x}from"./create-runtime-stories-Du911T6H.js";import{T}from"./Theme-D58oycrN.js";import{s as C}from"./style-DoyTnQz4.js";import"./preload-helper-Dp1pzeXC.js";import"./html-QDNSwytG.js";import"./slot-BP_Qo1ZM.js";import"./svelte-head-BdVrnAEW.js";import"./class-37_mtU4-.js";import"./attributes-DayBpKoh.js";const b=`A component that sets the colour scheme of its child components using CSS variables.\r
+\r
+<!-- prettier-ignore -->\r
+\`\`\`html\r
+<script>\r
+  import { Theme } from "@onsvisual/svelte-components";\r
+<\/script>\r
+\r
+<Theme theme="{light|dark|paleblue|blue|navyblue|grey}"> {child_components} </Theme>\r
+\`\`\`\r
+`,e=(h,m=f)=>{T(h,y(m,{children:(n,l)=>{var a=P();C(a,"",{},{padding:"12px"}),d(n,a)},$$slots:{default:!0}}))},$={title:"Wrappers/Theme",component:T,tags:["autodocs"],argTypes:{theme:{control:{type:"select"}}},parameters:D(b)},{Story:r}=x();var P=v('<div><h2>Title</h2> <p>Text with a <a href="#0">hyperlink</a>.</p></div>'),N=v("<!> <!> <!> <!> <!> <!>",1);function g(h,m){c(m,!1),w();var n=N(),l=_(n);r(l,{name:"Default light theme",args:{},get template(){return e},parameters:{__svelteCsf:{rawCode:`<Theme {...args}>\r
+	<div style:padding="12px">\r
+		<h2>Title</h2>\r
+		<p>Text with a <a href="#0">hyperlink</a>.</p>\r
+	</div>\r
+</Theme>`}}});var a=s(l,2);r(a,{name:"Dark theme",args:{theme:"dark"},get template(){return e},parameters:{__svelteCsf:{rawCode:`<Theme {...args}>\r
+	<div style:padding="12px">\r
+		<h2>Title</h2>\r
+		<p>Text with a <a href="#0">hyperlink</a>.</p>\r
+	</div>\r
+</Theme>`}}});var i=s(a,2);r(i,{name:"Pale blue theme",args:{theme:"paleblue"},get template(){return e},parameters:{__svelteCsf:{rawCode:`<Theme {...args}>\r
+	<div style:padding="12px">\r
+		<h2>Title</h2>\r
+		<p>Text with a <a href="#0">hyperlink</a>.</p>\r
+	</div>\r
+</Theme>`}}});var o=s(i,2);r(o,{name:"Blue theme",args:{theme:"blue"},get template(){return e},parameters:{__svelteCsf:{rawCode:`<Theme {...args}>\r
+	<div style:padding="12px">\r
+		<h2>Title</h2>\r
+		<p>Text with a <a href="#0">hyperlink</a>.</p>\r
+	</div>\r
+</Theme>`}}});var p=s(o,2);r(p,{name:"Navy blue theme",args:{theme:"navyblue"},get template(){return e},parameters:{__svelteCsf:{rawCode:`<Theme {...args}>\r
+	<div style:padding="12px">\r
+		<h2>Title</h2>\r
+		<p>Text with a <a href="#0">hyperlink</a>.</p>\r
+	</div>\r
+</Theme>`}}});var u=s(p,2);r(u,{name:"Dark with background override",args:{theme:"dark",background:"var(--ons-color-aqua-teal)"},get template(){return e},parameters:{__svelteCsf:{rawCode:`<Theme {...args}>\r
+	<div style:padding="12px">\r
+		<h2>Title</h2>\r
+		<p>Text with a <a href="#0">hyperlink</a>.</p>\r
+	</div>\r
+</Theme>`}}}),d(h,n),k()}g.__docgen={data:[],name:"Theme.stories.svelte"};const t=B(g,$),z=["DefaultLightTheme","DarkTheme","PaleBlueTheme","BlueTheme","NavyBlueTheme","DarkWithBackgroundOverride"],F={...t.DefaultLightTheme,tags:["svelte-csf-v5"]},G={...t.DarkTheme,tags:["svelte-csf-v5"]},H={...t.PaleBlueTheme,tags:["svelte-csf-v5"]},I={...t.BlueTheme,tags:["svelte-csf-v5"]},J={...t.NavyBlueTheme,tags:["svelte-csf-v5"]},K={...t.DarkWithBackgroundOverride,tags:["svelte-csf-v5"]};export{I as BlueTheme,G as DarkTheme,K as DarkWithBackgroundOverride,F as DefaultLightTheme,J as NavyBlueTheme,H as PaleBlueTheme,z as __namedExportsOrder,$ as default};
