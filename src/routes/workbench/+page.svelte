@@ -1,15 +1,15 @@
 <script>
-	import '$lib/css/main.css';
-	import Button from '$lib/components/Button/Button.svelte';
-	import Input from '$lib/components/Input/Input.svelte';
-	import Notice from '$lib/components/Notice/Notice.svelte';
-	import { base } from '$app/paths';
+	import "$lib/css/main.css";
+	import Button from "$lib/components/Button/Button.svelte";
+	import Input from "$lib/components/Input/Input.svelte";
+	import Notice from "$lib/components/Notice/Notice.svelte";
+	import { base } from "$app/paths";
 
 	/** @type {'primary' | 'secondary' | 'ghost'} */
-	let buttonVariant = 'primary';
+	let buttonVariant = "primary";
 	let buttonDisabled = false;
 	let clickCount = 0;
-	let fieldValue = '';
+	let fieldValue = "";
 	/** @type {{ id: number; time: string; name: string; detail: string }[]} */
 	let activity = [];
 	let nextActivityId = 0;
@@ -30,17 +30,17 @@
 	/** @param {CustomEvent<MouseEvent>} event */
 	function handleButtonClick(event) {
 		clickCount += 1;
-		addActivity('Button click event', event.detail?.type ?? 'No event detail');
+		addActivity("Button click event", event.detail?.type ?? "No event detail");
 	}
 
 	/** @param {CustomEvent<{ value: string | null; e: Event }>} event */
 	function handleInput(event) {
-		addActivity('Input event', event.detail.value || '(empty value)');
+		addActivity("Input event", event.detail.value || "(empty value)");
 	}
 
 	/** @param {CustomEvent<{ value: string | null; e: Event }>} event */
 	function handleChange(event) {
-		addActivity('Input change event', event.detail.value || '(empty value)');
+		addActivity("Input change event", event.detail.value || "(empty value)");
 	}
 
 	function clearActivity() {
@@ -104,7 +104,7 @@
 				on:input={handleInput}
 				on:change={handleChange}
 			/>
-			<p class="workbench__result" aria-live="polite">Current value: {fieldValue || '(empty)'}</p>
+			<p class="workbench__result" aria-live="polite">Current value: {fieldValue || "(empty)"}</p>
 		</section>
 	</div>
 
