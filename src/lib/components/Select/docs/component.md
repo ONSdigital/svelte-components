@@ -4,6 +4,8 @@ This component is a Svelte wrapper for the GOV.UK [accessible-autocomplete](http
 
 (Note: This component is not fully compatible with a previous version of the same component based on svelte-select.)
 
+In Svelte 5, `onChange` receives the selected value directly and `onClear` receives `null`. The dispatched `change` and `clear` events remain available with those values on `event.detail`.
+
 <!-- prettier-ignore -->
 ```html
 <script>

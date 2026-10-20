@@ -2,6 +2,8 @@ An expandable `<details>` ("twisty") component, which can be open or closed by d
 
 This component is based on this [ONS Design System component](https://service-manual.ons.gov.uk/design-system/components/details), but intentionally uses the vanilla HTML `<details>` component to ensure that its content can be found when searching the page.
 
+In Svelte 5, the `onToggle` callback receives `{ open, e }`, with `e` as the native toggle event. The dispatched `toggle` event remains available with the same object on `event.detail`.
+
 <!-- prettier-ignore -->
 ```html
 <script>

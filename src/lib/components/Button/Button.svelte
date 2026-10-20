@@ -3,83 +3,36 @@
 	import Icon from "$lib/components/Icon/Icon.svelte";
 	import { contrastColor, darkenColor } from "../../js/utils";
 
+	/** @type {import("svelte").EventDispatcher<{ click: MouseEvent }>} */
 	const dispatch = createEventDispatcher();
 
-	/**
-	 * Type of button
-	 * @type {"button"|"submit"|"reset"}
-	 */
-	export let type = "button";
-	/**
-	 * Style variant of button
-	 * @type {"primary"|"secondary"|"ghost"}
-	 */
-	export let variant = "primary";
-	/**
-	 * Href of button (renders button as a link)
-	 * @type {string|null}
-	 */
-	export let href = null;
-	/**
-	 * File name if link is used for a file download (only if href is also specified)
-	 * @type {string|null}
-	 */
-	export let download = null;
-	/**
-	 * HTML "rel" attribute for hyperlinks (Eg. rel="nofollow")
-	 * @type {string|null}
-	 */
-	export let rel = null;
-	/**
-	 * Don't scroll when link is followed (only if href is also specified)
-	 * @type {boolean}
-	 */
-	export let noScroll = false;
-	/**
-	 * Make button smaller
-	 * @type {boolean}
-	 */
-	export let small = false;
-	/**
-	 * Icon on button, eg. "arrow", "search"
-	 * @type {"arrow"|"carret"|"chevron"|"code"|"cog"|"copy"|"cross"|"delete"|"download"|"edit"|"edit-text"|"expand"|"external"|"minus"|"pin"|"plus"|"print"|"save"|"saveas"|"search"|"shrink"|"signout"|"tick"|"upload"|null}
-	 */
-	export let icon = null;
-	/**
-	 * Position of icon
-	 * @type {"before"|"after"}
-	 */
-	export let iconPosition = "before";
-	/**
-	 * Rotation of icon in degrees (clockwise)
-	 * @type {number}
-	 */
-	export let iconRotation = 0;
-	/**
-	 * Show button as disabled
-	 * @type {boolean}
-	 */
-	export let disabled = false;
-	/**
-	 * Visually hide the button text (for icon-only buttons)
-	 * @type {boolean}
-	 */
-	export let hideLabel = false;
-	/**
-	 * Aria label for button
-	 * @type {string|null}
-	 */
-	export let arialabel = null;
-	/**
-	 * Set a colour for the button
-	 * @type {string|null}
-	 */
-	export let color = null;
-	/**
-	 * Optional: Set an additional CSS class for the component
-	 * @type {string|null}
-	 */
-	export let cls = null;
+	/** @type {{ children?: import("svelte").Snippet; iconSlot?: import("svelte").Snippet; type?: "button" | "submit" | "reset"; variant?: "primary" | "secondary" | "ghost"; href?: string | null; download?: string | null; rel?: string | null; noScroll?: boolean; small?: boolean; icon?: "arrow" | "carret" | "chevron" | "code" | "cog" | "copy" | "cross" | "delete" | "download" | "edit" | "edit-text" | "expand" | "external" | "minus" | "pin" | "plus" | "print" | "save" | "saveas" | "search" | "shrink" | "signout" | "tick" | "upload" | null; iconPosition?: "before" | "after"; iconRotation?: number; disabled?: boolean; hideLabel?: boolean; arialabel?: string | null; color?: string | null; cls?: string | null; onClick?: (event: MouseEvent) => void }} */
+	let {
+		children,
+		iconSlot,
+		type = "button",
+		variant = "primary",
+		href = null,
+		download = null,
+		rel = null,
+		noScroll = false,
+		small = false,
+		icon = null,
+		iconPosition = "before",
+		iconRotation = 0,
+		disabled = false,
+		hideLabel = false,
+		arialabel = null,
+		color = null,
+		cls = null,
+		onClick = () => {}
+	} = $props();
+
+	/** @param {MouseEvent} event */
+	function handleClick(event) {
+		onClick(event);
+		dispatch("click", event);
+	}
 </script>
 
 {#if href}
@@ -93,7 +46,7 @@
 		class:ons-btn--secondary={variant === "secondary"}
 		class:ons-btn--ghost={variant === "ghost"}
 		class:ons-btn--disabled={disabled}
-		on:click={(e) => dispatch("click", e)}
+		onclick={handleClick}
 		aria-label={arialabel}
 		data-sveltekit-noscroll={noScroll}
 	>
@@ -104,19 +57,19 @@
 			style:box-shadow={color ? `0 0.1875rem 0 ${darkenColor(color)}` : null}
 		>
 			{#if iconPosition === "before"}
-				<slot name="icon">
-					{#if icon}
-						<Icon type={icon} marginRight={!hideLabel} rotation={iconRotation} />
-					{/if}
-				</slot>
+				{#if iconSlot}
+					{@render iconSlot()}
+				{:else if icon}
+					<Icon type={icon} marginRight={!hideLabel} rotation={iconRotation} />
+				{/if}
 			{/if}
-			<span class="ons-btn__text" class:ons-u-vh={hideLabel}><slot /></span>
+			<span class="ons-btn__text" class:ons-u-vh={hideLabel}>{@render children?.()}</span>
 			{#if iconPosition === "after"}
-				<slot name="icon">
-					{#if icon}
-						<Icon type={icon} marginLeft={!hideLabel} rotation={iconRotation} />
-					{/if}
-				</slot>
+				{#if iconSlot}
+					{@render iconSlot()}
+				{:else if icon}
+					<Icon type={icon} marginLeft={!hideLabel} rotation={iconRotation} />
+				{/if}
 			{/if}
 		</span>
 	</a>
@@ -129,7 +82,7 @@
 		class:ons-btn--ghost={variant === "ghost"}
 		class:ons-btn--disabled={disabled}
 		{disabled}
-		on:click={(e) => dispatch("click", e)}
+		onclick={handleClick}
 		aria-label={arialabel}
 	>
 		<span
@@ -139,19 +92,19 @@
 			style:box-shadow={color ? `0 0.1875rem 0 ${darkenColor(color)}` : null}
 		>
 			{#if iconPosition === "before"}
-				<slot name="icon">
-					{#if icon}
-						<Icon type={icon} marginRight={!hideLabel} rotation={iconRotation} />
-					{/if}
-				</slot>
+				{#if iconSlot}
+					{@render iconSlot()}
+				{:else if icon}
+					<Icon type={icon} marginRight={!hideLabel} rotation={iconRotation} />
+				{/if}
 			{/if}
-			<span class="ons-btn__text" class:ons-u-vh={hideLabel}><slot /></span>
+			<span class="ons-btn__text" class:ons-u-vh={hideLabel}>{@render children?.()}</span>
 			{#if iconPosition === "after"}
-				<slot name="icon">
-					{#if icon}
-						<Icon type={icon} marginLeft={!hideLabel} rotation={iconRotation} />
-					{/if}
-				</slot>
+				{#if iconSlot}
+					{@render iconSlot()}
+				{:else if icon}
+					<Icon type={icon} marginLeft={!hideLabel} rotation={iconRotation} />
+				{/if}
 			{/if}
 		</span>
 	</button>

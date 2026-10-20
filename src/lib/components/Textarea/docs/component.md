@@ -1,4 +1,6 @@
-A standard `<input>` element with Svelte bindings and events.
+A standard `<textarea>` element with Svelte bindings and events.
+
+In Svelte 5, `onInput`, `onChange`, and `onBlur` callbacks receive `{ value, e }`, where `e` is the native event. The matching dispatched events remain supported with the same object on `event.detail`.
 
 <!-- prettier-ignore -->
 ```html

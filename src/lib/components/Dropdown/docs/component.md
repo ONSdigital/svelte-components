@@ -1,5 +1,7 @@
 A standard `<select>` component with Svelte bindings and events.
 
+In Svelte 5, `onChange`, `onInput`, and `onBlur` callbacks receive `{ value, e }`. The selected `value` may be an option object or a string, and the matching dispatched events remain available with the same object on `event.detail`.
+
 <!-- prettier-ignore -->
 ```html
 <script>

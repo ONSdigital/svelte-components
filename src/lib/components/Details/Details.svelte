@@ -1,31 +1,24 @@
 <script>
 	import { createEventDispatcher } from "svelte";
 
+	/** @type {import("svelte").EventDispatcher<{ toggle: { open: boolean; e: Event } }>} */
 	const dispatch = createEventDispatcher();
 
-	/**
-	 * A title for the element
-	 * @type {string}
-	 */
-	export let title = "Title";
-	/**
-	 * Set the heading level for the title
-	 * @type {"h2"|"h3"}
-	 */
-	export let headingTag = "h2";
-	/**
-	 * Option for element to be open/expanded by default
-	 * @type {boolean}
-	 */
-	export let open = false;
-	/**
-	 * Optional: Set an additional CSS class for the component
-	 * @type {string|null}
-	 */
-	export let cls = null;
+	/** @type {{ children?: import("svelte").Snippet; title?: string; headingTag?: "h2" | "h3"; open?: boolean; cls?: string | null; onToggle?: (detail: { open: boolean; e: Event }) => void }} */
+	let {
+		children,
+		title = "Title",
+		headingTag = "h2",
+		open = $bindable(false),
+		cls = null,
+		onToggle = () => {}
+	} = $props();
 
+	/** @param {Event & { newState?: string; currentTarget: HTMLDetailsElement }} e */
 	function doToggle(e) {
-		dispatch("toggle", { open: e.newState === "open", e });
+		const detail = { open: e.newState ? e.newState === "open" : e.currentTarget.open, e };
+		onToggle(detail);
+		dispatch("toggle", detail);
 	}
 </script>
 
@@ -33,7 +26,7 @@
 	class="ons-details ons-js-details ons-details--initialised {cls}"
 	class:ons-details--open={open}
 	bind:open
-	on:toggle={doToggle}
+	ontoggle={doToggle}
 >
 	<summary
 		class="ons-details__heading ons-js-details-heading"
@@ -52,8 +45,7 @@
 				xmlns="http://www.w3.org/2000/svg"
 				focusable="false"
 				fill="currentColor"
-				role="img"
-				title="ons-icon-chevron"
+				aria-hidden="true"
 			>
 				<path
 					d="M5.74,14.28l-.57-.56a.5.5,0,0,1,0-.71h0l5-5-5-5a.5.5,0,0,1,0-.71h0l.57-.56a.5.5,0,0,1,.71,0h0l5.93,5.93a.5.5,0,0,1,0,.7L6.45,14.28a.5.5,0,0,1-.71,0Z"
@@ -63,7 +55,7 @@
 		>
 	</summary>
 	<div class="ons-details__content ons-js-details-content">
-		<slot />
+		{@render children?.()}
 	</div>
 </details>
 

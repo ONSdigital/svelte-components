@@ -1,98 +1,57 @@
 <script>
 	import { createEventDispatcher } from "svelte";
 
+	/** @type {import("svelte").EventDispatcher<{ change: { value: string | null; e: Event }; input: { value: string | null; e: Event }; blur: { value: string | null; e: Event } }>} */
 	const dispatch = createEventDispatcher();
 
-	/**
-	 * ID for &lt;input&gt; element
-	 * @type {string|null}
-	 */
-	export let id = null;
-	/**
-	 * Name attribute for &lt;input&gt; element
-	 * @type {string|null}
-	 */
-	export let name = id;
-	/**
-	 * A prop to bind to for the entered value
-	 * @type {string|null}
-	 */
-	export let value = null;
-	/**
-	 * A label to describe the &lt;input&gt; element (expected for accessibility)
-	 * @type {string|null}
-	 */
-	export let label = null;
-	/**
-	 * Visually hide the label
-	 * @type {boolean}
-	 */
-	export let hideLabel = false;
-	/**
-	 * An optional description to help users know what to enter
-	 * @type {string|null}
-	 */
-	export let description = null;
-	/**
-	 * The maximum number of characters that can be entered (optional)
-	 * @type {string|null}
-	 */
-	export let placeholder = null;
-	/**
-	 * A placeholder text for the input (optional)
-	 * @type {number|null}
-	 */
-	export let charLimit = null;
-	/**
-	 * The width of the &lt;input&gt; in characters or a valid css width string (eg. "100px")
-	 * @type {number|string|null}
-	 */
-	export let width = 20;
-	/**
-	 * An optional prefix (eg. £) to appear on the left of the input
-	 * @type {string|null}
-	 */
-	export let prefix = null;
-	/**
-	 * An optional suffix (eg. %) to appear on the right of the input
-	 * @type {string|null}
-	 */
-	export let suffix = null;
-	/**
-	 * An optional hidden description of the prefix (for accessibility)
-	 * @type {string}
-	 */
-	export let unitLabel = prefix || suffix || "";
-	/**
-	 * An optional regex pattern foto limit the input (not currently used)
-	 * @type {string|null}
-	 */
-	export let pattern = null;
-	/**
-	 * Set to `true` if the value should be a number
-	 * @type {boolean}
-	 */
-	export let numeric = false;
-	/**
-	 * Set to `true` to make the input read-only
-	 * @type {boolean}
-	 */
-	export let readonly = false;
-	/**
-	 * Set to `true` to give the input a disabled state
-	 * @type {boolean}
-	 */
-	export let disabled = false;
-	/**
-	 * Set to `true` to highlight border in red
-	 * @type {boolean}
-	 */
-	export let error = false;
-	/**
-	 * Optional: Set an additional CSS class for the component
-	 * @type {string|null}
-	 */
-	export let cls = null;
+	/** @type {{ id?: string | null; name?: string | null; value?: string | null; label?: string | null; hideLabel?: boolean; description?: string | null; placeholder?: string | null; charLimit?: number | null; width?: number | string | null; prefix?: string | null; suffix?: string | null; unitLabel?: string; pattern?: string | null; numeric?: boolean; readonly?: boolean; disabled?: boolean; error?: boolean; cls?: string | null; onChange?: (detail: { value: string | null; e: Event }) => void; onInput?: (detail: { value: string | null; e: Event }) => void; onBlur?: (detail: { value: string | null; e: Event }) => void }} */
+	let {
+		id = null,
+		name = id,
+		value = $bindable(null),
+		label = null,
+		hideLabel = false,
+		description = null,
+		placeholder = null,
+		charLimit = null,
+		width = 20,
+		prefix = null,
+		suffix = null,
+		unitLabel = prefix || suffix || "",
+		pattern = null,
+		numeric = false,
+		readonly = false,
+		disabled = false,
+		error = false,
+		cls = null,
+		onChange = () => {},
+		onInput = () => {},
+		onBlur = () => {}
+	} = $props();
+
+	/** @param {"change" | "input" | "blur"} type @param {Event} event */
+	function emitInputEvent(type, event) {
+		const detail = { value, e: event };
+		if (type === "change") onChange(detail);
+		else if (type === "input") onInput(detail);
+		else onBlur(detail);
+		dispatch(type, detail);
+	}
+
+	/** @param {Event} event */
+	function handleChange(event) {
+		emitInputEvent("change", event);
+	}
+
+	/** @param {Event} event */
+	function handleInput(event) {
+		emitInputEvent("input", event);
+	}
+
+	/** @param {Event} event */
+	function handleBlur(event) {
+		emitInputEvent("blur", event);
+	}
 </script>
 
 <div class="ons-field {cls}">
@@ -133,9 +92,9 @@
 					aria-describedby={description ? `${id}-description-hint` : null}
 					{disabled}
 					{readonly}
-					on:change={(e) => dispatch("change", { value, e })}
-					on:input={(e) => dispatch("input", { value, e })}
-					on:blur={(e) => dispatch("blur", { value, e })}
+					onchange={handleChange}
+					oninput={handleInput}
+					onblur={handleBlur}
 				/>
 				<abbr
 					id="{id}-unit"
@@ -163,9 +122,9 @@
 			aria-describedby={description ? `${id}-description-hint` : null}
 			{disabled}
 			{readonly}
-			on:change={(e) => dispatch("change", { value, e })}
-			on:input={(e) => dispatch("input", { value, e })}
-			on:blur={(e) => dispatch("blur", { value, e })}
+			onchange={handleChange}
+			oninput={handleInput}
+			onblur={handleBlur}
 		/>
 	{/if}
 </div>

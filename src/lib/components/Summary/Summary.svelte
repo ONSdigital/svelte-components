@@ -1,31 +1,17 @@
 <script>
 	import { createEventDispatcher } from "svelte";
 
+	/** @type {import("svelte").EventDispatcher<{ change: { item: object } }>} */
 	const dispatch = createEventDispatcher();
 
-	/**
-	 * A unique ID for the summary table
-	 * @type {string|null}
-	 */
-	export let id = null;
-	/**
-	 * Title for summary table
-	 * @type {string|null}
-	 */
-	export let title = null;
-	/**
-	 * Array of items in format {key, value, href?}
-	 * @type {object[]}
-	 */
-	export let items = [];
-	/**
-	 * Optional: Set an additional CSS class for the component
-	 * @type {string|null}
-	 */
-	export let cls = null;
+	/** @type {{ id?: string | null; title?: string | null; items?: { key: string; value: string; href?: string; editable?: boolean }[]; cls?: string | null; onChange?: (detail: { item: { key: string; value: string; href?: string; editable?: boolean } }) => void }} */
+	let { id = null, title = null, items = [], cls = null, onChange = () => {} } = $props();
 
+	/** @param {{ key: string; value: string; href?: string; editable?: boolean }} item */
 	function handleChange(item) {
-		dispatch("change", { item });
+		const detail = { item };
+		onChange(detail);
+		dispatch("change", detail);
 	}
 </script>
 
@@ -33,7 +19,7 @@
 	<div {id} class="ons-summary__group">
 		{#if title}<h2 class="ons-summary__group-title">{title}</h2>{/if}
 		<dl class="ons-summary__items">
-			{#each items as item}
+			{#each items as item (item.key)}
 				<div class="ons-summary__item">
 					<dt class="ons-summary__item-title">
 						<div class="ons-summary__item--text">{item.key}</div>
@@ -45,7 +31,7 @@
 						{#if item.href || item.editable}
 							<a
 								href={item.href || "#0"}
-								on:click={() => handleChange(item)}
+								onclick={() => handleChange(item)}
 								class="ons-summary__button"
 							>
 								<span class="ons-summary__button-text" aria-hidden="true">Change</span>

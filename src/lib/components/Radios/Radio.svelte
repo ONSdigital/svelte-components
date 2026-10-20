@@ -1,49 +1,36 @@
 <script>
-	import { onMount, createEventDispatcher } from "svelte";
+	import { createEventDispatcher } from "svelte";
+	/** @typedef {{ id: string; label: string; description?: string | null }} RadioItem */
 
+	/** @type {import("svelte").EventDispatcher<{ change: { value: RadioItem; e: Event } }>} */
 	const dispatch = createEventDispatcher();
 
-	/**
-	 * Unique ID input
-	 * @type {string|null}
-	 */
-	export let id = null;
-	/**
-	 * Label for input
-	 * @type {string|null}
-	 */
-	export let label = null;
-	/**
-	 * Optional: Extended description for element
-	 * @type {string|null}
-	 */
-	export let description = null;
-	/**
-	 * Optional: Define the item as an object in the form {id, label, description?}
-	 * @type {object}
-	 */
-	export let item = { id, label, description };
-	/**
-	 * ID/name for radio group (required)
-	 * @type {string}
-	 */
-	export let groupId;
-	/**
-	 * Binding selected option
-	 * @type {object|null}
-	 */
-	export let value = null;
-	/**
-	 * Compact mode (no border)
-	 * @type {boolean}
-	 */
-	export let compact = false;
+	/** @param {string} id @param {string} label @param {string} description @returns {RadioItem} */
+	function createItem(id, label, description) {
+		return description ? { id, label, description } : { id, label };
+	}
 
-	let el;
+	/** @type {{ id?: string | null; label?: string | null; description?: string | null; item?: RadioItem; groupId: string; value?: RadioItem | null; compact?: boolean; onChange?: (detail: { value: RadioItem; e: Event }) => void }} */
+	let {
+		id = null,
+		label = "",
+		description = null,
+		item = createItem(id ?? "", label ?? "", description ?? ""),
+		groupId,
+		value = $bindable(null),
+		compact = false,
+		onChange = () => {}
+	} = $props();
 
-	onMount(() => {
-		if (value?.id === item.id) el.checked = true;
-	});
+	/** @param {Event & { currentTarget: HTMLInputElement }} event */
+	function handleChange(event) {
+		if (event.currentTarget.checked) {
+			value = item;
+			const detail = { value, e: event };
+			onChange(detail);
+			dispatch("change", detail);
+		}
+	}
 </script>
 
 <span class="ons-radios__item" class:ons-radios__item--no-border={compact}>
@@ -52,15 +39,10 @@
 			type="radio"
 			id={item.id}
 			value={item}
+			checked={value?.id === item.id}
 			name={groupId}
 			class="ons-radio__input ons-js-radio"
-			on:change={(e) => {
-				if (e?.target?.checked) {
-					value = item;
-					dispatch("change", { value, e });
-				}
-			}}
-			bind:this={el}
+			onchange={handleChange}
 		/>
 		<label
 			class="ons-radio__label"

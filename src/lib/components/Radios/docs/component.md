@@ -2,6 +2,8 @@ A component for defining a group of radio inputs, where the selected item id can
 
 Based on [this ONS Design System component](https://service-manual.ons.gov.uk/design-system/components/radios). (Note: In some use cases, it may be preferable to use raw HTML `<input type="radio">` components and style these using CSS.)
 
+In Svelte 5, the group `onChange` callback receives `{ value, e }`, where `value` is the selected item and `e` is the native change event. The dispatched `change` event remains supported with the same object on `event.detail`.
+
 <!-- prettier-ignore -->
 ```html
 <script>

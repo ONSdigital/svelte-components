@@ -2,6 +2,8 @@ A checkbox element with various styling and labelling options. Its "checked" att
 
 Based on [this ONS Design System component](https://service-manual.ons.gov.uk/design-system/components/checkboxes).
 
+In Svelte 5, `onChange` receives `{ item, e }`, where `e` is the native change event. The dispatched `change` event remains supported and carries the same object on `event.detail`.
+
 <!-- prettier-ignore -->
 ```html
 <script>

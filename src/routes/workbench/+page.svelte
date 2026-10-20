@@ -2,14 +2,22 @@
 	import "$lib/css/main.css";
 	import Button from "$lib/components/Button/Button.svelte";
 	import BackLink from "$lib/components/BackLink/BackLink.svelte";
+	import Checkboxes from "$lib/components/Checkboxes/Checkboxes.svelte";
 	import ChangeStat from "$lib/components/ChangeStat/ChangeStat.svelte";
+	import Details from "$lib/components/Details/Details.svelte";
 	import Divider from "$lib/components/Divider/Divider.svelte";
+	import Dropdown from "$lib/components/Dropdown/Dropdown.svelte";
 	import Em from "$lib/components/Em/Em.svelte";
 	import ErrorPanel from "$lib/components/ErrorPanel/ErrorPanel.svelte";
 	import Icon from "$lib/components/Icon/Icon.svelte";
 	import Input from "$lib/components/Input/Input.svelte";
 	import Notice from "$lib/components/Notice/Notice.svelte";
 	import Section from "$lib/components/Section/Section.svelte";
+	import Paginator from "$lib/components/Paginator/Paginator.svelte";
+	import Radios from "$lib/components/Radios/Radios.svelte";
+	import Select from "$lib/components/Select/Select.svelte";
+	import Summary from "$lib/components/Summary/Summary.svelte";
+	import Textarea from "$lib/components/Textarea/Textarea.svelte";
 	import UpdateStatus from "$lib/components/UpdateStatus/UpdateStatus.svelte";
 	import { base } from "$app/paths";
 
@@ -18,6 +26,31 @@
 	let buttonDisabled = false;
 	let clickCount = 0;
 	let fieldValue = "";
+	let textareaValue = "";
+	/** @type {string | null} */
+	let dropdownValue = null;
+	/** @type {{ id: string; label: string } | null} */
+	let selectValue = null;
+	/** @type {{ id: string; label: string; checked?: boolean }[]} */
+	let selectedCheckboxes = [];
+	/** @type {{ id: string; label: string } | null} */
+	let selectedRadio = null;
+	let detailsOpen = false;
+	let summaryItems = [{ key: "Name", value: "Ada Lovelace", href: "#summary-heading" }];
+	const dropdownOptions = ["To do", "In progress", "Done"];
+	const selectOptions = [
+		{ id: "north", label: "North" },
+		{ id: "south", label: "South" },
+		{ id: "west", label: "West" }
+	];
+	let checkboxItems = [
+		{ id: "tea", label: "Tea", checked: false },
+		{ id: "coffee", label: "Coffee", checked: false }
+	];
+	const radioItems = [
+		{ id: "email", label: "Email" },
+		{ id: "post", label: "Post" }
+	];
 	/** @type {"up" | "down" | "neutral"} */
 	let changeDirection = "up";
 	/** @type {"default" | "positive" | "negative" | "subtle"} */
@@ -67,14 +100,99 @@
 		addActivity("Button click event", event.detail?.type ?? "No event detail");
 	}
 
-	/** @param {CustomEvent<{ value: string | null; e: Event }>} event */
-	function handleInput(event) {
-		addActivity("Input event", event.detail.value || "(empty value)");
+	/** @param {MouseEvent} event */
+	function handleButtonCallback(event) {
+		addActivity("Button callback", event.type);
 	}
 
-	/** @param {CustomEvent<{ value: string | null; e: Event }>} event */
-	function handleChange(event) {
-		addActivity("Input change event", event.detail.value || "(empty value)");
+	/** @param {{ value: string | null }} detail */
+	function handleInputCallback(detail) {
+		addActivity("Input callback", detail.value || "(empty value)");
+	}
+
+	/** @param {{ value: string | null }} detail */
+	function handleChangeCallback(detail) {
+		addActivity("Input change callback", detail.value || "(empty value)");
+	}
+
+	/** @param {{ value: string | null }} detail */
+	function handleTextareaCallback(detail) {
+		addActivity("Textarea callback", detail.value || "(empty value)");
+	}
+
+	/** @param {{ value: string | object | null; e: Event }} detail */
+	function handleDropdownCallback(detail) {
+		const selectedValue = detail.value;
+		const label =
+			typeof selectedValue === "object" && selectedValue !== null && "label" in selectedValue
+				? selectedValue.label
+				: selectedValue;
+		addActivity("Dropdown callback", typeof label === "string" ? label : "(empty value)");
+	}
+
+	/** @param {object | string} value */
+	function handleSelectCallback(value) {
+		const label =
+			typeof value === "object" && value !== null && "label" in value ? value.label : value;
+		addActivity("Select callback", typeof label === "string" ? label : "(empty value)");
+	}
+
+	/** @param {CustomEvent<{ id: string; label: string }>} event */
+	function handleSelectEvent(event) {
+		addActivity("Select change event", event.detail?.label || "(empty value)");
+	}
+
+	function handleSelectClear() {
+		addActivity("Select clear callback", "Selection cleared");
+	}
+
+	/** @param {{ item: object; e: Event }} detail */
+	function handleCheckboxCallback(detail) {
+		addActivity(
+			"Checkbox callback",
+			"label" in detail.item ? String(detail.item.label) : "Selected"
+		);
+	}
+
+	/** @param {CustomEvent<{ item: object; e: Event }>} event */
+	function handleCheckboxEvent(event) {
+		addActivity(
+			"Checkbox change event",
+			"label" in event.detail.item ? String(event.detail.item.label) : "Selected"
+		);
+	}
+
+	/** @param {{ value: { id: string; label: string }; e: Event }} detail */
+	function handleRadioCallback(detail) {
+		addActivity("Radio callback", detail.value.label);
+	}
+
+	/** @param {CustomEvent<{ value: { id: string; label: string }; e: Event }>} event */
+	function handleRadioEvent(event) {
+		addActivity("Radio change event", event.detail.value.label);
+	}
+
+	/** @param {{ open: boolean; e: Event }} detail */
+	function handleDetailsCallback(detail) {
+		addActivity("Details callback", detail.open ? "open" : "closed");
+	}
+
+	/** @param {CustomEvent<{ open: boolean; e: Event }>} event */
+	function handleDetailsEvent(event) {
+		addActivity("Details toggle event", event.detail.open ? "open" : "closed");
+	}
+
+	/** @param {{ item: object }} detail */
+	function handleSummaryCallback(detail) {
+		addActivity("Summary callback", "key" in detail.item ? String(detail.item.key) : "Change");
+	}
+
+	/** @param {CustomEvent<{ item: object }>} event */
+	function handleSummaryEvent(event) {
+		addActivity(
+			"Summary change event",
+			"key" in event.detail.item ? String(event.detail.item.key) : "Change"
+		);
 	}
 
 	function clearActivity() {
@@ -120,7 +238,12 @@
 				</label>
 			</div>
 
-			<Button variant={buttonVariant} disabled={buttonDisabled} on:click={handleButtonClick}>
+			<Button
+				variant={buttonVariant}
+				disabled={buttonDisabled}
+				onClick={handleButtonCallback}
+				on:click={handleButtonClick}
+			>
 				Test button
 			</Button>
 			<p class="workbench__result" aria-live="polite">Activated {clickCount} times</p>
@@ -135,10 +258,111 @@
 				label="Test value"
 				description="Enter text to exercise the component binding."
 				bind:value={fieldValue}
-				on:input={handleInput}
-				on:change={handleChange}
+				onInput={handleInputCallback}
+				onChange={handleChangeCallback}
 			/>
 			<p class="workbench__result" aria-live="polite">Current value: {fieldValue || "(empty)"}</p>
+		</section>
+	</div>
+
+	<div class="workbench__layout">
+		<section aria-labelledby="textarea-heading">
+			<h2 id="textarea-heading">Textarea</h2>
+			<Textarea
+				id="workbench-textarea"
+				label="Long response"
+				charLimit={80}
+				bind:value={textareaValue}
+				onInput={handleTextareaCallback}
+			/>
+			<p class="workbench__result">Current value: {textareaValue || "(empty)"}</p>
+		</section>
+
+		<section aria-labelledby="dropdown-heading">
+			<h2 id="dropdown-heading">Dropdown</h2>
+			<Dropdown
+				id="workbench-dropdown"
+				label="Task status"
+				options={dropdownOptions}
+				bind:value={dropdownValue}
+				onChange={handleDropdownCallback}
+			/>
+			<p class="workbench__result">Current value: {dropdownValue || "(empty)"}</p>
+		</section>
+	</div>
+
+	<div class="workbench__layout">
+		<section aria-labelledby="checkboxes-heading">
+			<h2 id="checkboxes-heading">Checkboxes</h2>
+			<Checkboxes
+				title="Refreshments"
+				items={checkboxItems}
+				bind:value={selectedCheckboxes}
+				onChange={handleCheckboxCallback}
+				on:change={handleCheckboxEvent}
+			/>
+			<p class="workbench__result">
+				Selected: {selectedCheckboxes.map((item) => item.label).join(", ") || "(none)"}
+			</p>
+		</section>
+
+		<section aria-labelledby="radios-heading">
+			<h2 id="radios-heading">Radios</h2>
+			<Radios
+				id="workbench-contact"
+				label="Preferred contact"
+				items={radioItems}
+				bind:value={selectedRadio}
+				onChange={handleRadioCallback}
+				on:change={handleRadioEvent}
+			/>
+			<p class="workbench__result">Selected: {selectedRadio?.label || "(none)"}</p>
+		</section>
+	</div>
+
+	<div class="workbench__layout">
+		<section aria-labelledby="select-heading">
+			<h2 id="select-heading">Select</h2>
+			<Select
+				id="workbench-select"
+				label="Region"
+				options={selectOptions}
+				bind:value={selectValue}
+				onChange={handleSelectCallback}
+				on:change={handleSelectEvent}
+				onClear={handleSelectClear}
+			/>
+			<p class="workbench__result">Current value: {selectValue?.label || "(empty)"}</p>
+		</section>
+
+		<section aria-labelledby="details-heading">
+			<h2 id="details-heading">Details</h2>
+			<Details
+				title="Additional information"
+				bind:open={detailsOpen}
+				onToggle={handleDetailsCallback}
+				on:toggle={handleDetailsEvent}
+			>
+				<p>Disclosure content preview.</p>
+			</Details>
+			<p class="workbench__result">State: {detailsOpen ? "open" : "closed"}</p>
+		</section>
+	</div>
+
+	<div class="workbench__layout">
+		<section aria-labelledby="summary-heading">
+			<h2 id="summary-heading">Summary</h2>
+			<Summary
+				title="Your details"
+				items={summaryItems}
+				onChange={handleSummaryCallback}
+				on:change={handleSummaryEvent}
+			/>
+		</section>
+
+		<section aria-labelledby="paginator-heading">
+			<h2 id="paginator-heading">Paginator</h2>
+			<Paginator pageCount={5} pageCurrent={3} prevHref="?page=2" nextHref="?page=4" />
 		</section>
 	</div>
 

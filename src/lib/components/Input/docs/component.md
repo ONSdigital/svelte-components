@@ -1,5 +1,11 @@
 A standard `<input>` element with Svelte bindings and events.
 
+In Svelte 5, callbacks `onInput`, `onChange`, and `onBlur` receive `{ value, e }`, where `e` is the native event. Existing dispatched events remain available with the same object on `event.detail`.
+
+```svelte
+<Input bind:value onInput={({ value }) => search(value)} />
+```
+
 ## Basic Usage
 
 <!-- prettier-ignore -->
@@ -175,5 +181,6 @@ The Input component dispatches three events:
 - **`on:blur`** - Fired when the input loses focus
 
 Each event detail contains:
+
 - `value` - The current input value
 - `e` - The native DOM event

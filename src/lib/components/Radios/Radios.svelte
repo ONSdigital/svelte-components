@@ -1,45 +1,29 @@
 <script>
+	import { createEventDispatcher } from "svelte";
 	import Radio from "./Radio.svelte";
+	/** @type {import("svelte").EventDispatcher<{ change: { value: RadioItem; e: Event } }>} */
+	const dispatch = createEventDispatcher();
+	/** @typedef {{ id: string; label: string; description?: string | null }} RadioItem */
 
-	/**
-	 * Title/legend for parent <fieldset>
-	 * @type {string|null}
-	 */
-	export let title = null;
-	/**
-	 * Visually hide the title/legend
-	 * @type {boolean}
-	 */
-	export let hideTitle = false;
-	/**
-	 * Unique ID/name for radio group (required)
-	 * @type {string}
-	 */
-	export let id = "radios";
-	/**
-	 * Descriptive "how to" label for inputs
-	 * @type {string|null}
-	 */
-	export let label = null;
-	/**
-	 * Binding for ID of selected option
-	 * @type {object|null}
-	 */
-	export let value = null;
-	/** Optional: Define the radios as an array of {id, label, description?}
-	 * @type {object[]}
-	 */
-	export let items = [];
-	/**
-	 * Compact mode (no border)
-	 * @type {boolean}
-	 */
-	export let compact = false;
-	/**
-	 * Optional: Set an additional CSS class for the component
-	 * @type {string|null}
-	 */
-	export let cls = null;
+	/** @type {{ children?: import("svelte").Snippet; title?: string | null; hideTitle?: boolean; id?: string; label?: string | null; value?: RadioItem | null; items?: RadioItem[]; compact?: boolean; cls?: string | null; onChange?: (detail: { value: RadioItem; e: Event }) => void }} */
+	let {
+		children,
+		title = null,
+		hideTitle = false,
+		id = "radios",
+		label = null,
+		value = $bindable(null),
+		items = [],
+		compact = false,
+		cls = null,
+		onChange = () => {}
+	} = $props();
+
+	/** @param {{ value: RadioItem; e: Event }} detail */
+	function handleChange(detail) {
+		onChange(detail);
+		dispatch("change", detail);
+	}
 </script>
 
 <fieldset class="ons-fieldset {cls}">
@@ -53,9 +37,9 @@
 			<p class="ons-radios__label">{label}</p>
 		{/if}
 		<div class="ons-radios__items">
-			<slot />
-			{#each items as item}
-				<Radio {item} groupId={id} {compact} bind:value on:change />
+			{@render children?.()}
+			{#each items as item (item.id)}
+				<Radio {item} groupId={id} {compact} bind:value onChange={handleChange} />
 			{/each}
 		</div>
 	</div>

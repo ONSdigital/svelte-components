@@ -1,70 +1,40 @@
 <script>
 	import { createEventDispatcher } from "svelte";
 
+	/** @type {import("svelte").EventDispatcher<{ change: { value: string | null; e: Event }; input: { value: string | null; e: Event }; blur: { value: string | null; e: Event } }>} */
 	const dispatch = createEventDispatcher();
 
-	/**
-	 * ID for &lt;textarea&gt; element
-	 * @type {string|null}
-	 */
-	export let id = null;
-	/**
-	 * Name for &lt;textarea&gt; element
-	 * @type {string|null}
-	 */
-	export let name = id;
-	/**
-	 * A prop to bind to for the entered value
-	 * @type {string|null}
-	 */
-	export let value = null;
-	/**
-	 * A label to describe the &lt;textarea&gt; element (expected for accessibility)
-	 * @type {string|null}
-	 */
-	export let label = "Enter some text";
-	/**
-	 * Visually hide the label
-	 * @type {boolean}
-	 */
-	export let hideLabel = false;
-	/**
-	 * An optional description to help users know what to enter
-	 * @type {string|null}
-	 */
-	export let description = null;
-	/**
-	 * The maximum number of characters that can be entered (optional)
-	 * @type {number|null}
-	 */
-	export let charLimit = null;
-	/**
-	 * The height of the &lt;textarea&gt; element in rows
-	 * @type {number}
-	 */
-	export let rows = 8;
-	/**
-	 * The width of the &lt;textarea&gt; element in characters
-	 * @type {number}
-	 */
-	export let width = 30;
-	/**
-	 * Set to `true` to make the input read-only
-	 * @type {boolean}
-	 */
-	export let readonly = false;
-	/**
-	 * Set to `true` to give the input a disabled state
-	 * @type {boolean}
-	 */
-	export let disabled = false;
-	/**
-	 * Optional: Set an additional CSS class for the component
-	 * @type {string|null}
-	 */
-	export let cls = null;
+	/** @type {{ id?: string | null; name?: string | null; value?: string | null; label?: string | null; hideLabel?: boolean; description?: string | null; charLimit?: number | null; rows?: number; width?: number; readonly?: boolean; disabled?: boolean; cls?: string | null; onChange?: (detail: { value: string | null; e: Event }) => void; onInput?: (detail: { value: string | null; e: Event }) => void; onBlur?: (detail: { value: string | null; e: Event }) => void }} */
+	let {
+		id = null,
+		name = id,
+		value = $bindable(null),
+		label = "Enter some text",
+		hideLabel = false,
+		description = null,
+		charLimit = null,
+		rows = 8,
+		width = 30,
+		readonly = false,
+		disabled = false,
+		cls = null,
+		onChange = () => {},
+		onInput = () => {},
+		onBlur = () => {}
+	} = $props();
 
-	$: remaining = charLimit && value.length ? charLimit - value.length : charLimit || null;
+	let remaining = $derived(
+		charLimit && value?.length ? charLimit - value.length : charLimit || null
+	);
+
+	/** @param {"change" | "input" | "blur"} type @param {Event} event */
+	function emitInputEvent(type, event) {
+		const detail = { value, e: event };
+		if (type === "change") onChange(detail);
+		else if (type === "input") onInput(detail);
+		else onBlur(detail);
+		dispatch(type, detail);
+	}
 </script>
 
 <div class="ons-field {cls}">
@@ -94,6 +64,9 @@
 		aria-describedby="textarea-char-limit-lim"
 		{disabled}
 		{readonly}
+		oninput={(event) => emitInputEvent("input", event)}
+		onchange={(event) => emitInputEvent("change", event)}
+		onblur={(event) => emitInputEvent("blur", event)}
 	></textarea>
 	{#if Number.isInteger(remaining)}
 		<span

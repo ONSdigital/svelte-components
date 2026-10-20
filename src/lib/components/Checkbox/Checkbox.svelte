@@ -1,109 +1,83 @@
 <script>
 	import { onMount, onDestroy, getContext, createEventDispatcher } from "svelte";
+	/** @typedef {{ id: string; label: string; description?: string | null; checked?: boolean; disabled?: boolean }} CheckboxItem */
 
+	/** @type {import("svelte").EventDispatcher<{ change: { item: CheckboxItem; e: Event } }>} */
 	const dispatch = createEventDispatcher();
 
-	/**
-	 * ID for input element
-	 * @type {string}
-	 */
-	export let id;
-	/**
-	 * Label for input
-	 * @type {string}
-	 */
-	export let label;
-	/**
-	 * Optional: Extended description for element
-	 * @type {string|null}
-	 */
-	export let description = null;
-	/**
-	 * Binding for checked state of input
-	 * @type {boolean}
-	 */
-	export let checked = false;
-	/**
-	 * Option to disable input
-	 * @type {boolean}
-	 */
-	export let disabled = false;
-	/**
-	 * Optional: Define the item as an object in the form {id, label, description?, checked?}
-	 * @type {object}
-	 */
-	export let item = { id, label, description, checked };
-	/**
-	 * Optional: Name of checkbox group
-	 * @type {string|null}
-	 */
-	export let groupName = null;
-	/**
-	 * Binding for checked state of input
-	 * @type {object[]|null}
-	 */
-	export let group = null;
-	/**
-	 * Set display mode of checkbox
-	 * @type {"default"|"ghost"}
-	 */
-	export let variant = "default";
-	/**
-	 * Compact mode (no border)
-	 * @type {boolean}
-	 */
-	export let compact = false;
-	/**
-	 * Optional: Set an additional CSS class for the component
-	 * @type {string|null}
-	 */
-	export let cls = null;
+	/** @type {{ id?: string; label?: string; description?: string | null; checked?: boolean; disabled?: boolean; item?: CheckboxItem; groupName?: string | null; group?: CheckboxItem[] | null; variant?: "default" | "ghost"; compact?: boolean; cls?: string | null; onChange?: (detail: { item: CheckboxItem; e: Event }) => void }} */
+	let {
+		id = "",
+		label = "",
+		description = null,
+		item = $bindable({ id, label, description, checked: false }),
+		checked = $bindable(item.checked ?? false),
+		disabled = false,
+		groupName = null,
+		group = $bindable(null),
+		variant = "default",
+		compact = false,
+		cls = null,
+		onChange = () => {}
+	} = $props();
 
+	/** @type {import("svelte/store").Writable<HTMLInputElement[]>} */
 	const checkboxes = getContext("checkboxes");
+	/** @type {HTMLInputElement | null} */
+	let el = null;
 
-	let el;
-
-	function findAncestor(el, cls) {
-		while ((el = el.parentElement) && !el.classList.contains(cls));
-		return el;
+	/** @param {HTMLElement} element @param {string} cls @returns {HTMLElement | null} */
+	function findAncestor(element, cls) {
+		let parent = element.parentElement;
+		while (parent && !parent.classList.contains(cls)) parent = parent.parentElement;
+		return parent;
 	}
 
 	function updateGroup() {
+		if (!Array.isArray(group) || !Array.isArray($checkboxes)) return;
+		/** @type {Record<string, CheckboxItem>} */
 		const groupIndex = {};
-		for (const g of group) groupIndex[g.id] = g;
-		const newGroupIds = $checkboxes.filter((c) => c.checked).map((c) => c?.id);
+		for (const groupItem of group) groupIndex[groupItem.id] = groupItem;
+		const newGroupIds = $checkboxes
+			.filter((checkbox) => checkbox.checked)
+			.map((checkbox) => checkbox.id);
 		if (newGroupIds.length !== group.length)
-			group = newGroupIds.map((id) => groupIndex[id] || item);
+			group = newGroupIds.map((groupId) => groupIndex[groupId] || item);
 	}
 
+	/** @param {Event & { currentTarget: HTMLInputElement }} e */
 	function doChange(e) {
-		checked = _checked = item.checked;
+		checked = _checked = e.currentTarget.checked;
+		item.checked = checked;
 		if (Array.isArray(group) && Array.isArray($checkboxes)) {
 			updateGroup();
 		}
-		dispatch("change", { item, e });
+		const detail = { item, e };
+		onChange(detail);
+		dispatch("change", detail);
 	}
 
 	// Track changes to checked from bind:checked outside component
-	let _checked = item.checked;
-	function trackChecked(checked) {
+	let _checked = checked ?? false;
+	$effect(() => {
 		if (_checked !== checked) {
 			item.checked = _checked = checked;
 		}
-	}
-	$: trackChecked(checked);
+	});
 
 	onMount(() => {
 		if (Array.isArray(group) && Array.isArray($checkboxes)) {
-			const root = findAncestor(el, "ons-checkboxes__items");
-			$checkboxes = [...root.getElementsByTagName("input")];
-			updateGroup();
+			const root = el ? findAncestor(el, "ons-checkboxes__items") : null;
+			if (root) {
+				$checkboxes = [...root.getElementsByTagName("input")];
+				updateGroup();
+			}
 		}
 	});
 
 	onDestroy(() => {
 		if (Array.isArray(group) && Array.isArray($checkboxes)) {
-			$checkboxes = $checkboxes.filter((c) => c.id !== id);
+			$checkboxes = $checkboxes.filter((checkbox) => checkbox.id !== item.id);
 			updateGroup();
 		}
 	});
@@ -124,7 +98,7 @@
 			class="ons-checkbox__input ons-js-checkbox"
 			{disabled}
 			aria-disabled={disabled}
-			on:change={doChange}
+			onchange={doChange}
 			bind:this={el}
 		/>
 		<label

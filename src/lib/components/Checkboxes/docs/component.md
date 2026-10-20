@@ -2,6 +2,8 @@ A component for defining a group of [checkbox](/docs/inputs-checkbox--docs) elem
 
 Based on [this ONS Design System component](https://service-manual.ons.gov.uk/design-system/components/checkboxes). (Note: In some use cases, it may be preferable to use raw HTML `<input type="checkbox">` components and style these using CSS.)
 
+In Svelte 5, the group `onChange` callback receives `{ item, e }` for a changed item. The dispatched `change` event remains available with that object on `event.detail`.
+
 <!-- prettier-ignore -->
 ```html
 <script>

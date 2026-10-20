@@ -1,58 +1,34 @@
 <script>
 	import { createEventDispatcher } from "svelte";
 
+	/** @type {import("svelte").EventDispatcher<{ change: { value: object | string | null; e: Event }; input: { value: object | string | null; e: Event }; blur: { value: object | string | null; e: Event } }>} */
 	const dispatch = createEventDispatcher();
 
-	/**
-	 * Unique id for the &lt;select&gt; element
-	 * @type {string|null}
-	 */
-	export let id = null;
-	/**
-	 * Name for the &lt;select&gt; element
-	 * @type {string|null}
-	 */
-	export let name = id;
-	/**
-	 * A label to describe the &lt;select&gt; element (expected for accessibility)
-	 * @type {string|null}
-	 */
-	export let label = null;
-	/**
-	 * Visually hide the label
-	 * @type {boolean}
-	 */
-	export let hideLabel = false;
-	/**
-	 * An optional description to help users know what to enter
-	 * @type {string|null}
-	 */
-	export let description = null;
-	/**
-	 * An optional placeholder text
-	 * @type {string}
-	 */
-	export let placeholder = "Select an option";
-	/**
-	 * A prop to bind to for the selected value
-	 * @type {object|null}
-	 */
-	export let value = null;
-	/**
-	 * An array of options, formatted {id, label}
-	 * @type {object[]}
-	 */
-	export let options = [];
-	/**
-	 * The width of the &lt;input&gt; in characters or a valid css width string (eg. "100px")
-	 * @type {number|string|null}
-	 */
-	export let width = 20;
-	/**
-	 * Optional: Set an additional CSS class for the component
-	 * @type {string|null}
-	 */
-	export let cls = null;
+	/** @type {{ id?: string | null; name?: string | null; label?: string | null; hideLabel?: boolean; description?: string | null; placeholder?: string; value?: object | string | null; options?: (object | string)[]; width?: number | string | null; cls?: string | null; onChange?: (detail: { value: object | string | null; e: Event }) => void; onInput?: (detail: { value: object | string | null; e: Event }) => void; onBlur?: (detail: { value: object | string | null; e: Event }) => void }} */
+	let {
+		id = null,
+		name = id,
+		label = null,
+		hideLabel = false,
+		description = null,
+		placeholder = "Select an option",
+		value = $bindable(null),
+		options = [],
+		width = 20,
+		cls = null,
+		onChange = () => {},
+		onInput = () => {},
+		onBlur = () => {}
+	} = $props();
+
+	/** @param {"change" | "input" | "blur"} type @param {Event} event */
+	function emitInputEvent(type, event) {
+		const detail = { value, e: event };
+		if (type === "change") onChange(detail);
+		else if (type === "input") onInput(detail);
+		else onBlur(detail);
+		dispatch(type, detail);
+	}
 </script>
 
 <div class="ons-field {cls}">
@@ -78,15 +54,19 @@
 		class="ons-input ons-input--select {Number.isInteger(width) ? `ons-input--w-${width}` : ''}"
 		style:width={typeof width === "string" ? width : null}
 		bind:value
-		on:change={(e) => dispatch("change", { value, e })}
-		on:input={(e) => dispatch("input", { value, e })}
-		on:blur={(e) => dispatch("blur", { value, e })}
+		onchange={(event) => emitInputEvent("change", event)}
+		oninput={(event) => emitInputEvent("input", event)}
+		onblur={(event) => emitInputEvent("blur", event)}
 	>
 		{#if placeholder}
 			<option value={null} selected disabled>{placeholder}</option>
 		{/if}
-		{#each options as option}
-			<option value={option}>{option?.label || option}</option>
+		{#each options as option (option)}
+			<option value={option}
+				>{typeof option === "object" && option !== null && "label" in option
+					? option.label
+					: option}</option
+			>
 		{/each}
 	</select>
 </div>

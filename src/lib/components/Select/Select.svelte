@@ -4,122 +4,55 @@
 	import Dropdown from "../Dropdown/Dropdown.svelte";
 	import Input from "../Input/Input.svelte";
 
+	/** @type {import("svelte").EventDispatcher<{ change: object | string; clear: null }>} */
 	const dispatch = createEventDispatcher();
 	const sleep = (ms = 1000) => new Promise((resolve) => setTimeout(resolve, ms));
 	const chevron = (opts) =>
 		`<svg class="${opts?.className}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="0 0 11.75 7.7" width="18" style="z-index:1"><path fill="currentColor" d="m1.37.15 4.5 5.1 4.5-5.1a.37.37 0 0 1 .6 0l.7.7a.45.45 0 0 1 0 .5l-5.5 6.2a.37.37 0 0 1-.6 0l-5.5-6.1a.64.64 0 0 1 0-.6l.7-.7a.64.64 0 0 1 .6 0Z"></path></svg>`;
 
-	let mounted = false;
+	let mounted = $state(false);
 	let inputElement;
 	let accessibleAutocomplete;
-	let hideMenu = false;
+	let hideMenu = $state(false);
 
-	/**
-	 * Unique id for the HTML element
-	 * @type {string}
-	 */
-	export let id = "autocomplete";
-	/**
-	 * Name for the HTML element
-	 * @type {string}
-	 */
-	export let name = id;
-	/**
-	 * The mode can be either "default" or "search"
-	 * @type {"default"|"search"}
-	 */
-	export let mode = "default";
-	/**
-	 * Defines whether the selection can be cleared
-	 * @type {boolean}
-	 */
-	export let clearable = mode !== "search";
-	/**
-	 * Clear value on selection (default for "search" mode)
-	 * @type {boolean}
-	 */
-	export let autoClear = mode === "search";
-	/**
-	 * Auto focus the search input when it is created
-	 * @type {boolean}
-	 */
-	export let autoFocus = false;
-	/**
-	 * A label to describe the element (expected for accessibility)
-	 * @type {string|null}
-	 */
-	export let label = mode === "search" ? "Type to select" : "Select an option";
-	/**
-	 * Visually hide the label
-	 * @type {boolean}
-	 */
-	export let hideLabel = false;
-	/**
-	 * An optional description to help users know what to enter
-	 * @type {string|null}
-	 */
-	export let description = null;
-	/**
-	 * An optional placeholder text
-	 * @type {string}
-	 */
-	export let placeholder = mode === "search" ? "Enter text" : "Select one";
-	/**
-	 * A prop to bind to for the selected value
-	 * @type {object}
-	 */
-	export let value = null;
-	/**
-	 * An array of options, formatted {id, label}
-	 * @type {array}
-	 */
-	export let options = [];
-	/**
-	 * The attribute of an option that defines its label/name
-	 * @type {string}
-	 */
-	export let labelKey = "label";
-	/**
-	 * The attribute of an option that defines its group (optional)
-	 * @type {string|null}
-	 */
-	export let groupKey = null;
-	/**
-	 * When using SSR or pre-rendering, this option will render a text input or dropdown before the page is hydrated (allows for progressive enhancement).
-	 * @type {boolean}
-	 */
-	export let renderFallback = false;
-	/**
-	 * Optional: Minimum query length to return results
-	 * @type {number}
-	 */
-	export let minLength = mode === "search" ? 1 : 0;
-	/**
-	 * Optional: Override function for loading/filtering options based on the entered text
-	 * @type {function}
-	 */
-	export let loadOptions = (query, populateResults) => {
-		if (mode !== "search" && (!query || options.map((opt) => opt?.[labelKey]).includes(query)))
-			populateResults(options);
-		else {
-			const regex = new RegExp(`\\b${query.replace(/[^\w\s]/gi, "")}`, "i");
-			const filteredResults = options.filter((opt) => regex.test(opt?.[labelKey]));
-			populateResults(filteredResults);
-		}
-	};
-	/**
-	 * Call this function externally to clear the input
-	 * @type {function}
-	 */
-	export let clearInput = () => {
+	/** @type {{ id?: string; name?: string; mode?: "default" | "search"; clearable?: boolean; autoClear?: boolean; autoFocus?: boolean; label?: string | null; hideLabel?: boolean; description?: string | null; placeholder?: string; value?: object | string | null; options?: object[]; labelKey?: string; groupKey?: string | null; renderFallback?: boolean; minLength?: number; loadOptions?: (query: string, populateResults: (results: object[]) => void) => void; clearInput?: () => void; cls?: string | null; onChange?: (value: object | string) => void; onClear?: (value: null) => void }} */
+	let {
+		id = "autocomplete",
+		name = id,
+		mode = "default",
+		clearable = mode !== "search",
+		autoClear = mode === "search",
+		autoFocus = false,
+		label = mode === "search" ? "Type to select" : "Select an option",
+		hideLabel = false,
+		description = null,
+		placeholder = mode === "search" ? "Enter text" : "Select one",
+		value = $bindable(null),
+		options = [],
+		labelKey = "label",
+		groupKey = null,
+		renderFallback = false,
+		minLength = mode === "search" ? 1 : 0,
+		loadOptions = (query, populateResults) => {
+			if (mode !== "search" && (!query || options.map((opt) => opt?.[labelKey]).includes(query)))
+				populateResults(options);
+			else {
+				const regex = new RegExp(`\\b${query.replace(/[^\w\s]/gi, "")}`, "i");
+				const filteredResults = options.filter((opt) => regex.test(opt?.[labelKey]));
+				populateResults(filteredResults);
+			}
+		},
+		clearInput = clearSelection,
+		cls = null,
+		onChange = () => {},
+		onClear = () => {}
+	} = $props();
+
+	function clearSelection() {
 		value = null;
+		onClear(null);
 		dispatch("clear", null);
-	};
-	/**
-	 * Optional: Set an additional CSS class for the component
-	 * @type {string|null}
-	 */
-	export let cls = null;
+	}
 
 	// This method is a bit of a hack, but no better options available at present
 	// https://github.com/alphagov/accessible-autocomplete/issues/390
@@ -157,6 +90,7 @@
 	async function select(option) {
 		if (option && value !== option) {
 			value = option;
+			onChange(value);
 			dispatch("change", value);
 			if (value && autoClear) {
 				await sleep(0);
@@ -206,7 +140,7 @@
 			else if (!value && inputElement.value) setInputValue("");
 		}
 	}
-	$: bindInputValue(value);
+	$effect(() => bindInputValue(value));
 
 	onMount(async () => {
 		mounted = true;
@@ -250,7 +184,7 @@
 						type="reset"
 						title="Clear selection"
 						aria-label="Clear selection"
-						on:click={clearInput}
+						onclick={clearInput}
 						class="ons-autocomplete-clear"
 					>
 						<svg

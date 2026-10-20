@@ -1,43 +1,33 @@
 <script>
-	import { setContext } from "svelte";
+	import { createEventDispatcher, setContext } from "svelte";
 	import { writable } from "svelte/store";
 	import Checkbox from "../Checkbox/Checkbox.svelte";
+	/** @typedef {{ id: string; label: string; description?: string | null; checked?: boolean; disabled?: boolean }} CheckboxItem */
 
-	/**
-	 * Title/legend for parent <fieldset>
-	 * @type {string|null}
-	 */
-	export let title = null;
-	/**
-	 * Visually hide the title/legend
-	 * @type {boolean}
-	 */
-	export let hideTitle = false;
-	/**
-	 * Descriptive "how to" label for inputs
-	 * @type {string|null}
-	 */
-	export let label = null;
-	/** Optional: Define the checkboxes as an array of {id, label, checked, description?}
-	 * @type {object[]|null}
-	 */
-	export let items = null;
-	/** Compact mode (no borders)
-	 * @type {boolean}
-	 */
-	export let compact = false;
-	/** Binding for selected checkboxes (if checkboxes are defined as "items")
-	 * @type {object[]}
-	 */
-	export let value = [];
-	/**
-	 * Optional: Set an additional CSS class for the component
-	 * @type {string|null}
-	 */
-	export let cls = null;
+	/** @type {import("svelte").EventDispatcher<{ change: { item: CheckboxItem; e: Event } }>} */
+	const dispatch = createEventDispatcher();
+
+	/** @type {{ children?: import("svelte").Snippet; title?: string | null; hideTitle?: boolean; label?: string | null; items?: CheckboxItem[] | null; compact?: boolean; value?: CheckboxItem[]; cls?: string | null; onChange?: (detail: { item: CheckboxItem; e: Event }) => void }} */
+	let {
+		children,
+		title = null,
+		hideTitle = false,
+		label = null,
+		items = null,
+		compact = false,
+		value = $bindable([]),
+		cls = null,
+		onChange = () => {}
+	} = $props();
 
 	const checkboxes = writable([]);
 	setContext("checkboxes", checkboxes);
+
+	/** @param {{ item: CheckboxItem; e: Event }} detail */
+	function handleChange(detail) {
+		onChange(detail);
+		dispatch("change", detail);
+	}
 </script>
 
 <fieldset class="ons-fieldset {cls}">
@@ -51,10 +41,10 @@
 			<p class="ons-checkboxes__label">{label}</p>
 		{/if}
 		<div class="ons-checkboxes__items">
-			<slot />
+			{@render children?.()}
 			{#if Array.isArray(items)}
-				{#each items as item}
-					<Checkbox {item} bind:group={value} {compact} on:change />
+				{#each items as item, index (item.id)}
+					<Checkbox bind:item={items[index]} bind:group={value} {compact} onChange={handleChange} />
 				{/each}
 			{/if}
 		</div>

@@ -70,3 +70,26 @@ This log records migration decisions, component changes, verification results, a
 ### Follow-up
 
 - Block 5A is complete. Proceed to block 5B only after confirming this log entry and the deployed workbench.
+
+## 2026-10-20: Component Block 5B
+
+### Components
+
+- Migrated `Button`, `Input`, `Textarea`, `Dropdown`, `Checkbox`, `Checkboxes`, `Radio`, `Radios`, `Select`, `Details`, `Summary`, and `Paginator` to Svelte 5 props; retained two-way bindings with `$bindable()` where the public API supports them.
+- Added callback props alongside dispatched events for the event-emitting controls. Both paths receive the same detail for `Button`, `Input`, `Textarea`, `Dropdown`, checkbox/radio groups, `Details`, and `Summary`; `Select` retains its direct selected-value `change` and `null` `clear` payloads through `onChange`/`onClear`.
+- Converted legacy child slots in `Button`, `Checkboxes`, `Radios`, and `Details` to snippets. Button's named `icon` slot is now the `iconSlot` snippet; no existing named icon-slot consumers were found.
+- Kept `Paginator` navigation-only; migrated its props and made its decorative arrows hidden from assistive technology.
+- Added focused tests for control bindings, callback/event payload parity, group selection, Details open state, Summary actions, and Paginator links. Added workbench fixtures and callback/event documentation.
+
+### Verification
+
+- Combined focused tests for blocks 5A and 5B: 25 passed across 13 test files.
+- `npm run check`: 423 errors and 27 warnings in 86 files remain, down from the original 482 errors in 94 files. No diagnostics remain in the migrated 5B component sources or workbench; remaining 5B Storybook `args` diagnostics were present in the initial baseline.
+- Targeted ESLint and Prettier checks passed for all changed 5B code, tests, docs, and workbench files.
+- `npm run build`: passed, including package build, `publint`, workbench prerender, Storybook build, and staging.
+- `npm run deploy`: published the expanded workbench to GitHub Pages. Live interactions verified for Button, Textarea, Dropdown, Checkboxes, Radios, Select, Details, Summary, and Input; Paginator links render with their configured destinations.
+- The deployed workbench has no horizontal overflow at a 375px viewport.
+
+### Follow-up
+
+- Block 5B is complete. Proceed to block 5C only after reviewing this entry and the deployed workbench.
