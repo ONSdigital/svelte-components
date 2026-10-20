@@ -3,76 +3,77 @@
 	import { writable } from "svelte/store";
 	import Container from "$lib/components/Container/Container.svelte";
 
-	/**
-	 * ID for back-linking to table of contents
-	 * @type {string}
-	 */
-	export let id = "toc";
-	/**
-	 * Optional: Set an additional CSS class for the section
-	 * @type {string|null}
-	 */
-	export let cls = null;
-	/**
-	 * Sets the width of the container
-	 * @type {"narrow"|"medium"|"wide"|"wider"|"full"}
-	 */
-	export let width = "wide";
-	/**
-	 * A label for the page contents nav
-	 * @type {string}
-	 */
-	export let contentsLabel = "Contents";
-	/**
-	 * Don't include table of contents (allows for custom uses of nav panel)
-	 * @type {boolean}
-	 */
-	export let noContents = false;
-	/**
-	 * Adds margin above section
-	 * @type {boolean}
-	 */
-	export let marginTop = false;
-	/**
-	 * Adds margin below section
-	 * @type {boolean}
-	 */
-	export let marginBottom = true;
+	/** @typedef {{ id?: string; title?: string; subsections: { id?: string; title?: string }[] }} ContentsSection */
+	/** @typedef {{ id: string; dataset: { title?: string; subsection?: string } }} RegisteredSection */
 
+	/** @type {{ before?: import("svelte").Snippet; children?: import("svelte").Snippet; after?: import("svelte").Snippet; beforeNav?: import("svelte").Snippet; afterNav?: import("svelte").Snippet; footer?: import("svelte").Snippet; id?: string; cls?: string | null; width?: "narrow" | "medium" | "wide" | "wider" | "full"; contentsLabel?: string; noContents?: boolean; marginTop?: boolean; marginBottom?: boolean }} */
+	let {
+		before,
+		children,
+		after,
+		beforeNav,
+		afterNav,
+		footer,
+		id = "toc",
+		cls = null,
+		width = "wide",
+		contentsLabel = "Contents",
+		noContents = false,
+		marginTop = false,
+		marginBottom = true
+	} = $props();
+
+	/** @type {HTMLElement | undefined} */
 	let el;
-	let active;
-	let mounted = false;
+	/** @type {string | null} */
+	let active = $state(null);
+	let mounted = $state(false);
 
-	setContext("tocId", id);
-
+	/** @type {import("svelte/store").Writable<RegisteredSection[]>} */
 	const sections = writable([]);
-	setContext("sections", sections);
+	/** @type {import("svelte/store").Writable<IntersectionObserver | null>} */
+	const observer = writable(null);
 
-	const observer = writable();
+	setContext("tocId", () => id);
+	setContext("sections", sections);
 	setContext("observer", observer);
 
-	function formatSections(sections) {
-		if (sections.length === 0) return [];
-		const secs = [];
-		let sec = { subsections: [] };
-		for (const section of sections) {
+	/** @param {RegisteredSection[]} sectionElements @returns {ContentsSection[]} */
+	function formatSections(sectionElements) {
+		if (sectionElements.length === 0) return [];
+		/** @type {ContentsSection[]} */
+		const formattedSections = [];
+		/** @type {ContentsSection} */
+		let currentSection = { subsections: [] };
+
+		for (const section of sectionElements) {
 			if (section.dataset.subsection !== "true") {
-				if (sec.title || sec.subsections.length > 0) secs.push(sec);
-				sec = { id: section.id, title: section.dataset.title, subsections: [] };
+				if (currentSection.title || currentSection.subsections.length > 0) {
+					formattedSections.push(currentSection);
+				}
+				currentSection = {
+					id: section.id,
+					title: section.dataset.title,
+					subsections: []
+				};
 			} else {
-				sec.subsections.push({ id: section.id, title: section.dataset.title });
+				currentSection.subsections.push({
+					id: section.id,
+					title: section.dataset.title
+				});
 			}
 		}
-		return [...secs, sec];
+
+		return [...formattedSections, currentSection];
 	}
 
 	onMount(() => {
-		if (!noContents) {
+		if (!noContents && typeof IntersectionObserver !== "undefined") {
 			$observer = new IntersectionObserver(
-				(entries, observer) => {
-					for (let i = 0; i < entries.length; i++) {
-						if (entries[i].isIntersecting) {
-							active = entries[i].target.id;
+				(entries) => {
+					for (const entry of entries) {
+						if (entry.isIntersecting) {
+							active = entry.target.id;
 							break;
 						}
 					}
@@ -84,34 +85,33 @@
 				}
 			);
 		}
-		// The table of contents doesn't populate unless it's after the main content
-		// This is a trick to flip the order when the page hydrates
-		el.prepend(el.lastElementChild);
+
+		if (el?.lastElementChild) el.prepend(el.lastElementChild);
 		mounted = true;
 	});
 </script>
 
-<Container {cls} {width} {marginTop} {marginBottom}>
+<Container {id} {cls} {width} {marginTop} {marginBottom}>
 	<div
 		class="ons-grid ons-grid--spaced ons-grid--loose ons-js-toc-container"
 		class:flip-display-order={!mounted}
 		bind:this={el}
 	>
 		<div class="ons-nav-sections-content ons-grid__col ons-col-8@m">
-			<slot name="before" />
-			<slot />
-			<slot name="after" />
+			{@render before?.()}
+			{@render children?.()}
+			{@render after?.()}
 		</div>
 		<div class="ons-nav-sections-toc ons-grid__col ons-grid__col--sticky@m ons-col-4@m">
-			<aside class="ons-table-of-contents-container" role="complementary">
-				<slot name="before-nav" />
+			<aside class="ons-table-of-contents-container">
+				{@render beforeNav?.()}
 				{#if !noContents}
 					<nav class="ons-table-of-contents" aria-label="Sections in this page">
 						{#if contentsLabel}
 							<h2 class="ons-table-of-contents__title ons-u-fs-r--b ons-u-mb-s">{contentsLabel}</h2>
 						{/if}
 						<ol class="ons-list ons-u-mb-l ons-list--dashed">
-							{#each formatSections($sections) as section}
+							{#each formatSections($sections) as section (section.id || section.title)}
 								<li class="ons-list__item">
 									{#if section.id && section.title}
 										<a
@@ -124,7 +124,7 @@
 									{/if}
 									{#if section.subsections.length > 0}
 										<ol class="ons-list ons-u-mb-no ons-list--dashed">
-											{#each section.subsections as subsection}
+											{#each section.subsections as subsection (subsection.id)}
 												<li class="ons-list__item">
 													<a
 														href="#{subsection.id}"
@@ -142,15 +142,14 @@
 						</ol>
 					</nav>
 				{/if}
-				<slot name="after-nav" />
+				{@render afterNav?.()}
 			</aside>
 		</div>
 	</div>
-	<slot name="footer" />
+	{@render footer?.()}
 </Container>
 
 <style>
-	/* These classes force the table of contents to render on the left of the page before hydration */
 	.flip-display-order {
 		direction: rtl;
 	}

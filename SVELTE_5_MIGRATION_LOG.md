@@ -93,3 +93,25 @@ This log records migration decisions, component changes, verification results, a
 ### Follow-up
 
 - Block 5B is complete. Proceed to block 5C only after reviewing this entry and the deployed workbench.
+
+## 2026-10-20: Component Block 5C
+
+### Components
+
+- Migrated `Accordion`/`AccordionItem`, `Tabs`/`Tab`, `Grid`/`GridCell`, `NavSections`/`NavSection`, `DocumentList`/`Document`, and `Timeline`/`TimelineItem` to Svelte 5 props and snippets.
+- Kept parent/child context contracts intact. Grid now provides reactive context getters for layout values; NavSection and Tab register/unregister their metadata through the existing stores.
+- Preserved the Accordion and Tabs browser helpers while typing their DOM boundaries. Accordion toggle and Tabs change support callback props alongside their dispatched events.
+- Added focused tests for Accordion toggles, Tab and NavSection registration, Grid layout/context, and data-driven plus nested DocumentList/Timeline content. Added all six families to the workbench and documented the snippet composition APIs.
+
+### Verification
+
+- Focused 5C tests: 8 passed across 7 test files.
+- `npm run check`: 336 errors and 25 warnings in 75 files remain, down from the original baseline. No diagnostics remain in 5C component sources or workbench; the remaining family-local diagnostics are preexisting Storybook `args` types.
+- `npm run build`: passed, including package build, `publint`, workbench prerender, Storybook build, and staging.
+- Targeted ESLint passed with only the established raw-HTML and NavSections DOM-reorder rules excluded; targeted Prettier and `git diff --check` passed.
+- Deployed workbench includes all six 5C families. Live Accordion “Show all” and Tabs selection were verified, including callback and dispatched-event logs.
+- The deployed workbench renders 26 component sections without horizontal overflow at 375px; the local route returns HTTP 200 at `http://127.0.0.1:5173/svelte-components/workbench/`.
+
+### Follow-up
+
+- Block 5C is complete. Pause before starting block 5D.

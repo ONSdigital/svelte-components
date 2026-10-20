@@ -4,41 +4,37 @@
 	import { sleep } from "$lib/js/utils.js";
 	import Tabs from "./tabs.js";
 
+	/** @type {import("svelte").EventDispatcher<{ change: { id: string } }>} */
 	const dispatch = createEventDispatcher();
 
-	/**
-	 * Make tabs smaller/more compact
-	 * @type {boolean}
-	 */
-	export let compact = false;
-	/**
-	 * Include a border around the tab panel
-	 * @type {boolean}
-	 */
-	export let border = false;
-	/**
-	 * The ID of selected tab (for binding)
-	 * @type {string|null}
-	 */
-	export let selected = null;
-	/**
-	 * Optional: Set an additional CSS class for the component
-	 * @type {string|null}
-	 */
-	export let cls = null;
+	/** @type {{ children?: import("svelte").Snippet; compact?: boolean; border?: boolean; selected?: string | null; cls?: string | null; onChange?: (detail: { id: string }) => void }} */
+	let {
+		children,
+		compact = false,
+		border = false,
+		selected = $bindable(null),
+		cls = null,
+		onChange = () => {}
+	} = $props();
 
+	/** @type {HTMLElement | undefined} */
+	/** @type {HTMLElement | undefined} */
 	let el;
-
+	/** @type {import("svelte/store").Writable<HTMLElement[]>} */
 	const sections = writable([]);
 	setContext("sections", sections);
 
+	/** @param {string} id */
 	function updateSelection(id) {
 		selected = id;
-		dispatch("change", { id });
+		const detail = { id };
+		onChange(detail);
+		dispatch("change", detail);
 	}
 
 	onMount(async () => {
 		await sleep(0);
+		if (!el) return;
 		new Tabs(el);
 		selected = $sections?.[0]?.id;
 	});
@@ -53,10 +49,10 @@
 	<h2 class="ons-tabs__title ons-u-fs-r--b ons-u-mt-no ons-u-fs-m ons-u-vh">Contents</h2>
 	<div class="ons-tabs__container">
 		<ul class="ons-tabs__list ons-tabs__list--row" role="tablist">
-			{#each $sections as section}
+			{#each $sections as section (section.id)}
 				<li class="ons-tab__list-item ons-tab__list-item--row" role="presentation">
 					<a
-						on:click={() => updateSelection(section.id)}
+						onclick={() => updateSelection(section.id)}
 						href="#{section.id}"
 						class="ons-tab ons-tab--row"
 						id="tab_{section.id}"
@@ -67,7 +63,7 @@
 			{/each}
 		</ul>
 	</div>
-	<slot />
+	{@render children?.()}
 </section>
 
 <style>

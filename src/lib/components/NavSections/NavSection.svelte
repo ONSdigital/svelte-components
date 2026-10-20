@@ -2,65 +2,61 @@
 	import { onMount, onDestroy, getContext } from "svelte";
 	import { slugify } from "../../js/utils.js";
 	import BackLink from "../BackLink/BackLink.svelte";
+	/** @typedef {{ id: string; dataset: { title?: string; subsection?: string } }} RegisteredNavSection */
 
-	/**
-	 * Sets the title of the section
-	 * @type {string}
-	 */
-	export let title = "Section title";
-	/**
-	 * Sets the unique ID of the section (if not set, this will be slugified from the title)
-	 * @type {string}
-	 */
-	export let id = slugify(title);
-	/**
-	 * Optional: Set an additional CSS class for the section
-	 * @type {string|null}
-	 */
-	export let cls = null;
-	/**
-	 * Allows the h2 title tag for the section to be visually hidden
-	 * @type {boolean}
-	 */
-	export let hideTitle = false;
-	/**
-	 * Treat a section as sub-section. It will have an h3 title, and will be indented in the contents table
-	 * @type {boolean}
-	 */
-	export let subsection = false;
+	/** @type {{ children?: import("svelte").Snippet; title?: string; id?: string; cls?: string | null; hideTitle?: boolean; subsection?: boolean }} */
+	let {
+		children,
+		title = "Section title",
+		id = slugify(title),
+		cls = null,
+		hideTitle = false,
+		subsection = false
+	} = $props();
 
+	/** @type {import("svelte/store").Writable<RegisteredNavSection[]>} */
 	const sections = getContext("sections");
+	/** @type {import("svelte/store").Writable<IntersectionObserver | null>} */
 	const observer = getContext("observer");
-	const tocId = getContext("tocId");
+	const tocIdContext = getContext("tocId");
+	let tocId = $derived(typeof tocIdContext === "function" ? tocIdContext() : tocIdContext);
 
+	/** @type {HTMLElement | undefined} */
 	let section;
-	let mounted = false;
-	let observed = false;
+	let mounted = $state(false);
+	let observed = $state(false);
 
-	// This should allow the table of contents (toc) to render before hydration
-	$sections = [
-		...$sections.filter((s) => s.id !== id),
-		{ id, dataset: { title, subsection: String(subsection) } }
-	];
+	$effect(() => {
+		const sectionData = { id, dataset: { title, subsection: String(subsection) } };
+		sections.update((currentSections) => [
+			...currentSections.filter((current) => current.id !== id),
+			sectionData
+		]);
+	});
 
 	// This allows sections to be highlighted on the toc after hydration,
 	// and for sections to be added/removed gracefully from the DOM
+	/** @param {IntersectionObserver | null} observer @param {boolean} mounted */
 	function addToObserver(observer, mounted) {
-		if (mounted && observer && !observed) {
-			$sections = [...section.parentElement.getElementsByTagName("section")].filter(
-				(s) => s.dataset.type === "NavSection"
+		const sectionElement = section;
+		const parent = sectionElement?.parentElement;
+		if (mounted && observer && !observed && parent && sectionElement) {
+			$sections = /** @type {RegisteredNavSection[]} */ (
+				[...parent.getElementsByTagName("section")].filter(
+					(candidate) => candidate.dataset.type === "NavSection"
+				)
 			);
-			observer.observe(section);
+			observer.observe(sectionElement);
 			observed = true;
 		}
 	}
-	$: addToObserver($observer, mounted);
+	$effect(() => addToObserver($observer, mounted));
 
 	onMount(() => (mounted = true));
 
 	onDestroy(() => {
-		if ($observer) $observer.unobserve(section);
-		if ($sections) $sections = $sections.filter((s) => s.id !== id);
+		if ($observer && section) $observer.unobserve(section);
+		sections.update((currentSections) => currentSections.filter((current) => current.id !== id));
 		mounted = observed = false;
 	});
 </script>
@@ -83,7 +79,7 @@
 			</h2>
 		{/if}
 	{/if}
-	<slot />
+	{@render children?.()}
 	{#if tocId}
 		<BackLink href="#{tocId}" cls="ons-u-d-no@m" />
 	{/if}

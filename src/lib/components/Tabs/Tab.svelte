@@ -2,37 +2,29 @@
 	import { onMount, onDestroy, getContext } from "svelte";
 	import { slugify } from "../../js/utils.js";
 
-	/**
-	 * Title of tab/panel
-	 * @type {string}
-	 */
-	export let title = "Tab title";
-	/**
-	 * Hide the title within the panel
-	 * @type {boolean}
-	 */
-	export let hideTitle = true;
-	/**
-	 * ID/slug for tab (auto-generated from title if not set)
-	 * @type {string}
-	 */
-	export let id = slugify(title);
+	/** @type {{ children?: import("svelte").Snippet; title?: string; hideTitle?: boolean; id?: string }} */
+	let { children, title = "Tab title", hideTitle = true, id = slugify(title) } = $props();
 
+	/** @type {import("svelte/store").Writable<HTMLElement[]>} */
 	const sections = getContext("sections");
 
+	/** @type {HTMLElement | undefined} */
 	let el;
 
 	onMount(() => {
-		if (sections) {
-			$sections = [...el.parentElement.getElementsByTagName("section")].filter(
-				(s) => s.dataset.type === "Tab"
+		const parent = el?.parentElement;
+		if (sections && parent) {
+			sections.update(() =>
+				[...parent.getElementsByTagName("section")].filter(
+					(section) => section.dataset.type === "Tab"
+				)
 			);
 		}
 	});
 
 	onDestroy(() => {
 		if (sections) {
-			$sections = $sections.filter((s) => s.id !== id);
+			sections.update((currentSections) => currentSections.filter((section) => section.id !== id));
 		}
 	});
 </script>
@@ -49,5 +41,5 @@
 	bind:this={el}
 >
 	<h2 id="{id}-content-title" class="ons-u-vh" class:ons-u-vh={hideTitle}>{title}</h2>
-	<slot />
+	{@render children?.()}
 </section>

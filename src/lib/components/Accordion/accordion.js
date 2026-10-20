@@ -1,15 +1,22 @@
+/** @typedef {import("./details.js").default} AccordionDetails */
+
 export default class Accordion {
+	/** @param {HTMLButtonElement} button @param {AccordionDetails[]} detailsEls */
 	constructor(button, detailsEls) {
 		this.openDetailsEls = 0;
 
 		this.button = button;
-		this.buttonInner = button.querySelector(".ons-accordion__toggle-all-inner");
+		const buttonInner = button.querySelector(".ons-accordion__toggle-all-inner");
+		if (!buttonInner) throw new Error("Accordion is missing its show-all button content.");
+		this.buttonInner = buttonInner;
 		this.group = button.getAttribute("data-group");
 		this.detailsEls = detailsEls.filter((details) => details.group === this.group);
 		this.totalDetailsEls = this.detailsEls.length;
-		this.buttonOpenEl = this.buttonInner.querySelector(".ons-btn__text");
+		const buttonOpenEl = this.buttonInner.querySelector(".ons-btn__text");
+		if (!buttonOpenEl) throw new Error("Accordion is missing its show-all button label.");
+		this.buttonOpenEl = buttonOpenEl;
 		this.buttonOpen = this.buttonOpenEl.innerHTML.trim();
-		this.closeButton = button.getAttribute("data-close-all");
+		this.closeButton = button.getAttribute("data-close-all") || "Hide all";
 		this.open = this.detailsEls.find((details) => details.open === true);
 
 		this.detailsEls.forEach((details) => {
@@ -26,6 +33,7 @@ export default class Accordion {
 		this.button.classList.remove("ons-u-d-no");
 	}
 
+	/** @param {MouseEvent} event */
 	handleButtonClick(event) {
 		event.preventDefault();
 

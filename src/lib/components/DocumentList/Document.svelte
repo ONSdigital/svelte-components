@@ -1,39 +1,15 @@
 <script>
-	/**
-	 * The title of the document
-	 * @type {string|null}
-	 */
-	export let title = null;
-	/**
-	 * Set the heading level for the title
-	 * @type {"h2"|"h3"}
-	 */
-	export let headingTag = "h2";
-	/**
-	 * The URL of the document
-	 * @type {string|null}
-	 */
-	export let href = null;
-	/**
-	 * A description of the document
-	 * @type {string|null}
-	 */
-	export let description = null;
-	/**
-	 * Optional: URL of image to represent the document (use "true" for a placeholder)
-	 * @type {string|boolean}
-	 */
-	export let image = false;
-	/**
-	 * Highlight document as a featured item (inset on grey background)
-	 * @type {boolean}
-	 */
-	export let featured = false;
-	/**
-	 * Metadata about the type of document linked to (can include HTML)
-	 * @type {string|null}
-	 */
-	export let meta = null;
+	/** @type {{ children?: import("svelte").Snippet; title?: string | null; headingTag?: "h2" | "h3"; href?: string | null; description?: string | null; image?: string | boolean; featured?: boolean; meta?: string | null }} */
+	let {
+		children,
+		title = null,
+		headingTag = "h2",
+		href = null,
+		description = null,
+		image = false,
+		featured = false,
+		meta = null
+	} = $props();
 </script>
 
 <li class="ons-document-list__item" class:ons-document-list__item--featured={featured}>
@@ -79,7 +55,7 @@
 		</div>
 		{#if description}
 			<div class="ons-document-list__item-description">
-				<slot />
+				{@render children?.()}
 				{@html description}
 			</div>
 		{/if}

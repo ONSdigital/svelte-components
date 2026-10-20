@@ -3,20 +3,32 @@
 	import Button from "$lib/components/Button/Button.svelte";
 	import BackLink from "$lib/components/BackLink/BackLink.svelte";
 	import Checkboxes from "$lib/components/Checkboxes/Checkboxes.svelte";
+	import Accordion from "$lib/components/Accordion/Accordion.svelte";
+	import AccordionItem from "$lib/components/Accordion/AccordionItem.svelte";
 	import ChangeStat from "$lib/components/ChangeStat/ChangeStat.svelte";
+	import Document from "$lib/components/DocumentList/Document.svelte";
+	import DocumentList from "$lib/components/DocumentList/DocumentList.svelte";
 	import Details from "$lib/components/Details/Details.svelte";
 	import Divider from "$lib/components/Divider/Divider.svelte";
 	import Dropdown from "$lib/components/Dropdown/Dropdown.svelte";
 	import Em from "$lib/components/Em/Em.svelte";
 	import ErrorPanel from "$lib/components/ErrorPanel/ErrorPanel.svelte";
+	import Grid from "$lib/components/Grid/Grid.svelte";
+	import GridCell from "$lib/components/Grid/GridCell.svelte";
 	import Icon from "$lib/components/Icon/Icon.svelte";
 	import Input from "$lib/components/Input/Input.svelte";
 	import Notice from "$lib/components/Notice/Notice.svelte";
+	import NavSection from "$lib/components/NavSections/NavSection.svelte";
+	import NavSections from "$lib/components/NavSections/NavSections.svelte";
 	import Section from "$lib/components/Section/Section.svelte";
 	import Paginator from "$lib/components/Paginator/Paginator.svelte";
 	import Radios from "$lib/components/Radios/Radios.svelte";
 	import Select from "$lib/components/Select/Select.svelte";
 	import Summary from "$lib/components/Summary/Summary.svelte";
+	import Tab from "$lib/components/Tabs/Tab.svelte";
+	import Tabs from "$lib/components/Tabs/Tabs.svelte";
+	import Timeline from "$lib/components/Timeline/Timeline.svelte";
+	import TimelineItem from "$lib/components/Timeline/TimelineItem.svelte";
 	import Textarea from "$lib/components/Textarea/Textarea.svelte";
 	import UpdateStatus from "$lib/components/UpdateStatus/UpdateStatus.svelte";
 	import { base } from "$app/paths";
@@ -36,6 +48,10 @@
 	/** @type {{ id: string; label: string } | null} */
 	let selectedRadio = null;
 	let detailsOpen = false;
+	/** @type {string | null} */
+	let selectedTab = null;
+	let tabChangeCount = 0;
+	let accordionChangeCount = 0;
 	let summaryItems = [{ key: "Name", value: "Ada Lovelace", href: "#summary-heading" }];
 	const dropdownOptions = ["To do", "In progress", "Done"];
 	const selectOptions = [
@@ -50,6 +66,14 @@
 	const radioItems = [
 		{ id: "email", label: "Email" },
 		{ id: "post", label: "Post" }
+	];
+	const documentItems = [
+		{ title: "Migration guide", href: "?doc=guide", description: "Component migration reference." },
+		{ title: "Release notes", href: "?doc=releases", description: "Library release history." }
+	];
+	const timelineItems = [
+		{ title: "Block 5A", content: "Presentational components migrated." },
+		{ title: "Block 5B", content: "Form controls and events migrated." }
 	];
 	/** @type {"up" | "down" | "neutral"} */
 	let changeDirection = "up";
@@ -180,6 +204,31 @@
 	/** @param {CustomEvent<{ open: boolean; e: Event }>} event */
 	function handleDetailsEvent(event) {
 		addActivity("Details toggle event", event.detail.open ? "open" : "closed");
+	}
+
+	/** @param {{ id: string }} detail */
+	function handleTabCallback(detail) {
+		tabChangeCount += 1;
+		addActivity("Tabs callback", detail.id);
+	}
+
+	/** @param {CustomEvent<{ id: string }>} event */
+	function handleTabEvent(event) {
+		addActivity("Tabs change event", event.detail.id);
+	}
+
+	/** @param {{ id: string; open: boolean; el: HTMLElement }} detail */
+	function handleAccordionCallback(detail) {
+		accordionChangeCount += 1;
+		addActivity("Accordion callback", `${detail.id}: ${detail.open ? "open" : "closed"}`);
+	}
+
+	/** @param {CustomEvent<{ id: string; open: boolean; el: HTMLElement }>} event */
+	function handleAccordionEvent(event) {
+		addActivity(
+			"Accordion toggle event",
+			`${event.detail.id}: ${event.detail.open ? "open" : "closed"}`
+		);
 	}
 
 	/** @param {{ item: object }} detail */
@@ -363,6 +412,87 @@
 		<section aria-labelledby="paginator-heading">
 			<h2 id="paginator-heading">Paginator</h2>
 			<Paginator pageCount={5} pageCurrent={3} prevHref="?page=2" nextHref="?page=4" />
+		</section>
+	</div>
+
+	<div class="workbench__layout">
+		<section aria-labelledby="accordion-heading">
+			<h2 id="accordion-heading">Accordion</h2>
+			<Accordion
+				id="workbench-accordion"
+				showToggle
+				onToggle={handleAccordionCallback}
+				on:toggle={handleAccordionEvent}
+			>
+				<AccordionItem title="First panel">
+					<p>First accordion panel content.</p>
+				</AccordionItem>
+				<AccordionItem title="Second panel">
+					<p>Second accordion panel content.</p>
+				</AccordionItem>
+			</Accordion>
+			<p class="workbench__result">Toggle events: {accordionChangeCount}</p>
+		</section>
+
+		<section aria-labelledby="tabs-heading">
+			<h2 id="tabs-heading">Tabs</h2>
+			<Tabs bind:selected={selectedTab} onChange={handleTabCallback} on:change={handleTabEvent}>
+				<Tab title="Overview">
+					<p>Overview tab content.</p>
+				</Tab>
+				<Tab title="Details">
+					<p>Details tab content.</p>
+				</Tab>
+			</Tabs>
+			<p class="workbench__result">
+				Selected tab: {selectedTab || "(none)"}; changes: {tabChangeCount}
+			</p>
+		</section>
+	</div>
+
+	<div class="workbench__layout">
+		<section aria-labelledby="grid-heading">
+			<h2 id="grid-heading">Grid</h2>
+			<Grid colWidth="medium" gridGap="narrow" rowHeight={96}>
+				<GridCell><div class="workbench__grid-cell">Cell one</div></GridCell>
+				<GridCell colspan={2}
+					><div class="workbench__grid-cell">Cell two, spans two columns</div></GridCell
+				>
+			</Grid>
+		</section>
+
+		<section aria-labelledby="document-list-heading">
+			<h2 id="document-list-heading">DocumentList</h2>
+			<DocumentList items={documentItems} compact>
+				<Document
+					title="Nested document"
+					href="?doc=nested"
+					description="Nested child composition."
+				/>
+			</DocumentList>
+		</section>
+	</div>
+
+	<div class="workbench__layout">
+		<section aria-labelledby="nav-sections-heading">
+			<h2 id="nav-sections-heading">NavSections</h2>
+			<NavSections contentsLabel="On this page">
+				<NavSection id="workbench-context" title="Context registration">
+					<p>Parent and child sections share observer and table-of-contents state.</p>
+				</NavSection>
+				<NavSection id="workbench-snippets" title="Nested snippet" subsection>
+					<p>Subsection content preview.</p>
+				</NavSection>
+			</NavSections>
+		</section>
+
+		<section aria-labelledby="timeline-heading">
+			<h2 id="timeline-heading">Timeline</h2>
+			<Timeline items={timelineItems}>
+				<TimelineItem title="Current test">
+					<p>Nested timeline item content.</p>
+				</TimelineItem>
+			</Timeline>
 		</section>
 	</div>
 

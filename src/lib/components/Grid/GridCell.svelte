@@ -1,22 +1,12 @@
 <script>
 	import { getContext } from "svelte";
+	/** @typedef {"narrow" | "medium" | "wide" | "wider" | "full"} GridWidth */
+	/** @typedef {"narrow" | "medium" | "wide"} GridColumnWidth */
 
-	/**
-	 * (If used in grid) How many columns the card should span across
-	 * @type {number}
-	 */
-	export let colspan = 1;
-	/**
-	 * Optional: Add additional classes
-	 * @type {string|null}
-	 */
-	export let cls = null;
-	/**
-	 * Optional: Override default grid column class
-	 * @type {string|null}
-	 */
-	export let colCls = null;
+	/** @type {{ children?: import("svelte").Snippet; colspan?: number; cls?: string | null; colCls?: string | null }} */
+	let { children, colspan = 1, cls = null, colCls = null } = $props();
 
+	/** @type {Record<GridWidth, Record<GridColumnWidth, string[]>>} */
 	const classes = {
 		narrow: {
 			narrow: ["6@xs", "4@l"],
@@ -45,23 +35,33 @@
 		}
 	};
 
-	function calcSpans(cls, colspan) {
-		if (colspan === 1 || !Number.isInteger(colspan)) return cls;
-		return cls
-			.map((c) => [+c.slice(0, 1) * colspan, c.slice(1)])
-			.filter((c) => c[0] < 12)
-			.map((c) => `${c[0]}${c[1]}`);
+	/** @param {string[]} spans @param {number} colspan @returns {string[]} */
+	function calcSpans(spans, colspan) {
+		if (colspan === 1 || !Number.isInteger(colspan)) return spans;
+		return spans
+			.map((span) => ({ width: Number(span.slice(0, 1)) * colspan, suffix: span.slice(1) }))
+			.filter((span) => span.width < 12)
+			.map((span) => `${span.width}${span.suffix}`);
 	}
 
-	const width = getContext("width") || "wide";
-	const colWidth = getContext("colWidth") || null;
-	const rowHeight = getContext("rowHeight") || null;
+	/** @type {() => GridWidth} */
+	const getWidth = getContext("width") || (() => "wide");
+	/** @type {() => GridColumnWidth | "full" | null} */
+	const getColWidth = getContext("colWidth") || (() => null);
+	/** @type {() => number | string | null} */
+	const getRowHeight = getContext("rowHeight") || (() => null);
 
-	const colClass = colWidth
-		? calcSpans(classes?.[width]?.[colWidth] || [], colspan)
-				.map((c) => `ons-col-${c}`)
-				.join(" ")
-		: "";
+	let colWidth = $derived(getColWidth());
+	let rowHeight = $derived(getRowHeight());
+	let colClass = $derived.by(() => {
+		const width = getWidth() || "wide";
+		const selectedColWidth = getColWidth();
+		return selectedColWidth && selectedColWidth !== "full"
+			? calcSpans(classes?.[width]?.[selectedColWidth] || [], colspan)
+					.map((c) => `ons-col-${c}`)
+					.join(" ")
+			: "";
+	});
 </script>
 
 {#if colWidth}
@@ -69,15 +69,15 @@
 		class="ons-grid__col {colCls || colClass} {cls}"
 		style:height={typeof rowHeight === "number" ? `${rowHeight}px` : rowHeight}
 	>
-		<slot />
+		{@render children?.()}
 	</div>
 {:else if colCls}
 	<div
 		class="ons-grid__col {colCls} {cls}"
 		style:height={typeof rowHeight === "number" ? `${rowHeight}px` : rowHeight}
 	>
-		<slot />
+		{@render children?.()}
 	</div>
 {:else}
-	<slot />
+	{@render children?.()}
 {/if}

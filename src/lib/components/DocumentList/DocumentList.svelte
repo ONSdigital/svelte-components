@@ -1,25 +1,14 @@
 <script>
 	import Document from "./Document.svelte";
 
-	/** Optional: Define the documents as an array of {id, title, checked, description?}
-	 * @type {object[]|null}
-	 */
-	export let items = null;
-	/** Compact mode. Removes horizonatal lines between documents
-	 * @type {boolean}
-	 */
-	export let compact = false;
-	/**
-	 * Optional: Set an additional CSS class for the component
-	 * @type {string|null}
-	 */
-	export let cls = null;
+	/** @type {{ children?: import("svelte").Snippet; items?: { title?: string | null; href?: string | null; description?: string | null; image?: string | boolean; featured?: boolean; meta?: string | null; headingTag?: "h2" | "h3" }[] | null; compact?: boolean; cls?: string | null }} */
+	let { children, items = null, compact = false, cls = null } = $props();
 </script>
 
 <ul class="ons-document-list {cls}" class:ons-document-list--compact={compact}>
-	<slot />
+	{@render children?.()}
 	{#if Array.isArray(items)}
-		{#each items as item}
+		{#each items as item (item.title)}
 			<Document {...item} />
 		{/each}
 	{/if}

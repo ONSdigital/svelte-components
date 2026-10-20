@@ -1,15 +1,13 @@
 <script>
 	import TimelineItem from "./TimelineItem.svelte";
-	/**
-	 * Timeline items in the format {title, content}, where content can be an HTML string
-	 * @type {object[]}
-	 */
-	export let items = [];
+
+	/** @type {{ children?: import("svelte").Snippet; items?: { title: string; content: string }[] }} */
+	let { children, items = [] } = $props();
 </script>
 
 <div class="ons-timeline">
-	<slot />
-	{#each items as item}
+	{@render children?.()}
+	{#each items as item (item.title)}
 		<TimelineItem title={item.title}>
 			{@html item.content}
 		</TimelineItem>

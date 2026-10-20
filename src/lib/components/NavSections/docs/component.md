@@ -2,6 +2,8 @@ Use this component to allow users to quickly jump to named sections within a lon
 
 As the user scrolls down the page, a table of contents will remain visible on the left of the viewport and will highlight the subheading of the section currently in view.
 
+In Svelte 5, default content is passed as the `children` snippet. Former named slots use snippet props: `before`, `after`, `beforeNav`, `afterNav`, and `footer`.
+
 <!-- prettier-ignore -->
 ```html
 <script>

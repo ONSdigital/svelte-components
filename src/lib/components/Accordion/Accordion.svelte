@@ -1,55 +1,51 @@
 <script>
-	import { onMount, setContext, createEventDispatcher } from "svelte";
+	import { onMount, setContext, createEventDispatcher, tick } from "svelte";
 	import Accordion from "./accordion.js";
 	import Details from "./details.js";
-	import { slugify, sleep } from "$lib/js/utils.js";
+	import { slugify } from "$lib/js/utils.js";
 
+	/** @type {import("svelte").EventDispatcher<{ toggle: { id: string; open: boolean; el: HTMLElement } }>} */
 	const dispatch = createEventDispatcher();
 
-	/**
-	 * Optional: Set the unique ID of the accordion
-	 * @type {string}
-	 */
-	export let id = slugify();
-	/**
-	 * Optional: Set an additional CSS class for the component
-	 * @type {string|null}
-	 */
-	export let cls = null;
-	/**
-	 * Option to include a "show all" toggle above the accordion
-	 * @type {boolean}
-	 */
-	export let showToggle = false;
+	/** @type {{ children?: import("svelte").Snippet; id?: string; cls?: string | null; showToggle?: boolean; onToggle?: (detail: { id: string; open: boolean; el: HTMLElement }) => void }} */
+	let { children, id = slugify(), cls = null, showToggle = false, onToggle = () => {} } = $props();
 
-	let el, buttonEl;
-
-	setContext("dataGroup", id);
+	setContext("dataGroup", () => id);
 
 	onMount(async () => {
-		await sleep(0);
-		const detailsComponents = [...el.querySelectorAll(".ons-js-details")];
+		await tick();
+		const accordionElement = document.getElementById(id);
+		const buttonElement = accordionElement?.querySelector("button.ons-accordion__toggle-all");
+		if (!accordionElement || !buttonElement) return;
+		const detailsComponents = [...accordionElement.querySelectorAll(".ons-js-details")];
 		const detailsEls = detailsComponents.map(
-			(el) => new Details(el, (data) => dispatch("toggle", { ...data, el }))
+			(detailsElement) =>
+				new Details(
+					/** @type {HTMLElement} */ (detailsElement),
+					(/** @type {{ id: string; open: boolean }} */ data) => {
+						const detail = { ...data, el: /** @type {HTMLElement} */ (detailsElement) };
+						onToggle(detail);
+						dispatch("toggle", detail);
+					}
+				)
 		);
-		new Accordion(buttonEl, detailsEls);
+		new Accordion(/** @type {HTMLButtonElement} */ (buttonElement), detailsEls);
 	});
 </script>
 
-<div {id} class="ons-accordion {cls}" bind:this={el}>
+<div {id} class="ons-accordion {cls}">
 	<button
 		type="button"
 		class="ons-btn ons-accordion__toggle-all ons-u-mb-s ons-u-d-no ons-btn--secondary ons-btn--small"
 		class:hide-toggle={!showToggle}
 		data-close-all="Hide all"
 		data-group={id}
-		bind:this={buttonEl}
 	>
 		<span class="ons-btn__inner ons-accordion__toggle-all-inner"
 			><span class="ons-btn__text">Show all</span></span
 		>
 	</button>
-	<slot />
+	{@render children?.()}
 </div>
 
 <style>

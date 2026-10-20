@@ -2,71 +2,27 @@
 	import { setContext } from "svelte";
 	import Container from "$lib/components/Container/Container.svelte";
 
-	/**
-	 * Optional: Sets the unique ID of the section
-	 * @type {string|null}
-	 */
-	export let id = null;
-	/**
-	 * Optional: Set an additional CSS class for the component
-	 * @type {string|null}
-	 */
-	export let cls = null;
-	/**
-	 * Sets the width of the section
-	 * @type {"narrow"|"medium"|"wide"|"wider"|"full"}
-	 */
-	export let width = "wide";
-	/**
-	 * Sets the title of the section
-	 * @type {string|null}
-	 */
-	export let title = null;
-	/**
-	 * Allows the h2 title tag for the section to be visually hidden
-	 * @type {boolean}
-	 */
-	export let hideTitle = false;
-	/**
-	 * Optional: Caption for the grid (if used as a media container, eg. for an image)
-	 * @type {string|null}
-	 */
-	export let caption = null;
-	/**
-	 * Adds margin above section
-	 * @type {boolean}
-	 */
-	export let marginTop = false;
-	/**
-	 * Adds margin below section
-	 * @type {boolean}
-	 */
-	export let marginBottom = true;
-	/**
-	 * Sets the width of the columns
-	 * @type {"narrow"|"medium"|"wide"|"full"}
-	 */
-	export let colWidth = "medium";
-	/**
-	 * Set the minimum height of a grid row (can be a number in pixels, or a valid CSS height)
-	 * @type {number|string|null}
-	 */
-	export let rowHeight = null;
-	/**
-	 * Stretch the height of grid cells to match their  siblings
-	 * @type {boolean}
-	 */
-	export let rowStretch = true;
-	/**
-	 * Set the grid gap, in pixels
-	 * @type {"narrow"|"medium"|"wide"|"none"}
-	 */
-	export let gridGap = "medium";
+	/** @type {{ children?: import("svelte").Snippet; id?: string | null; cls?: string | null; width?: "narrow" | "medium" | "wide" | "wider" | "full"; title?: string | null; hideTitle?: boolean; caption?: string | null; marginTop?: boolean; marginBottom?: boolean; colWidth?: "narrow" | "medium" | "wide" | "full"; rowHeight?: number | string | null; rowStretch?: boolean; gridGap?: "narrow" | "medium" | "wide" | "none" }} */
+	let {
+		children,
+		id = null,
+		cls = null,
+		width = "wide",
+		title = null,
+		hideTitle = false,
+		caption = null,
+		marginTop = false,
+		marginBottom = true,
+		colWidth = "medium",
+		rowHeight = null,
+		rowStretch = true,
+		gridGap = "medium"
+	} = $props();
 
-	setContext("width", width);
-	setContext("colWidth", colWidth);
-	setContext("rowHeight", rowHeight);
-	setContext("gridGap", gridGap);
+	setContext("width", () => width);
+	setContext("colWidth", () => colWidth);
+	setContext("rowHeight", () => rowHeight);
+	setContext("gridGap", () => gridGap);
 </script>
 
 <Container {id} {cls} {width} {marginTop} {marginBottom}>
@@ -82,7 +38,7 @@
 				class:ons-grid--loose={gridGap === "wide"}
 				class:ons-grid--stretch={rowStretch}
 			>
-				<slot />
+				{@render children?.()}
 			</div>
 			<figcaption class="ons-image__caption">{caption}</figcaption>
 		</figure>
@@ -94,7 +50,7 @@
 			class:ons-grid--loose={gridGap === "wide"}
 			class:ons-grid--stretch={rowStretch}
 		>
-			<slot />
+			{@render children?.()}
 		</div>
 	{/if}
 </Container>

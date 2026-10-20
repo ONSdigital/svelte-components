@@ -2,37 +2,27 @@
 	import { getContext } from "svelte";
 	import { slugify, sleep } from "$lib/js/utils.js";
 
-	/**
-	 * Sets the title of the accordion item
-	 * @type {string|null}
-	 */
-	export let title = null;
-	/**
-	 * Sets the unique ID of the accordion item
-	 * @type {string}
-	 */
-	export let id = slugify(title);
-	/**
-	 * Set the heading level for the accordion items
-	 * @type {"h2"|"h3"}
-	 */
-	export let headingTag = "h2";
-	/**
-	 * Set the initial status of the accordion item to open (non-reactive)
-	 * @type {boolean}
-	 */
-	export let open = false;
+	/** @type {{ children?: import("svelte").Snippet; title?: string | null; id?: string; headingTag?: "h2" | "h3"; open?: boolean }} */
+	let {
+		children,
+		title = null,
+		id = slugify(title),
+		headingTag = "h2",
+		open = $bindable(false)
+	} = $props();
 
-	const dataGroup = getContext("dataGroup");
+	const getDataGroup = getContext("dataGroup");
+	let dataGroup = $derived(typeof getDataGroup === "function" ? getDataGroup() : getDataGroup);
 
 	// Sync open state to allow binding
 	// Note: This is a one-way binding. Changing the state from outside does not open/close
-	let lastState = open ? "Open panel" : "Close panel";
+	let lastState = $state(open ? "Open panel" : "Close panel");
+	/** @param {Event & { currentTarget: HTMLElement }} e */
 	async function syncOpenState(e) {
 		await sleep(0);
-		const state = e?.target?.dataset?.gaAction;
-		if (state !== lastState) {
-			open = state === "Open panel" ? true : false;
+		const state = e.currentTarget?.dataset?.gaAction;
+		if (state && state !== lastState) {
+			open = state === "Open panel";
 			lastState = state;
 		}
 	}
@@ -47,8 +37,9 @@
 	<div
 		class="ons-details__heading ons-js-details-heading"
 		role="button"
-		on:click={syncOpenState}
-		on:keyup={syncOpenState}
+		tabindex="0"
+		onclick={syncOpenState}
+		onkeyup={syncOpenState}
 	>
 		{#if headingTag === "h3"}
 			<h3 class="ons-details__title ons-u-fs-r--b">
@@ -64,8 +55,7 @@
 				xmlns="http://www.w3.org/2000/svg"
 				focusable="false"
 				fill="currentColor"
-				role="img"
-				title="ons-icon-chevron"
+				aria-hidden="true"
 			>
 				<path
 					d="M5.74,14.28l-.57-.56a.5.5,0,0,1,0-.71h0l5-5-5-5a.5.5,0,0,1,0-.71h0l.57-.56a.5.5,0,0,1,.71,0h0l5.93,5.93a.5.5,0,0,1,0,.7L6.45,14.28a.5.5,0,0,1-.71,0Z"
@@ -75,6 +65,6 @@
 		>
 	</div>
 	<div id="{id}-content" class="ons-details__content ons-js-details-content">
-		<slot />
+		{@render children?.()}
 	</div>
 </div>

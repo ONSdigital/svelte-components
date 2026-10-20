@@ -1,5 +1,7 @@
 An accordion component.
 
+In Svelte 5, `onToggle` receives `{ id, open, el }` for a toggled panel. The dispatched `toggle` event remains available with the same object on `event.detail`.
+
 Based on [this ONS Design System component](https://service-manual.ons.gov.uk/design-system/components/accordion).
 
 <!-- prettier-ignore -->

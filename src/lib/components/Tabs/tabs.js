@@ -12,18 +12,29 @@ const classTabListItems = "ons-tab__list-item";
 const classTabsPanel = "ons-tabs__panel";
 const matchMediaUtil = matchMedia;
 
+/** @typedef {HTMLElement & { boundOnHashChange?: (event: HashChangeEvent) => void }} TabsRoot */
+
 export default class Tabs {
+	/** @param {TabsRoot} component */
 	constructor(component) {
 		this.boundTabClick = this.onTabClick.bind(this);
 		this.boundTabKeydown = this.onTabKeydown.bind(this);
 
 		this.component = component;
-		this.tabsTitle = component.querySelector(`.${classTabTitle}`);
-		this.tabs = [...component.getElementsByClassName(classTab)];
-		this.tabList = component.getElementsByClassName(classTabList);
-		this.tabListContainer = this.tabList[0].parentElement;
-		this.tabListItems = [...component.getElementsByClassName(classTabListItems)];
-		this.tabPanels = [...component.getElementsByClassName(classTabsPanel)];
+		this.tabsTitle = /** @type {HTMLElement} */ (component.querySelector(`.${classTabTitle}`));
+		this.tabs = /** @type {HTMLAnchorElement[]} */ ([
+			...component.getElementsByClassName(classTab)
+		]);
+		this.tabList = /** @type {HTMLUListElement[]} */ ([
+			...component.getElementsByClassName(classTabList)
+		]);
+		this.tabListContainer = /** @type {HTMLElement} */ (this.tabList[0].parentElement);
+		this.tabListItems = /** @type {HTMLLIElement[]} */ ([
+			...component.getElementsByClassName(classTabListItems)
+		]);
+		this.tabPanels = /** @type {HTMLElement[]} */ ([
+			...component.getElementsByClassName(classTabsPanel)
+		]);
 
 		this.jsHiddenClass = "ons-tabs__panel--hidden";
 		this.jsTabListAsRowClass = "ons-tabs__list--row";
@@ -55,11 +66,13 @@ export default class Tabs {
 			}
 		};
 		this.viewport = matchMediaUtil(`(min-width: ${breakpoint()}px)`);
+		if (!this.viewport) return;
 		this.viewport.addListener(this.checkViewport.bind(this));
 		this.checkViewport();
 	}
 
 	checkViewport() {
+		if (!this.viewport) return;
 		if (this.viewport.matches) {
 			this.makeTabs();
 		} else {
@@ -75,8 +88,9 @@ export default class Tabs {
 		this.tabListContainer.classList.add("ons-tabs__container");
 		this.tabPanels.forEach((panel) => {
 			panel.setAttribute("tabindex", "0");
-			if (panel.querySelector('[id*="content-title"]')) {
-				panel.firstElementChild.classList.add("ons-u-vh");
+			const firstChild = panel.firstElementChild;
+			if (panel.querySelector('[id*="content-title"]') && firstChild instanceof HTMLElement) {
+				firstChild.classList.add("ons-u-vh");
 			}
 		});
 
@@ -102,8 +116,9 @@ export default class Tabs {
 
 		this.ensureTabIndexExists();
 
-		this.component.boundOnHashChange = this.onHashChange.bind(this);
-		window.addEventListener("hashchange", this.component.boundOnHashChange, true);
+		const boundOnHashChange = this.onHashChange.bind(this);
+		this.component.boundOnHashChange = boundOnHashChange;
+		window.addEventListener("hashchange", boundOnHashChange, true);
 	}
 
 	makeList() {
@@ -113,14 +128,15 @@ export default class Tabs {
 		this.tabsTitle.classList.remove("ons-u-vh");
 
 		this.tabPanels.forEach((panel) => {
-			panel.removeAttribute("tabindex", "0");
-			if (panel.firstElementChild.classList.contains("ons-u-vh")) {
-				panel.firstElementChild.classList.remove("ons-u-vh");
+			panel.removeAttribute("tabindex");
+			const firstChild = panel.firstElementChild;
+			if (firstChild instanceof HTMLElement && firstChild.classList.contains("ons-u-vh")) {
+				firstChild.classList.remove("ons-u-vh");
 			}
 		});
 
 		this.tabListItems.forEach((item) => {
-			item.removeAttribute("role", "presentation");
+			item.removeAttribute("role");
 			item.classList.remove(this.jsTabItemAsRowClass);
 		});
 
@@ -131,7 +147,9 @@ export default class Tabs {
 			this.unsetAttributes(tab);
 		});
 
-		window.removeEventListener("hashchange", this.component.boundOnHashChange, true);
+		if (this.component.boundOnHashChange) {
+			window.removeEventListener("hashchange", this.component.boundOnHashChange, true);
+		}
 	}
 
 	// Handle haschange so that the browser can cycle through the tab history
@@ -148,28 +166,34 @@ export default class Tabs {
 		}
 
 		const currentTab = this.getCurrentTab();
-		if (!!currentTab) {
+		if (currentTab) {
 			this.hideTab(currentTab);
 		}
 		this.showTab(tabWithHash);
 		tabWithHash.focus();
 	}
 
+	/** @param {HTMLAnchorElement} tab */
 	hideTab(tab) {
 		this.unhighlightTab(tab);
 		this.hidePanel(tab);
 	}
 
+	/** @param {HTMLAnchorElement} tab */
 	showTab(tab) {
 		this.highlightTab(tab);
 		this.showPanel(tab);
 	}
 
+	/** @param {string} hash @returns {HTMLAnchorElement | null} */
 	getTab(hash) {
-		return this.component.querySelector('.ons-tab[href="' + hash + '"]');
+		return /** @type {HTMLAnchorElement | null} */ (
+			this.component.querySelector('.ons-tab[href="' + hash + '"]')
+		);
 	}
 
 	// Set aria tags
+	/** @param {HTMLAnchorElement} tab */
 	setAttributes(tab) {
 		const panelId = this.getHref(tab).slice(1);
 		tab.setAttribute("id", "tab_" + panelId);
@@ -184,6 +208,7 @@ export default class Tabs {
 	}
 
 	// Remove aria tags for table of contents view
+	/** @param {HTMLAnchorElement} tab */
 	unsetAttributes(tab) {
 		tab.removeAttribute("id");
 		tab.removeAttribute("role");
@@ -197,12 +222,13 @@ export default class Tabs {
 		panel.classList.remove(this.jsHiddenClass);
 	}
 
+	/** @param {MouseEvent | KeyboardEvent} e */
 	onTabClick(e) {
 		e.preventDefault();
-		const newTab = e.target;
+		const newTab = /** @type {HTMLAnchorElement} */ (e.target);
 		const currentTab = this.getCurrentTab();
 
-		if (!!currentTab) {
+		if (currentTab) {
 			this.hideTab(currentTab);
 		}
 
@@ -221,6 +247,7 @@ export default class Tabs {
 		}
 	}
 
+	/** @param {HTMLAnchorElement} tab */
 	createHash(tab) {
 		const panel = this.getPanel(tab);
 		const id = panel.id;
@@ -230,6 +257,7 @@ export default class Tabs {
 		panel.id = id;
 	}
 
+	/** @param {KeyboardEvent} event */
 	onTabKeydown(event) {
 		if (event.which === 37) {
 			this.focusPreviousTab();
@@ -244,42 +272,50 @@ export default class Tabs {
 
 	focusNextTab() {
 		const focusedTab = this.getFocusedTab();
-		const nextTabListItem = focusedTab.nextElementSibling;
-		if (nextTabListItem) {
-			nextTabListItem.firstElementChild.focus();
+		const nextTabListItem = focusedTab?.parentElement?.nextElementSibling;
+		const nextTab = nextTabListItem?.firstElementChild;
+		if (nextTab instanceof HTMLElement) {
+			nextTab.focus();
 		}
 	}
 
 	focusPreviousTab() {
 		const focusedTab = this.getFocusedTab();
-		const previousTabListItem = focusedTab.previousElementSibling;
-		if (previousTabListItem) {
-			previousTabListItem.firstElementChild.focus();
+		const previousTabListItem = focusedTab?.parentElement?.previousElementSibling;
+		const previousTab = previousTabListItem?.firstElementChild;
+		if (previousTab instanceof HTMLElement) {
+			previousTab.focus();
 		}
 	}
 
+	/** @param {HTMLAnchorElement} tab @returns {HTMLElement} */
 	getPanel(tab) {
 		const panelSelector = this.getHref(tab).replace(/\./g, "\\.");
 		const panel = this.component.querySelector(panelSelector);
-		return panel;
+		if (!panel) throw new Error(`Tab panel not found for ${panelSelector}`);
+		return /** @type {HTMLElement} */ (panel);
 	}
 
+	/** @param {HTMLAnchorElement} tab */
 	showPanel(tab) {
 		const panel = this.getPanel(tab);
 		panel.classList.remove(this.jsHiddenClass);
 	}
 
+	/** @param {HTMLAnchorElement} tab */
 	hidePanel(tab) {
 		const panel = this.getPanel(tab);
 		panel.classList.add(this.jsHiddenClass);
 	}
 
+	/** @param {HTMLAnchorElement} tab */
 	unhighlightTab(tab) {
 		tab.setAttribute("aria-selected", "false");
 		tab.classList.remove("ons-tab--selected");
 		tab.setAttribute("tabindex", "-1");
 	}
 
+	/** @param {HTMLAnchorElement} tab */
 	highlightTab(tab) {
 		tab.setAttribute("aria-selected", "true");
 		tab.classList.add("ons-tab--selected");
@@ -287,15 +323,19 @@ export default class Tabs {
 	}
 
 	getFocusedTab() {
-		return document.activeElement.parentNode;
+		const activeElement = document.activeElement;
+		return activeElement instanceof HTMLElement ? activeElement : null;
 	}
 
 	getCurrentTab() {
-		return this.component.querySelector(".ons-tab--selected");
+		return /** @type {HTMLAnchorElement | null} */ (
+			this.component.querySelector(".ons-tab--selected")
+		);
 	}
 
+	/** @param {HTMLAnchorElement} tab @returns {string} */
 	getHref(tab) {
-		const href = tab.getAttribute("href");
+		const href = tab.getAttribute("href") || "";
 		const hash = href.slice(href.indexOf("#"), href.length);
 		return hash;
 	}

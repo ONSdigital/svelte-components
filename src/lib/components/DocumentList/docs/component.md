@@ -1,5 +1,7 @@
 A component for defining a list of pages or links. Items can either be defined in an array of objects or as individual `<Document>` components.
 
+In Svelte 5, nested `<Document>` elements are rendered through the `children` snippet; the `items` array form is unchanged.
+
 Based on [this ONS Design System component](https://service-manual.ons.gov.uk/design-system/components/document-list).
 
 <!-- prettier-ignore -->

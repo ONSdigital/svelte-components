@@ -1,5 +1,7 @@
 A component to display a linear record of past and future events.
 
+In Svelte 5, nested `<TimelineItem>` elements are rendered through the `children` snippet; the `items` array form is unchanged.
+
 Based on [this ONS Design System component](https://service-manual.ons.gov.uk/design-system/components/timeline).
 
 <!-- prettier-ignore -->
