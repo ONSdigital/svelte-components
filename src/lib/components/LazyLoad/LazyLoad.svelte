@@ -1,20 +1,8 @@
 <script>
-	/**
-	 * Bind to this variable to monitor whether the component has entered the viewport (boolean true/false).
-	 * @type {boolean}
-	 */
-	export let entered = false;
-	/**
-	 * Set the initial "placeholder" height of the component in pixels.
-	 * @type {number}
-	 */
-	export let initialHeight = 400;
-	/**
-	 * Set how many pixels from the viewport you want lazy loading to kick in.
-	 * @type {number}
-	 */
-	export let rootMargin = 200;
+	/** @type {{ children?: import("svelte").Snippet; entered?: boolean; initialHeight?: number; rootMargin?: number }} */
+	let { children, entered = $bindable(false), initialHeight = 400, rootMargin = 200 } = $props();
 
+	/** @type {IntersectionObserverCallback} */
 	const callback = (entries, observer) => {
 		entries.forEach((entry) => {
 			let intersecting = entry.isIntersecting;
@@ -25,20 +13,25 @@
 		});
 	};
 
+	/** @param {HTMLDivElement} el */
 	function initObserver(el) {
+		if (typeof IntersectionObserver === "undefined") {
+			entered = true;
+			return;
+		}
 		let options = { root: document, rootMargin: `${rootMargin}px` };
 
 		const observer = new IntersectionObserver(callback, options);
 		observer.observe(el);
 
 		return {
-			destroy: () => observer?.unobserve?.(el)
+			destroy: () => observer.disconnect()
 		};
 	}
 </script>
 
 {#if entered}
-	<slot />
+	{@render children?.()}
 {:else}
 	<div use:initObserver style:height="{+initialHeight || 100}px"></div>
 {/if}

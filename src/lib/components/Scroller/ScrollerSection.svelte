@@ -3,28 +3,20 @@
 	import Container from "$lib/components/Container/Container.svelte";
 
 	/**
-	 * Sets the unique ID of the section (identifiable in associated scroll events)
-	 * @type {string|null}
+	 * @typedef {Object} Props
+	 * @property {string|null} [id] - Sets the unique ID of the section (identifiable in associated scroll events)
+	 * @property {string|null} [title] - Optional: Sets the title of the section
+	 * @property {boolean} [hideTitle] - Allows the h2 title tag for the section to be visually hidden
+	 * @property {string|null} [cls] - Optional: Set an additional CSS class for the component
+	 * @property {import('svelte').Snippet} [children]
 	 */
-	export let id = null;
-	/**
-	 * Optional: Sets the title of the section
-	 * @type {string|null}
-	 */
-	export let title = null;
-	/**
-	 * Allows the h2 title tag for the section to be visually hidden
-	 * @type {boolean}
-	 */
-	export let hideTitle = false;
-	/**
-	 * Optional: Set an additional CSS class for the component
-	 * @type {string|null}
-	 */
-	export let cls = null;
 
-	let section;
+	/** @type {Props} */
+	let { id = null, title = null, hideTitle = false, cls = null, children } = $props();
 
+	let section = $state();
+
+	/** @type {import("svelte/store").Writable<HTMLElement[]>} */
 	const sections = getContext("sections");
 	const isSplit = getContext("isSplit");
 
@@ -47,7 +39,7 @@
 			{#if title}
 				<h2 class="section-title" class:ons-u-vh={hideTitle}>{title}</h2>
 			{/if}
-			<slot />
+			{@render children?.()}
 		</div>
 	</Container>
 </section>

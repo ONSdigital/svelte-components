@@ -1,10 +1,21 @@
 <script>
 	import Container from "../Container/Container.svelte";
 
-	export let width = "wide";
-	export let headerBorder = false;
-	export let baseurl = "https://www.ons.gov.uk";
-	export let i18n = (text) => text;
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [width]
+	 * @property {boolean} [headerBorder]
+	 * @property {string} [baseurl]
+	 * @property {any} [i18n]
+	 */
+
+	/** @type {Props} */
+	let {
+		width = "wide",
+		headerBorder = false,
+		baseurl = "https://www.ons.gov.uk",
+		i18n = (text) => text
+	} = $props();
 </script>
 
 <div class="ons-header__top" class:ons-header--border={headerBorder}>

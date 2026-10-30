@@ -3,9 +3,13 @@
 	import Icon from "./ToolbarIcon.svelte";
 	import HelpModal from "./HelpModal.svelte";
 	import { slugify } from "$lib/js/utils.js";
+	import type { Writable } from "svelte/store";
 
 	// Props for the ToolbarButton
 	let {
+		children,
+		customContent,
+		onClick,
 		id = slugify(),
 		icon = "",
 		label = "",
@@ -21,6 +25,9 @@
 		transient = false,
 		disableHelp = false
 	}: {
+		children?: import("svelte").Snippet;
+		customContent?: import("svelte").Snippet;
+		onClick?: (detail: null) => void;
 		id?: string;
 		icon?: string;
 		label?: string;
@@ -37,20 +44,27 @@
 		disableHelp?: boolean;
 	} = $props();
 
-	const dispatch = createEventDispatcher();
+	const dispatch = createEventDispatcher<{ click: null }>();
+	function emitClick() {
+		onClick?.(null);
+		dispatch("click", null);
+	}
 
-	let buttonElement: HTMLElement;
+	let buttonElement = $state<HTMLElement>();
 
 	// Get activeModalId store from context
-	const activeModalId = getContext("activeModalId");
+	const activeModalId = getContext<Writable<string | null>>("activeModalId");
 	const currentActiveId = $derived(activeModalId);
 	const isActive = $derived($currentActiveId === id);
-	const orientation = getContext("orientation");
+	const orientation = getContext<Writable<string>>("orientation");
 	const currentOrientation = $derived(orientation);
 	let showTooltip = $state(false);
 
 	// Retrieve button registry from context
-	const { register, unregister } = getContext("buttonIds");
+	const { register, unregister } = getContext<{
+		register: (id: string) => void;
+		unregister: (id: string) => void;
+	}>("buttonIds");
 
 	// Register button on mount
 	onMount(() => {
@@ -67,15 +81,15 @@
 		if (!disabled) {
 			if (transient) {
 				// If it's a transient button, just trigger the action and return
-				dispatch("click");
+				emitClick();
 				return;
 			} else if (toggle) {
 				selected = !selected;
-				dispatch("click");
+				emitClick();
 				return;
 			}
 
-			dispatch("click");
+			emitClick();
 			if ($activeModalId === id && sticky) {
 				// If it's already active and sticky, keep it selected
 				return;
@@ -88,7 +102,14 @@
 <div class="toolbar-button-wrapper">
 	{#if custom}
 		<div
+			role="button"
 			tabindex="0"
+			onkeydown={(event) => {
+				if (event.key === "Enter" || event.key === " ") {
+					event.preventDefault();
+					handleClick();
+				}
+			}}
 			onclick={handleClick}
 			onmouseover={() => (showTooltip = true)}
 			onmouseout={() => (showTooltip = false)}
@@ -96,7 +117,7 @@
 			onblur={() => (showTooltip = false)}
 			bind:this={buttonElement}
 		>
-			<slot name="custom" />
+			{@render customContent?.()}
 		</div>
 	{:else if toggle}
 		<input
@@ -158,7 +179,7 @@
 			</HelpModal>
 		{:else if !helpText && !disableHelp}
 			<HelpModal triggerElement={buttonElement} onClose={() => activeModalId.set(null)}>
-				<slot />
+				{@render children?.()}
 			</HelpModal>
 		{/if}
 	{/if}

@@ -6,28 +6,18 @@
 	const page = getContext("page");
 
 	/**
-	 * Display compact header without menus
-	 * @type {boolean}
+	 * @typedef {Object} Props
+	 * @property {boolean} [compact] - Display compact header without menus
+	 * @property {"narrow"|"medium"|"wide"|"wider"|"full"} [width] - Sets the width of the header (does not apply to legacy mode)
+	 * @property {"light"|"dark"|"paleblue"|"blue"|"navyblue"|"grey"|null} [theme] - Sets a predefined theme
+	 * @property {object} [themeOverrides] - Define additional props to override the base theme
 	 */
-	export let compact = false;
-	/**
-	 * Sets the width of the header (does not apply to legacy mode)
-	 * @type {"narrow"|"medium"|"wide"|"wider"|"full"}
-	 */
-	export let width = "wide";
-	/**
-	 * Sets a predefined theme
-	 * @type {"light"|"dark"|"paleblue"|"blue"|"navyblue"|"grey"|null}
-	 */
-	export let theme = null;
-	/**
-	 * Define additional props to override the base theme
-	 * @type {object}
-	 */
-	export let themeOverrides = {};
 
-	let lang = "en";
-	let baseurl = "https://www.ons.gov.uk";
+	/** @type {Props} */
+	let { compact = false, width = "wide", theme = null, themeOverrides = {} } = $props();
+
+	let lang = $state("en");
+	let baseurl = $state("https://www.ons.gov.uk");
 
 	const texts = {
 		"Footer links": "",
@@ -57,7 +47,7 @@
 		"except where otherwise stated": "ac eithrio lle y nodir fel arall"
 	};
 
-	$: i18n = (text) => (lang === "cy" && texts[text] ? texts[text] : text);
+	let i18n = $derived((text) => (lang === "cy" && texts[text] ? texts[text] : text));
 
 	function setPaths() {
 		const url = page?.url || document.location;

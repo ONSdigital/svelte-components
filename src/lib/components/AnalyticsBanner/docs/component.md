@@ -1,5 +1,7 @@
 This component will display a cookie banner and export a function that allows you to push events to the Google Analytics dataLayer array.
 
+The `page` prop accepts a SvelteKit page store or page-state object. Passing `analyticsId=""` retains the consent UI without loading an analytics script. `analyticsEvent` is safe to call during server rendering and does nothing there.
+
 <!-- prettier-ignore -->
 ```html
 <script>

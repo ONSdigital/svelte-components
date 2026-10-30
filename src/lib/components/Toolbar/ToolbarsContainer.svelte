@@ -1,9 +1,14 @@
 <script lang="ts">
 	import { setContext, onMount } from "svelte";
 	import { writable } from "svelte/store";
+	interface Props {
+		children?: import("svelte").Snippet;
+	}
+
+	let { children }: Props = $props();
 
 	// Initialize a store for button IDs
-	const buttonIds = writable([]);
+	const buttonIds = writable<string[]>([]);
 	setContext("buttonIds", {
 		register: (id: string) => {
 			buttonIds.update((ids) => [...ids, id]);
@@ -22,7 +27,7 @@
 		showHelpState = sessionValue === "false" ? false : localValue === "false" ? false : true;
 	});
 
-	const showHelpModals = writable(showHelpState);
+	const showHelpModals = writable(true);
 	// Set context for showHelpModals
 	setContext("showHelpModals", showHelpModals);
 
@@ -31,20 +36,24 @@
 		showHelpModals.set(showHelpState);
 	});
 
-	const activeModalStore = writable(null); // Tracks the ID of the active modal
+	const activeModalStore = writable<string | null>(null); // Tracks the ID of the active modal
 	setContext("activeModalId", activeModalStore);
 
 	onMount(() => {
-		window.addEventListener("beforeunload", () => {
+		const clearSession = () => {
 			sessionStorage.removeItem("showHelpModals");
-		});
+		};
+		window.addEventListener("beforeunload", clearSession);
 		let unsubscribe = buttonIds.subscribe((ids) => {
 			if (ids.length > 0) {
 				activeModalStore.set(ids[0]); // Set first button as active
 			}
 		});
 
-		return unsubscribe;
+		return () => {
+			unsubscribe();
+			window.removeEventListener("beforeunload", clearSession);
+		};
 	});
 
 	export function resetHelp() {
@@ -54,7 +63,7 @@
 </script>
 
 <div class="multi-toolbar-container">
-	<slot />
+	{@render children?.()}
 </div>
 
 <style>

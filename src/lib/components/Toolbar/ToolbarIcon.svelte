@@ -17,6 +17,7 @@
 		disabled = false
 	} = $props();
 
+	/** @type {Record<string, { selected?: string; d?: string }>} */
 	const paths = {
 		move: {
 			selected: "M29 16L16 29L3 16L16 3L29 16Z",

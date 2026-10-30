@@ -1,45 +1,42 @@
 <script>
 	import { createEventDispatcher } from "svelte";
 
+	/** @type {import("svelte").EventDispatcher<{ enter: IntersectionObserverEntry; exit: IntersectionObserverEntry }>} */
 	const dispatch = createEventDispatcher();
+	/** @type {{ children?: import("svelte").Snippet; visible?: boolean; rootMargin?: number; onEnter?: (entry: IntersectionObserverEntry) => void; onExit?: (entry: IntersectionObserverEntry) => void }} */
+	let { children, visible = $bindable(false), rootMargin = 0, onEnter, onExit } = $props();
 
-	/**
-	 * Bind to this variable to monitor visiblity (boolean true/false).
-	 * @type {boolean}
-	 */
-	export let visible = false;
-	/**
-	 * Number of pixels before/after the viewport that component is considered "visible" (default = 0).
-	 * @type {number}
-	 */
-	export let rootMargin = 0;
-
+	/** @param {IntersectionObserverEntry[]} entries */
 	const callback = (entries) => {
 		entries.forEach((entry) => {
 			let intersecting = entry.isIntersecting;
 			if (!visible && intersecting) {
+				onEnter?.(entry);
 				dispatch("enter", entry);
 				visible = true;
 			}
 			if (visible && !intersecting) {
+				onExit?.(entry);
 				dispatch("exit", entry);
 				visible = false;
 			}
 		});
 	};
 
+	/** @param {HTMLDivElement} el */
 	function initObserver(el) {
+		if (typeof IntersectionObserver === "undefined") return;
 		let options = { root: document, rootMargin: `${rootMargin}px` };
 
 		const observer = new IntersectionObserver(callback, options);
 		observer.observe(el);
 
 		return {
-			destroy: () => observer?.unobserve?.(el)
+			destroy: () => observer.disconnect()
 		};
 	}
 </script>
 
 <div use:initObserver>
-	<slot />
+	{@render children?.()}
 </div>

@@ -3,33 +3,25 @@
 	import Container from "$lib/components/Container/Container.svelte";
 
 	/**
-	 * Set the title/call to action
-	 * @type {string}
+	 * @typedef {Object} Props
+	 * @property {string} [title] - Set the title/call to action
+	 * @property {string[]} [platforms] - Which platforms to include (available options "facebook", "x", "linkedin" and "email")
+	 * @property {boolean} [marginTop] - Adds margin above section
+	 * @property {boolean} [marginBottom] - Adds margin below section
+	 * @property {string|null} [cls] - Optional: Set an additional CSS class for the component
 	 */
-	export let title = "Share this page";
-	/**
-	 * Which platforms to include (available options "facebook", "x", "linkedin" and "email")
-	 * @type {string[]}
-	 */
-	export let platforms = ["facebook", "linkedin", "x", "email"];
-	/**
-	 * Adds margin above section
-	 * @type {boolean}
-	 */
-	export let marginTop = false;
-	/**
-	 * Adds margin below section
-	 * @type {boolean}
-	 */
-	export let marginBottom = true;
-	/**
-	 * Optional: Set an additional CSS class for the component
-	 * @type {string|null}
-	 */
-	export let cls = null;
 
-	let href = "";
-	let pageTitle = "";
+	/** @type {Props} */
+	let {
+		title = "Share this page",
+		platforms = ["facebook", "linkedin", "x", "email"],
+		marginTop = false,
+		marginBottom = true,
+		cls = null
+	} = $props();
+
+	let href = $state("");
+	let pageTitle = $state("");
 
 	onMount(() => {
 		href = document.location.href;
@@ -51,7 +43,6 @@
 						focusable="false"
 						aria-hidden="true"
 						role="img"
-						title="ons-icon-facebook"
 					>
 						<path
 							d="M32,16.0986285 C32.0009185,7.5342974 25.337417,0.468462963 16.8372092,0.0203294753 C8.33700136,-0.427804013 0.97607758,5.89865855 0.0874346352,14.4161886 C-0.801208309,22.9337186 5.09355054,30.6602611 13.5009524,31.9979281 L13.5009524,20.7518951 L9.44,20.7518951 L9.44,16.0986285 L13.5009524,16.0986285 L13.5009524,12.549267 C13.5009524,8.5169471 15.8857143,6.28613892 19.5428571,6.28613892 C20.742535,6.30277426 21.9393895,6.40782423 23.1238095,6.60044523 L23.1238095,10.5637711 L21.1047619,10.5637711 C19.1161905,10.5637711 18.4990476,11.8056643 18.4990476,13.0782216 L18.4990476,16.0986285 L22.9409524,16.0986285 L22.2247619,20.7518951 L18.4990476,20.7518951 L18.4990476,31.9979281 C26.2735701,30.760956 31.9991507,24.0182672 32,16.0986285 L32,16.0986285 Z"
@@ -75,7 +66,6 @@
 						focusable="false"
 						aria-hidden="true"
 						role="img"
-						title="ons-icon-linkedin"
 					>
 						<path
 							d="M16,-3.41060513e-13 C20.2434638,-3.41060513e-13 24.3131264,1.68570945 27.3137085,4.6862915 C30.3142906,7.68687356 32,11.7565362 32,16 C32,24.836556 24.836556,32 16,32 C7.163444,32 0,24.836556 0,16 C0,7.163444 7.163444,-3.41060513e-13 16,-3.41060513e-13 Z M11.3505859,12.4641113 L7.45385744,12.4641113 L7.45385744,24.1875 L11.3505859,24.1875 L11.3505859,12.4641113 Z M20.9152832,12.1889649 C18.8479004,12.1889649 17.9213867,13.3251953 17.4035644,14.1240234 L17.4035644,14.1240234 L17.4035644,12.4641113 L13.5070801,12.4641113 C13.5212538,12.7696262 13.5275532,13.809993 13.5292593,15.1533871 L13.5293118,16.8832762 C13.5292156,16.9843911 13.5291048,17.0860852 13.5289803,17.1882303 L13.5280782,17.8054916 L13.5280782,17.8054916 L13.5268961,18.427439 C13.5216699,20.9164121 13.5108442,23.3704557 13.5078578,24.0208157 L13.5070801,24.1875 L17.4035644,24.1875 L17.4035644,17.640625 C17.4035644,17.2902832 17.4287109,16.9401856 17.5317382,16.6896972 C17.8134766,15.9897461 18.4545899,15.2646484 19.5310059,15.2646484 C20.940918,15.2646484 21.5051269,16.3395996 21.5051269,17.9157715 L21.5051269,17.9157715 L21.5051269,24.1875 L25.4013672,24.1875 L25.4013672,17.465332 C25.4013672,13.8645019 23.4790039,12.1889649 20.9152832,12.1889649 Z M9.42822263,6.8125 C8.09521488,6.8125 7.22363281,7.68774412 7.22363281,8.83813475 C7.22363281,9.96313475 8.06933594,10.8632812 9.37695313,10.8632812 L9.37695313,10.8632812 L9.40234375,10.8632812 C10.7612305,10.8632812 11.6069336,9.96313475 11.6069336,8.83813475 C11.581543,7.68774412 10.7612305,6.8125 9.42822263,6.8125 Z"
@@ -99,7 +89,6 @@
 						focusable="false"
 						aria-hidden="true"
 						role="img"
-						title="ons-icon-twitter"
 					>
 						<polygon points="24.89,23.01 57.79,66.99 65.24,66.99 32.34,23.01" />
 						<path
@@ -124,7 +113,6 @@
 						focusable="false"
 						aria-hidden="true"
 						role="img"
-						title="ons-icon-email"
 					>
 						<path
 							fill-rule="evenodd"

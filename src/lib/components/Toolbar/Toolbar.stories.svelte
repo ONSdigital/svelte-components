@@ -115,16 +115,18 @@
 					<ToolbarDivider />
 				{/if}
 			{/each}
-			<ToolControls slot="controls">
-				<ToolControl id="polygon">
-					<p>
-						Click or tap an area on the map to add a node to the shape. To apply a shape, close it
-						by clicking or tapping on the starting node.
-					</p>
-					<Button variant="secondary" disabled>Clear shape</Button>
-					<Button variant="primary">Apply shape</Button>
-				</ToolControl>
-			</ToolControls>
+			{#snippet controls()}
+				<ToolControls>
+					<ToolControl id="polygon">
+						<p>
+							Click or tap an area on the map to add a node to the shape. To apply a shape, close it
+							by clicking or tapping on the starting node.
+						</p>
+						<Button variant="secondary" disabled>Clear shape</Button>
+						<Button variant="primary">Apply shape</Button>
+					</ToolControl>
+				</ToolControls>
+			{/snippet}
 		</Toolbar>
 		<Toolbar orientation={args.orientation}>
 			<ToolbarButton id="download" icon="download" label="Download area" />
@@ -133,9 +135,11 @@
 			<ToolbarButton id="help" icon="help" label="Help" on:click={container.resetHelp} />
 			<ToolbarDivider />
 			<ToolbarButton id="getstarted" custom label="Get started">
-				<div slot="custom">
-					<Button disabled small>Build profile</Button>
-				</div>
+				{#snippet customContent()}
+					<div>
+						<Button disabled small>Build profile</Button>
+					</div>
+				{/snippet}
 			</ToolbarButton>
 		</Toolbar>
 	</ToolbarsContainer>

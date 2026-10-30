@@ -4,16 +4,24 @@
 
 	/**
 	 * @typedef {object} ToolbarProps
+	 * @property {import("svelte").Snippet} [children]
+	 * @property {import("svelte").Snippet} [controls]
 	 * @property {string | null} [classes=null] - Additional classes for the button
 	 * @property {string | null} [ariaLabel=null] - aria label for button
 	 * @property {'horizontal' | 'vertical'} [orientation='horizontal'] - Orientation of the toolbar
 	 */
 
 	/** @type {ToolbarProps} */
-	let { classes = null, ariaLabel = null, orientation = "horizontal" } = $props();
+	let {
+		children,
+		controls,
+		classes = null,
+		ariaLabel = null,
+		orientation = "horizontal"
+	} = $props();
 
 	// Set context for child components
-	const orientationStore = writable(orientation);
+	const orientationStore = writable("horizontal");
 	setContext("orientation", orientationStore);
 
 	$effect(() => {
@@ -33,11 +41,11 @@
 >
 	<!-- slot for helpModal -->
 	<div class={`grid--flex ${orientation === "vertical" ? "flex-col" : ""}`}>
-		<slot />
+		{@render children?.()}
 	</div>
 
 	{#if !$showHelp}
-		<slot name="controls" />
+		{@render controls?.()}
 	{/if}
 </div>
 

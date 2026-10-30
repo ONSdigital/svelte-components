@@ -11,6 +11,10 @@ function onViewportChange(callback) {
 		running = true;
 		AddTick(tick);
 	}
+	return () => {
+		const index = callbacks.indexOf(callback);
+		if (index !== -1) callbacks.splice(index, 1);
+	};
 }
 
 function tick() {
@@ -39,11 +43,16 @@ class NavigationToggle {
 		this.toggle.classList.remove("ons-u-d-no");
 		this.toggle.classList.remove("disabled");
 		this.setAria();
-		onViewportChange(this.setAria.bind(this));
+		this.unsubscribeViewport = onViewportChange(this.setAria.bind(this));
 	}
 
 	registerEvents() {
-		this.toggle.addEventListener("click", this.toggleNav.bind(this));
+		this.handleClick = this.toggleNav.bind(this);
+		this.toggle.addEventListener("click", this.handleClick);
+		return () => {
+			this.toggle.removeEventListener("click", this.handleClick);
+			this.unsubscribeViewport();
+		};
 	}
 
 	toggleNav() {
@@ -185,7 +194,8 @@ class NavigationToggle {
 	}
 }
 
-export default async function initNav(el) {
+export default function initNav(el) {
+	const disposers = [];
 	const toggleNavigationBtn = el.querySelector(".ons-js-navigation-button");
 	const navigationEl = el.querySelector(".ons-js-navigation");
 	const navigationHideClass = "ons-u-d-no@2xs@l";
@@ -205,41 +215,54 @@ export default async function initNav(el) {
 	const toggleHeaderMenuBtn = el.querySelector(".ons-js-toggle-nav-menu");
 
 	if (toggleNavigationBtn) {
-		new NavigationToggle(
-			el,
-			toggleNavigationBtn,
-			navigationEl,
-			navigationHideClass
-		).registerEvents();
+		disposers.push(
+			new NavigationToggle(
+				el,
+				toggleNavigationBtn,
+				navigationEl,
+				navigationHideClass
+			).registerEvents()
+		);
 	}
 
 	if (toggleSubNavigationBtn) {
-		new NavigationToggle(
-			el,
-			toggleSubNavigationBtn,
-			subNavigationEl,
-			subNavigationHideClass
-		).registerEvents();
+		disposers.push(
+			new NavigationToggle(
+				el,
+				toggleSubNavigationBtn,
+				subNavigationEl,
+				subNavigationHideClass
+			).registerEvents()
+		);
 	}
 
 	if (toggleSearchBtn) {
-		new NavigationToggle(el, toggleSearchBtn, searchEl, searchHideClass).registerEvents();
+		disposers.push(
+			new NavigationToggle(el, toggleSearchBtn, searchEl, searchHideClass).registerEvents()
+		);
 	}
 
 	if (toggleHeaderSearchBtn) {
-		new NavigationToggle(
-			el,
-			toggleHeaderSearchBtn,
-			headerSearchEl,
-			headerSearchHideClass
-		).registerEvents();
+		disposers.push(
+			new NavigationToggle(
+				el,
+				toggleHeaderSearchBtn,
+				headerSearchEl,
+				headerSearchHideClass
+			).registerEvents()
+		);
 	}
 
 	if (toggleHeaderMenuBtn) {
-		new NavigationToggle(el, toggleHeaderMenuBtn, menuEl, headerSearchHideClass).registerEvents();
+		disposers.push(
+			new NavigationToggle(el, toggleHeaderMenuBtn, menuEl, headerSearchHideClass).registerEvents()
+		);
 	}
 
 	if (toggleServicesBtn) {
-		new NavigationToggle(el, toggleServicesBtn, servicesEl, servicesHideClass).registerEvents();
+		disposers.push(
+			new NavigationToggle(el, toggleServicesBtn, servicesEl, servicesHideClass).registerEvents()
+		);
 	}
+	return () => disposers.forEach((dispose) => dispose());
 }

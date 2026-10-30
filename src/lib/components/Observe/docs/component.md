@@ -4,6 +4,8 @@ This component can be useful for triggering actions such as lazy loading of data
 
 This component has **enter** and **exit** events, triggered when it enters or leaves the viewport. It also has a **visible** binding which has a value of **true** when it is within the viewport.
 
+Under Svelte 5, use `onEnter(entry)` and `onExit(entry)` callback props. Each receives the same `IntersectionObserverEntry` as the retained `on:enter` and `on:exit` event's `detail`. The observer disconnects when the component unmounts.
+
 In this demo, you can open your browser's developer console (**F12**) to see the logs for elements entering and existing the viewport.
 
 <!-- prettier-ignore -->

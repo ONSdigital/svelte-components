@@ -1,16 +1,33 @@
 <script>
 	import Container from "../Container/Container.svelte";
 
-	export let width = "wide";
-	export let headerBorder = false;
-	export let menuBorder = false;
-	export let search = true;
-	export let bilingual = true;
-	export let lang = "en";
-	export let baseurl = "https://www.ons.gov.uk";
-	export let baseother = "https://cy.ons.gov.uk";
-	export let path = "";
-	export let i18n = (text) => text;
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [width]
+	 * @property {boolean} [headerBorder]
+	 * @property {boolean} [menuBorder]
+	 * @property {boolean} [search]
+	 * @property {boolean} [bilingual]
+	 * @property {string} [lang]
+	 * @property {string} [baseurl]
+	 * @property {string} [baseother]
+	 * @property {string} [path]
+	 * @property {any} [i18n]
+	 */
+
+	/** @type {Props} */
+	let {
+		width = "wide",
+		headerBorder = false,
+		menuBorder = false,
+		search = true,
+		bilingual = true,
+		lang = "en",
+		baseurl = "https://www.ons.gov.uk",
+		baseother = "https://cy.ons.gov.uk",
+		path = "",
+		i18n = (text) => text
+	} = $props();
 
 	const menu = {
 		main: [
@@ -598,7 +615,7 @@
 	.ons-icon--logo__group--text {
 		fill: var(--ons-color-text-link-hover);
 	}
-	.ons-header--border:has(+ .ons-u-d-no) {
+	.ons-header--border:has(:global(+ .ons-u-d-no)) {
 		border-bottom: 1px solid var(--ons-color-borders);
 	}
 

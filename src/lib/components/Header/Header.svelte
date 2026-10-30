@@ -1,4 +1,6 @@
 <script>
+	import { run } from "svelte/legacy";
+
 	import { onMount, getContext } from "svelte";
 	import initNav from "./nav.js";
 	import Theme from "$lib/components/Theme/Theme.svelte";
@@ -9,88 +11,54 @@
 	import HeaderNavLegacy from "./HeaderNavLegacy.svelte";
 
 	/**
-	 * Optional product title
-	 * @type {string|null}
+	 * @typedef {Object} Props
+	 * @property {string|null} [title] - Optional product title
+	 * @property {string|null} [titleHref] - Optional link for product title
+	 * @property {"narrow"|"medium"|"wide"|"wider"|"full"} [width] - Sets the width of the header (does not apply to legacy mode)
+	 * @property {"light"|"dark"|"paleblue"|"blue"|"navyblue"|"grey"|null} [theme] - Sets a predefined theme
+	 * @property {object} [themeOverrides] - Define additional props to override the base theme
+	 * @property {string|null} [cls] - Optional: Set an additional CSS class for the container
+	 * @property {boolean} [compact] - Display compact header without menus
+	 * @property {boolean} [search] - Include site search
+	 * @property {boolean} [bilingual] - Set to true to include an English/Welsh language link
+	 * @property {boolean} [headerBorder] - Include a border/line under the header. For use if hero is transparent
+	 * @property {boolean} [menuBorder] - Include a border/line under the menu when open. For use if hero colour matches menu
+	 * @property {boolean} [legacy] - Use the legacy nav header
+	 * @property {any} [page] - Optional: Pass the "page" state from "$app/state" in SvelteKit (gets read from context by default if it exists)
+	 * @property {string|null} [skipHref] - Anchor link to skip to main body content (default "#main")
+	 * @property {{label: string, href: string}[]|null} [navLinks] - Optional: Nav links below title (only works in combination with title block). An array of links in the format {label, href}
+	 * @property {import('svelte').Snippet} [before]
+	 * @property {import('svelte').Snippet} [after]
 	 */
-	export let title = null;
-	/**
-	 * Optional link for product title
-	 * @type {string|null}
-	 */
-	export let titleHref = null;
-	/**
-	 * Sets the width of the header (does not apply to legacy mode)
-	 * @type {"narrow"|"medium"|"wide"|"wider"|"full"}
-	 */
-	export let width = "wide";
-	/**
-	 * Sets a predefined theme
-	 * @type {"light"|"dark"|"paleblue"|"blue"|"navyblue"|"grey"|null}
-	 */
-	export let theme = null;
-	/**
-	 * Define additional props to override the base theme
-	 * @type {object}
-	 */
-	export let themeOverrides = {};
-	/**
-	 * Optional: Set an additional CSS class for the container
-	 * @type {string|null}
-	 */
-	export let cls = null;
-	/**
-	 * Display compact header without menus
-	 * @type {boolean}
-	 */
-	export let compact = false;
-	/**
-	 * Include site search
-	 * @type {boolean}
-	 */
-	export let search = true;
-	/**
-	 * Set to true to include an English/Welsh language link
-	 * @type {boolean}
-	 */
-	export let bilingual = true;
-	/**
-	 * Include a border/line under the header. For use if hero is transparent
-	 * @type {boolean}
-	 */
-	export let headerBorder = false;
-	/**
-	 * Include a border/line under the menu when open. For use if hero colour matches menu
-	 * @type {boolean}
-	 */
-	export let menuBorder = false;
-	/**
-	 * Use the legacy nav header
-	 * @type {boolean}
-	 */
-	export let legacy = false;
-	/**
-	 * Optional: Pass the "page" state from "$app/state" in SvelteKit (gets read from context by default if it exists)
-	 * @type {any}
-	 */
-	export let page = getContext("page");
-	/**
-	 * Anchor link to skip to main body content (default "#main")
-	 * @type {string|null}
-	 */
-	export let skipHref = "#main";
-	/**
-	 * Optional: Nav links below title (only works in combination with title block). An array of links in the format {label, href}
-	 * @type {{label: string, href: string}[]|null}
-	 */
-	export let navLinks = null;
 
-	let el; // Header HTML element
+	/** @type {Props} */
+	let {
+		title = null,
+		titleHref = null,
+		width = "wide",
+		theme = null,
+		themeOverrides = {},
+		cls = null,
+		compact = false,
+		search = true,
+		bilingual = true,
+		headerBorder = false,
+		menuBorder = false,
+		legacy = false,
+		page = getContext("page"),
+		skipHref = "#main",
+		navLinks = null,
+		before,
+		after
+	} = $props();
 
-	let lang = "en";
-	let baseurl = "https://www.ons.gov.uk";
-	let baseother = "https://cy.ons.gov.uk";
-	let path = "";
-	let activeLink = null;
+	let el = $state(); // Header HTML element
+
+	let lang = $state("en");
+	let baseurl = $state("https://www.ons.gov.uk");
+	let baseother = $state("https://cy.ons.gov.uk");
+	let path = $state("");
+	let activeLink = $state(null);
 
 	function setPaths(page) {
 		if (!page) return;
@@ -121,20 +89,19 @@
 		Cymraeg: "English",
 		"Newid iaith i": "Change language to"
 	};
-	$: i18n = (text) => (lang === "cy" && texts[text] ? texts[text] : text);
+	let i18n = $derived((text) => (lang === "cy" && texts[text] ? texts[text] : text));
 
 	onMount(() => {
 		setPaths(page || { url: document?.location });
 
 		if ((!compact && !legacy) || (title && Array.isArray(navLinks))) {
-			const hasBodyClass = "className" in document?.body || {};
-			const bodyClassString = document?.body?.className || "";
-			if (hasBodyClass && !bodyClassString.includes("ons-js-enabled"))
-				document.body.className = bodyClassString + " ons-js-enabled";
-			initNav(el?.parentElement || document);
+			document.body.classList.add("ons-js-enabled");
+			return initNav(el || document);
 		}
 	});
-	$: setPaths(page);
+	run(() => {
+		setPaths(page);
+	});
 </script>
 
 <header
@@ -147,7 +114,7 @@
 	{#if skipHref}
 		<SkipLink href={skipHref} />
 	{/if}
-	<slot name="before" />
+	{@render before?.()}
 	<Theme
 		{theme}
 		overrides={themeOverrides}
@@ -255,7 +222,7 @@
 			{/if}
 		{/if}
 	</Theme>
-	<slot name="after" />
+	{@render after?.()}
 </header>
 
 <style>

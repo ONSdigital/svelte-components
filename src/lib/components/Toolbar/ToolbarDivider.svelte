@@ -4,7 +4,7 @@
 	let { classes = "" }: { classes?: string } = $props();
 
 	// Get the orientation store from context
-	const orientationStore = getContext("orientation");
+	const orientationStore = getContext<import("svelte/store").Writable<string>>("orientation");
 
 	// Subscribe to the store to get its value
 	const orientation = $derived(orientationStore);

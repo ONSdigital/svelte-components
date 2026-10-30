@@ -1,4 +1,5 @@
 <script>
+	import BrowserWorkbench from "./BrowserWorkbench.svelte";
 	import "$lib/css/main.css";
 	import Button from "$lib/components/Button/Button.svelte";
 	import BackLink from "$lib/components/BackLink/BackLink.svelte";
@@ -691,6 +692,7 @@
 			<p>No events recorded yet.</p>
 		{/if}
 	</section>
+	<BrowserWorkbench />
 </main>
 
 <style>

@@ -4,19 +4,22 @@
 	import { fly } from "svelte/transition";
 	import Checkbox from "../Checkbox/Checkbox.svelte";
 	import Button from "../Button/Button.svelte";
+	import type { Writable } from "svelte/store";
 
 	let {
+		children,
 		triggerElement = null,
 		onClose = () => {}
 	}: {
+		children?: import("svelte").Snippet;
 		triggerElement?: HTMLElement | null;
 		onClose?: () => void;
 	} = $props();
 
 	// --- Context ---
-	const activeModalId = getContext("activeModalId");
-	const showHelpModals = getContext("showHelpModals");
-	const { buttonIds } = getContext("buttonIds");
+	const activeModalId = getContext<Writable<string | null>>("activeModalId");
+	const showHelpModals = getContext<Writable<boolean>>("showHelpModals");
+	const { buttonIds } = getContext<{ buttonIds: Writable<string[]> }>("buttonIds");
 
 	// --- Derived state from stores ---
 	const ids = $derived(buttonIds);
@@ -25,37 +28,27 @@
 
 	// --- Local state ---
 	let modalPosition = $state({ top: 50, left: -5 });
-	let notchPosition = $state({ left: 17, right: "auto" });
+	let notchPosition = $state<{ left: number | "auto"; right: number | "auto" }>({
+		left: 17,
+		right: "auto"
+	});
 	let dontShowMeAgain = $state(false);
+	let viewportWidth = $state(0);
 
 	$effect(() => {
 		if (!triggerElement) return;
 
-		const rect = triggerElement.getBoundingClientRect();
-
-		// Calculate the modal's position
-		// const spaceBelow = window.innerHeight - rect.bottom;
-		// const spaceAbove = rect.top;
-		const spaceRight = window.innerWidth - rect.right;
-
-		let newLeft = window.scrollX - 10;
-		let newNotchLeft: number | "auto" = 17;
-		let newNotchRight: number | "auto" = "auto";
-
-		// if (spaceBelow < 200 && spaceAbove > 200) {
-		// 	newTop = rect.top + window.scrollY - 10;
-		// }
-
-		if (spaceRight < 300) {
-			newLeft = window.scrollX - 325;
-			newNotchLeft = "auto";
-			newNotchRight = -350;
-		}
-
-		// modalPosition.top = newTop;
-		modalPosition.left = newLeft;
-		notchPosition.left = newNotchLeft;
-		notchPosition.right = newNotchRight;
+		const anchor = triggerElement.closest(".toolbar-button-wrapper") ?? triggerElement;
+		const rect = anchor.getBoundingClientRect();
+		const width = Math.min(360, (viewportWidth || window.innerWidth) - 48);
+		const left = Math.max(
+			16,
+			Math.min(rect.left - 10, document.documentElement.clientWidth - width - 16)
+		);
+		const offset = left - rect.left;
+		modalPosition.left = offset;
+		notchPosition.left = Math.max(10, Math.min(width - 30, rect.width / 2 - offset - 10));
+		notchPosition.right = "auto";
 	});
 
 	// Update localStorage if "Don't show me again" is checked
@@ -73,7 +66,7 @@
 
 	// Navigate to the next modal
 	function nextModal() {
-		const currentIndex = $ids.indexOf($currentActiveId);
+		const currentIndex = $currentActiveId === null ? -1 : $ids.indexOf($currentActiveId);
 		if (currentIndex !== -1 && currentIndex < $ids.length - 1) {
 			activeModalId.set($ids[currentIndex + 1]);
 			// console.log("Navigating to next modal:", ids[currentIndex + 1]);
@@ -93,7 +86,7 @@
 
 	// Navigate to the previous modal
 	function previousModal() {
-		const currentIndex = $ids.indexOf($currentActiveId);
+		const currentIndex = $currentActiveId === null ? -1 : $ids.indexOf($currentActiveId);
 		if (currentIndex > 0) {
 			activeModalId.set($ids[currentIndex - 1]);
 			// console.log("Navigating to previous modal:", ids[currentIndex - 1]);
@@ -108,7 +101,7 @@
 	}
 </script>
 
-<svelte:window on:keydown={handleKeydown} />
+<svelte:window onkeydown={handleKeydown} bind:innerWidth={viewportWidth} />
 {#if $showHelp}
 	<div class="help-modal-wrapper" style="top: {modalPosition.top}px; left: {modalPosition.left}px;">
 		<!-- Notch -->
@@ -119,7 +112,7 @@
 
 		<!-- Modal Content -->
 		<div class="help-modal" role="dialog" aria-modal="true">
-			<slot />
+			{@render children?.()}
 			<!-- <button class="close-button" on:click="{onClose}" aria-label="Close help">×</button> -->
 
 			<div class="ons-padding-4">
@@ -131,17 +124,17 @@
 				/>
 			</div>
 			<div class="ons-grid-flex ons-grid-flex--between ons-grid-flex-vertical-center">
-				<button class="btn-link" on:click={handleSkip} aria-label="Skip instructions">Skip</button>
-				{#if $ids.indexOf($currentActiveId) > 0}
+				<button class="btn-link" onclick={handleSkip} aria-label="Skip instructions">Skip</button>
+				{#if $currentActiveId !== null && $ids.indexOf($currentActiveId) > 0}
 					<span style="margin-left:auto; margin-right:10px">
 						<Button variant="secondary" on:click={previousModal}>Back</Button>
 					</span>
 				{/if}
 
-				{#if $ids.indexOf($currentActiveId) != $ids.length - 1}
+				{#if $currentActiveId !== null && $ids.indexOf($currentActiveId) != $ids.length - 1}
 					<Button on:click={nextModal}>Next</Button>
 				{/if}
-				{#if $ids.indexOf($currentActiveId) == $ids.length - 1}
+				{#if $currentActiveId !== null && $ids.indexOf($currentActiveId) == $ids.length - 1}
 					<Button on:click={hideHelpModalsUntilRefresh}>Get started</Button>
 				{/if}
 			</div>
@@ -174,7 +167,8 @@
 		padding: 16px;
 		isolation: isolate;
 
-		width: 360px;
+		box-sizing: border-box;
+		width: min(360px, calc(100vw - 48px));
 
 		background: #ffffff;
 		box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.25);

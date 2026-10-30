@@ -25,33 +25,35 @@
 </script>
 
 {#snippet template(args)}
-	<Scroller {...args} on:change={(e) => (scrollerColor = scrollerColors[e.detail.index])}>
-		<div slot="background">
+	<Scroller {...args} onChange={(detail) => (scrollerColor = scrollerColors[detail.index ?? 0])}>
+		{#snippet background()}
 			<Container width="full" height="full" background={scrollerColor} />
-		</div>
-		<div slot="foreground">
-			<ScrollerSection>
-				<p>
-					When this first caption is visible, the background will appear <Em
-						color={scrollerColors[0]}>light grey</Em
-					>.
-				</p>
-			</ScrollerSection>
-			<ScrollerSection>
-				<p>
-					When this first caption is visible, the background will appear <Em
-						color={scrollerColors[1]}>dark grey</Em
-					>.
-				</p>
-			</ScrollerSection>
-			<ScrollerSection>
-				<p>
-					When this first caption is visible, the background will appear <Em
-						color={scrollerColors[2]}>black</Em
-					>.
-				</p>
-			</ScrollerSection>
-		</div>
+		{/snippet}
+		{#snippet foreground()}
+			<div>
+				<ScrollerSection>
+					<p>
+						When this first caption is visible, the background will appear <Em
+							color={scrollerColors[0]}>light grey</Em
+						>.
+					</p>
+				</ScrollerSection>
+				<ScrollerSection>
+					<p>
+						When this first caption is visible, the background will appear <Em
+							color={scrollerColors[1]}>dark grey</Em
+						>.
+					</p>
+				</ScrollerSection>
+				<ScrollerSection>
+					<p>
+						When this first caption is visible, the background will appear <Em
+							color={scrollerColors[2]}>black</Em
+						>.
+					</p>
+				</ScrollerSection>
+			</div>
+		{/snippet}
 	</Scroller>
 {/snippet}
 

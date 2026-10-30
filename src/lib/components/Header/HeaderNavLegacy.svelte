@@ -2,15 +2,27 @@
 	import { onMount } from "svelte";
 	import initNav from "./navLegacy.js";
 
-	export let search = true;
-	export let bilingual = true;
-	export let lang = "en";
-	export let baseurl = "https://www.ons.gov.uk";
-	export let baseother = "https://cy.ons.gov.uk";
-	export let path = "";
-	export let i18n = (text) => text;
+	/**
+	 * @typedef {Object} Props
+	 * @property {boolean} [search]
+	 * @property {boolean} [bilingual]
+	 * @property {string} [lang]
+	 * @property {string} [baseurl]
+	 * @property {string} [baseother]
+	 * @property {string} [path]
+	 * @property {any} [i18n]
+	 */
 
-	let el;
+	/** @type {Props} */
+	let {
+		search = true,
+		bilingual = true,
+		lang = "en",
+		baseurl = "https://www.ons.gov.uk",
+		baseother = "https://cy.ons.gov.uk",
+		path = "",
+		i18n = (text) => text
+	} = $props();
 
 	const menu = [
 		{
@@ -202,7 +214,7 @@
 	];
 
 	onMount(() => {
-		initNav();
+		return initNav();
 	});
 </script>
 
@@ -354,7 +366,7 @@
 			</li>
 
 			<!-- Menu Items -->
-			{#each menu.filter((d) => !d.secondary) as item, i (item.url)}
+			{#each menu.filter((d) => !d.secondary) as item (item.url)}
 				{#if item.children}
 					<li class="primary-nav__item js-nav js-expandable">
 						<a
@@ -362,7 +374,6 @@
 							href="{baseurl}{item.url}"
 							aria-expanded="false"
 							aria-label="{item['label_' + lang]} sub menu"
-							on:click={(e) => toggle_sm(e, i)}
 						>
 							<span aria-hidden="true" class="expansion-indicator"></span>
 							<span class="submenu-title">

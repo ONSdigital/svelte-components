@@ -1,59 +1,52 @@
-<script context="module">
+<script module>
 	export function analyticsEvent(props) {
-		if (window?.dataLayer) window.dataLayer.push(props);
+		if (typeof window !== "undefined" && window.dataLayer) window.dataLayer.push(props);
 	}
 </script>
 
 <script>
+	import { preventDefault } from "svelte/legacy";
+	import { readable } from "svelte/store";
+
 	import { onMount, getContext } from "svelte";
 	import Container from "$lib/components/Container/Container.svelte";
 
 	/**
-	 * Google analytics/tags manager ID
-	 * @type {string}
+	 * @typedef {Object} Props
+	 * @property {string} [analyticsId] - Google analytics/tags manager ID
+	 * @property {object} [analyticsProps] - Optional props to describe the content
+	 * @property {any} [page] - Optional: Pass the "page" store from "$app/state" in SvelteKit (gets read from context by default if it exists)
+	 * @property {boolean} [hideBanner] - Use this to hide the banner (only initialises analytics if cookies already accepted)
+	 * @property {boolean} [usageCookies] - Bind to this value if you need to know if cookies have been accepted
+	 * @property {"narrow"|"medium"|"wide"|"wider"|"full"} [width] - Set the width of the banner
+	 * @property {boolean} [pageViewEnabled] - Enable automatic pageView event on route changes
 	 */
-	export let analyticsId = "GTM-MBCBVQS";
-	/**
-	 * Optional props to describe the content
-	 * @type {object}
-	 */
-	export let analyticsProps = {};
-	/**
-	 * Optional: Pass the "page" store from "$app/state" in SvelteKit (gets read from context by default if it exists)
-	 * @type {any}
-	 */
-	export let page = getContext("page");
-	/**
-	 * Use this to hide the banner (only initialises analytics if cookies already accepted)
-	 * @type {boolean}
-	 */
-	export let hideBanner = false;
-	/**
-	 * Bind to this value if you need to know if cookies have been accepted
-	 * @type {boolean}
-	 */
-	export let usageCookies = false;
-	/**
-	 * Set the width of the banner
-	 * @type {"narrow"|"medium"|"wide"|"wider"|"full"}
-	 */
-	export let width = "wide";
-	/**
-	 * Enable automatic pageView event on route changes
-	 * @type {boolean}
-	 */
-	export let pageViewEnabled = true;
+
+	/** @type {Props} */
+	let {
+		analyticsId = "GTM-MBCBVQS",
+		analyticsProps = {},
+		page = getContext("page"),
+		hideBanner = false,
+		usageCookies = $bindable(false),
+		width = "wide",
+		pageViewEnabled = true
+	} = $props();
+	const contextPage = getContext("page");
+	let pageStore = $derived(
+		typeof page?.subscribe === "function" ? page : readable(page ?? contextPage)
+	);
 
 	let live; // Don't run analytics unless page is live on ONS site (re-set in the onMount function)
-	let showBanner = false;
-	let showConfirm = false;
-	let message = "";
-	let lang = "en";
-	let baseurl = "https://www.ons.gov.uk";
+	let showBanner = $state(false);
+	let showConfirm = $state(false);
+	let message = $state("");
+	let lang = $state("en");
+	let baseurl = $state("https://www.ons.gov.uk");
 	let location = null; // For keeping track of navigation multi-page apps
 
 	function setPaths() {
-		const url = page?.url || document.location;
+		const url = $pageStore?.url || document.location;
 		lang = url.host.startsWith("cy") ? "cy" : "en";
 		baseurl = lang === "cy" ? "https://cy.ons.gov.uk" : "https://www.ons.gov.uk";
 	}
@@ -119,7 +112,7 @@
 		document.cookie = `ons_cookie_policy=${cookiesPolicy};max-age=${oneYearInSeconds};domain=${cookiesDomain};path=${cookiesPath};`;
 
 		message = `You have ${option == "all" ? "accepted" : "rejected"} all additional cookies.`;
-		if (option == "all") usageCookies = true;
+		usageCookies = option === "all";
 		showConfirm = true;
 
 		if (option == "all") initAnalytics();
@@ -127,6 +120,7 @@
 
 	// Initialise analytics and 'window.dataLayer' (which can be used throughout the app)
 	function initAnalytics() {
+		if (!analyticsId) return;
 		console.log("initialising analytics");
 		window.dataLayer = [
 			{
@@ -148,7 +142,7 @@
 			f.appendChild(j);
 		})(window, document, "script", "dataLayer", analyticsId);
 
-		if ($page) location = `${$page.url.href}`.replace($page.url.hash, "");
+		if ($pageStore) location = `${$pageStore.url.href}`.replace($pageStore.url.hash, "");
 	}
 
 	// This code is only relevant for multi-page Svelte Kit apps. It sends an analytics event when the URL changes
@@ -165,7 +159,9 @@
 			}
 		}
 	}
-	$: if (pageViewEnabled) onPageChange($page);
+	$effect(() => {
+		if (pageViewEnabled) onPageChange($pageStore);
+	});
 
 	onMount(() => {
 		setPaths();
@@ -197,7 +193,7 @@
 		Hide: "Cuddio",
 		"Hide this message": "Cuddiwch y neges yma"
 	};
-	$: i18n = (text) => (lang === "cy" && texts[text] ? texts[text] : text);
+	let i18n = $derived((text) => (lang === "cy" && texts[text] ? texts[text] : text));
 </script>
 
 {#if showBanner && !hideBanner}
@@ -241,7 +237,7 @@
 								type="submit"
 								class="ons-btn ons-btn--small ons-js-accept-cookies ons-cookies-banner__btn"
 								data-button="accept"
-								on:click|preventDefault={() => setCookie("all")}
+								onclick={preventDefault(() => setCookie("all"))}
 							>
 								<span class="ons-btn__inner"
 									><span class="ons-btn__text">{i18n("Accept additional cookies")}</span>
@@ -253,7 +249,7 @@
 								type="button"
 								class="ons-btn ons-btn--small ons-js-reject-cookies ons-cookies-banner__btn"
 								data-button="reject"
-								on:click|preventDefault={() => setCookie("reject")}
+								onclick={preventDefault(() => setCookie("reject"))}
 							>
 								<span class="ons-btn__inner"
 									><span class="ons-btn__text">{i18n("Reject additional cookies")}</span>
@@ -288,7 +284,7 @@
 							type="button"
 							class="ons-btn ons-btn--secondary ons-btn--small ons-js-hide-button"
 							aria-label={i18n("Hide this message")}
-							on:click={() => (showBanner = false)}
+							onclick={() => (showBanner = false)}
 						>
 							<span class="ons-btn__inner"><span class="ons-btn__text">{i18n("Hide")}</span> </span>
 						</button>

@@ -2,6 +2,10 @@ function getBoolFromString(stringToConvert) {
 	return stringToConvert === "true";
 }
 
+function isMobileNavigation() {
+	return window.matchMedia("(max-width: 739.98px)").matches;
+}
+
 function toggleSubnav(element) {
 	const subnav = element;
 	subnav.classList.toggle("js-expandable-active");
@@ -58,10 +62,7 @@ function cloneSecondaryNav() {
 	const navLink = document.querySelectorAll(".js-nav-clone__link");
 	const navList = document.querySelector(".js-nav-clone__list");
 
-	if (
-		document.body.classList.contains("viewport-sm") &&
-		navList.querySelectorAll(".js-nav-clone__link").length > 0
-	) {
+	if (isMobileNavigation() && navList.querySelectorAll(".js-nav-clone__link").length > 0) {
 		// Remove from separate UL and add into primary
 		navLink.forEach((l) => {
 			const link = l;
@@ -78,7 +79,7 @@ function cloneSecondaryNav() {
 			primaryNavList.insertAdjacentElement("beforebegin", newNavItem);
 		});
 	} else if (
-		!document.body.classList.contains("viewport-sm") &&
+		!isMobileNavigation() &&
 		document.querySelector(".secondary-nav__item").style.display === "none"
 	) {
 		// Remove from primary nav and add into separate secondary list
@@ -100,23 +101,23 @@ function clonePrimaryItems() {
 	const expandableList = document.querySelectorAll(".js-expandable");
 
 	// Clone primary nav items into sub-menu on mobile, so it can still be selected on mobile
-	if (document.body.classList.contains("viewport-sm") && detectDuplicate.length === 0) {
+	if (isMobileNavigation() && detectDuplicate.length === 0) {
 		expandableList.forEach((item) => {
 			const href = item.querySelector("a").getAttribute("href");
-			const text = item.querySelector(".submenu-title").innerText;
+			const text = item.querySelector(".submenu-title").textContent ?? "";
 			const childList = item.querySelector(".js-expandable__content");
 
 			const newLink = document.createElement("a");
 			newLink.classList.add("primary-nav__child-link");
 			newLink.href = href;
-			newLink.innerText = text.trim();
+			newLink.textContent = text.trim();
 
 			const newItem = document.createElement("li");
 			newItem.classList.add("primary-nav__child-item", "js-nav__duplicate", "js-expandable__child");
 			newItem.insertAdjacentElement("beforeend", newLink);
 			childList.insertBefore(newItem, childList.firstChild);
 		});
-	} else if (!document.body.classList.contains("viewport-sm") && detectDuplicate.length > 0) {
+	} else if (!isMobileNavigation() && detectDuplicate.length > 0) {
 		detectDuplicate.forEach((duplicate) => {
 			duplicate.remove();
 		});
@@ -124,12 +125,16 @@ function clonePrimaryItems() {
 }
 
 export default function initNav() {
-	window.addEventListener("resize", () => {
+	const controller = new AbortController();
+	function listen(target, type, listener, options = {}) {
+		target.addEventListener(type, listener, { ...options, signal: controller.signal });
+	}
+	listen(window, "resize", () => {
 		clonePrimaryItems();
 		cloneSecondaryNav();
 	});
 
-	document.addEventListener("keydown", (e) => {
+	listen(document, "keydown", (e) => {
 		if (e.key === "Escape") {
 			// Find all nav items currently hovered (with open submenu)
 			document.querySelectorAll(".primary-nav__item:hover > ul").forEach((submenu) => {
@@ -140,7 +145,7 @@ export default function initNav() {
 					submenu.classList.remove("ons-u-hidden");
 					parentItem.removeEventListener("mouseleave", handleMouseLeave);
 				};
-				parentItem.addEventListener("mouseleave", handleMouseLeave, { once: true });
+				listen(parentItem, "mouseleave", handleMouseLeave, { once: true });
 			});
 		}
 	});
@@ -157,8 +162,8 @@ export default function initNav() {
 	primaryNav.ariaExpanded = false;
 
 	expandableItems.forEach((item) => {
-		item.addEventListener("click", (event) => {
-			if (document.body.classList.contains("viewport-sm")) {
+		listen(item, "click", (event) => {
+			if (isMobileNavigation()) {
 				event.preventDefault();
 				toggleSubnav(item);
 			}
@@ -167,13 +172,13 @@ export default function initNav() {
 
 	// stop parent element from taking over all click events
 	document.querySelectorAll(".js-expandable > .js-expandable__content").forEach((elem) => {
-		elem.addEventListener("click", (event) => {
+		listen(elem, "click", (event) => {
 			event.stopPropagation();
 		});
 	});
 
 	navItem.forEach((item) => {
-		item.addEventListener("keydown", (e) => {
+		listen(item, "keydown", (e) => {
 			const focusedItem = document.querySelector(".js-expandable__child a:focus"); // only selects child item that is in focus
 			const keycode = e.keyCode;
 			const up = 38;
@@ -192,7 +197,7 @@ export default function initNav() {
 				const link = closestNav.querySelector("a");
 				link.classList.add("hide-children");
 				link.focus();
-				link.addEventListener("focusout", () => {
+				listen(link, "focusout", () => {
 					link.classList.remove("hide-children");
 				});
 			}
@@ -230,7 +235,7 @@ export default function initNav() {
 	});
 
 	const expandBehaviour = (item, expandedBool) => {
-		if (!document.body.classList.contains("viewport-sm")) {
+		if (!isMobileNavigation()) {
 			const navLink = item.querySelector(".primary-nav__link");
 			navLink.ariaExpanded = expandedBool;
 			const expandable = item.querySelector(".js-expandable__content");
@@ -239,13 +244,13 @@ export default function initNav() {
 	};
 
 	expandableItems.forEach((item) => {
-		item.addEventListener("focusin", () => expandBehaviour(item, true));
-		item.addEventListener("pointerenter", () => expandBehaviour(item, true));
+		listen(item, "focusin", () => expandBehaviour(item, true));
+		listen(item, "pointerenter", () => expandBehaviour(item, true));
 	});
 
 	expandableItems.forEach((item) => {
-		item.addEventListener("focusout", () => expandBehaviour(item, false));
-		item.addEventListener("pointerleave", () => expandBehaviour(item, false));
+		listen(item, "focusout", () => expandBehaviour(item, false));
+		listen(item, "pointerleave", () => expandBehaviour(item, false));
 	});
 
 	const menuToggle = document.querySelector("#menu-toggle");
@@ -253,7 +258,7 @@ export default function initNav() {
 	const searchToggle = document.querySelector("#search-toggle");
 	const searchToggleContainer = searchToggle.parentNode;
 
-	menuToggle.addEventListener("click", (event) => {
+	listen(menuToggle, "click", (event) => {
 		event.preventDefault();
 		if (!searchBar.classList.contains("nav-search--hidden")) {
 			toggleSearch(searchToggleContainer, searchBar);
@@ -261,11 +266,12 @@ export default function initNav() {
 		toggleMenu(menuToggleContainer, primaryNav);
 	});
 
-	searchToggle.addEventListener("click", (event) => {
+	listen(searchToggle, "click", (event) => {
 		event.preventDefault();
 		if (!primaryNav.classList.contains("nav-main--hidden")) {
 			toggleMenu(menuToggleContainer, primaryNav);
 		}
 		toggleSearch(searchToggleContainer, searchBar);
 	});
+	return () => controller.abort();
 }

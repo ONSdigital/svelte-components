@@ -2,7 +2,20 @@
 
 A toolbar component. Use `ToolbarsContainer` even if using one toolbar as it contains a store for all the IDs and the activeID.
 
-There's a slot on ToolbarButton if you want to put in custom help text otherwise, there's the prop `helpText`.
+`ToolbarButton` accepts child content for custom help, or the `helpText` prop for plain text. In Svelte 5, replace Toolbar's named `controls` slot with a `controls` snippet. Replace ToolbarButton's named `custom` slot with a `customContent` snippet; the boolean `custom` prop is unchanged. `onClick(detail)` receives `null`, matching the retained `on:click` event's detail.
+
+```svelte
+<ToolbarsContainer>
+	<Toolbar>
+		<ToolbarButton id="search" icon="search" label="Search" hasAriaControls />
+		{#snippet controls()}
+			<ToolControls>
+				<ToolControl id="search"><input aria-label="Search query" /></ToolControl>
+			</ToolControls>
+		{/snippet}
+	</Toolbar>
+</ToolbarsContainer>
+```
 
 Each `ToolControl` will display content underneath the row of buttons. The `id` needs to match the `id` of the button.
 
@@ -17,15 +30,13 @@ Use the prop `hasAriaControls` on a button to link the controls to the button.
   <ToolbarsContainer>
 
     <Toolbar orientation="horizontal">
-      <ToolbarButton icon="polygon" label="Draw a polygon" helpText="Draw a polygon on the map" hasAriaControls>
-        <HelpModal>
+      <ToolbarButton id="polygon" icon="polygon" label="Draw a polygon" hasAriaControls>
           <h3>Detailed Help</h3>
           <p>More complex help text or even HTML content</p>
           <ul>
             <li>With lists</li>
             <li>Or other elements</li>
           </ul>
-        </HelpModal>
       </ToolbarButton>
       <ToolbarButton
         icon="radius"
@@ -38,14 +49,17 @@ Use the prop `hasAriaControls` on a button to link the controls to the button.
         label="Zoom in"
       />
       <ToolbarButton icon="zoomout" label="Zoom out" />
-    <ToolControls>
-      <ToolControl id="polygon">
-      <p>Text to display when polygon tool is selected, or even an input</p>
-      </ToolControl>
+      {#snippet controls()}
+        <ToolControls>
+          <ToolControl id="polygon">
+            <p>Text to display when polygon tool is selected, or even an input</p>
+          </ToolControl>
+        </ToolControls>
+      {/snippet}
     </Toolbar>
 
 
-    // Second toolbar
+    <!-- Second toolbar -->
     <Toolbar>
       <ToolbarButton id="upload" icon="upload"/>
       <ToolbarButton id="download" icon="download"/>

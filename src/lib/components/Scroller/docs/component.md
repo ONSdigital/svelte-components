@@ -1,20 +1,22 @@
 Components for adding interactive scrollytelling sections to a feature article.
 
+Svelte 5 uses `background` and `foreground` snippets in place of named slots. `onChange`, `onEnter`, and `onExit` receive `{ id, index, sectionId }`; the retained `on:change`, `on:enter`, and `on:exit` events expose the same payload through `event.detail`. Existing output bindings remain available. Shared scroll/resize listeners are removed after the last Scroller unmounts.
+
 <!-- prettier-ignore -->
 ```html
 <script>
   import { Scroller, ScrollerSection, Container } from "@onsvisual/svelte-components";
 
-  function updateScroller(e) {
+  function updateScroller(detail) {
     // Function to update scroller background components, using the following props:
-    // 1. e.detail.id - the ID of the Scroller
-    // 2. e.detail.index - the index of the current ScrollerSection
-    // 3. e.detail.sectionId - the (optional) ID of the current ScrollerSection
+    // 1. detail.id - the ID of the Scroller
+    // 2. detail.index - the index of the current ScrollerSection
+    // 3. detail.sectionId - the (optional) ID of the current ScrollerSection
   }
 </script>
 
-<Scroller on:change="{updateScroller}" id="{any_unique_id}">
-  <div slot="background">
+<Scroller onChange={updateScroller} id="{any_unique_id}">
+  {#snippet background()}
     <!--
       The <Container> component is optional here.
       It is a useful way to set the height and width of the background.
@@ -22,8 +24,8 @@ Components for adding interactive scrollytelling sections to a feature article.
     <Container width="full" height="full">
       {background_components}
     </Container>
-  </div>
-  <div slot="foreground">
+  {/snippet}
+  {#snippet foreground()}
     <ScrollerSection id="{any_unique_id}">
       <p>First section caption.</p>
     </ScrollerSection>
@@ -32,8 +34,7 @@ Components for adding interactive scrollytelling sections to a feature article.
     </ScrollerSection>
     <ScrollerSection id="{any_unique_id}">
       <p>Third section caption.</p>
-      </p>
     </ScrollerSection>
-  </div>
+  {/snippet}
 </Scroller>
 ```

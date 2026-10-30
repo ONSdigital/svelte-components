@@ -2,51 +2,47 @@
 	import { onMount, createEventDispatcher } from "svelte";
 	import pym from "pym.js";
 
-	/**
-	 * (Optional) ID for embed
-	 * @type {string|null}
-	 */
-	export let id = null;
-	/**
-	 * Binding for pymChild element (can be used to send messages to parent of iframe)
-	 * @type {object|null}
-	 */
-	export let pymChild = null;
-	/**
-	 * Frequency (in milliseconds) of iframe height updates. Set as "false" to disable polling.
-	 * @type {number|false}
-	 */
-	export let polling = 500;
-
+	/** @typedef {{ sendMessage: (type: string, value: string) => void; remove: () => void }} PymChild */
+	/** @typedef {{ href: string; parentUrl: string | null; pymChild: PymChild }} LoadDetail */
+	/** @type {{ children?: import("svelte").Snippet; id?: string | null; pymChild?: PymChild | null; polling?: number | false; onLoad?: (detail: LoadDetail) => void }} */
+	let { children, id = null, pymChild = $bindable(null), polling = 500, onLoad } = $props();
+	/** @type {import("svelte").EventDispatcher<{ load: LoadDetail }>} */
 	const dispatch = createEventDispatcher();
 
 	onMount(() => {
-		pymChild = id ? new pym.Child({ id }) : new pym.Child();
+		const Child = /** @type {new (options?: { id: string }) => PymChild} */ (
+			/** @type {unknown} */ (pym.Child)
+		);
+		const child = id ? new Child({ id }) : new Child();
+		pymChild = child;
+		/** @type {ReturnType<typeof setInterval> | undefined} */
+		let interval;
 
 		if (polling) {
-			setInterval(() => {
-				pymChild.sendMessage(
+			interval = setInterval(() => {
+				child.sendMessage(
 					"height",
-					Math.max(document.body.scrollHeight, document.body.offsetHeight)
+					String(Math.max(document.body.scrollHeight, document.body.offsetHeight))
 				);
 			}, polling);
 		}
 
 		const href = document.location.href;
 		const parentUrl = new URLSearchParams(document.location.search).get("parentUrl");
-		dispatch("load", { href, parentUrl, pymChild });
+		const detail = { href, parentUrl, pymChild: child };
+		onLoad?.(detail);
+		dispatch("load", detail);
 
-		return {
-			destroy: () => {
-				pymChild?.remove?.();
-				pymChild = null;
-			}
+		return () => {
+			clearInterval(interval);
+			child.remove();
+			pymChild = null;
 		};
 	});
 </script>
 
 <div class="ons-svelte-embed-container" style:display="contents">
-	<slot />
+	{@render children?.()}
 </div>
 
 <style>
