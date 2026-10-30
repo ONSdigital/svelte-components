@@ -43,3 +43,7 @@
 	}}
 	parameters={withStoryDocs(exampleDocs)}
 />
+
+<Story name="Zero value" args={{ title: "Zero is a value", value: 0 }} />
+
+<Story name="Empty sparkline" args={{ title: "Empty series", mode: "sparkline", data: [] }} />

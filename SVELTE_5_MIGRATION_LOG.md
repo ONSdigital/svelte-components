@@ -143,3 +143,31 @@ This log records migration decisions, component changes, verification results, a
 ### Follow-up
 
 - Block 5D is complete. Pause before starting block 5E (charts/data display). No source commit was created by this assistant session; an external source commit appeared during final verification and was preserved.
+
+## 2026-10-30: Component Block 5E
+
+### Scope And Changes
+
+- Migrated this package's DataCard, internal Sparkline, and Table to Svelte 5 `$props`, `$state`, and `$derived`. ChangeStat was already completed in 5A and was not changed again.
+- Chart, BarChart, ColumnChart, LineChart, ScatterChart, and DotPlotChart are examples imported from `@onsvisual/svelte-charts`, not implementations or public exports owned by this repository. Preserved that dependency and its event APIs; verified its Svelte 5 integration without editing installed package source.
+- Sparkline scales, paths, endpoint position and labels now derive from current data and keys. Empty series render an explicit fallback; single-point and constant series remain finite. DataCard now displays numeric zero. Its existing reserved `bar` mode remains unimplemented and is documented as such.
+- Table derives inferred columns and displayed rows from current props. Sorting operates on a copied array, retains the selected column/direction across data replacement, and follows column keys rather than positions. Column formatting updates reactively; zero cells no longer render as missing. Existing caption, compact/responsive, row-hover and sticky-header options remain.
+- Preserved DataCard caption and Table cell trusted-HTML APIs and documented that they do not sanitize content. Neither local component had a dispatched component-event API requiring a callback-prop counterpart; Table retains native keyboard-operable sort buttons.
+- Added `ssr.noExternal` entries for the existing chart dependency and LayerCake so Vite compiles their Svelte source for server rendering. No dependencies or package exports were added.
+- Added DataCard zero/empty stories, updated component/chart documentation, and added interactive DataWorkbench fixtures. Controls cover series edge cases, values, Table refresh/inferred columns/layout, direct versus wrapped charts, chart type/data replacement, and mount/unmount. Explicit chart padding keeps endpoint marks and tick labels inside mobile SVG bounds.
+
+### Verification
+
+- Added 15 focused tests across three files: five DataCard/Sparkline cases, three Table cases, and seven fixture/external-chart SSR checks. All passed. Local tests cover replacement data/keys, zero/empty/single/constant series, nonmutating ascending/descending sorting, inferred schemas, formatting, and layout props.
+- Full suite: 61 passed, with only the pre-existing home-route heading failure in `src/routes/page.svelte.test.js` (62 total). The SSR tests were rerun successfully after the final fixture framing adjustment.
+- `npm run check`: 236 errors and 10 warnings in 65 files, down from 5D's 267 errors and 10 warnings. No CLI or editor diagnostics remain in the changed 5E components, fixtures or tests. Repository-wide diagnostics remain outside this block.
+- Scoped ESLint passed with only `svelte/no-at-html-tags` excluded for the two retained, documented HTML APIs. No global lint configuration was changed. Scoped Prettier and patch whitespace checks passed.
+- `npm run build`: passed, including package generation, publint, workbench prerender, Storybook and staging. `npm run build:docs` passed again after final chart-padding changes. Existing oversized-chunk warnings remain.
+- Browser verification: zero/constant/single/empty DataCard states; keyboard Table sorting; reactive row and inferred-column replacement; fixed-height layout; and fixture remounting. All five external chart types rendered visible, finite SVG marks both directly and through Chart, and all ten combinations updated their marks on data replacement.
+- Desktop 1440px and mobile 390px checks/screenshots showed no page overflow. Final mobile checks confirmed marks and tick labels stay inside each chart's SVG bounds for all ten direct/wrapper combinations. No browser page errors were observed during chart switching.
+- `npm run deploy`: published the final Storybook/workbench. The live route returned HTTP 200 and matched staged HTML after CRLF-to-LF normalization: https://onsdigital.github.io/svelte-components/workbench/.
+- Local production preview remains available at http://127.0.0.1:4174/svelte-components/workbench/.
+
+### Follow-up
+
+- Block 5E is complete. Pause before migration-wide final audit, cleanup or release work; remaining repository diagnostics and any other legacy component surfaces have not been declared resolved. No source commit was created by this assistant session.

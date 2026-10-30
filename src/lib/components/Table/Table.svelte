@@ -1,56 +1,60 @@
 <script>
 	import { formatter, isNumeric, ascending, descending } from "../../js/utils.js";
 
-	/**
-	 * An optional title for the table
-	 * @type {string|null}
-	 */
-	export let title = null;
-	/**
-	 * Make the table smaller/more compact
-	 * @type {boolean}
-	 */
-	export let compact = false;
-	/**
-	 * Make the table sortable
-	 * @type {boolean}
-	 */
-	export let sortable = false;
-	/**
-	 * Make the chart responsive (changes layout on narrow screens)
-	 * @type {boolean}
-	 */
-	export let responsive = false;
-	/**
-	 * Highlight rows on hover
-	 * @type {boolean}
-	 */
-	export let rowHover = false;
-	/**
-	 * Maximum height of table (in pixels). The header row becomes sticky unless the value is "auto" (default).
-	 * @type {number|"auto"}
-	 */
-	export let height = "auto";
-	/**
-	 * Rows of data
-	 * @type {object[]}
-	 */
-	export let data = [];
-	/**
-	 * Optional metadata for formatting columns. Array of {key, label, numeric?, dp?, formatter?} objects
-	 * @type {object[]}
-	 */
-	export let columns =
-		Array.isArray(data) && data[0] ? Object.keys(data[0]).map((key) => ({ key, label: key })) : [];
-	let _data = [...data];
-	let sort = columns.map(() => "none");
-	/**
-	 * Optional: Set an additional CSS class for the component
-	 * @type {string|null}
-	 */
-	export let cls = null;
+	/** @typedef {Record<string, unknown>} Row */
+	/** @typedef {{ key: string; label: string; numeric?: boolean; dp?: number; formatter?: (value: number) => string }} Column */
+	/** @type {{ title?: string | null; compact?: boolean; sortable?: boolean; responsive?: boolean; rowHover?: boolean; height?: number | "auto"; data?: Row[]; columns?: Column[]; cls?: string | null }} */
+	let {
+		title = null,
+		compact = false,
+		sortable = false,
+		responsive = false,
+		rowHover = false,
+		height = "auto",
+		data = [],
+		columns,
+		cls = null
+	} = $props();
+	/** @type {{ key: string; direction: "ascending" | "descending" } | null} */
+	let activeSort = $state(null);
+	const resolvedColumns = $derived(
+		columns ?? Object.keys(data[0] ?? {}).map((key) => ({ key, label: key }))
+	);
+	const formatters = $derived(
+		resolvedColumns.map((column) => column.formatter || formatter(column.dp))
+	);
+	const sort = $derived(
+		resolvedColumns.map((column) =>
+			activeSort?.key === column.key ? activeSort.direction : "none"
+		)
+	);
+	const sortedData = $derived.by(() => {
+		const rows = [...data];
+		const column = resolvedColumns.find((column) => column.key === activeSort?.key);
+		if (column && activeSort) {
+			const compare = activeSort.direction === "ascending" ? ascending : descending;
+			rows.sort((first, second) => compare(first[column.key], second[column.key]));
+		}
+		return rows;
+	});
 
-	$: formatters = columns.map((d) => d.formatter || formatter(d.dp));
+	/** @param {Column} column */
+	function sortBy(column) {
+		activeSort = {
+			key: column.key,
+			direction:
+				activeSort?.key === column.key && activeSort.direction === "ascending"
+					? "descending"
+					: "ascending"
+		};
+	}
+
+	/** @param {Row} row @param {Column} column @param {number} index */
+	function cellContent(row, column, index) {
+		const value = row[column.key];
+		if (column.numeric && isNumeric(value)) return formatters[index](Number(value));
+		return value == null || value === "" ? "&ndash;" : String(value);
+	}
 </script>
 
 <div
@@ -73,7 +77,7 @@
 		{#if title}<caption class="ons-table__caption">{title}</caption>{/if}
 		<thead class="ons-table__head">
 			<tr class="ons-table__row">
-				{#each columns as col, i}
+				{#each resolvedColumns as col, i (col.key)}
 					{#if sortable}
 						<th
 							scope="col"
@@ -86,26 +90,15 @@
 								type="button"
 								data-index={i}
 								class="ons-table__sort-button"
-								on:click={() => {
-									sort = sort.map((c, j) =>
-										j === i && c === "ascending" ? "descending" : j === i ? "ascending" : "none"
-									);
-									_data = _data.sort((a, b) =>
-										sort[i] === "ascending"
-											? ascending(a[col.key], b[col.key])
-											: descending(a[col.key], b[col.key])
-									);
-								}}
+								onclick={() => sortBy(col)}
 							>
 								{col.label}<svg
-									id="sort-sprite-id-0"
 									class="ons-icon"
 									viewBox="0 0 12 19"
 									xmlns="http://www.w3.org/2000/svg"
 									focusable="false"
 									fill="currentColor"
-									role="img"
-									title="ons-icon-sort-sprite"
+									aria-hidden="true"
 								>
 									<path
 										class="ons-topTriangle"
@@ -129,16 +122,13 @@
 			</tr>
 		</thead>
 		<tbody class="ons-table__body">
-			{#each _data as row}
+			{#each sortedData as row, rowIndex (rowIndex)}
 				<tr class="ons-table__row">
-					{#each columns as col, i}
+					{#each resolvedColumns as col, i (col.key)}
 						<td
 							class="ons-table__cell"
 							class:ons-table__cell--numeric={col.numeric}
-							data-th={col.label}
-							>{@html col.numeric && isNumeric(row[col.key])
-								? formatters[i](row[col.key])
-								: row[col.key] || "&ndash;"}</td
+							data-th={col.label}>{@html cellContent(row, col, i)}</td
 						>
 					{/each}
 				</tr>

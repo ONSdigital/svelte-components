@@ -2,51 +2,18 @@
 	import Card from "$lib/components/Card/Card.svelte";
 	import Sparkline from "./Sparkline.svelte";
 
-	/**
-	 * Title of card
-	 * @type {string|null}
-	 */
-	export let title = null;
-	/**
-	 * Optional: Subtitle of card
-	 * @type {string|null}
-	 */
-	export let subtitle = null;
-	/**
-	 * Optional: URL link for card title
-	 * @type {string|null}
-	 */
-	export let href = null;
-	/**
-	 * Big number (expects a pre-formatted text string)
-	 * @type {string|number|null}
-	 */
-	export let value = null;
-	/**
-	 * Mode for the data tile
-	 * @type {"number"|"sparkline"|"bar"}
-	 */
-	export let mode = "number";
-	/**
-	 * Text caption describing the number
-	 * @type {string|null}
-	 */
-	export let caption = null;
-	/**
-	 * An array of data (required for charts)
-	 * @type {object[]|null}
-	 */
-	export let data = null;
-	/**
-	 * Text describing the source of the data
-	 * @type {string|null}
-	 */
-	export let source = null;
-	/**
-	 * Optional: Set an additional CSS class for the component
-	 * @type {string|null}
-	 */
-	export let cls = null;
+	/** @type {{ title?: string | null; subtitle?: string | null; href?: string | null; value?: string | number | null; mode?: "number" | "sparkline" | "bar"; caption?: string | null; data?: Record<string, number>[] | null; source?: string | null; cls?: string | null }} */
+	let {
+		title = null,
+		subtitle = null,
+		href = null,
+		value = null,
+		mode = "number",
+		caption = null,
+		data = null,
+		source = null,
+		cls = null
+	} = $props();
 </script>
 
 <Card {title} {href} mode="featured" {cls}>
@@ -56,7 +23,7 @@
 	{#if mode === "sparkline" && data}
 		<Sparkline {data} />
 	{/if}
-	{#if value}
+	{#if value != null && value !== ""}
 		<p class="ons-card__figure ons-u-fs-3xl ons-u-fw-b ons-u-mb-no">{value}</p>
 	{/if}
 	{#if caption}

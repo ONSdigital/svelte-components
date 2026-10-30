@@ -12,6 +12,10 @@ npm install @onsvisual/svelte-charts --save-dev
 
 When using these charts, you need to make sure that you import them from the **svelte-charts** library and not the components library, for example:
 
+DataCard (including its internal Sparkline) and Table belong to this components package and use Svelte 5 runes. Chart, BarChart, ColumnChart, LineChart, ScatterChart and DotPlotChart remain owned by the separate chart dependency; their implementation and event APIs are not changed by this migration.
+
+The [component workbench](https://onsdigital.github.io/svelte-components/workbench/) includes both local data components and previews of the external chart types. When server-rendering the chart dependency with Vite, include `@onsvisual/svelte-charts` and `layercake` in `ssr.noExternal` so their Svelte source is compiled.
+
 {/* prettier-ignore */}
 ```html
 <script>
