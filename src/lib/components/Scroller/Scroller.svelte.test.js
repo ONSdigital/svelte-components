@@ -8,16 +8,24 @@ import Scroller from "./Scroller.svelte";
 const intersections = vi.hoisted(() => {
 	/** @type {IntersectionObserverCallback | undefined} */
 	let callback;
-	vi.stubGlobal("IntersectionObserver", class {
-		/** @param {IntersectionObserverCallback} handler */
-		constructor(handler) { callback = handler; }
-		observe = vi.fn();
-		unobserve = vi.fn();
-	});
+	vi.stubGlobal(
+		"IntersectionObserver",
+		class {
+			/** @param {IntersectionObserverCallback} handler */
+			constructor(handler) {
+				callback = handler;
+			}
+			observe = vi.fn();
+			unobserve = vi.fn();
+		}
+	);
 	return {
 		/** @param {Element} target */
 		enter(target) {
-			callback?.([/** @type {IntersectionObserverEntry} */ ({ target, isIntersecting: true })], /** @type {IntersectionObserver} */ ({}));
+			callback?.(
+				[/** @type {IntersectionObserverEntry} */ ({ target, isIntersecting: true })],
+				/** @type {IntersectionObserver} */ ({})
+			);
 		}
 	};
 });
@@ -46,7 +54,9 @@ test("Scroller emits matching entry detail and removes window listeners on unmou
 
 test("Scroller refreshes immediately on intersection without a second scroll event", async () => {
 	let top = 2000;
-	vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockImplementation(() => new DOMRect(0, top, 800, 2000));
+	vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockImplementation(
+		() => new DOMRect(0, top, 800, 2000)
+	);
 	const onEnter = vi.fn();
 	const { container } = render(Scroller, { props: { onEnter } });
 	expect(onEnter).not.toHaveBeenCalled();

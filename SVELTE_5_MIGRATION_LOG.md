@@ -115,3 +115,31 @@ This log records migration decisions, component changes, verification results, a
 ### Follow-up
 
 - Block 5C is complete. Pause before starting block 5D.
+
+## 2026-10-29: Component Block 5D
+
+### Components And APIs
+
+- Migrated Observe, LazyLoad, Embed, Scroller/ScrollerSection, AnalyticsBanner, Header and navigation variants, Footer, ShareButtons, and the remaining Toolbar family to rune-based props/state and snippet composition. Retained compiler compatibility helpers where needed to preserve SSR path calculation or event modifiers.
+- Added Observe `onEnter`/`onExit`, Embed `onLoad`, Scroller `onChange`/`onEnter`/`onExit`, and ToolbarButton `onClick` callback props alongside dispatched events with equivalent payloads. Existing bindings remain available.
+- Named slot replacements: Header `before`/`after`, Scroller `background`/`foreground`, and Toolbar `controls` become same-named snippets. ToolbarButton's `custom` slot becomes `customContent`, avoiding a conflict with its existing boolean `custom` prop. Updated stories and component documentation.
+- Observers disconnect on disposal; Embed clears its polling timer and removes its Pym child, preserving its string `id` option. Scroller removes shared scroll/resize listeners after its last instance unmounts and now refreshes immediately on intersection entry, including direct jumps into a section.
+- Header navigation releases component callbacks/listeners; legacy navigation uses AbortController cleanup. Removed its undefined submenu handler and aligned mobile detection with the stylesheet's 740px breakpoint rather than requiring a host `viewport-sm` class. The standard navigation's shared tick-manager loop remains, with disposed component callbacks removed.
+- Toolbar container registry subscriptions and beforeunload listeners now clean up. Help dialogs anchor to the visible button wrapper, including hidden checkbox triggers, and remain within narrow viewports.
+- AnalyticsBanner accepts page stores or page-state objects; `analyticsEvent` is SSR-safe. An empty analytics ID keeps the consent UI without loading tracking scripts; rejecting consent updates the usage binding.
+
+### Workbench And Verification
+
+- Added a browser-integration workbench fixture with mount/unmount, observer/lazy-content status, Embed load count, Header variants, Toolbar actions/help, sharing links, consent UI, Footer modes, and a two-section Scroller.
+- Added 12 block 5D tests across seven files, covering callback/event parity, observer and timer disposal, navigation cleanup, mobile submenu/help behavior, direct Scroller entry, consent, and full-fixture SSR without browser globals.
+- Final suite: 46 tests passed; the sole failure remains the pre-existing home-route heading assertion in `src/routes/page.svelte.test.js`. The workspace runner still included it when a CLI exclusion was supplied.
+- `npm run check`: 267 errors and 10 warnings in 66 files, down from block 5C's 336 errors and 25 warnings. The CLI reports no diagnostics in the new fixtures/tests. The editor separately reports two Scroller-test errors treating optional snippets/callbacks as required; the generated package declaration correctly marks them optional, and CLI/runtime checks pass. Repository-wide type errors and accessibility warnings remain unresolved.
+- Scoped Prettier: passed. Scoped ESLint remains blocked by four parser errors in existing TypeScript Toolbar components plus four existing Toolbar-story issues (unkeyed each, raw HTML, and two unused arguments); no global lint rules or parser configuration were changed.
+- `npm run build`: passed, including package generation, publint, workbench prerender, Storybook and staging. Existing oversized-chunk warnings remain.
+- Browser checks covered consent without tracking, repeated mount/unmount, Header variants and mobile menu/search/submenu interaction, Toolbar help steps/toggle/action, and direct Scroller section entry. Desktop 1440px and mobile 390px checks/screenshots showed no horizontal overflow. The final deployed Scroller reached index 1 without a second synthetic scroll, with no browser errors and no Google tracking script.
+- `npm run deploy`: published the final Storybook/workbench. The live route returned HTTP 200 and matched the staged HTML after normalizing Git's CRLF-to-LF conversion: https://onsdigital.github.io/svelte-components/workbench/.
+- Local production preview remains available at http://127.0.0.1:4173/svelte-components/workbench/.
+
+### Follow-up
+
+- Block 5D is complete. Pause before starting block 5E (charts/data display). No source commit was created by this assistant session; an external source commit appeared during final verification and was preserved.
