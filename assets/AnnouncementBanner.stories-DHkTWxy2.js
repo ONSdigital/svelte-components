@@ -1,0 +1,29 @@
+import{ad as T,p as i,af as A,i as O,t as g,a as c,f as d,ah as m,c as t,b as l,h as P,n as R,ax as F}from"./iframe-DAUNLR8O.js";import{c as $,w as j,i as z,d as G}from"./create-runtime-stories-B5aIRkb-.js";import{s as J}from"./attributes-C8WLOc0F.js";import{s as B}from"./class-DzLv1wVC.js";import{C as K}from"./Container-SIPjVhMn.js";import{l as L}from"./utils-VWytQRnm.js";import"./preload-helper-Dp1pzeXC.js";import"./attributes-DayBpKoh.js";import"./style-DnS876Ns.js";import"./Theme-pIXUpPy8.js";import"./html-D5syok29.js";import"./svelte-head-CNn9Wnte.js";import"./_commonjsHelpers-CqkleIqs.js";var Q=d('<a class="ons-announcement-banner__link"> </a>'),U=d('<div><div class="ons-container"><div><h2 class="ons-announcement-banner__title"> </h2> <p class="ons-announcement-banner__description"> </p> <!></div></div></div>');function h(s,e){T(e,!0);let a=i(e,"cls",3,null),r=i(e,"variant",3,"teal"),n=i(e,"linkHref",3,null),o=i(e,"linkText",3,null),p=i(e,"marginTop",3,!1),N=i(e,"marginBottom",3,!1);K(s,{get cls(){return a()},width:"full",get marginTop(){return p()},get marginBottom(){return N()},children:(C,ee)=>{var u=U(),H=t(u),_=t(H),x=t(_),S=t(x),w=m(x,2),V=t(w),I=m(w,2);{var E=f=>{var v=Q(),q=t(v);g(M=>{J(v,"href",n()),l(q,M)},[()=>o()||n().replace("https://","")]),c(f,v)};O(I,f=>{n()&&f(E)})}g(()=>{B(u,1,`ons-announcement-banner__container ons-announcement-banner--${r()??""}`,"svelte-1hr5b2r"),B(_,1,`ons-announcement-banner ons-announcement-banner--${r()??""}`,"svelte-1hr5b2r"),l(S,e.title),l(V,e.description)}),c(C,u)},$$slots:{default:!0}}),A()}h.__docgen={data:[{name:"cls",visibility:"public",description:"- Optional: Set an additional CSS class for the section",keywords:[],kind:"let",type:{kind:"type",type:"string",text:"string"},static:!1,readonly:!1,defaultValue:"null"},{name:"title",visibility:"public",description:"- Sets the title of the banner (required)",keywords:[{name:"required",description:""}],kind:"let",type:{kind:"type",type:"string",text:"string"},static:!1,readonly:!1},{name:"description",visibility:"public",description:"- Sets the text content of the banner (required)",keywords:[{name:"required",description:""}],kind:"let",type:{kind:"type",type:"string",text:"string"},static:!1,readonly:!1},{name:"variant",visibility:"public",description:"- Sets the variant/colour of the banner",keywords:[],kind:"let",type:{kind:"union",type:[{kind:"const",type:"string",value:"black",text:'"black"'},{kind:"const",type:"string",value:"red",text:'"red"'},{kind:"const",type:"string",value:"teal",text:'"teal"'}],text:'"black" | "red" | "teal"'},static:!1,readonly:!1,defaultValue:'"teal"'},{name:"linkHref",visibility:"public",description:"- Sets the text content of the banner",keywords:[],kind:"let",type:{kind:"type",type:"string",text:"string"},static:!1,readonly:!1,defaultValue:"null"},{name:"linkText",visibility:"public",description:"- Sets the text content of the banner",keywords:[],kind:"let",type:{kind:"type",type:"string",text:"string"},static:!1,readonly:!1,defaultValue:"null"},{name:"marginTop",visibility:"public",description:"- Adds margin above section",keywords:[],kind:"let",type:{kind:"type",type:"boolean",text:"boolean"},static:!1,readonly:!1,defaultValue:"false"},{name:"marginBottom",visibility:"public",description:"- Adds margin below section",keywords:[],kind:"let",type:{kind:"type",type:"boolean",text:"boolean"},static:!1,readonly:!1,defaultValue:"false"}],name:"AnnouncementBanner.svelte"};const W=`This banner is used to highlight important messages for all users of a service or website. The banner is only meant for critical short-term messages, and should be placed immediately below the website navigation header (and above the breadcrumb).\r
+\r
+Based on [this design system component](https://service-manual.ons.gov.uk/design-system/components/announcement-banner).\r
+\r
+<!-- prettier-ignore -->\r
+\`\`\`html\r
+<script>\r
+  import { AnnouncementBanner } from "@onsvisual/svelte-components";\r
+<\/script>\r
+\r
+<AnnouncementBanner\r
+  title="Important service announcement"\r
+  description="This is a website-wide service announcement"\r
+  linkHref="https://example.com"\r
+  linkText="More information"/>\r
+\`\`\`\r
+`,y=(s,e=R)=>{h(s,F(e,{children:(a,r)=>{var n=Y(),o=t(n);g(p=>l(o,p),[()=>L()]),c(a,n)},$$slots:{default:!0}}))},X={title:"Information and media/AnnouncementBanner",component:h,tags:["autodocs"],argTypes:{width:{control:{type:"select"}}},parameters:j(W)},{Story:b}=G();var Y=d("<p> </p>"),Z=d("<!> <!> <!>",1);function D(s,e){T(e,!1),z();var a=Z(),r=P(a);b(r,{name:"Default",args:{title:"Important service announcement",description:"This is a website-wide service announcement",variant:"teal",linkHref:"#0",linkText:"More information"},get template(){return y},parameters:{__svelteCsf:{rawCode:`<AnnouncementBanner {...args}>\r
+	<p>\r
+		{lipsum()}\r
+	</p>\r
+</AnnouncementBanner>`}}});var n=m(r,2);b(n,{name:"National emergency",args:{title:"National emergency",description:"This is a level 1 incident",variant:"red",linkHref:"#0",linkText:"More information"},get template(){return y},parameters:{__svelteCsf:{rawCode:`<AnnouncementBanner {...args}>\r
+	<p>\r
+		{lipsum()}\r
+	</p>\r
+</AnnouncementBanner>`}}});var o=m(n,2);b(o,{name:"Notable death",args:{title:"His Royal Highness Henry VIII",description:"1491 to 1547",variant:"black",linkHref:"#0",linkText:"Find out more"},get template(){return y},parameters:{__svelteCsf:{rawCode:`<AnnouncementBanner {...args}>\r
+	<p>\r
+		{lipsum()}\r
+	</p>\r
+</AnnouncementBanner>`}}}),c(s,a),A()}D.__docgen={data:[],name:"AnnouncementBanner.stories.svelte"};const k=$(D,X),fe=["Default","NationalEmergency","NotableDeath"],ve={...k.Default,tags:["svelte-csf-v5"]},ye={...k.NationalEmergency,tags:["svelte-csf-v5"]},be={...k.NotableDeath,tags:["svelte-csf-v5"]};export{ve as Default,ye as NationalEmergency,be as NotableDeath,fe as __namedExportsOrder,X as default};
