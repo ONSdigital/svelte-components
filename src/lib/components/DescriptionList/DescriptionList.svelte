@@ -1,24 +1,14 @@
 <script>
 	/**
-	 * Sets the title of the list (for screen readers)
-	 * @type {string|null}
+	 * @typedef {Object} Props
+	 * @property {string|null} [title] - Sets the title of the list (for screen readers)
+	 * @property {{ key: string; value: unknown }[]} [items] - Array of items in format {key, value} where "value" may be an array of multiple values
+	 * @property {"default"|"inline"} [mode] - Option to change layout to "inline", eg. for title blocks
+	 * @property {string|null} [cls] - Optional: Set an additional CSS class for the component
 	 */
-	export let title = null;
-	/**
-	 * Array of items in format {key, value} where "value" may be an array of multiple values
-	 * @type {object[]}
-	 */
-	export let items = [];
-	/**
-	 * Option to change layout to "inline", eg. for title blocks
-	 * @type {"default"|"inline"}
-	 */
-	export let mode = "default";
-	/**
-	 * Optional: Set an additional CSS class for the component
-	 * @type {string|null}
-	 */
-	export let cls = null;
+
+	/** @type {Props} */
+	let { title = null, items = [], mode = "default", cls = null } = $props();
 </script>
 
 <dl
@@ -29,7 +19,7 @@
 	{title}
 	aria-label={title}
 >
-	{#each items as item}
+	{#each items as item, index (index)}
 		<div class="ons-description-list__item">
 			<dt
 				class="ons-description-list__term ons-grid__col {mode === 'inline'
@@ -38,7 +28,7 @@
 			>
 				{item.key}:
 			</dt>
-			{#each [item.value].flat() as value}
+			{#each [item.value].flat() as value, valueIndex (valueIndex)}
 				<dd
 					class="ons-description-list__value ons-grid__col {mode === 'inline'
 						? 'ons-col-8@s@l'

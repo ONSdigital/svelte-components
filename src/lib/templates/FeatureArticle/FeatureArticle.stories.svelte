@@ -100,10 +100,10 @@
 			on:enter={(e) => console.debug("enter", e)}
 			on:exit={(e) => console.debug("exit", e)}
 		>
-			<div slot="background">
+			{#snippet background()}
 				<Container width="full" height="full" background={scrollerColor} />
-			</div>
-			<div slot="foreground">
+			{/snippet}
+			{#snippet foreground()}
 				<ScrollerSection>
 					<p>
 						When this first caption is visible, the background will appear <Em
@@ -125,7 +125,7 @@
 						>.
 					</p>
 				</ScrollerSection>
-			</div>
+			{/snippet}
 		</Scroller>
 
 		<Section title="Yet another section title">

@@ -1,11 +1,8 @@
 <script>
-	/**
-	 * Sets the unique ID that can be targetted by hyperlinks
-	 * @type {string}
-	 */
-	export let id = "main";
+	/** @type {{ children?: import("svelte").Snippet; id?: string }} */
+	let { children, id = "main" } = $props();
 </script>
 
 <main {id}>
-	<slot />
+	{@render children?.()}
 </main>

@@ -2,55 +2,34 @@
 	import Container from "$lib/components/Container/Container.svelte";
 
 	/**
-	 * Optional: Set the unique ID of the section
-	 * @type {string|null}
+	 * @typedef {Object} Props
+	 * @property {string|null} [id] - Optional: Set the unique ID of the section
+	 * @property {string|null} [cls] - Optional: Set an additional CSS class for the section
+	 * @property {boolean} [bigText] - Applies a larger default text size (by default)
+	 * @property {"narrow"|"medium"|"wide"|"wider"|"full"} [width] - Sets the width of the container
+	 * @property {number|string|null} [height] - Sets the (minimum) height of the container
+	 * @property {"light"|"dark"|"paleblue"|"blue"|"navyblue"|"grey"|null} [theme] - Sets a predefined theme
+	 * @property {Record<string, string>} [themeOverrides] - Define additional props to override the base theme
+	 * @property {string|null} [background] - Overrides the background CSS for the section
+	 * @property {boolean} [marginTop] - Adds margin above section
+	 * @property {boolean} [marginBottom] - Adds margin below section
+	 * @property {import('svelte').Snippet} [children]
 	 */
-	export let id = null;
-	/**
-	 * Optional: Set an additional CSS class for the section
-	 * @type {string|null}
-	 */
-	export let cls = null;
-	/**
-	 * Applies a larger default text size (by default)
-	 * @type {boolean}
-	 */
-	export let bigText = true;
-	/**
-	 * Sets the width of the container
-	 * @type {"narrow"|"medium"|"wide"|"wider"|"full"}
-	 */
-	export let width = "narrow";
-	/**
-	 * Sets the (minimum) height of the container
-	 * @type {number|string|null}
-	 */
-	export let height = null;
-	/**
-	 * Sets a predefined theme
-	 * @type {"light"|"dark"|"paleblue"|"blue"|"navyblue"|"grey"|null}
-	 */
-	export let theme = "paleblue";
-	/**
-	 * Define additional props to override the base theme
-	 * @type {object}
-	 */
-	export let themeOverrides = {};
-	/**
-	 * Overrides the background CSS for the section
-	 * @type {string|null}
-	 */
-	export let background = null;
-	/**
-	 * Adds margin above section
-	 * @type {boolean}
-	 */
-	export let marginTop = false;
-	/**
-	 * Adds margin below section
-	 * @type {boolean}
-	 */
-	export let marginBottom = true;
+
+	/** @type {Props} */
+	let {
+		id = null,
+		cls = null,
+		bigText = true,
+		width = "narrow",
+		height = null,
+		theme = "paleblue",
+		themeOverrides = {},
+		background = null,
+		marginTop = false,
+		marginBottom = true,
+		children
+	} = $props();
 </script>
 
 <Container {id} {cls} {width} {marginTop} {marginBottom} {theme} {themeOverrides} {background}>
@@ -60,7 +39,7 @@
 		style:height={typeof height === "number" ? `${height}px` : height === "full" ? "100vh" : height}
 	>
 		<div>
-			<slot />
+			{@render children?.()}
 		</div>
 	</section>
 </Container>

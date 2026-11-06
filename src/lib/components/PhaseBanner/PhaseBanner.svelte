@@ -2,31 +2,22 @@
 	import Container from "../Container/Container.svelte";
 
 	/**
-	 * Phase of project (alpha, beta, prototype etc.)
-	 * @type {string}
+	 * @typedef {Object} Props
+	 * @property {string} [phase] - Phase of project (alpha, beta, prototype etc.)
+	 * @property {string} [description] - Message to describe the phase
+	 * @property {string} [href] - URL of feedback form (relative or absolute)
+	 * @property {"narrow"|"medium"|"wide"|"wider"|"full"} [width] - Sets the width of the banner
+	 * @property {string|null} [cls] - Optional: Set an additional CSS class for the component
 	 */
-	export let phase = "Beta";
-	/**
-	 * Message to describe the phase
-	 * @type {string}
-	 */
-	export let description =
-		phase === "Prototype" ? "This is a prototype." : "This is a new service.";
-	/**
-	 * URL of feedback form (relative or absolute)
-	 * @type {string}
-	 */
-	export let href = "https://www.ons.gov.uk/feedback";
-	/**
-	 * Sets the width of the banner
-	 * @type {"narrow"|"medium"|"wide"|"wider"|"full"}
-	 */
-	export let width = "wide";
-	/**
-	 * Optional: Set an additional CSS class for the component
-	 * @type {string|null}
-	 */
-	export let cls = null;
+
+	/** @type {Props} */
+	let {
+		phase = "Beta",
+		description = phase === "Prototype" ? "This is a prototype." : "This is a new service.",
+		href = "https://www.ons.gov.uk/feedback",
+		width = "wide",
+		cls = null
+	} = $props();
 </script>
 
 <div class="ons-phase-banner {cls}" class:ons-phase-banner__full={width === "full"}>
@@ -55,8 +46,6 @@
 									xmlns="http://www.w3.org/2000/svg"
 									focusable="false"
 									aria-hidden="true"
-									role="img"
-									title="ons-icon-external-link"
 								>
 									<path
 										d="M13.5,9H13a.5.5,0,0,0-.5.5v3h-9v-9h3A.5.5,0,0,0,7,3V2.5A.5.5,0,0,0,6.5,2h-4a.5.5,0,0,0-.5.5v11a.5.5,0,0,0,.5.5h11a.5.5,0,0,0,.5-.5v-4A.5.5,0,0,0,13.5,9Z"

@@ -1,6 +1,7 @@
 <script>
 	import BrowserWorkbench from "./BrowserWorkbench.svelte";
 	import DataWorkbench from "./DataWorkbench.svelte";
+	import RemainingWorkbench from "./RemainingWorkbench.svelte";
 	import "$lib/css/main.css";
 	import Button from "$lib/components/Button/Button.svelte";
 	import BackLink from "$lib/components/BackLink/BackLink.svelte";
@@ -695,6 +696,7 @@
 	</section>
 	<BrowserWorkbench />
 	<DataWorkbench />
+	<RemainingWorkbench />
 </main>
 
 <style>

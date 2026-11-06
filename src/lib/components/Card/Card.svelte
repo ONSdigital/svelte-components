@@ -1,66 +1,24 @@
 <script>
 	import GridCell from "../Grid/GridCell.svelte";
 
-	/**
-	 * Sets the unique ID of the section
-	 * @type {string|null}
-	 */
-	export let id = null;
-	/**
-	 * Optional: Set an additional CSS class for the section
-	 * @type {string|null}
-	 */
-	export let cls = null;
-	/**
-	 * Optional: Override default column class for the card
-	 * @type {string|null}
-	 */
-	export let colCls = null;
-	/**
-	 * Sets the title of the card
-	 * @type {string|null}
-	 */
-	export let title = null;
-	/**
-	 * Allows the h2 title tag for the card to be visually hidden
-	 * @type {boolean}
-	 */
-	export let hideTitle = false;
-	/**
-	 * Set the heading level for the card titles
-	 * @type {"h2"|"h3"}
-	 */
-	export let headingTag = "h2";
-	/**
-	 * Setting mode to "featured" creates an inset card on a grey background
-	 * @type {"default"|"featured"}
-	 */
-	export let mode = "default";
-	/**
-	 * Include a border at the bottom of the card
-	 * @type {boolean}
-	 */
-	export let baseline = false;
-	/**
-	 * Optional: URL for title/image link
-	 * @type {string|null}
-	 */
-	export let href = null;
-	/**
-	 * Optional: URL for image
-	 * @type {string|null}
-	 */
-	export let image = null;
-	/**
-	 * Optional: Alt text for image
-	 * @type {string|null}
-	 */
-	export let imageAlt = null;
-	/**
-	 * (If used in grid) How many columns the card should span across
-	 * @type {number}
-	 */
-	export let colspan = 1;
+	/** @type {{ children?: import("svelte").Snippet; imageContent?: import("svelte").Snippet; titleContent?: import("svelte").Snippet; id?: string | null; cls?: string | null; colCls?: string | null; title?: string | null; hideTitle?: boolean; headingTag?: "h2" | "h3"; mode?: "default" | "featured"; baseline?: boolean; href?: string | null; image?: string | null; imageAlt?: string | null; colspan?: number }} */
+	let {
+		children,
+		imageContent,
+		titleContent,
+		id = null,
+		cls = null,
+		colCls = null,
+		title = null,
+		hideTitle = false,
+		headingTag = "h2",
+		mode = "default",
+		baseline = false,
+		href = null,
+		image = null,
+		imageAlt = null,
+		colspan = 1
+	} = $props();
 </script>
 
 <GridCell {colspan} {colCls}>
@@ -72,24 +30,24 @@
 	>
 		{#if href}
 			<a {href} class="ons-card__link">
-				<slot name="image">
-					{#if image}
-						<img
-							class="ons-card__image ons-u-mb-s"
-							class:ons-card__image-expand={mode === "featured"}
-							src={image}
-							alt={imageAlt}
-							loading="lazy"
-						/>
-					{/if}
-				</slot>
-				<slot name="title">
-					{#if title && headingTag === "h3"}
-						<h3 {id} class="ons-card__title ons-u-fs-m" class:ons-u-vh={hideTitle}>{title}</h3>
-					{:else if title}
-						<h2 {id} class="ons-card__title ons-u-fs-m" class:ons-u-vh={hideTitle}>{title}</h2>
-					{/if}
-				</slot>
+				{#if imageContent}
+					{@render imageContent()}
+				{:else if image}
+					<img
+						class="ons-card__image ons-u-mb-s"
+						class:ons-card__image-expand={mode === "featured"}
+						src={image}
+						alt={imageAlt}
+						loading="lazy"
+					/>
+				{/if}
+				{#if titleContent}
+					{@render titleContent()}
+				{:else if title && headingTag === "h3"}
+					<h3 {id} class="ons-card__title ons-u-fs-m" class:ons-u-vh={hideTitle}>{title}</h3>
+				{:else if title}
+					<h2 {id} class="ons-card__title ons-u-fs-m" class:ons-u-vh={hideTitle}>{title}</h2>
+				{/if}
 			</a>
 		{:else}
 			{#if image}
@@ -107,7 +65,7 @@
 				<h2 {id} class="ons-card__title ons-u-fs-m" class:ons-u-vh={hideTitle}>{title}</h2>
 			{/if}
 		{/if}
-		<slot />
+		{@render children?.()}
 	</div>
 </GridCell>
 

@@ -2,20 +2,15 @@
 	import List from "$lib/components/List/List.svelte";
 
 	/**
-	 * Defines the title of the error
-	 * @type {string|null}
+	 * @typedef {Object} Props
+	 * @property {string|null} [title] - Defines the title of the error
+	 * @property {{ label: string; href?: string }[]} [items] - Define an array of errors/issues in the format {label, href?}
+	 * @property {string|null} [cls] - Optional: Set an additional CSS class for the component
+	 * @property {import('svelte').Snippet} [children]
 	 */
-	export let title = null;
-	/**
-	 * Define an array of errors/issues in the format {label, href?}
-	 * @type {object[]}
-	 */
-	export let items = [];
-	/**
-	 * Optional: Set an additional CSS class for the component
-	 * @type {string|null}
-	 */
-	export let cls = null;
+
+	/** @type {Props} */
+	let { title = null, items = [], cls = null, children } = $props();
 </script>
 
 <div aria-labelledby="alert" role="alert" tabindex="-1" class="ons-panel ons-panel--error {cls}">
@@ -25,7 +20,7 @@
 	<div class="ons-panel__body">
 		{#if Array.isArray(items)}
 			<List mode="number">
-				{#each items as item}
+				{#each items as item, index (index)}
 					<li>
 						{#if item.href}
 							<a href={item.href}>{item.label}</a>
@@ -36,7 +31,7 @@
 				{/each}
 			</List>
 		{/if}
-		<slot />
+		{@render children?.()}
 	</div>
 </div>
 

@@ -1,5 +1,7 @@
 Displays a table of contents based on an array of links. Can be used for in-page navigation, or for navigation between sibling pages.
 
+The `skipHref` prop is used as the destination of the "Skip to guide content" link. Props and link data update reactively under Svelte 5.
+
 Based on [this ONS Design System component](https://service-manual.ons.gov.uk/design-system/components/table-of-contents).
 
 <!-- prettier-ignore -->

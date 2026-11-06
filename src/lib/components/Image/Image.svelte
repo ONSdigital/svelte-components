@@ -1,24 +1,14 @@
 <script>
 	/**
-	 * The URL of the image
-	 * @type {string|null}
+	 * @typedef {Object} Props
+	 * @property {string|null} [src] - The URL of the image
+	 * @property {string|null} [alt] - An alternative text for the image
+	 * @property {string|null} [caption] - A visible caption for the image
+	 * @property {string|null} [cls] - Optional: Set an additional CSS class for the component
 	 */
-	export let src = null;
-	/**
-	 * An alternative text for the image
-	 * @type {string|null}
-	 */
-	export let alt = null;
-	/**
-	 * A visible caption for the image
-	 * @type {string|null}
-	 */
-	export let caption = null;
-	/**
-	 * Optional: Set an additional CSS class for the component
-	 * @type {string|null}
-	 */
-	export let cls = null;
+
+	/** @type {Props} */
+	let { src = null, alt = null, caption = null, cls = null } = $props();
 </script>
 
 <figure class="ons-image {cls}">

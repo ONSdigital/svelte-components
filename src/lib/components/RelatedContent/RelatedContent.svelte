@@ -1,29 +1,21 @@
 <script>
 	/**
-	 * Title for the section
-	 * @type {string}
+	 * @typedef {Object} Props
+	 * @property {string} [title] - Title for the section
+	 * @property {{ title: string; href: string }[] | object} [links] - Links in the form {title, href}
+	 * @property {{ title?: string; links: { title: string; href: string }[] | object }[]} [related] - Define multiple links sections in the form {title, links: [{title, href}]} (overrides above options)
+	 * @property {string|null} [cls] - Optional: Set an additional CSS class for the component
+	 * @property {import('svelte').Snippet} [children]
 	 */
-	export let title = "Related content";
-	/**
-	 * Links in the form {title, href}
-	 * @type {object[]|object}
-	 */
-	export let links = [];
-	/**
-	 * Define multiple links sections in the form {title, links: [{title, href}]} (overrides above options)
-	 * @type {object[]}
-	 */
-	export let related = [{ title, links }];
-	/**
-	 * Optional: Set an additional CSS class for the component
-	 * @type {string|null}
-	 */
-	export let cls = null;
+
+	/** @type {Props} */
+	let { title = "Related content", links = [], related, cls = null, children } = $props();
+	const sections = $derived(related ?? [{ title, links }]);
 </script>
 
 <aside class="ons-related-content {cls}" aria-label="Related content">
-	<slot />
-	{#each related as section}
+	{@render children?.()}
+	{#each sections as section, sectionIndex (sectionIndex)}
 		<div class="ons-related-content__section">
 			{#if section.title}
 				<h2
@@ -40,7 +32,7 @@
 						aria-labelledby="related-help-with-the-census"
 					>
 						<ul class="ons-list ons-list--bare">
-							{#each section.links as link}
+							{#each section.links as link, linkIndex (linkIndex)}
 								<li class="ons-list__item">
 									<a href={link.href} class="ons-list__link">{link.title}</a>
 								</li>

@@ -171,3 +171,32 @@ This log records migration decisions, component changes, verification results, a
 ### Follow-up
 
 - Block 5E is complete. Pause before migration-wide final audit, cleanup or release work; remaining repository diagnostics and any other legacy component surfaces have not been declared resolved. No source commit was created by this assistant session.
+
+## 2026-11-06: Final Component Block (5F)
+
+### Components And Contracts
+
+- Completed the remaining 21 implementation files: Theme, Container, Main, Card, Hero, Highlight, Tooltip, Indent, AnnouncementBanner, Blockquote, DescriptionList, ErrorPage, ErrorSummary, Image, List/Li, PhaseBanner, Breadcrumb, Contents, RelatedContent and SkipLink. Used the official Svelte compiler migrator for straightforward components and manual changes for collision-prone composition and lifecycle behavior.
+- Migrated props to `$props`, derived/state values to runes, and child content to snippets. Ordinary child markup remains supported. Card's linked-card `image`/`title` slots become `imageContent`/`titleContent`, preserving string-prop fallbacks and the original linked-card scope. Hero's `before`/`after` slots become same-named snippets.
+- Theme styles and Container sizing remain reactive, including client CSS wrappers. ErrorPage supports both page stores and page-state objects with reactive inferred status/message and explicit-prop precedence. RelatedContent's inferred section follows changing title/links. Contents now uses its supplied `skipHref` rather than a hard-coded destination.
+- Tooltip now disposes listeners and Popper through effect cleanup, supports reactive placement/text/maximum width, and uses bubbling focus events so nested children trigger keyboard tooltips. Tests cover replacement/unmount cleanup and detached-wrapper events.
+- Refined metadata types without restricting rendered metadata values, including numeric zero. Keyed list loops by index where the API does not require unique IDs. Corrected invalid SVG title attributes and redundant role markup in the touched components.
+- Preserved trusted-HTML APIs in Theme, DescriptionList and List, alongside previously documented HTML APIs elsewhere. Preserved intentional dispatched-event compatibility and compiler bridges in already-migrated components; no event APIs or external chart implementations were removed.
+- Updated FeatureArticle's remaining Scroller named-slot usage to `background`/`foreground` snippets. Added a consolidated migration guide, linked it from README, and updated Card, Hero, Tooltip, ErrorPage, RelatedContent and Contents documentation.
+
+### Workbench And Verification
+
+- Added dedicated remaining-component workbench fixtures for wrappers, composition, Tooltip, content/messaging and navigation. Main/ErrorPage render in a separate prerendered iframe route so their main landmarks are not nested inside the workbench's main element.
+- Added 22 focused tests in two files: 19 client behavior checks and three SSR checks, including global Theme head styles and one-main-landmark rendering. All pass; the focused slice was rerun after final metadata compatibility refinements.
+- Full suite: 83 passed and one pre-existing home-route heading failure (84 total). This block does not change that unrelated test assertion.
+- `npm run check`: 194 errors and 8 warnings in 55 files, down from 5E's 236 errors and 10 warnings. No diagnostics remain in this block's implementation files, new tests or workbench routes. Existing Storybook template-argument typing and other repository-wide diagnostics remain.
+- Scoped ESLint passed with only `svelte/no-at-html-tags` excluded for retained, documented HTML/CSS-generation contracts. Scoped Prettier and patch whitespace checks passed. No global lint configuration was changed.
+- Library source scan found no remaining `export let`, `<slot>`, reactive `$:` statements or legacy `slot=` consumers in `src/lib/**/*.svelte`. Retained event dispatchers and the existing Header/Analytics compatibility helpers are intentional, not unfinished syntax migration.
+- Final `npm run build`: passed, including package generation, publint, workbench/landmark prerender, Storybook and staging. Existing oversized-chunk warnings remain.
+- Browser checks passed for theme/size/client-wrapper changes, Card custom snippets, Hero title updates, keyboard Tooltip activation and all placements, reactive related links, Contents' keyboard skip destination, fixture remounting and Main/404/500 iframe views. Popper correctly flips when requested placement lacks room. Images loaded; no page errors, nested main elements or horizontal overflow were observed at desktop 1440px and mobile 390px. Desktop/mobile screenshots were checked.
+- `npm run deploy`: published the final documentation/workbench. Both `/svelte-components/workbench/` and `/svelte-components/workbench/landmarks/` returned HTTP 200 and matched staged HTML after CRLF-to-LF normalization.
+- Local production preview remains available at http://127.0.0.1:4175/svelte-components/workbench/.
+
+### Follow-up
+
+- Component syntax migration is complete. Pause before repository-wide diagnostic/lint cleanup, final release audit, versioning or npm publication. These remaining gates have not been declared green. No source commit was created by this assistant session.

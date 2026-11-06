@@ -1,32 +1,20 @@
 <script>
-	import { onMount } from "svelte";
 	import { createPopper } from "@popperjs/core";
 
-	/**
-	 * Define the text to be displayed on the tooltip
-	 * @type {string}
-	 */
-	export let text = "";
-	/**
-	 * Define the position of the tooltip relative to the element
-	 * @type {"top"|"bottom"|"left"|"right"}
-	 */
-	export let position = "bottom";
-	/**
-	 * Set a maximum width for the tooltip (beyond this width text will wrap)
-	 * @type {number|null}
-	 */
-	export let width = null;
-	/**
-	 * Set z-index of tooltip, to ensure it appears in front of other elements
-	 * @type {number|null}
-	 */
-	export let zIndex = null;
+	/** @type {{ children?: import("svelte").Snippet; text?: string; position?: "top" | "bottom" | "left" | "right"; width?: number | null; zIndex?: number | null }} */
+	let { children, text = "", position = "bottom", width = null, zIndex = null } = $props();
+	/** @type {HTMLDivElement | undefined} */
+	let wrapper = $state();
+	/** @type {HTMLDivElement | undefined} */
+	let tooltip = $state();
+	/** @type {string | null} */
+	let showToolip = $state(null);
 
-	let wrapper, tooltip; // HTML element bindings
-	let showToolip = null;
-
-	function init() {
+	$effect(() => {
+		if (!wrapper || !tooltip) return;
+		const reference = wrapper;
+		text;
+		width;
 		const popper = createPopper(wrapper, tooltip, {
 			placement: position,
 			modifiers: [
@@ -46,7 +34,7 @@
 			// Enable the event listeners
 			popper.setOptions((options) => ({
 				...options,
-				modifiers: [...options.modifiers, { name: "eventListeners", enabled: true }]
+				modifiers: [...(options.modifiers ?? []), { name: "eventListeners", enabled: true }]
 			}));
 
 			// Update its position
@@ -60,29 +48,26 @@
 			// Disable the event listeners
 			popper.setOptions((options) => ({
 				...options,
-				modifiers: [...options.modifiers, { name: "eventListeners", enabled: false }]
+				modifiers: [...(options.modifiers ?? []), { name: "eventListeners", enabled: false }]
 			}));
 		}
 
-		const showEvents = ["mouseenter", "focus"];
-		const hideEvents = ["mouseleave", "blur"];
+		const showEvents = ["mouseenter", "focusin"];
+		const hideEvents = ["mouseleave", "focusout"];
 
-		for (const event of showEvents) wrapper.addEventListener(event, show);
-		for (const event of hideEvents) wrapper.addEventListener(event, hide);
+		for (const event of showEvents) reference.addEventListener(event, show);
+		for (const event of hideEvents) reference.addEventListener(event, hide);
 
-		return {
-			destroy: () => {
-				for (const event of showEvents) wrapper.removeEventListener(event, show);
-				for (const event of hideEvents) wrapper.removeEventListener(event, hide);
-				popper.destroy();
-			}
+		return () => {
+			for (const event of showEvents) reference.removeEventListener(event, show);
+			for (const event of hideEvents) reference.removeEventListener(event, hide);
+			popper.destroy();
 		};
-	}
-	onMount(init);
+	});
 </script>
 
 <div class="tooltip-wrapper" bind:this={wrapper}>
-	<slot />
+	{@render children?.()}
 </div>
 
 <div
@@ -91,6 +76,7 @@
 	data-show={showToolip}
 	bind:this={tooltip}
 	style:z-index={zIndex}
+	style:max-width={width === null ? null : `${width}px`}
 >
 	{text}
 	<div class="tooltip-arrow" data-popper-arrow></div>

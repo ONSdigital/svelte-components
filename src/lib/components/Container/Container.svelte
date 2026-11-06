@@ -1,51 +1,19 @@
 <script>
 	import Theme from "$lib/components/Theme/Theme.svelte";
 
-	/**
-	 * Optional: Set the unique ID of the container
-	 * @type {string|null}
-	 */
-	export let id = null;
-	/**
-	 * Optional: Set an additional CSS class for the container
-	 * @type {string|null}
-	 */
-	export let cls = null;
-	/**
-	 * Sets the width of the container
-	 * @type {"narrow"|"medium"|"wide"|"wider"|"full"}
-	 */
-	export let width = "wide";
-	/**
-	 * Sets the height of the container
-	 * @type {number|string|null}
-	 */
-	export let height = null;
-	/**
-	 * Adds margin above container
-	 * @type {boolean}
-	 */
-	export let marginTop = false;
-	/**
-	 * Adds margin below container
-	 * @type {boolean}
-	 */
-	export let marginBottom = false;
-	/**
-	 * Optional: Sets a base theme ("light", "dark" or null for no theme)
-	 * @type {"light"|"dark"|"paleblue"|"blue"|"navyblue"|"grey"|null}
-	 */
-	export let theme = null;
-	/**
-	 * Optional: Define additional props to override the base theme
-	 * @type {object}
-	 */
-	export let themeOverrides = {};
-	/**
-	 * Optional: Overrides the base theme background (accepts any valid CSS background value)
-	 * @type {string|null}
-	 */
-	export let background = null;
+	/** @type {{ children?: import("svelte").Snippet; id?: string | null; cls?: string | null; width?: "narrow" | "medium" | "wide" | "wider" | "full"; height?: number | string | null; marginTop?: boolean; marginBottom?: boolean; theme?: "light" | "dark" | "paleblue" | "blue" | "navyblue" | "grey" | null; themeOverrides?: Record<string, string>; background?: string | null }} */
+	let {
+		children,
+		id = null,
+		cls = null,
+		width = "wide",
+		height = null,
+		marginTop = false,
+		marginBottom = false,
+		theme = null,
+		themeOverrides = {},
+		background = null
+	} = $props();
 </script>
 
 <Theme {theme} overrides={themeOverrides} {background}>
@@ -61,17 +29,17 @@
 		{#if width === "narrow"}
 			<div class="ons-grid">
 				<div class="ons-grid__col ons-col-10@m ons-col-8@l">
-					<slot />
+					{@render children?.()}
 				</div>
 			</div>
 		{:else if width === "medium"}
 			<div class="ons-grid">
 				<div class="ons-grid__col ons-col-10@l">
-					<slot />
+					{@render children?.()}
 				</div>
 			</div>
 		{:else}
-			<slot />
+			{@render children?.()}
 		{/if}
 	</div>
 </Theme>

@@ -1,39 +1,22 @@
 <script>
 	import themes from "./themes.js";
 
-	/**
-	 * Sets a base theme ("light", "dark" or null for no theme)
-	 * @type {"light"|"dark"|"paleblue"|"blue"|"navyblue"|"grey"|null}
-	 */
-	export let theme = null;
-	/**
-	 * Define additional props to override the base theme
-	 * @type {object}
-	 */
-	export let overrides = {};
-	/**
-	 * Overrides the base theme background (accepts any valid CSS background value)
-	 * @type {string|null}
-	 */
-	export let background = null;
-	/**
-	 * Sets the theme at html body level (only use this at the top level)
-	 * @type {boolean}
-	 */
-	export let global = false;
-	/**
-	 * Allows client imported CSS for embeddable content
-	 * @type {boolean}
-	 */
-	export let allowClientOverrides = false;
-	/**
-	 * Optional: Set an additional CSS class for the theme container
-	 * @type {string|null}
-	 */
-	export let cls = null;
+	/** @typedef {keyof typeof themes | null} ThemeName */
+	/** @type {{ children?: import("svelte").Snippet; theme?: ThemeName; overrides?: Record<string, string>; background?: string | null; global?: boolean; allowClientOverrides?: boolean; cls?: string | null }} */
+	let {
+		children,
+		theme = null,
+		overrides = {},
+		background = null,
+		global = false,
+		allowClientOverrides = false,
+		cls = null
+	} = $props();
 
+	/** @param {ThemeName} theme @param {Record<string, string>} overrides */
 	function makeStyle(theme, overrides) {
 		if (theme) {
+			/** @type {Record<string, string>} */
 			const _theme = { ...themes[theme], ...overrides };
 			return Object.keys(_theme)
 				.map(
@@ -43,7 +26,7 @@
 		}
 		return "";
 	}
-	$: style = makeStyle(theme, overrides);
+	const style = $derived(makeStyle(theme, overrides));
 </script>
 
 <svelte:head>
@@ -55,15 +38,15 @@
 </svelte:head>
 
 {#if global || !(theme || background)}
-	<slot />
+	{@render children?.()}
 {:else}
 	<div class="ons-svelte-theme-wrapper {cls}" {style} style:background>
 		{#if allowClientOverrides}
 			<div class="client-css-override" style:display="contents">
-				<slot />
+				{@render children?.()}
 			</div>
 		{:else}
-			<slot />
+			{@render children?.()}
 		{/if}
 	</div>
 {/if}

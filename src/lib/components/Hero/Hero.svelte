@@ -6,75 +6,46 @@
 	import Button from "$lib/components/Button/Button.svelte";
 
 	/**
-	 * Sets the title/headline
-	 * @type {string}
+	 * @typedef {Object} Props
+	 * @property {string} [title] - Sets the title/headline
+	 * @property {string|null} [pageType] - Optional: Page type to sit above title
+	 * @property {string|null} [lede] - Descriptive text for page to sit below title
+	 * @property {{ label: string; color?: string; ariaLabel?: string } | null} [titleBadge] - Optional: Badge to appear next to the page title in format {label, color}
+	 * @property {{ label: string; href: string; ariaLabel?: string } | null} [actionButton] - Optional: Label and href for an action button in format {label, ariaLabel, href}
+	 * @property {boolean} [natStatBadge] - Include "national statistic" badge
+	 * @property {boolean} [censusLogo] - Include Census logo
+	 * @property {{ key: string; value: unknown }[] | null} [meta] - Array of {key, value} objects containing page metadata
+	 * @property {"narrow"|"medium"|"wide"|"wider"|"full"} [width] - Sets the width of the container
+	 * @property {number|string|null} [height] - Sets the (minimum) height of the container
+	 * @property {string|null} [cls] - Optional: Set an additional CSS class for the component
+	 * @property {"light"|"dark"|"blue"|"paleblue"|"navyblue"|"grey"|null} [theme] - Sets a predefined theme
+	 * @property {Record<string, string>} [themeOverrides] - Define additional props to override the base theme
+	 * @property {string|null} [background] - Overrides the background CSS for the section
+	 * @property {import('svelte').Snippet} [before]
+	 * @property {import('svelte').Snippet} [children]
+	 * @property {import('svelte').Snippet} [after]
 	 */
-	export let title = "Page title";
-	/**
-	 * Optional: Page type to sit above title
-	 * @type {string|null}
-	 */
-	export let pageType = null;
-	/**
-	 * Descriptive text for page to sit below title
-	 * @type {string|null}
-	 */
-	export let lede = null;
-	/**
-	 * Optional: Badge to appear next to the page title in format {label, color}
-	 * @type {object|null}
-	 */
-	export let titleBadge = null;
-	/**
-	 * Optional: Label and href for an action button in format {label, ariaLabel, href}
-	 * @type {object|null}
-	 */
-	export let actionButton = null;
-	/**
-	 * Include "national statistic" badge
-	 * @type {boolean}
-	 */
-	export let natStatBadge = false;
-	/**
-	 * Include Census logo
-	 * @type {boolean}
-	 */
-	export let censusLogo = false;
-	/**
-	 * Array of {key, value} objects containing page metadata
-	 * @type {object[]|null}
-	 */
-	export let meta = null;
-	/**
-	 * Sets the width of the container
-	 * @type {"narrow"|"medium"|"wide"|"wider"|"full"}
-	 */
-	export let width = "wide";
-	/**
-	 * Sets the (minimum) height of the container
-	 * @type {number|string|null}
-	 */
-	export let height = null;
-	/**
-	 * Optional: Set an additional CSS class for the component
-	 * @type {string|null}
-	 */
-	export let cls = null;
-	/**
-	 * Sets a predefined theme
-	 * @type {"light"|"dark"|"blue"|"paleblue"|"navyblue"|"grey"|null}
-	 */
-	export let theme = null;
-	/**
-	 * Define additional props to override the base theme
-	 * @type {object}
-	 */
-	export let themeOverrides = {};
-	/**
-	 * Overrides the background CSS for the section
-	 * @type {string|null}
-	 */
-	export let background = null;
+
+	/** @type {Props} */
+	let {
+		title = "Page title",
+		pageType = null,
+		lede = null,
+		titleBadge = null,
+		actionButton = null,
+		natStatBadge = false,
+		censusLogo = false,
+		meta = null,
+		width = "wide",
+		height = null,
+		cls = null,
+		theme = null,
+		themeOverrides = {},
+		background = null,
+		before,
+		children,
+		after
+	} = $props();
 </script>
 
 <Theme {theme} overrides={themeOverrides} {background}>
@@ -95,7 +66,7 @@
 						? "100vh"
 						: height}
 			>
-				<slot name="before" />
+				{@render before?.()}
 				{#if pageType}<h2 class="ons-hero--topic">{pageType}</h2>{/if}
 				<div class="ons-hero__content">
 					<div class="ons-hero__title-container">
@@ -124,12 +95,13 @@
 									href={actionButton.href}
 									icon="arrow"
 									iconPosition="after"
-									variant={["dark", "blue", "navyblue"].includes(theme) ? "ghost" : "primary"}
-									>{actionButton.label}</Button
+									variant={theme && ["dark", "blue", "navyblue"].includes(theme)
+										? "ghost"
+										: "primary"}>{actionButton.label}</Button
 								>
 							</p>
 						{/if}
-						<slot />
+						{@render children?.()}
 					</div>
 
 					{#if natStatBadge}
@@ -145,7 +117,7 @@
 									height="90"
 									viewBox="-6 0 90 90"
 									fill="none"
-									title="ons-official-statistics-badge"
+									aria-label="Official statistics"
 									focusable="false"
 									role="img"
 									class="ons-icon--logo"
@@ -343,7 +315,7 @@
 				{#if Array.isArray(meta)}
 					<DescriptionList items={meta} mode="inline" />
 				{/if}
-				<slot name="after" />
+				{@render after?.()}
 			</div>
 		</Container>
 	</section>
