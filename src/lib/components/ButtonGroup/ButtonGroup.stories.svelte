@@ -11,7 +11,8 @@
 		tags: ["autodocs"],
 		argTypes: {
 			legend: { control: "text" },
-			visuallyHideLegend: { control: "boolean" }
+			visuallyHideLegend: { control: "boolean" },
+			stackOnMobile: { control: "boolean" }
 		},
 		parameters: withComponentDocs(componentDocs)
 	});
@@ -36,5 +37,11 @@
 <Story
 	name="Visually hide legend"
 	args={{ name: "primary", legend: "Choose an option", visuallyHideLegend: true }}
+	{template}
+/>
+
+<Story
+	name="Always horizontal"
+	args={{ name: "horizontal", legend: "Choose an option", stackOnMobile: false }}
 	{template}
 />
