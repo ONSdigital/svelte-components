@@ -86,7 +86,6 @@
 	<label><input type="checkbox" bind:checked={mounted} /> Mount data components</label>
 	{#if mounted}
 		<PreviewSection headingId="datacard-heading" title="DataCard And Sparkline" level="h3">
-			
 			<div class="settings">
 				<label for="card-mode">Card mode</label>
 				<select id="card-mode" bind:value={cardMode}
@@ -118,7 +117,6 @@
 			</div>
 		</PreviewSection>
 		<PreviewSection headingId="table-heading" title="Table" level="h3">
-			
 			<div class="settings">
 				<label><input type="checkbox" bind:checked={alternate} /> Alternate rows</label>
 				<label><input type="checkbox" bind:checked={inferred} /> Infer columns</label>
@@ -140,7 +138,6 @@
 			</div>
 		</PreviewSection>
 		<PreviewSection headingId="chart-preview-heading" title="Chart Previews" level="h3">
-			
 			<div class="settings">
 				<label for="chart-type">Chart type</label>
 				<select id="chart-type" bind:value={chartType}

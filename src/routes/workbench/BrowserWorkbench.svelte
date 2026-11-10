@@ -41,7 +41,6 @@
 	</div>
 	{#if mounted}
 		<PreviewSection headingId="observe-heading" title="Observe And LazyLoad" level="h3">
-			
 			<Observe bind:visible onEnter={() => transitions++} onExit={() => transitions++}>
 				<p>Observed content</p>
 			</Observe>
@@ -53,7 +52,6 @@
 		</PreviewSection>
 
 		<PreviewSection headingId="embed-heading" title="Embed" level="h3">
-			
 			<Embed polling={false} onLoad={() => embedLoads++}>
 				<p>Embedded child content</p>
 			</Embed>
@@ -61,7 +59,6 @@
 		</PreviewSection>
 
 		<PreviewSection headingId="header-heading" title="Header" level="h3">
-			
 			<label for="header-mode">Variant</label>
 			<select id="header-mode" bind:value={headerMode}>
 				<option value="standard">Standard</option>
@@ -79,7 +76,6 @@
 		</PreviewSection>
 
 		<PreviewSection headingId="toolbar-heading" title="Toolbar" level="h3">
-			
 			<ToolbarsContainer>
 				<Toolbar ariaLabel="Workbench tools">
 					<ToolbarButton
@@ -115,12 +111,10 @@
 		</PreviewSection>
 
 		<PreviewSection headingId="sharing-heading" title="ShareButtons" level="h3">
-			
 			<ShareButtons marginBottom={false} />
 		</PreviewSection>
 
 		<PreviewSection headingId="analytics-heading" title="AnalyticsBanner" level="h3">
-			
 			<label><input type="checkbox" bind:checked={consentVisible} /> Show consent banner</label>
 			{#if consentVisible}
 				<AnalyticsBanner analyticsId="" bind:usageCookies />
@@ -129,13 +123,11 @@
 		</PreviewSection>
 
 		<PreviewSection headingId="footer-heading" title="Footer" level="h3">
-			
 			<label><input type="checkbox" bind:checked={compactFooter} /> Compact footer</label>
 			<Footer compact={compactFooter} />
 		</PreviewSection>
 
 		<PreviewSection headingId="scroller-heading" title="Scroller" level="h3">
-			
 			<p>
 				Sections: {count}; index: {index ?? "none"}; progress: {Number.isFinite(progress)
 					? progress.toFixed(2)

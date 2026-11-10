@@ -51,7 +51,6 @@
 	<label><input type="checkbox" bind:checked={mounted} /> Mount remaining components</label>
 	{#if mounted}
 		<PreviewSection headingId="wrappers-heading" title="Theme And Container" level="h3">
-			
 			<div class="settings">
 				<label for="wrapper-theme">Theme</label><select id="wrapper-theme" bind:value={theme}
 					>{#each ["light", "dark", "paleblue", "blue", "navyblue", "grey"] as value (value)}<option
@@ -79,7 +78,6 @@
 			>
 		</PreviewSection>
 		<PreviewSection headingId="card-hero-heading" title="Card, Hero And Highlight" level="h3">
-			
 			<div class="settings">
 				<label for="hero-title">Release title</label><input
 					id="hero-title"
@@ -102,7 +100,6 @@
 			<Highlight width="full"><p>Highlighted release information</p></Highlight>
 		</PreviewSection>
 		<PreviewSection headingId="tooltip-heading" title="Tooltip" level="h3">
-			
 			<div class="settings">
 				<label for="tooltip-text">Tooltip text</label><input
 					id="tooltip-text"
@@ -119,8 +116,12 @@
 				><button type="button" class="ons-btn">Release details</button></Tooltip
 			>
 		</PreviewSection>
-		<PreviewSection headingId="content-heading" title="Content And Messaging" level="h3" id="remaining-main">
-			
+		<PreviewSection
+			headingId="content-heading"
+			title="Content And Messaging"
+			level="h3"
+			id="remaining-main"
+		>
 			<AnnouncementBanner
 				title="Release announcement"
 				description="The latest illustrative release is available."
@@ -146,8 +147,11 @@
 			</div>
 			<ErrorSummary title="Check these values"><p>Release date is required.</p></ErrorSummary>
 		</PreviewSection>
-		<PreviewSection headingId="navigation-heading" title="Breadcrumb, Contents, RelatedContent And SkipLink" level="h3">
-			
+		<PreviewSection
+			headingId="navigation-heading"
+			title="Breadcrumb, Contents, RelatedContent And SkipLink"
+			level="h3"
+		>
 			<label><input type="checkbox" bind:checked={alternate} /> Alternate related links</label>
 			<Breadcrumb
 				width="full"
@@ -170,7 +174,6 @@
 			<SkipLink href="#remaining-main" />
 		</PreviewSection>
 		<PreviewSection headingId="landmarks-heading" title="Main And ErrorPage" level="h3">
-			
 			<iframe src={`${base}/workbench/landmarks/`} title="Main and ErrorPage fixture"></iframe>
 		</PreviewSection>
 	{/if}

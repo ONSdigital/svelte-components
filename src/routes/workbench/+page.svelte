@@ -277,7 +277,6 @@
 
 	<div class="workbench__layout">
 		<PreviewSection headingId="button-heading" title="Button" level="h2">
-			
 			<p>Change the variant, toggle its disabled state, and activate the button.</p>
 
 			<div class="workbench__controls">
@@ -305,7 +304,6 @@
 		</PreviewSection>
 
 		<PreviewSection headingId="input-heading" title="Input" level="h2">
-			
 			<p>Type text and inspect input and change event details.</p>
 
 			<Input
@@ -322,7 +320,6 @@
 
 	<div class="workbench__layout">
 		<PreviewSection headingId="textarea-heading" title="Textarea" level="h2">
-			
 			<Textarea
 				id="workbench-textarea"
 				label="Long response"
@@ -334,7 +331,6 @@
 		</PreviewSection>
 
 		<PreviewSection headingId="dropdown-heading" title="Dropdown" level="h2">
-			
 			<Dropdown
 				id="workbench-dropdown"
 				label="Task status"
@@ -348,7 +344,6 @@
 
 	<div class="workbench__layout">
 		<PreviewSection headingId="checkboxes-heading" title="Checkboxes" level="h2">
-			
 			<Checkboxes
 				title="Refreshments"
 				items={checkboxItems}
@@ -362,7 +357,6 @@
 		</PreviewSection>
 
 		<PreviewSection headingId="radios-heading" title="Radios" level="h2">
-			
 			<Radios
 				id="workbench-contact"
 				label="Preferred contact"
@@ -377,7 +371,6 @@
 
 	<div class="workbench__layout">
 		<PreviewSection headingId="select-heading" title="Select" level="h2">
-			
 			<Select
 				id="workbench-select"
 				label="Region"
@@ -391,7 +384,6 @@
 		</PreviewSection>
 
 		<PreviewSection headingId="details-heading" title="Details" level="h2">
-			
 			<Details
 				title="Additional information"
 				bind:open={detailsOpen}
@@ -406,7 +398,6 @@
 
 	<div class="workbench__layout">
 		<PreviewSection headingId="summary-heading" title="Summary" level="h2">
-			
 			<Summary
 				title="Your details"
 				items={summaryItems}
@@ -416,14 +407,12 @@
 		</PreviewSection>
 
 		<PreviewSection headingId="paginator-heading" title="Paginator" level="h2">
-			
 			<Paginator pageCount={5} pageCurrent={3} prevHref="?page=2" nextHref="?page=4" />
 		</PreviewSection>
 	</div>
 
 	<div class="workbench__layout">
 		<PreviewSection headingId="accordion-heading" title="Accordion" level="h2">
-			
 			<Accordion
 				id="workbench-accordion"
 				showToggle
@@ -441,7 +430,6 @@
 		</PreviewSection>
 
 		<PreviewSection headingId="tabs-heading" title="Tabs" level="h2">
-			
 			<Tabs bind:selected={selectedTab} onChange={handleTabCallback} on:change={handleTabEvent}>
 				<Tab title="Overview">
 					<p>Overview tab content.</p>
@@ -458,7 +446,6 @@
 
 	<div class="workbench__layout">
 		<PreviewSection headingId="grid-heading" title="Grid" level="h2">
-			
 			<Grid colWidth="medium" gridGap="narrow" rowHeight={96}>
 				<GridCell><div class="workbench__grid-cell">Cell one</div></GridCell>
 				<GridCell colspan={2}
@@ -468,7 +455,6 @@
 		</PreviewSection>
 
 		<PreviewSection headingId="document-list-heading" title="DocumentList" level="h2">
-			
 			<DocumentList items={documentItems} compact>
 				<Document
 					title="Nested document"
@@ -481,7 +467,6 @@
 
 	<div class="workbench__layout">
 		<PreviewSection headingId="nav-sections-heading" title="NavSections" level="h2">
-			
 			<NavSections contentsLabel="On this page">
 				<NavSection id="workbench-context" title="Context registration">
 					<p>Parent and child sections share observer and table-of-contents state.</p>
@@ -493,7 +478,6 @@
 		</PreviewSection>
 
 		<PreviewSection headingId="timeline-heading" title="Timeline" level="h2">
-			
 			<Timeline items={timelineItems}>
 				<TimelineItem title="Current test">
 					<p>Nested timeline item content.</p>
@@ -504,7 +488,6 @@
 
 	<div class="workbench__layout">
 		<PreviewSection headingId="change-stat-heading" title="ChangeStat" level="h2">
-			
 			<div class="workbench__controls">
 				<label for="change-stat-value">Value</label>
 				<input id="change-stat-value" bind:value={changeValue} />
@@ -531,7 +514,6 @@
 		</PreviewSection>
 
 		<PreviewSection headingId="update-status-heading" title="UpdateStatus" level="h2">
-			
 			<div class="workbench__controls">
 				<label for="update-status-date">Date</label>
 				<input id="update-status-date" bind:value={statusDate} />
@@ -550,7 +532,6 @@
 
 	<div class="workbench__layout">
 		<PreviewSection headingId="icon-heading" title="Icon" level="h2">
-			
 			<div class="workbench__controls">
 				<label for="icon-type">Type</label>
 				<select id="icon-type" bind:value={iconType}>
@@ -578,7 +559,6 @@
 		</PreviewSection>
 
 		<PreviewSection headingId="back-link-heading" title="BackLink" level="h2">
-			
 			<p>Check the destination and link presentation.</p>
 			<BackLink href="#button-heading" />
 		</PreviewSection>
@@ -586,7 +566,6 @@
 
 	<div class="workbench__layout">
 		<PreviewSection headingId="notice-heading" title="Notice" level="h2">
-			
 			<div class="workbench__controls">
 				<label for="notice-mode">Mode</label>
 				<select id="notice-mode" bind:value={noticeMode}>
@@ -600,7 +579,6 @@
 		</PreviewSection>
 
 		<PreviewSection headingId="section-heading" title="Section" level="h2">
-			
 			<div class="workbench__controls">
 				<label for="section-title">Title</label>
 				<input id="section-title" bind:value={sectionTitle} />
@@ -629,7 +607,6 @@
 
 	<div class="workbench__layout">
 		<PreviewSection headingId="divider-heading" title="Divider" level="h2">
-			
 			<div class="workbench__controls">
 				<label for="divider-rule">Rule</label>
 				<select id="divider-rule" bind:value={dividerRule}>
@@ -647,7 +624,6 @@
 		</PreviewSection>
 
 		<PreviewSection headingId="em-heading" title="Em" level="h2">
-			
 			<div class="workbench__controls">
 				<label for="em-color">Highlight colour</label>
 				<input id="em-color" type="color" bind:value={emphasisColor} />
@@ -665,7 +641,6 @@
 
 	<div class="workbench__layout">
 		<PreviewSection headingId="error-panel-heading" title="ErrorPanel" level="h2">
-			
 			<div class="workbench__controls">
 				<label for="error-panel-message">Message</label>
 				<input id="error-panel-message" bind:value={errorMessage} />
@@ -788,7 +763,7 @@
 		grid-template-columns: minmax(7rem, auto) minmax(10rem, 1fr) minmax(8rem, 2fr);
 		gap: 0.75rem;
 		padding: 0.75rem 0;
-			border-top: 1px solid var(--ons-color-grey-35, #b1b4b6);
+		border-top: 1px solid var(--ons-color-grey-35, #b1b4b6);
 		overflow-wrap: anywhere;
 	}
 
