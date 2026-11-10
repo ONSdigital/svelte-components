@@ -1,4 +1,5 @@
 <script>
+	import PreviewSection from "./PreviewSection.svelte";
 	import { base } from "$app/paths";
 	import Theme from "$lib/components/Theme/Theme.svelte";
 	import Container from "$lib/components/Container/Container.svelte";
@@ -49,8 +50,8 @@
 	<h2 id="remaining-workbench-heading">Wrappers, Content And Navigation</h2>
 	<label><input type="checkbox" bind:checked={mounted} /> Mount remaining components</label>
 	{#if mounted}
-		<section aria-labelledby="wrappers-heading">
-			<h3 id="wrappers-heading">Theme And Container</h3>
+		<PreviewSection headingId="wrappers-heading" title="Theme And Container" level="h3">
+			
 			<div class="settings">
 				<label for="wrapper-theme">Theme</label><select id="wrapper-theme" bind:value={theme}
 					>{#each ["light", "dark", "paleblue", "blue", "navyblue", "grey"] as value (value)}<option
@@ -76,9 +77,9 @@
 			<Theme {theme} allowClientOverrides={clientOverrides}
 				><Container {width} height={height ?? null}><p>Container content</p></Container></Theme
 			>
-		</section>
-		<section aria-labelledby="card-hero-heading">
-			<h3 id="card-hero-heading">Card, Hero And Highlight</h3>
+		</PreviewSection>
+		<PreviewSection headingId="card-hero-heading" title="Card, Hero And Highlight" level="h3">
+			
 			<div class="settings">
 				<label for="hero-title">Release title</label><input
 					id="hero-title"
@@ -99,9 +100,9 @@
 				>
 			</div>
 			<Highlight width="full"><p>Highlighted release information</p></Highlight>
-		</section>
-		<section aria-labelledby="tooltip-heading">
-			<h3 id="tooltip-heading">Tooltip</h3>
+		</PreviewSection>
+		<PreviewSection headingId="tooltip-heading" title="Tooltip" level="h3">
+			
 			<div class="settings">
 				<label for="tooltip-text">Tooltip text</label><input
 					id="tooltip-text"
@@ -117,9 +118,9 @@
 			<Tooltip text={tooltipText} position={placement} width={200}
 				><button type="button" class="ons-btn">Release details</button></Tooltip
 			>
-		</section>
-		<section aria-labelledby="content-heading" id="remaining-main">
-			<h3 id="content-heading">Content And Messaging</h3>
+		</PreviewSection>
+		<PreviewSection headingId="content-heading" title="Content And Messaging" level="h3" id="remaining-main">
+			
 			<AnnouncementBanner
 				title="Release announcement"
 				description="The latest illustrative release is available."
@@ -144,9 +145,9 @@
 				<Image src={image} alt="Workbench favicon" caption="Sample image" />
 			</div>
 			<ErrorSummary title="Check these values"><p>Release date is required.</p></ErrorSummary>
-		</section>
-		<section aria-labelledby="navigation-heading">
-			<h3 id="navigation-heading">Breadcrumb, Contents, RelatedContent And SkipLink</h3>
+		</PreviewSection>
+		<PreviewSection headingId="navigation-heading" title="Breadcrumb, Contents, RelatedContent And SkipLink" level="h3">
+			
 			<label><input type="checkbox" bind:checked={alternate} /> Alternate related links</label>
 			<Breadcrumb
 				width="full"
@@ -167,22 +168,17 @@
 				><p>Related content child snippet</p></RelatedContent
 			>
 			<SkipLink href="#remaining-main" />
-		</section>
-		<section aria-labelledby="landmarks-heading">
-			<h3 id="landmarks-heading">Main And ErrorPage</h3>
+		</PreviewSection>
+		<PreviewSection headingId="landmarks-heading" title="Main And ErrorPage" level="h3">
+			
 			<iframe src={`${base}/workbench/landmarks/`} title="Main and ErrorPage fixture"></iframe>
-		</section>
+		</PreviewSection>
 	{/if}
 </section>
 
 <style>
 	.remaining-workbench {
 		margin-top: 2rem;
-		min-width: 0;
-	}
-	.remaining-workbench > section {
-		border-top: 1px solid #b1b4b6;
-		padding: 1.5rem 0;
 		min-width: 0;
 	}
 	.settings {

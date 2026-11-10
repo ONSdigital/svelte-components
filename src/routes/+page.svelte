@@ -9,7 +9,7 @@
 <Header skipHref={null} legacy={false} title="Svelte components library" />
 
 <Section marginTop>
-	<p>Welcome to the ONS Svelte components library.</p>
+	<h1>Welcome to the ONS Svelte components library.</h1>
 	<p>
 		It is easiest to develop and preview the components in Storybook by running the following
 		command in the terminal:

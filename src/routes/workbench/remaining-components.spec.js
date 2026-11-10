@@ -4,6 +4,7 @@ import RemainingWorkbench from "./RemainingWorkbench.svelte";
 import Landmarks from "./landmarks/+page.svelte";
 import Theme from "$lib/components/Theme/Theme.svelte";
 import { createRawSnippet } from "svelte";
+import PreviewSection from "./PreviewSection.svelte";
 
 test("remaining fixtures render on the server without browser globals", () => {
 	const { body } = render(RemainingWorkbench);
@@ -31,4 +32,14 @@ test("global Theme emits server head styles while preserving children", () => {
 	expect(head).toContain(":root");
 	expect(head).toContain("--ons-color-text:var(--ons-color-white)");
 	expect(body).toContain("Themed content");
+});
+
+test("preview sections preserve heading levels, anchors and example content", () => {
+	const children = createRawSnippet(() => ({ render: () => "<p>Preview content</p>" }));
+	const { body } = render(PreviewSection, { props: { headingId: "preview-heading", title: "Example component", level: "h3", id: "preview-anchor", children } });
+	expect(body).toContain('aria-labelledby="preview-heading"');
+	expect(body).toContain('id="preview-anchor"');
+	expect(body).toMatch(/<h3[^>]*id="preview-heading"[^>]*>Example component/);
+	expect(body).toContain("<hr");
+	expect(body).toContain("Preview content");
 });

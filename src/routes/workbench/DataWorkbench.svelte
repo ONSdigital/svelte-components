@@ -1,4 +1,5 @@
 <script>
+	import PreviewSection from "./PreviewSection.svelte";
 	import DataCard from "$lib/components/DataCard/DataCard.svelte";
 	import Table from "$lib/components/Table/Table.svelte";
 	import {
@@ -84,8 +85,8 @@
 	<h2 id="data-workbench-heading">Charts And Data Display</h2>
 	<label><input type="checkbox" bind:checked={mounted} /> Mount data components</label>
 	{#if mounted}
-		<section aria-labelledby="datacard-heading">
-			<h3 id="datacard-heading">DataCard And Sparkline</h3>
+		<PreviewSection headingId="datacard-heading" title="DataCard And Sparkline" level="h3">
+			
 			<div class="settings">
 				<label for="card-mode">Card mode</label>
 				<select id="card-mode" bind:value={cardMode}
@@ -115,9 +116,9 @@
 					source="Source: illustrative data"
 				/>
 			</div>
-		</section>
-		<section aria-labelledby="table-heading">
-			<h3 id="table-heading">Table</h3>
+		</PreviewSection>
+		<PreviewSection headingId="table-heading" title="Table" level="h3">
+			
 			<div class="settings">
 				<label><input type="checkbox" bind:checked={alternate} /> Alternate rows</label>
 				<label><input type="checkbox" bind:checked={inferred} /> Infer columns</label>
@@ -137,9 +138,9 @@
 					height={fixedHeight ? 220 : "auto"}
 				/>
 			</div>
-		</section>
-		<section aria-labelledby="chart-preview-heading">
-			<h3 id="chart-preview-heading">Chart Previews</h3>
+		</PreviewSection>
+		<PreviewSection headingId="chart-preview-heading" title="Chart Previews" level="h3">
+			
 			<div class="settings">
 				<label for="chart-type">Chart type</label>
 				<select id="chart-type" bind:value={chartType}
@@ -177,18 +178,13 @@
 				{/key}
 				<p class="ons-u-fs-s">Source: illustrative data</p>
 			</div>
-		</section>
+		</PreviewSection>
 	{/if}
 </section>
 
 <style>
 	.data-workbench {
 		margin-top: 2rem;
-		min-width: 0;
-	}
-	.data-workbench > section {
-		border-top: 1px solid #b1b4b6;
-		padding: 1.5rem 0;
 		min-width: 0;
 	}
 	.settings {

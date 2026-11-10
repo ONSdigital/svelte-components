@@ -1,4 +1,5 @@
 <script>
+	import PreviewSection from "./PreviewSection.svelte";
 	import Observe from "$lib/components/Observe/Observe.svelte";
 	import LazyLoad from "$lib/components/LazyLoad/LazyLoad.svelte";
 	import Scroller from "$lib/components/Scroller/Scroller.svelte";
@@ -39,8 +40,8 @@
 		<label><input type="checkbox" bind:checked={mounted} /> Mount browser components</label>
 	</div>
 	{#if mounted}
-		<section aria-labelledby="observe-heading">
-			<h3 id="observe-heading">Observe And LazyLoad</h3>
+		<PreviewSection headingId="observe-heading" title="Observe And LazyLoad" level="h3">
+			
 			<Observe bind:visible onEnter={() => transitions++} onExit={() => transitions++}>
 				<p>Observed content</p>
 			</Observe>
@@ -49,18 +50,18 @@
 				<p>Lazy content loaded</p>
 			</LazyLoad>
 			<p>Entered: {entered}</p>
-		</section>
+		</PreviewSection>
 
-		<section aria-labelledby="embed-heading">
-			<h3 id="embed-heading">Embed</h3>
+		<PreviewSection headingId="embed-heading" title="Embed" level="h3">
+			
 			<Embed polling={false} onLoad={() => embedLoads++}>
 				<p>Embedded child content</p>
 			</Embed>
 			<p>Load events: {embedLoads}</p>
-		</section>
+		</PreviewSection>
 
-		<section aria-labelledby="header-heading">
-			<h3 id="header-heading">Header</h3>
+		<PreviewSection headingId="header-heading" title="Header" level="h3">
+			
 			<label for="header-mode">Variant</label>
 			<select id="header-mode" bind:value={headerMode}>
 				<option value="standard">Standard</option>
@@ -75,10 +76,10 @@
 					skipHref={null}
 				/>
 			{/key}
-		</section>
+		</PreviewSection>
 
-		<section aria-labelledby="toolbar-heading">
-			<h3 id="toolbar-heading">Toolbar</h3>
+		<PreviewSection headingId="toolbar-heading" title="Toolbar" level="h3">
+			
 			<ToolbarsContainer>
 				<Toolbar ariaLabel="Workbench tools">
 					<ToolbarButton
@@ -111,30 +112,30 @@
 				</Toolbar>
 			</ToolbarsContainer>
 			<p>Actions: {toolbarClicks}; selected: {selected}</p>
-		</section>
+		</PreviewSection>
 
-		<section aria-labelledby="sharing-heading">
-			<h3 id="sharing-heading">ShareButtons</h3>
+		<PreviewSection headingId="sharing-heading" title="ShareButtons" level="h3">
+			
 			<ShareButtons marginBottom={false} />
-		</section>
+		</PreviewSection>
 
-		<section aria-labelledby="analytics-heading">
-			<h3 id="analytics-heading">AnalyticsBanner</h3>
+		<PreviewSection headingId="analytics-heading" title="AnalyticsBanner" level="h3">
+			
 			<label><input type="checkbox" bind:checked={consentVisible} /> Show consent banner</label>
 			{#if consentVisible}
 				<AnalyticsBanner analyticsId="" bind:usageCookies />
 			{/if}
 			<p>Usage consent: {usageCookies}</p>
-		</section>
+		</PreviewSection>
 
-		<section aria-labelledby="footer-heading">
-			<h3 id="footer-heading">Footer</h3>
+		<PreviewSection headingId="footer-heading" title="Footer" level="h3">
+			
 			<label><input type="checkbox" bind:checked={compactFooter} /> Compact footer</label>
 			<Footer compact={compactFooter} />
-		</section>
+		</PreviewSection>
 
-		<section aria-labelledby="scroller-heading">
-			<h3 id="scroller-heading">Scroller</h3>
+		<PreviewSection headingId="scroller-heading" title="Scroller" level="h3">
+			
 			<p>
 				Sections: {count}; index: {index ?? "none"}; progress: {Number.isFinite(progress)
 					? progress.toFixed(2)
@@ -161,18 +162,13 @@
 					</div>
 				{/snippet}
 			</Scroller>
-		</section>
+		</PreviewSection>
 	{/if}
 </section>
 
 <style>
 	.browser-workbench {
 		margin-top: 2rem;
-		min-width: 0;
-	}
-	.browser-workbench > section {
-		border-top: 1px solid #b1b4b6;
-		padding: 1.5rem 0;
 		min-width: 0;
 	}
 	.settings {

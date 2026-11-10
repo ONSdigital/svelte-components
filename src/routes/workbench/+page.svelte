@@ -1,4 +1,7 @@
 <script>
+	import PreviewSection from "./PreviewSection.svelte";
+	import ComponentInputs from "./ComponentInputs.svelte";
+	export let data;
 	import BrowserWorkbench from "./BrowserWorkbench.svelte";
 	import DataWorkbench from "./DataWorkbench.svelte";
 	import RemainingWorkbench from "./RemainingWorkbench.svelte";
@@ -273,8 +276,8 @@
 	</Notice>
 
 	<div class="workbench__layout">
-		<section aria-labelledby="button-heading">
-			<h2 id="button-heading">Button</h2>
+		<PreviewSection headingId="button-heading" title="Button" level="h2">
+			
 			<p>Change the variant, toggle its disabled state, and activate the button.</p>
 
 			<div class="workbench__controls">
@@ -299,10 +302,10 @@
 				Test button
 			</Button>
 			<p class="workbench__result" aria-live="polite">Activated {clickCount} times</p>
-		</section>
+		</PreviewSection>
 
-		<section aria-labelledby="input-heading">
-			<h2 id="input-heading">Input</h2>
+		<PreviewSection headingId="input-heading" title="Input" level="h2">
+			
 			<p>Type text and inspect input and change event details.</p>
 
 			<Input
@@ -314,12 +317,12 @@
 				onChange={handleChangeCallback}
 			/>
 			<p class="workbench__result" aria-live="polite">Current value: {fieldValue || "(empty)"}</p>
-		</section>
+		</PreviewSection>
 	</div>
 
 	<div class="workbench__layout">
-		<section aria-labelledby="textarea-heading">
-			<h2 id="textarea-heading">Textarea</h2>
+		<PreviewSection headingId="textarea-heading" title="Textarea" level="h2">
+			
 			<Textarea
 				id="workbench-textarea"
 				label="Long response"
@@ -328,10 +331,10 @@
 				onInput={handleTextareaCallback}
 			/>
 			<p class="workbench__result">Current value: {textareaValue || "(empty)"}</p>
-		</section>
+		</PreviewSection>
 
-		<section aria-labelledby="dropdown-heading">
-			<h2 id="dropdown-heading">Dropdown</h2>
+		<PreviewSection headingId="dropdown-heading" title="Dropdown" level="h2">
+			
 			<Dropdown
 				id="workbench-dropdown"
 				label="Task status"
@@ -340,12 +343,12 @@
 				onChange={handleDropdownCallback}
 			/>
 			<p class="workbench__result">Current value: {dropdownValue || "(empty)"}</p>
-		</section>
+		</PreviewSection>
 	</div>
 
 	<div class="workbench__layout">
-		<section aria-labelledby="checkboxes-heading">
-			<h2 id="checkboxes-heading">Checkboxes</h2>
+		<PreviewSection headingId="checkboxes-heading" title="Checkboxes" level="h2">
+			
 			<Checkboxes
 				title="Refreshments"
 				items={checkboxItems}
@@ -356,10 +359,10 @@
 			<p class="workbench__result">
 				Selected: {selectedCheckboxes.map((item) => item.label).join(", ") || "(none)"}
 			</p>
-		</section>
+		</PreviewSection>
 
-		<section aria-labelledby="radios-heading">
-			<h2 id="radios-heading">Radios</h2>
+		<PreviewSection headingId="radios-heading" title="Radios" level="h2">
+			
 			<Radios
 				id="workbench-contact"
 				label="Preferred contact"
@@ -369,12 +372,12 @@
 				on:change={handleRadioEvent}
 			/>
 			<p class="workbench__result">Selected: {selectedRadio?.label || "(none)"}</p>
-		</section>
+		</PreviewSection>
 	</div>
 
 	<div class="workbench__layout">
-		<section aria-labelledby="select-heading">
-			<h2 id="select-heading">Select</h2>
+		<PreviewSection headingId="select-heading" title="Select" level="h2">
+			
 			<Select
 				id="workbench-select"
 				label="Region"
@@ -385,10 +388,10 @@
 				onClear={handleSelectClear}
 			/>
 			<p class="workbench__result">Current value: {selectValue?.label || "(empty)"}</p>
-		</section>
+		</PreviewSection>
 
-		<section aria-labelledby="details-heading">
-			<h2 id="details-heading">Details</h2>
+		<PreviewSection headingId="details-heading" title="Details" level="h2">
+			
 			<Details
 				title="Additional information"
 				bind:open={detailsOpen}
@@ -398,29 +401,29 @@
 				<p>Disclosure content preview.</p>
 			</Details>
 			<p class="workbench__result">State: {detailsOpen ? "open" : "closed"}</p>
-		</section>
+		</PreviewSection>
 	</div>
 
 	<div class="workbench__layout">
-		<section aria-labelledby="summary-heading">
-			<h2 id="summary-heading">Summary</h2>
+		<PreviewSection headingId="summary-heading" title="Summary" level="h2">
+			
 			<Summary
 				title="Your details"
 				items={summaryItems}
 				onChange={handleSummaryCallback}
 				on:change={handleSummaryEvent}
 			/>
-		</section>
+		</PreviewSection>
 
-		<section aria-labelledby="paginator-heading">
-			<h2 id="paginator-heading">Paginator</h2>
+		<PreviewSection headingId="paginator-heading" title="Paginator" level="h2">
+			
 			<Paginator pageCount={5} pageCurrent={3} prevHref="?page=2" nextHref="?page=4" />
-		</section>
+		</PreviewSection>
 	</div>
 
 	<div class="workbench__layout">
-		<section aria-labelledby="accordion-heading">
-			<h2 id="accordion-heading">Accordion</h2>
+		<PreviewSection headingId="accordion-heading" title="Accordion" level="h2">
+			
 			<Accordion
 				id="workbench-accordion"
 				showToggle
@@ -435,10 +438,10 @@
 				</AccordionItem>
 			</Accordion>
 			<p class="workbench__result">Toggle events: {accordionChangeCount}</p>
-		</section>
+		</PreviewSection>
 
-		<section aria-labelledby="tabs-heading">
-			<h2 id="tabs-heading">Tabs</h2>
+		<PreviewSection headingId="tabs-heading" title="Tabs" level="h2">
+			
 			<Tabs bind:selected={selectedTab} onChange={handleTabCallback} on:change={handleTabEvent}>
 				<Tab title="Overview">
 					<p>Overview tab content.</p>
@@ -450,22 +453,22 @@
 			<p class="workbench__result">
 				Selected tab: {selectedTab || "(none)"}; changes: {tabChangeCount}
 			</p>
-		</section>
+		</PreviewSection>
 	</div>
 
 	<div class="workbench__layout">
-		<section aria-labelledby="grid-heading">
-			<h2 id="grid-heading">Grid</h2>
+		<PreviewSection headingId="grid-heading" title="Grid" level="h2">
+			
 			<Grid colWidth="medium" gridGap="narrow" rowHeight={96}>
 				<GridCell><div class="workbench__grid-cell">Cell one</div></GridCell>
 				<GridCell colspan={2}
 					><div class="workbench__grid-cell">Cell two, spans two columns</div></GridCell
 				>
 			</Grid>
-		</section>
+		</PreviewSection>
 
-		<section aria-labelledby="document-list-heading">
-			<h2 id="document-list-heading">DocumentList</h2>
+		<PreviewSection headingId="document-list-heading" title="DocumentList" level="h2">
+			
 			<DocumentList items={documentItems} compact>
 				<Document
 					title="Nested document"
@@ -473,12 +476,12 @@
 					description="Nested child composition."
 				/>
 			</DocumentList>
-		</section>
+		</PreviewSection>
 	</div>
 
 	<div class="workbench__layout">
-		<section aria-labelledby="nav-sections-heading">
-			<h2 id="nav-sections-heading">NavSections</h2>
+		<PreviewSection headingId="nav-sections-heading" title="NavSections" level="h2">
+			
 			<NavSections contentsLabel="On this page">
 				<NavSection id="workbench-context" title="Context registration">
 					<p>Parent and child sections share observer and table-of-contents state.</p>
@@ -487,21 +490,21 @@
 					<p>Subsection content preview.</p>
 				</NavSection>
 			</NavSections>
-		</section>
+		</PreviewSection>
 
-		<section aria-labelledby="timeline-heading">
-			<h2 id="timeline-heading">Timeline</h2>
+		<PreviewSection headingId="timeline-heading" title="Timeline" level="h2">
+			
 			<Timeline items={timelineItems}>
 				<TimelineItem title="Current test">
 					<p>Nested timeline item content.</p>
 				</TimelineItem>
 			</Timeline>
-		</section>
+		</PreviewSection>
 	</div>
 
 	<div class="workbench__layout">
-		<section aria-labelledby="change-stat-heading">
-			<h2 id="change-stat-heading">ChangeStat</h2>
+		<PreviewSection headingId="change-stat-heading" title="ChangeStat" level="h2">
+			
 			<div class="workbench__controls">
 				<label for="change-stat-value">Value</label>
 				<input id="change-stat-value" bind:value={changeValue} />
@@ -525,10 +528,10 @@
 				tone={changeTone}
 				context="since last period"
 			/>
-		</section>
+		</PreviewSection>
 
-		<section aria-labelledby="update-status-heading">
-			<h2 id="update-status-heading">UpdateStatus</h2>
+		<PreviewSection headingId="update-status-heading" title="UpdateStatus" level="h2">
+			
 			<div class="workbench__controls">
 				<label for="update-status-date">Date</label>
 				<input id="update-status-date" bind:value={statusDate} />
@@ -542,12 +545,12 @@
 				</label>
 			</div>
 			<UpdateStatus date={statusDate} recent={statusRecent} showRecentDot={statusShowDot} />
-		</section>
+		</PreviewSection>
 	</div>
 
 	<div class="workbench__layout">
-		<section aria-labelledby="icon-heading">
-			<h2 id="icon-heading">Icon</h2>
+		<PreviewSection headingId="icon-heading" title="Icon" level="h2">
+			
 			<div class="workbench__controls">
 				<label for="icon-type">Type</label>
 				<select id="icon-type" bind:value={iconType}>
@@ -572,18 +575,18 @@
 			<p>
 				<Icon type={iconType} rotation={iconRotation} marginLeft={iconMarginLeft} /> Icon preview
 			</p>
-		</section>
+		</PreviewSection>
 
-		<section aria-labelledby="back-link-heading">
-			<h2 id="back-link-heading">BackLink</h2>
+		<PreviewSection headingId="back-link-heading" title="BackLink" level="h2">
+			
 			<p>Check the destination and link presentation.</p>
 			<BackLink href="#button-heading" />
-		</section>
+		</PreviewSection>
 	</div>
 
 	<div class="workbench__layout">
-		<section aria-labelledby="notice-heading">
-			<h2 id="notice-heading">Notice</h2>
+		<PreviewSection headingId="notice-heading" title="Notice" level="h2">
+			
 			<div class="workbench__controls">
 				<label for="notice-mode">Mode</label>
 				<select id="notice-mode" bind:value={noticeMode}>
@@ -594,10 +597,10 @@
 				</select>
 			</div>
 			<Notice mode={noticeMode}>Notice content preview.</Notice>
-		</section>
+		</PreviewSection>
 
-		<section aria-labelledby="section-heading">
-			<h2 id="section-heading">Section</h2>
+		<PreviewSection headingId="section-heading" title="Section" level="h2">
+			
 			<div class="workbench__controls">
 				<label for="section-title">Title</label>
 				<input id="section-title" bind:value={sectionTitle} />
@@ -621,12 +624,12 @@
 			>
 				Section content preview.
 			</Section>
-		</section>
+		</PreviewSection>
 	</div>
 
 	<div class="workbench__layout">
-		<section aria-labelledby="divider-heading">
-			<h2 id="divider-heading">Divider</h2>
+		<PreviewSection headingId="divider-heading" title="Divider" level="h2">
+			
 			<div class="workbench__controls">
 				<label for="divider-rule">Rule</label>
 				<select id="divider-rule" bind:value={dividerRule}>
@@ -641,10 +644,10 @@
 				</select>
 			</div>
 			<Divider hr={dividerRule} mode={dividerMode} />
-		</section>
+		</PreviewSection>
 
-		<section aria-labelledby="em-heading">
-			<h2 id="em-heading">Em</h2>
+		<PreviewSection headingId="em-heading" title="Em" level="h2">
+			
 			<div class="workbench__controls">
 				<label for="em-color">Highlight colour</label>
 				<input id="em-color" type="color" bind:value={emphasisColor} />
@@ -657,18 +660,18 @@
 			<Em color={emphasisColor} mode={emphasisMode} ariaLabel="Highlighted sample"
 				>Highlighted sample</Em
 			>
-		</section>
+		</PreviewSection>
 	</div>
 
 	<div class="workbench__layout">
-		<section aria-labelledby="error-panel-heading">
-			<h2 id="error-panel-heading">ErrorPanel</h2>
+		<PreviewSection headingId="error-panel-heading" title="ErrorPanel" level="h2">
+			
 			<div class="workbench__controls">
 				<label for="error-panel-message">Message</label>
 				<input id="error-panel-message" bind:value={errorMessage} />
 			</div>
 			<ErrorPanel message={errorMessage}>Additional error detail preview.</ErrorPanel>
-		</section>
+		</PreviewSection>
 	</div>
 
 	<section class="workbench__activity" aria-labelledby="activity-heading">
@@ -697,6 +700,7 @@
 	<BrowserWorkbench />
 	<DataWorkbench />
 	<RemainingWorkbench />
+	<ComponentInputs schemas={data.propSchemas} />
 </main>
 
 <style>
@@ -710,7 +714,7 @@
 	.workbench__header {
 		margin-bottom: 2rem;
 		padding-bottom: 1.5rem;
-		border-bottom: 1px solid var(--ons-color-grey-300);
+		border-bottom: 1px solid var(--ons-color-grey-35, #b1b4b6);
 	}
 
 	.workbench__back {
@@ -720,7 +724,7 @@
 
 	.workbench__eyebrow {
 		margin-bottom: 0.25rem;
-		color: var(--ons-color-grey-600);
+		color: var(--ons-color-grey-75, #707070);
 		font-weight: 700;
 	}
 
@@ -731,11 +735,10 @@
 		margin-top: 2rem;
 	}
 
-	.workbench__layout section,
 	.workbench__activity {
 		min-width: 0;
 		padding-top: 1.25rem;
-		border-top: 2px solid var(--ons-color-grey-300);
+		border-top: 2px solid var(--ons-color-grey-35, #b1b4b6);
 	}
 
 	.workbench__controls {
@@ -785,7 +788,7 @@
 		grid-template-columns: minmax(7rem, auto) minmax(10rem, 1fr) minmax(8rem, 2fr);
 		gap: 0.75rem;
 		padding: 0.75rem 0;
-		border-top: 1px solid var(--ons-color-grey-300);
+			border-top: 1px solid var(--ons-color-grey-35, #b1b4b6);
 		overflow-wrap: anywhere;
 	}
 
