@@ -16,7 +16,7 @@
 		"test:unit": "vitest",
 		"test": "npm run test:unit -- --run",
 		"storybook": "storybook dev -p 6006",
-		"build:docs": "npm run build:workbench && npm run build:storybook",
+		"build:docs": "npm run build:storybook",
 		"build:storybook": "storybook build && node ./scripts/stage-workbench.js",
 		"build:workbench": "vite build"
 	},
