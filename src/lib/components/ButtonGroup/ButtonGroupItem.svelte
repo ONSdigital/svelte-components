@@ -30,8 +30,8 @@
 		aria-checked={selected}
 		bind:this={buttonRef}
 	/>
-	<label for={id} class="radio-label">
-		{label}
+	<label for={id} class="radio-label" data-label={label}>
+		<span class="label-text">{label}</span>
 	</label>
 </div>
 
@@ -48,7 +48,8 @@
 	}
 
 	.radio-label {
-		flex-grow: 0;
+		display: grid;
+		flex-grow: 1;
 		padding: 4px 8px;
 		border: none;
 		background: transparent;
@@ -60,6 +61,18 @@
 			color 0.2s ease;
 		color: #707071;
 		text-align: center;
+	}
+
+	/* Reserve the selected text width without changing the visible font weight. */
+	.radio-label::after {
+		content: attr(data-label);
+		font-weight: bold;
+		visibility: hidden;
+	}
+
+	.label-text,
+	.radio-label::after {
+		grid-area: 1 / 1;
 	}
 
 	.radio-label:hover {

@@ -2,6 +2,18 @@
 
 Radio inputs dressed up as a button group.
 
+Items stack vertically on viewports below 740px and remain horizontal on larger screens.
+Stacked items share the width of the widest label, including padding, rather than filling the page.
+Space is reserved for bold selected labels so the group does not resize when the selection changes.
+Set `stackOnMobile={false}` to keep a group horizontal at every screen size:
+
+```svelte
+<ButtonGroup name="horizontal" legend="Choose an option" stackOnMobile={false}>
+	<ButtonGroupItem value="1" label="Option 1" />
+	<ButtonGroupItem value="2" label="Option 2" />
+</ButtonGroup>
+```
+
 <!-- prettier-ignore -->
 ```html
 <ButtonGroup name="primary" legend="Choose an option">

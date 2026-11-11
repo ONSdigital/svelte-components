@@ -7,6 +7,7 @@
 		legend = "",
 		value = $bindable(),
 		visuallyHideLegend = false,
+		stackOnMobile = true,
 		children
 	} = $props();
 
@@ -33,7 +34,7 @@
 	});
 </script>
 
-<fieldset class="button-group">
+<fieldset class="button-group" class:stack-on-mobile={stackOnMobile}>
 	{#if legend}
 		<legend class:ons-u-vh={visuallyHideLegend}>{legend}</legend>
 	{/if}
@@ -59,5 +60,15 @@
 		padding: 4px;
 		border-radius: 8px;
 		justify-content: space-between;
+	}
+
+	@media (max-width: 739.98px) {
+		.stack-on-mobile {
+			min-width: 0;
+		}
+
+		.stack-on-mobile .buttons {
+			flex-direction: column;
+		}
 	}
 </style>
