@@ -1,10 +1,13 @@
-import fs from "node:fs";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
 import ts from "typescript";
 import { parse } from "svelte/compiler";
 
-const componentDirectory = fileURLToPath(new URL("../../lib/components/", import.meta.url));
+// Sources are inlined by Vite at build time so this module works wherever it is bundled to.
+/** @type {Record<string, string>} */
+const componentSources = import.meta.glob(["/src/lib/components/*/*.svelte", "!/src/lib/components/*/*.stories.svelte"], { query: "?raw", import: "default", eager: true });
+/** @type {Record<string, string>} */
+const indexSource = import.meta.glob("/src/lib/index.js", { query: "?raw", import: "default", eager: true });
+/** @type {Record<string, string>} */
+const chartSources = import.meta.glob("/node_modules/@onsvisual/svelte-charts/src/charts/*.svelte", { query: "?raw", import: "default", eager: true });
 
 /** @typedef {{ name: string; type: string; kind: string; nullable: boolean; initial: unknown; options: (string | number)[]; defaultText: string; description: string; bindable: boolean }} PropSchema */
 /** @typedef {{ name: string; canonical: string; file: string; external: boolean; fields: PropSchema[] }} ComponentSchema */
@@ -97,15 +100,12 @@ export function extractProps(source, filename) {
 export function getPropSchemas() {
 	/** @type {ComponentSchema[]} */
 	const schemas = [];
-	for (const entry of fs.readdirSync(componentDirectory, { withFileTypes: true })) {
-		if (!entry.isDirectory()) continue;
-		for (const filename of fs.readdirSync(path.join(componentDirectory, entry.name))) {
-			if (!filename.endsWith(".svelte") || filename.endsWith(".stories.svelte")) continue;
-			const relative = `${entry.name}/${filename}`;
-			schemas.push({ name: filename.replace(".svelte", ""), canonical: filename.replace(".svelte", ""), file: relative, external: false, fields: extractProps(fs.readFileSync(path.join(componentDirectory, relative), "utf8"), relative) });
-		}
+	for (const [key, source] of Object.entries(componentSources).sort(([first], [second]) => first.localeCompare(second))) {
+		const relative = key.replace("/src/lib/components/", "");
+		const filename = relative.split("/")[1];
+		schemas.push({ name: filename.replace(".svelte", ""), canonical: filename.replace(".svelte", ""), file: relative, external: false, fields: extractProps(source, relative) });
 	}
-	const index = ts.createSourceFile("index.js", fs.readFileSync(new URL("../../lib/index.js", import.meta.url), "utf8"), ts.ScriptTarget.Latest, true);
+	const index = ts.createSourceFile("index.js", indexSource["/src/lib/index.js"], ts.ScriptTarget.Latest, true);
 	for (const statement of index.statements) if (ts.isExportDeclaration(statement) && statement.exportClause && ts.isNamedExports(statement.exportClause) && statement.moduleSpecifier && ts.isStringLiteral(statement.moduleSpecifier)) {
 		for (const element of statement.exportClause.elements) if (element.propertyName?.text === "default" && !schemas.some(schema => schema.name === element.name.text)) {
 			const file = statement.moduleSpecifier.text.replace("./components/", "");
@@ -114,8 +114,10 @@ export function getPropSchemas() {
 		}
 	}
 	for (const name of ["Chart", "BarChart", "ColumnChart", "LineChart", "ScatterChart", "DotPlotChart"]) {
-		const file = fileURLToPath(new URL(`../../../node_modules/@onsvisual/svelte-charts/src/charts/${name}.svelte`, import.meta.url));
-		schemas.push({ name, canonical: name, file: name, external: true, fields: extractProps(fs.readFileSync(file, "utf8"), file) });
+		const file = `/node_modules/@onsvisual/svelte-charts/src/charts/${name}.svelte`;
+		const source = chartSources[file];
+		if (source === undefined) throw new Error(`Chart source not found: ${file}`);
+		schemas.push({ name, canonical: name, file: name, external: true, fields: extractProps(source, file) });
 	}
 	return schemas.sort((first, second) => first.name.localeCompare(second.name));
 }

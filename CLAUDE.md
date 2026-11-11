@@ -37,6 +37,20 @@ Release process (from README): commit changes → bump `version` in package.json
 - **CSS**: `src/lib/css/main.css` `@import`s the ONS Design System CSS from the ONS CDN, plus local patches. `scripts/css-merge.js` (run in `prepack`/`prepare`) fetches those imports, inlines them, rewrites font URLs and minifies into `dist/css/main.css`, exported as `./css/main.css`.
 - **Workbench** (`src/routes/workbench/`): a prerendered SvelteKit route (`adapter-static`, base path `/svelte-components`, `trailingSlash: 'always'`). `prop-schema.server.js` parses every component's source with the Svelte compiler and TypeScript to build editable prop controls automatically. It reads the JSDoc `@type` on the `$props()` destructure, default values and literal-union types, and it also reads chart sources from `node_modules/@onsvisual/svelte-charts`. Hand-written fixtures live in `prop-fixtures.js` and the `*Workbench.svelte` files. `landmarks/` is a separate page so that `Main`/`ErrorPage` don't nest `<main>` elements. `scripts/stage-workbench.js` copies `build/workbench` and `build/_app` into `storybook-static/`.
 
+### Workbench and progressive enhancement (not yet supported)
+
+The workbench pages are prerendered and then hydrated, but the workbench can't yet be used to test progressive enhancement:
+- The `/workbench/props/` iframe is prerendered only with its default selection (Button with default fixtures). Other components and prop edits arrive by `postMessage` after hydration (`props/+page.svelte`, in `onMount`), so they are only ever rendered in the browser.
+- The "Remount" and "Mount … components" toggles rebuild components in the browser; they don't exercise hydration.
+- Nothing shows whether the page is showing server HTML or hydrated output. No test runs with JavaScript disabled or checks for hydration mismatches. The Vitest SSR specs only check that `render` doesn't throw.
+
+For now, test it manually: load the built site (`npm run build && npm run preview`) with JavaScript disabled to see the prerendered fixtures, and use `npm run dev` to get Svelte's dev-only `hydration_mismatch` console warnings.
+
+To support it properly:
+1. Read the selected component and its props from the URL so that combination is rendered on the server. Prerendered pages can't read query strings (SvelteKit throws if `url.searchParams` is accessed during prerender), and GitHub Pages only serves static files. So for the deployed site, use a path parameter with prerendered `entries` (e.g. `/workbench/props/[component]/` with default fixtures, or named fixture presets). Arbitrary prop values from the query string can only be server-rendered by `npm run dev`, with `prerender = false` on that route. `adapter-static` output has no server, so `npm run preview` can't do it either.
+2. Add a visible "hydrated" flag set in `onMount`, so the two states can be told apart.
+3. Add browser tests (e.g. Playwright) per fixture: with JavaScript disabled, check the core content and links work; with JavaScript enabled, check that no hydration warnings appear and the interactions work.
+
 ## Component conventions (Svelte 5)
 
 - Props are written as `let { ... } = $props()` with a single JSDoc `/** @type {{ ... }} */` above it. No TypeScript files: types are JSDoc and get checked by svelte-check. Keep string-literal unions accurate, because the workbench builds its select controls from them.
