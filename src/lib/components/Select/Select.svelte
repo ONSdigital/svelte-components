@@ -27,7 +27,7 @@
 		hideLabel = false,
 		description = null,
 		placeholder = mode === "search" ? "Enter text" : "Select one",
-		value = $bindable(null),
+		value = $bindable(),
 		options = [],
 		labelKey = "label",
 		groupKey = null,
@@ -42,7 +42,7 @@
 				populateResults(filteredResults);
 			}
 		},
-		clearInput = clearSelection,
+		clearInput = $bindable(),
 		cls = null,
 		onChange = () => {},
 		onClear = () => {}
@@ -53,6 +53,13 @@
 		onClear(null);
 		dispatch("clear", null);
 	}
+
+	// Defaults for bindable props are set here rather than in $props(), as Svelte 5 throws an error
+	// if a parent binds a prop with a fallback to undefined (eg. `let value = $state()`). This also
+	// matches v1, where a bound variable is set to the default: bind:clearInput gets the function that
+	// clears the selection.
+	if (value === undefined) value = null;
+	if (clearInput === undefined) clearInput = clearSelection;
 
 	// This method is a bit of a hack, but no better options available at present
 	// https://github.com/alphagov/accessible-autocomplete/issues/390

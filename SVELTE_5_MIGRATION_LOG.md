@@ -200,3 +200,13 @@ This log records migration decisions, component changes, verification results, a
 ### Follow-up
 
 - Component syntax migration is complete. Pause before repository-wide diagnostic/lint cleanup, final release audit, versioning or npm publication. These remaining gates have not been declared green. No source commit was created by this assistant session.
+
+## 2026-11-13: v2 Compatibility Fixes
+
+Found while upgrading robo-article, robo-embed and robo-scrolly to 2.0.0.
+
+- Select: `value` and `clearInput` are bindable without defaults in `$props()`; their defaults (`null`, and the function that clears the selection) are set in the script. `bind:value` to an `undefined` variable threw `props_invalid_value`, and `bind:clearInput` (bindable in v1) wasn't bindable.
+- Checkbox: an initial `checked` value (eg. `bind:checked={true}`) is now shown. `item` defaulted to `checked: false` and the effect that copies `checked` to `item` didn't run at first, so the input started unchecked. `checked` also accepts a bound `undefined` variable, as for Select.
+- Scroller (and other components whose named slots became snippet props): `slot="..."` content can't be supported by a runes component (Svelte passes it in a `$$slots` prop that runes components can't read, and `<slot>` can't be used alongside `{@render}`). The migration guide now says that such content is silently not rendered.
+- Tests: 7 in `Select.svelte.test.js` and the new `Checkbox.svelte.test.js`, binding props with getters and setters as `bind:` does. The 3 binding tests fail without the fixes. Full suite: 40 files, 188 tests passed. No new `npm run check` diagnostics or ESLint errors in the changed files.
+- Not changed: 22 other `$bindable` props with defaults (eg. Dropdown/Input/Textarea/Radios `value`, Details/AccordionItem `open`, Tabs `selected`) still throw if bound to an `undefined` variable.

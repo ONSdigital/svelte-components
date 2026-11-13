@@ -4,7 +4,7 @@ This package targets the Svelte 5 compiler/runtime. It does not promise Svelte 3
 
 ## Named Slots
 
-Replace named slot content with snippet blocks or snippet props:
+Replace named slot content with snippet blocks or snippet props. Content passed with `slot="..."` is no longer rendered, and Svelte gives no error or warning, so search for `slot=` when upgrading (eg. an empty Scroller):
 
 | Component     | Previous Slot                                        | Snippet Prop                   |
 | ------------- | ---------------------------------------------------- | ------------------------------ |
@@ -35,6 +35,8 @@ Card's image/title snippet overrides retain their existing linked-card behavior.
 ## Events And Bindings
 
 Relevant event-emitting components retain dispatched events under Svelte 5 alongside callback props. Callback arguments match the dispatched event's `detail`; see each component's documentation for payload types. Keeping `createEventDispatcher` and supported `on:event` usage is intentional. Existing two-way bindings use `$bindable`.
+
+Svelte 5 throws an error (`props_invalid_value`) when a parent binds a variable that is `undefined` (eg. `let value = $state()`) to a `$bindable` prop with a default value. Select (`value`, `clearInput`) and Checkbox (`checked`) set their defaults in the component instead, so, as in v1, a bound variable that starts `undefined` is set to the default. `bind:clearInput` gets Select's function for clearing the selection. Other bindable props still have defaults: start bound variables with a value (eg. `$state(null)`).
 
 ## Reactive Inputs
 

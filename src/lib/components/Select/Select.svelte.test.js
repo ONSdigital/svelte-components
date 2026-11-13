@@ -1,3 +1,4 @@
+/* global $state -- runes are available in .svelte.test.js files */
 import "@testing-library/jest-dom/vitest";
 import { fireEvent, render, screen, waitFor } from "@testing-library/svelte";
 import { describe, expect, test, vi } from "vitest";
@@ -48,5 +49,45 @@ describe("Select", () => {
 		expect(onClear).toHaveBeenCalledWith(null);
 		expect(onLegacyClear).toHaveBeenCalledOnce();
 		expect(onLegacyClear.mock.calls[0][0].detail).toBeNull();
+	});
+
+	test("binds value and clearInput to variables that start undefined, as in v1", async () => {
+		autocompleteMock.configure.mockClear();
+		const onClear = vi.fn();
+		const option = { id: "north", label: "North" };
+		// The same as bind:value={value} and bind:clearInput={clearInput} in a parent component
+		let value = $state();
+		let clearInput = $state();
+		render(Select, {
+			props: {
+				id: "bound",
+				label: "Region",
+				options: [option],
+				onClear,
+				get value() {
+					return value;
+				},
+				set value(v) {
+					value = v;
+				},
+				get clearInput() {
+					return clearInput;
+				},
+				set clearInput(v) {
+					clearInput = v;
+				}
+			}
+		});
+
+		expect(value).toBeNull();
+		expect(clearInput).toBeTypeOf("function");
+
+		await waitFor(() => expect(autocompleteMock.configure).toHaveBeenCalledOnce());
+		await autocompleteMock.configure.mock.calls[0][0].onConfirm(option);
+		expect(value).toEqual(option);
+
+		clearInput();
+		expect(value).toBeNull();
+		expect(onClear).toHaveBeenCalledWith(null);
 	});
 });

@@ -11,7 +11,7 @@
 		label = "",
 		description = null,
 		item = $bindable({ id, label, description, checked: false }),
-		checked = $bindable(item.checked ?? false),
+		checked = $bindable(),
 		disabled = false,
 		groupName = null,
 		group = $bindable(null),
@@ -57,11 +57,17 @@
 		dispatch("change", detail);
 	}
 
-	// Track changes to checked from bind:checked outside component
-	let _checked = checked ?? false;
+	// The default for checked is set here rather than in $props(), as Svelte 5 throws an error if a
+	// parent binds a prop with a fallback to undefined (eg. `let checked = $state()`)
+	if (checked === undefined) checked = item.checked ?? false;
+
+	// Track changes to checked from bind:checked outside component. This starts from item.checked,
+	// so that an initial checked value (eg. bind:checked={true}) is applied to item and the input.
+	let _checked = item.checked ?? false;
 	$effect(() => {
-		if (_checked !== checked) {
-			item.checked = _checked = checked;
+		const value = checked ?? false;
+		if (_checked !== value) {
+			item.checked = _checked = value;
 		}
 	});
 
