@@ -25,7 +25,7 @@ npm run build:docs          # storybook build + copy build/workbench into storyb
 
 Known baseline state (see `SVELTE_5_MIGRATION_LOG.md`): `npm run check` and `npm run lint` are not clean repo-wide, and `src/routes/page.svelte.test.js` has a pre-existing failure. Judge changes by not adding new diagnostics/failures in touched files, rather than expecting a green run.
 
-Release process (from README): commit changes → bump `version` in package.json → `npm run build` → commit/push with the version as the message (e.g. `v1.0.0`) → `npm publish`. The docs deploy automatically when the push reaches `main`.
+Release process (see README): changes go through a pull request to `main` (Netlify builds a Storybook preview). Then, on `main`: `npm version patch|minor|major -m "v%s"` (updates package.json and package-lock.json, commits as eg. "v2.0.2" and tags it) → `git push --follow-tags` → `npm publish` (the `prepack` script builds the package). The docs deploy automatically when `main` changes, so `npm run build` isn't needed for a release. Version 1 (Svelte 3/4) is maintained on the `v1-legacy` branch and published with the `v1-legacy` npm tag (`publishConfig.tag` in its package.json), never `latest`.
 
 ## Architecture
 
