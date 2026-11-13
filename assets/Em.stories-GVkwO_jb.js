@@ -1,0 +1,13 @@
+import{ad as l,h as c,n as g,ah as _,a as m,af as f,f as h,ax as x,d as u,t as v,b as M}from"./iframe-UWIgwT_c.js";import{c as E,w as b,i as k,d as $}from"./create-runtime-stories-WntTm4wH.js";import{E as i}from"./Em-BJp9EKl1.js";import"./preload-helper-Dp1pzeXC.js";import"./attributes-CxnnJe_I.js";import"./class-BWaliKvu.js";import"./attributes-DayBpKoh.js";import"./style-JgESTiB5.js";import"./utils-VWytQRnm.js";import"./_commonjsHelpers-CqkleIqs.js";const w=`A component to visually highlight text. Can be used for inline text or to provide a "badge".
+
+Consists of a \`<mark>\` element with a custom background color, where the highlighted text will automatically appear black or white to maximise contrast.
+
+<!-- prettier-ignore -->
+\`\`\`html
+<script>
+  import { Em } from "@onsvisual/svelte-components";
+<\/script>
+
+<Em color="steelblue">Highlighted text</Em>
+\`\`\`
+`,s=(a,t=g)=>{i(a,x(t,{children:(e,r)=>{var o=u();v(()=>M(o,t().text)),m(e,o)},$$slots:{default:!0}}))},y={title:"Decorators/Em",component:i,tags:["autodocs"],argTypes:{color:{control:{type:"color"}}},parameters:b(w)},{Story:n}=$();var C=h("<!> <!>",1);function d(a,t){l(t,!1),k();var e=C(),r=c(e);n(r,{name:"Mark mode",args:{text:"Text on grey background"},get template(){return s},parameters:{__svelteCsf:{rawCode:"<Em {...args}>{args.text}</Em>"}}});var o=_(r,2);n(o,{name:"Badge mode",args:{text:"Text on badge",color:"navy",mode:"badge"},get template(){return s},parameters:{__svelteCsf:{rawCode:"<Em {...args}>{args.text}</Em>"}}}),m(a,e),f()}d.__docgen={data:[],name:"Em.stories.svelte"};const p=E(d,y),q=["MarkMode","BadgeMode"],z={...p.MarkMode,tags:["svelte-csf-v5"]},F={...p.BadgeMode,tags:["svelte-csf-v5"]};export{F as BadgeMode,z as MarkMode,q as __namedExportsOrder,y as default};
