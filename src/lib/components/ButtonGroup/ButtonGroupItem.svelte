@@ -1,15 +1,18 @@
 <script>
 	import { getContext } from "svelte";
 
-	let { value = "", id = value, label = value } = $props();
+	/** @type {string} */
+	export let value = "";
+	/** @type {string} */
+	export let id = value;
+	/** @type {string} */
+	export let label = value;
 
 	// Get the parent ButtonGroup context
 	const buttonGroup = getContext("buttonGroup");
 	const { groupName, selectedValue } = buttonGroup;
 
-	// Subscribe to selectedValue store
-	const currentSelected = $derived(selectedValue);
-	const selected = $derived($currentSelected === value);
+	$: selected = $selectedValue === value;
 
 	function handleChange() {
 		selectedValue.set(value); // Update the store
@@ -26,7 +29,7 @@
 		{value}
 		checked={selected}
 		class="radio-input"
-		onchange={handleChange}
+		on:change={handleChange}
 		aria-checked={selected}
 		bind:this={buttonRef}
 	/>

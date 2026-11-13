@@ -1,53 +1,49 @@
-<script lang="ts">
+<script>
 	import { onMount, onDestroy, createEventDispatcher, getContext } from "svelte";
 	import Icon from "./ToolbarIcon.svelte";
 	import HelpModal from "./HelpModal.svelte";
 	import { slugify } from "$lib/js/utils.js";
 
 	// Props for the ToolbarButton
-	let {
-		id = slugify(),
-		icon = "",
-		label = "",
-		disabled = false,
-		classes = "",
-		helpText = null,
-		selected = $bindable(false),
-		toggle = false,
-		custom = false,
-		hasAriaControls = false,
-		hasTooltip = true,
-		sticky = false,
-		transient = false,
-		disableHelp = false
-	}: {
-		id?: string;
-		icon?: string;
-		label?: string;
-		disabled?: boolean;
-		classes?: string;
-		helpText?: string | null;
-		selected?: boolean;
-		toggle?: boolean;
-		custom?: boolean;
-		hasAriaControls?: boolean;
-		hasTooltip?: boolean;
-		sticky?: boolean;
-		transient?: boolean;
-		disableHelp?: boolean;
-	} = $props();
+	/** @type {string} */
+	export let id = slugify();
+	/** @type {string} */
+	export let icon = "";
+	/** @type {string} */
+	export let label = "";
+	/** @type {boolean} */
+	export let disabled = false;
+	/** @type {string} */
+	export let classes = "";
+	/** @type {string | null} */
+	export let helpText = null;
+	/** @type {boolean} Whether a toggle button is selected (bindable) */
+	export let selected = false;
+	/** @type {boolean} */
+	export let toggle = false;
+	/** @type {boolean} */
+	export let custom = false;
+	/** @type {boolean} */
+	export let hasAriaControls = false;
+	/** @type {boolean} */
+	export let hasTooltip = true;
+	/** @type {boolean} */
+	export let sticky = false;
+	/** @type {boolean} */
+	export let transient = false;
+	/** @type {boolean} */
+	export let disableHelp = false;
 
 	const dispatch = createEventDispatcher();
 
-	let buttonElement: HTMLElement;
+	/** @type {HTMLElement} */
+	let buttonElement;
 
 	// Get activeModalId store from context
 	const activeModalId = getContext("activeModalId");
-	const currentActiveId = $derived(activeModalId);
-	const isActive = $derived($currentActiveId === id);
-	const orientation = getContext("orientation");
-	const currentOrientation = $derived(orientation);
-	let showTooltip = $state(false);
+	$: isActive = $activeModalId === id;
+	const currentOrientation = getContext("orientation");
+	let showTooltip = false;
 
 	// Retrieve button registry from context
 	const { register, unregister } = getContext("buttonIds");
@@ -89,11 +85,11 @@
 	{#if custom}
 		<div
 			tabindex="0"
-			onclick={handleClick}
-			onmouseover={() => (showTooltip = true)}
-			onmouseout={() => (showTooltip = false)}
-			onfocus={() => (showTooltip = true)}
-			onblur={() => (showTooltip = false)}
+			on:click={handleClick}
+			on:mouseover={() => (showTooltip = true)}
+			on:mouseout={() => (showTooltip = false)}
+			on:focus={() => (showTooltip = true)}
+			on:blur={() => (showTooltip = false)}
 			bind:this={buttonElement}
 		>
 			<slot name="custom" />
@@ -102,9 +98,9 @@
 		<input
 			type="checkbox"
 			class="ons-u-vh"
-			onclick={handleClick}
-			onfocus={() => (showTooltip = true)}
-			onblur={() => (showTooltip = false)}
+			on:click={handleClick}
+			on:focus={() => (showTooltip = true)}
+			on:blur={() => (showTooltip = false)}
 			{disabled}
 			bind:this={buttonElement}
 			id={`button-${id}`}
@@ -113,8 +109,8 @@
 		<label
 			for={`button-${id}`}
 			class="toolbar-button {classes}"
-			onmouseover={() => (showTooltip = true)}
-			onmouseout={() => (showTooltip = false)}
+			on:mouseover={() => (showTooltip = true)}
+			on:mouseout={() => (showTooltip = false)}
 			class:selected={selected || (isActive && !transient)}
 		>
 			{#if icon}
@@ -131,11 +127,11 @@
 			aria-label={label}
 			class="toolbar-button {classes}"
 			class:selected={selected || (isActive && !transient)}
-			onclick={handleClick}
-			onmouseover={() => (showTooltip = true)}
-			onmouseout={() => (showTooltip = false)}
-			onfocus={() => (showTooltip = true)}
-			onblur={() => (showTooltip = false)}
+			on:click={handleClick}
+			on:mouseover={() => (showTooltip = true)}
+			on:mouseout={() => (showTooltip = false)}
+			on:focus={() => (showTooltip = true)}
+			on:blur={() => (showTooltip = false)}
 			{disabled}
 			bind:this={buttonElement}
 			id={`button-${id}`}

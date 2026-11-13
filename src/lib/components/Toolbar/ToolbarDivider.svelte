@@ -1,13 +1,11 @@
-<script lang="ts">
+<script>
 	import { getContext } from "svelte";
 
-	let { classes = "" }: { classes?: string } = $props();
+	/** @type {string} */
+	export let classes = "";
 
-	// Get the orientation store from context
-	const orientationStore = getContext("orientation");
-
-	// Subscribe to the store to get its value
-	const orientation = $derived(orientationStore);
+	// The orientation store from the parent Toolbar
+	const orientation = getContext("orientation");
 </script>
 
 <div class={`toolbar-divider ${$orientation} ${classes}`} aria-hidden="true"></div>

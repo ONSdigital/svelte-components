@@ -1,40 +1,36 @@
-<script lang="ts">
+<script>
 	import { setContext, onMount } from "svelte";
 	import { writable } from "svelte/store";
 
 	// Initialize a store for button IDs
+	/** @type {import("svelte/store").Writable<string[]>} */
 	const buttonIds = writable([]);
 	setContext("buttonIds", {
-		register: (id: string) => {
+		/** @param {string} id */
+		register: (id) => {
 			buttonIds.update((ids) => [...ids, id]);
 		},
-		unregister: (id: string) => {
+		/** @param {string} id */
+		unregister: (id) => {
 			buttonIds.update((ids) => ids.filter((btnId) => btnId !== id));
 		},
 		buttonIds
 	});
 
-	let showHelpState = $state(true);
-
-	$effect(() => {
-		const sessionValue = sessionStorage.getItem("showHelpModals");
-		const localValue = localStorage.getItem("showHelpModals");
-		showHelpState = sessionValue === "false" ? false : localValue === "false" ? false : true;
-	});
-
-	const showHelpModals = writable(showHelpState);
-	// Set context for showHelpModals
+	// Whether to show the help modals (set from session or local storage when mounted, as storage
+	// isn't available when rendering on the server)
+	const showHelpModals = writable(true);
 	setContext("showHelpModals", showHelpModals);
 
-	// Reactively update the initial state
-	$effect(() => {
-		showHelpModals.set(showHelpState);
-	});
-
+	/** @type {import("svelte/store").Writable<string | null>} */
 	const activeModalStore = writable(null); // Tracks the ID of the active modal
 	setContext("activeModalId", activeModalStore);
 
 	onMount(() => {
+		const sessionValue = sessionStorage.getItem("showHelpModals");
+		const localValue = localStorage.getItem("showHelpModals");
+		showHelpModals.set(sessionValue === "false" ? false : localValue === "false" ? false : true);
+
 		window.addEventListener("beforeunload", () => {
 			sessionStorage.removeItem("showHelpModals");
 		});

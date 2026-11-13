@@ -1,21 +1,14 @@
 <script>
-	/**
-	 * @typedef {Object} Props
-	 * @property {string} [type]
-	 * @property {boolean} [marginLeft]
-	 * @property {boolean} [marginRight]
-	 * @property {boolean} [selected]
-	 * @property {boolean} [disabled]
-	 */
-
-	/** @type {Props} */
-	let {
-		type = "move",
-		marginLeft = false,
-		marginRight = false,
-		selected = false,
-		disabled = false
-	} = $props();
+	/** @type {string} */
+	export let type = "move";
+	/** @type {boolean} */
+	export let marginLeft = false;
+	/** @type {boolean} */
+	export let marginRight = false;
+	/** @type {boolean} */
+	export let selected = false;
+	/** @type {boolean} */
+	export let disabled = false;
 
 	const paths = {
 		move: {

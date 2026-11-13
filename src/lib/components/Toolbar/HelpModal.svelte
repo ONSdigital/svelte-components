@@ -1,37 +1,36 @@
-<script lang="ts">
+<script>
 	import { getContext } from "svelte";
 	// import { get, set } from "svelte/store";
-	import { fly } from "svelte/transition";
 	import Checkbox from "../Checkbox/Checkbox.svelte";
 	import Button from "../Button/Button.svelte";
 
-	let {
-		triggerElement = null,
-		onClose = () => {}
-	}: {
-		triggerElement?: HTMLElement | null;
-		onClose?: () => void;
-	} = $props();
+	/** @type {HTMLElement | null} The element the modal is positioned next to */
+	export let triggerElement = null;
+	/** @type {() => void} */
+	export let onClose = () => {};
 
 	// --- Context ---
 	const activeModalId = getContext("activeModalId");
 	const showHelpModals = getContext("showHelpModals");
 	const { buttonIds } = getContext("buttonIds");
 
-	// --- Derived state from stores ---
-	const ids = $derived(buttonIds);
-	const currentActiveId = $derived(activeModalId);
-	const showHelp = $derived(showHelpModals);
+	// --- Stores from context ---
+	const ids = buttonIds;
+	const currentActiveId = activeModalId;
+	const showHelp = showHelpModals;
 
 	// --- Local state ---
-	let modalPosition = $state({ top: 50, left: -5 });
-	let notchPosition = $state({ left: 17, right: "auto" });
-	let dontShowMeAgain = $state(false);
+	let modalPosition = { top: 50, left: -5 };
+	/** @type {{ left: number | "auto", right: number | "auto" }} */
+	let notchPosition = { left: 17, right: "auto" };
+	let dontShowMeAgain = false;
 
-	$effect(() => {
-		if (!triggerElement) return;
+	// Position the modal next to its button (only in the browser, as it measures the page)
+	$: if (triggerElement && typeof window !== "undefined") positionModal(triggerElement);
 
-		const rect = triggerElement.getBoundingClientRect();
+	/** @param {HTMLElement} element */
+	function positionModal(element) {
+		const rect = element.getBoundingClientRect();
 
 		// Calculate the modal's position
 		// const spaceBelow = window.innerHeight - rect.bottom;
@@ -39,8 +38,10 @@
 		const spaceRight = window.innerWidth - rect.right;
 
 		let newLeft = window.scrollX - 10;
-		let newNotchLeft: number | "auto" = 17;
-		let newNotchRight: number | "auto" = "auto";
+		/** @type {number | "auto"} */
+		let newNotchLeft = 17;
+		/** @type {number | "auto"} */
+		let newNotchRight = "auto";
 
 		// if (spaceBelow < 200 && spaceAbove > 200) {
 		// 	newTop = rect.top + window.scrollY - 10;
@@ -56,7 +57,7 @@
 		modalPosition.left = newLeft;
 		notchPosition.left = newNotchLeft;
 		notchPosition.right = newNotchRight;
-	});
+	}
 
 	// Update localStorage if "Don't show me again" is checked
 	function disableHelpModalsPermanently() {
@@ -103,7 +104,8 @@
 		}
 	}
 
-	function handleKeydown(event: KeyboardEvent) {
+	/** @param {KeyboardEvent} event */
+	function handleKeydown(event) {
 		if (event.key === "Escape") onClose();
 	}
 </script>

@@ -2,27 +2,20 @@
 	import { getContext, setContext } from "svelte";
 	import { writable } from "svelte/store";
 
-	/**
-	 * @typedef {object} ToolbarProps
-	 * @property {string | null} [classes=null] - Additional classes for the button
-	 * @property {string | null} [ariaLabel=null] - aria label for button
-	 * @property {'horizontal' | 'vertical'} [orientation='horizontal'] - Orientation of the toolbar
-	 */
-
-	/** @type {ToolbarProps} */
-	let { classes = null, ariaLabel = null, orientation = "horizontal" } = $props();
+	/** @type {string | null} Additional classes for the toolbar */
+	export let classes = null;
+	/** @type {string | null} aria label for the toolbar */
+	export let ariaLabel = null;
+	/** @type {"horizontal" | "vertical"} Orientation of the toolbar */
+	export let orientation = "horizontal";
 
 	// Set context for child components
 	const orientationStore = writable(orientation);
 	setContext("orientation", orientationStore);
+	$: orientationStore.set(orientation);
 
-	$effect(() => {
-		orientationStore.set(orientation);
-	});
-
-	// Get the showHelpModals state from context
-	const showHelpModals = getContext("showHelpModals");
-	const showHelp = $derived(showHelpModals);
+	// Get the showHelpModals store from context
+	const showHelp = getContext("showHelpModals");
 </script>
 
 <!-- Toolbar container -->

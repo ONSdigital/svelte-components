@@ -1,12 +1,11 @@
 <script>
 	import { getContext } from "svelte";
-	const activeModalId = getContext("activeModalId");
-	const showHelpModals = getContext("showHelpModals");
 
-	const currentModalId = $derived(activeModalId);
-	const showHelp = $derived(showHelpModals);
+	/** @type {string} The id of the ToolbarButton that shows this control */
+	export let id = "";
 
-	let { id = "" } = $props();
+	const currentModalId = getContext("activeModalId");
+	const showHelp = getContext("showHelpModals");
 </script>
 
 {#if $currentModalId === id && !$showHelp}

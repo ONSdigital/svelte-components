@@ -1,7 +1,6 @@
 <script>
 	import { getContext } from "svelte";
-	const activeModalId = getContext("activeModalId");
-	const id = $derived(activeModalId);
+	const id = getContext("activeModalId");
 </script>
 
 {#if id}

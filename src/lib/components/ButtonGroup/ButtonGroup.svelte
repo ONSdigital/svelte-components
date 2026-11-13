@@ -1,30 +1,27 @@
 <script>
 	import { setContext } from "svelte";
-	import { writable } from "svelte/store";
+	import { writable, get } from "svelte/store";
 
-	let {
-		name = "",
-		legend = "",
-		value = $bindable(),
-		visuallyHideLegend = false,
-		stackOnMobile = true,
-		children
-	} = $props();
+	/** @type {string} */
+	export let name = "";
+	/** @type {string} */
+	export let legend = "";
+	/** @type {string | undefined} The selected value (bindable) */
+	export let value = undefined;
+	/** @type {boolean} */
+	export let visuallyHideLegend = false;
+	/** @type {boolean} */
+	export let stackOnMobile = true;
 
-	// create the store
+	// A store shared with the child ButtonGroupItems
+	/** @type {import("svelte/store").Writable<string | undefined>} */
 	const selectedValue = writable(value);
 
-	//  When store changes and update prop
-	$effect(() => {
-		selectedValue.set(value);
-	});
-
-	const currentValue = $derived(selectedValue);
-
-	$effect(() => {
-		if ($currentValue !== value) {
-			value = $currentValue;
-		}
+	// Keep the store and value in sync both ways: when value is set from outside, and when an item is
+	// chosen. (The checks stop each update triggering the other again.)
+	$: if (get(selectedValue) !== value) selectedValue.set(value);
+	selectedValue.subscribe((v) => {
+		if (v !== value) value = v;
 	});
 
 	// Create a context to share with child Button components
@@ -39,7 +36,7 @@
 		<legend class:ons-u-vh={visuallyHideLegend}>{legend}</legend>
 	{/if}
 	<div class="buttons">
-		{@render children?.()}
+		<slot />
 	</div>
 </fieldset>
 
