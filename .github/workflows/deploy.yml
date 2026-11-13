@@ -1,0 +1,45 @@
+name: Deploy docs to GitHub Pages
+
+# Builds the package, Storybook and the component workbench (staged into storybook-static/workbench/
+# by scripts/stage-workbench.js), and publishes storybook-static/ to the gh-pages branch.
+# Pull requests only check that the docs build.
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # Push storybook-static/ to the gh-pages branch
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.4.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4.4.0
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      # The workbench must be built (into build/) before Storybook, which stages it
+      - name: Build package, Storybook and workbench
+        run: npm run build
+
+      - name: Deploy to GitHub Pages
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        uses: peaceiris/actions-gh-pages@v3.9.3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./storybook-static

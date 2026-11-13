@@ -19,12 +19,11 @@ This component library is inspired by Reuters' fantastic [graphics-components](h
 3. Increment version number in package.json
 4. `npm run build` (build the package + docs)
 5. Commit + push changes to GitHub (use version number eg. "v1.0.0" as commit message)
-6. `npm run deploy` (publish docs to GitHub Pages)
-7. `npm publish` (publish new version to NPM)
+6. `npm publish` (publish new version to NPM)
 
 **To update the docs only:**
 
 1. Update story files (.stories.svelte .stories.mdx etc)
 2. Commit + push changes to GitHub
-3. `npm run build:docs` (build Storybook and the component workbench)
-4. `npm run deploy` (publish docs to GitHub Pages)
+
+The docs (Storybook and the component workbench) are built and published to GitHub Pages by a GitHub Actions workflow (`.github/workflows/deploy.yml`) whenever changes are pushed to `main`. Pull requests to `main` are built but not published. To publish again without a new commit, run the workflow from the repository's Actions tab.

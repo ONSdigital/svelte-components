@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-`@onsvisual/svelte-components`: a published npm library of Svelte 5 components that wrap the ONS Design System markup/CSS. Docs are a Storybook site plus an interactive SvelteKit "workbench", both deployed together to GitHub Pages (`https://onsdigital.github.io/svelte-components`).
+`@onsvisual/svelte-components`: a published npm library of Svelte 5 components that wrap the ONS Design System markup/CSS. Docs are a Storybook site plus an interactive SvelteKit "workbench", both deployed together to GitHub Pages (`https://onsdigital.github.io/svelte-components`) by `.github/workflows/deploy.yml`: on every push to `main` it runs `npm run build` and publishes `storybook-static/` to the `gh-pages` branch, which Pages serves (pull requests only check that it builds).
 
 ## Commands
 
@@ -21,12 +21,11 @@ npm run format
 npm run build:package       # vite build (workbench -> build/) + svelte-package -> dist/ + publint + CSS merge
 npm run build               # build:package then build:docs
 npm run build:docs          # storybook build + copy build/workbench into storybook-static/ (needs a prior vite build)
-npm run deploy              # gh-pages publish of storybook-static/
 ```
 
 Known baseline state (see `SVELTE_5_MIGRATION_LOG.md`): `npm run check` and `npm run lint` are not clean repo-wide, and `src/routes/page.svelte.test.js` has a pre-existing failure. Judge changes by not adding new diagnostics/failures in touched files, rather than expecting a green run.
 
-Release process (from README): commit changes → bump `version` in package.json → `npm run build` → commit/push with the version as the message (e.g. `v1.0.0`) → `npm run deploy` → `npm publish`.
+Release process (from README): commit changes → bump `version` in package.json → `npm run build` → commit/push with the version as the message (e.g. `v1.0.0`) → `npm publish`. The docs deploy automatically when the push reaches `main`.
 
 ## Architecture
 
