@@ -3,6 +3,7 @@
 // Wrappers
 export { default as Container } from "./components/Container/Container.svelte";
 export { default as Embed } from "./components/Embed/Embed.svelte";
+export { default as EmbedParent } from "./components/EmbedParent/EmbedParent.svelte";
 export { default as LazyLoad } from "./components/LazyLoad/LazyLoad.svelte";
 export { default as Main } from "./components/Main/Main.svelte";
 export { default as Observe } from "./components/Observe/Observe.svelte";
