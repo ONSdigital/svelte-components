@@ -18,9 +18,9 @@ npx vitest run --project client   # or --project server
 npm run check               # svelte-check (JSDoc types via jsconfig.json)
 npm run lint                # prettier --check && eslint (eslint only runs if prettier passes)
 npm run format
-npm run build:package       # vite build (workbench -> build/) + svelte-package -> dist/ + publint + CSS merge
+npm run build:package       # svelte-package -> dist/ + publint + CSS merge (same as prepack)
 npm run build               # build:package then build:docs
-npm run build:docs          # storybook build + copy build/workbench into storybook-static/ (needs a prior vite build)
+npm run build:docs          # storybook build, then vite build (workbench -> build/), then copy build/workbench into storybook-static/
 ```
 
 Known baseline state (see `SVELTE_5_MIGRATION_LOG.md`): `npm run check` and `npm run lint` are not clean repo-wide, and `src/routes/page.svelte.test.js` has a pre-existing failure. Judge changes by not adding new diagnostics/failures in touched files, rather than expecting a green run.
