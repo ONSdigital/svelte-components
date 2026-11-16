@@ -25,5 +25,5 @@ Based on [this ONS Design System component](https://service-manual.ons.gov.uk/de
   ];
 </script>
 
-<Timeline {items}>
+<Timeline {items} />
 ```

@@ -19,8 +19,8 @@ In Svelte 5, the group `onChange` callback receives `{ value, e }`, where `value
     { id: "mobile", label: "Caravan or other mobile or temporary structure" },
   ];
 
-  let selected; // A binding for the selected item
+  let selected = $state(null); // A binding for the selected item
 </script>
 
-<Radios {items} bind:value={selected} label="Select one">
+<Radios {items} bind:value={selected} label="Select one" />
 ```

@@ -19,6 +19,7 @@ npm run check               # svelte-check (JSDoc types via jsconfig.json)
 npm run lint                # prettier --check && eslint (eslint only runs if prettier passes)
 npm run format
 npm run docs:props          # regenerate PROP_DOCS_REPORT.md (props without descriptions)
+npm run docs:agents         # write dist/llms.txt and dist/llms-full.txt (also run by prepack and build:docs)
 npm run build:package       # svelte-package -> dist/ + publint + CSS merge (same as prepack)
 npm run build               # build:package then build:docs
 npm run build:docs          # storybook build, then vite build (workbench -> build/), then copy build/workbench into storybook-static/
@@ -52,6 +53,13 @@ To support it properly:
 1. Read the selected component and its props from the URL so that combination is rendered on the server. Prerendered pages can't read query strings (SvelteKit throws if `url.searchParams` is accessed during prerender), and GitHub Pages only serves static files. So for the deployed site, use a path parameter with prerendered `entries` (e.g. `/workbench/props/[component]/` with default fixtures, or named fixture presets). Arbitrary prop values from the query string can only be server-rendered by `npm run dev`, with `prerender = false` on that route. `adapter-static` output has no server, so `npm run preview` can't do it either.
 2. Add a visible "hydrated" flag set in `onMount`, so the two states can be told apart.
 3. Add browser tests (e.g. Playwright) per fixture: with JavaScript disabled, check the core content and links work; with JavaScript enabled, check that no hydration warnings appear and the interactions work.
+
+## Agent docs (llms.txt)
+
+`scripts/agent-docs.js` generates `llms.txt` and `llms-full.txt`, documentation for coding agents in apps that use the package. `prepack` writes them to `dist/` (shipped in the package) and `build:docs` writes them to `storybook-static/` (published on the docs site). They're built from `src/lib/index.js`, each component's props (via `parseProps()` in `scripts/prop-docs.js`) and the opening paragraph and first example of its `docs/component.md`. The rules section (Svelte 5 usage, `Section` vs `Container`, `{@html}` props, and so on) is written in the script, so update it there when a convention changes. The list of props that throw when bound to an `undefined` variable is worked out from the source.
+
+- `src/agent-docs.spec.js` checks that every export appears and every prop has a description.
+- `src/docs-examples.spec.js` compiles every code example in `docs/*.md` in runes mode and fails on errors or deprecation warnings. Put `<!-- prettier-ignore -->` before a fenced example: otherwise Prettier reformats `svelte` blocks and quotes attributes (`prop="{x}"`), which Svelte 5 warns about.
 
 ## Component conventions (Svelte 5)
 

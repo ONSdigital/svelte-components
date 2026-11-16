@@ -8,8 +8,8 @@ Based on [this ONS Design System component](https://service-manual.ons.gov.uk/de
   import { Breadcrumb } from "@onsvisual/svelte-components";
 </script>
 
-<Breadcrumb links="{[
+<Breadcrumb links={[
   {label: 'Home', href: '/'},
   {label: 'Parent page', href: '/parent'}
-]}" />
+]} />
 ```

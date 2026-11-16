@@ -15,8 +15,8 @@ In Svelte 5, the group `onChange` callback receives `{ item, e }` for a changed 
     { id: "disabled", label: "Disabled option", checked: false, disabled: true },
   ];
 
-  let selected = []; // An array of the selected items
+  let selected = $state([]); // An array of the selected items
 </script>
 
-<Checkboxes {items} bind:value={selected} label="Select items">
+<Checkboxes {items} bind:value={selected} label="Select items" />
 ```

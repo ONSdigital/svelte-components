@@ -26,6 +26,6 @@ Note: This component is part of the **@onsvisual/svelte-charts** library. See [m
 
 <Chart
   type="bar"
-  data="{data}"
-  options="{options}"/>
+  data={data}
+  options={options}/>
 ```

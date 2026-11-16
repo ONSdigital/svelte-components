@@ -3,6 +3,13 @@ A standard `<input>` element with Svelte bindings and events.
 In Svelte 5, callbacks `onInput`, `onChange`, and `onBlur` receive `{ value, e }`, where `e` is the native event. Existing dispatched events remain available with the same object on `event.detail`.
 
 ```svelte
+<script>
+	import { Input } from "@onsvisual/svelte-components";
+
+	let value = $state(null);
+	const search = (query) => console.log(query);
+</script>
+
 <Input bind:value onInput={({ value }) => search(value)} />
 ```
 
@@ -13,14 +20,14 @@ In Svelte 5, callbacks `onInput`, `onChange`, and `onBlur` receive `{ value, e }
 <script>
   import { Input } from "@onsvisual/svelte-components";
 
-  // Bind the <input> value to a variable (reactive)
-  let value;
+  // Bind the <input> value to a variable (start it as null, not undefined)
+  let value = $state(null);
 
   // Define your own function on change
-  const handleChange = (e) => console.log(e);
+  const handleChange = ({ value }) => console.log(value);
 </script>
 
-<Input bind:value on:change="{handleChange}" />
+<Input bind:value onChange={handleChange} />
 ```
 
 ## Using with Autocomplete/Lookup Functions
@@ -29,16 +36,16 @@ The Input component can be paired with a lookup function to provide autocomplete
 
 ### Postcode Lookup Example
 
-Use the `on:input` or `on:blur` events to trigger async lookups (e.g., postcode validation/enrichment via postcodes.io):
+Use the `onInput`, `onChange` or `onBlur` callbacks to trigger async lookups (e.g., postcode validation/enrichment via postcodes.io):
 
 <!-- prettier-ignore -->
 ```html
 <script>
   import { Input } from "@onsvisual/svelte-components";
 
-  let postcode = "";
-  let postcodeData = null;
-  let isLoading = false;
+  let postcode = $state("");
+  let postcodeData = $state(null);
+  let isLoading = $state(false);
 
   // Function to lookup postcode data
   const lookupPostcode = async (inputValue) => {
@@ -59,9 +66,9 @@ Use the `on:input` or `on:blur` events to trigger async lookups (e.g., postcode 
     }
   };
 
-  // Trigger lookup on blur or after debounced input
-  const handleChange = (e) => {
-    lookupPostcode(e.detail.value);
+  // Trigger lookup when the input changes (on blur)
+  const handleChange = ({ value }) => {
+    lookupPostcode(value);
   };
 </script>
 
@@ -70,7 +77,7 @@ Use the `on:input` or `on:blur` events to trigger async lookups (e.g., postcode 
   label="Enter postcode"
   bind:value={postcode}
   placeholder="e.g., SW1A 1AA"
-  on:change={handleChange}
+  onChange={handleChange}
 />
 
 {#if isLoading}
@@ -95,8 +102,8 @@ For real-time autocomplete without overwhelming API calls, use a debounce functi
 <script>
   import { Input } from "@onsvisual/svelte-components";
 
-  let searchValue = "";
-  let suggestions = [];
+  let searchValue = $state("");
+  let suggestions = $state([]);
   let debounceTimer;
 
   // Generic autocomplete lookup function
@@ -116,10 +123,10 @@ For real-time autocomplete without overwhelming API calls, use a debounce functi
   };
 
   // Debounced handler to avoid excessive API calls
-  const handleInput = (e) => {
+  const handleInput = ({ value }) => {
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(() => {
-      fetchSuggestions(e.detail.value);
+      fetchSuggestions(value);
     }, 300); // Wait 300ms after user stops typing
   };
 
@@ -134,14 +141,14 @@ For real-time autocomplete without overwhelming API calls, use a debounce functi
   label="Search"
   bind:value={searchValue}
   placeholder="Start typing..."
-  on:input={handleInput}
+  onInput={handleInput}
 />
 
 {#if suggestions.length > 0}
   <ul class="suggestions">
     {#each suggestions as item}
       <li>
-        <button on:click={() => selectSuggestion(item.name)}>
+        <button onclick={() => selectSuggestion(item.name)}>
           {item.name}
         </button>
       </li>
@@ -172,15 +179,17 @@ For real-time autocomplete without overwhelming API calls, use a debounce functi
 </style>
 ```
 
-## Events
+## Callbacks and events
 
-The Input component dispatches three events:
+The Input component has three callback props:
 
-- **`on:input`** - Fired on each keystroke (useful for real-time feedback/autocomplete)
-- **`on:change`** - Fired when the input loses focus (useful for validation or lookups)
-- **`on:blur`** - Fired when the input loses focus
+- **`onInput`** - Called on each keystroke (useful for real-time feedback/autocomplete)
+- **`onChange`** - Called when the value has changed and the input loses focus (useful for validation or lookups)
+- **`onBlur`** - Called when the input loses focus
 
-Each event detail contains:
+Each callback receives an object containing:
 
 - `value` - The current input value
 - `e` - The native DOM event
+
+The matching dispatched events (`on:input`, `on:change` and `on:blur`) are still supported for Svelte 4-style code, with the same object on `event.detail`.

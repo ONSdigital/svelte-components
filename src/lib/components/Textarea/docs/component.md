@@ -5,14 +5,14 @@ In Svelte 5, `onInput`, `onChange`, and `onBlur` callbacks receive `{ value, e }
 <!-- prettier-ignore -->
 ```html
 <script>
-  import { Input } from "@onsvisual/svelte-components";
+  import { Textarea } from "@onsvisual/svelte-components";
 
-  // Bind the <input> value to a variable (reactive)
-  let value;
+  // Bind the <textarea> value to a variable (start it as null, not undefined)
+  let value = $state(null);
 
   // Define your own function on change
-  const handleChange = (e) => console.log(e);
+  const handleChange = ({ value }) => console.log(value);
 </script>
 
-<Input bind:value on:change="{handleChange}" />
+<Textarea bind:value onChange={handleChange} />
 ```

@@ -24,11 +24,11 @@ Custom icon content formerly provided with the named `icon` slot can be passed a
   import { Button } from "@onsvisual/svelte-components";
 
   // Define your own function on click
-  const handleClick = (e) => console.log(e);
+  const handleClick = (event) => console.log(event);
 </script>
 
-<!-- Standard button with on:click function -->
-<Button on:click="{handleClick}">Button text</Button>
+<!-- Standard button with an onClick callback -->
+<Button onClick={handleClick}>Button text</Button>
 
 <!-- Button-styled link with href -->
 <Button href="#">Link text</Button>

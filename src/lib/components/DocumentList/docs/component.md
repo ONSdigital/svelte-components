@@ -26,5 +26,5 @@ Based on [this ONS Design System component](https://service-manual.ons.gov.uk/de
 	];
 </script>
 
-<DocumentList {items}>
+<DocumentList {items} />
 ```

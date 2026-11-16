@@ -22,6 +22,15 @@ The [Storybook pages](https://onsdigital.github.io/svelte-components) document e
 
 This component library is inspired by Reuters' fantastic [graphics-components](https://github.com/reuters-graphics/graphics-components) library. The components are adapted from the [ONS Design System](https://service-manual.ons.gov.uk/design-system/).
 
+### Using with coding agents
+
+The package includes documentation written for coding agents (eg. Claude Code or GitHub Copilot), in the [llms.txt](https://llmstxt.org) format:
+
+- `node_modules/@onsvisual/svelte-components/dist/llms.txt`: setup, the rules for using the components with Svelte 5, the ONS Design System CSS that's included, and an index of the components.
+- `node_modules/@onsvisual/svelte-components/dist/llms-full.txt`: the same, plus every component's props (with types, defaults and descriptions) and an example.
+
+They're also on the docs site, at [llms.txt](https://onsdigital.github.io/svelte-components/llms.txt) and [llms-full.txt](https://onsdigital.github.io/svelte-components/llms-full.txt). To use them, point your agent to them in your project's instructions (eg. `AGENTS.md` or `CLAUDE.md`), as the [sveltekit-starter](https://github.com/ONSdigital/sveltekit-starter) template does.
+
 ## Making changes
 
 ### 1. Make your changes on a branch

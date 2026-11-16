@@ -5,7 +5,7 @@ In this example, the child textboxes are defined explicitly.
 <script>
   import { Checkbox, Checkboxes } from "@onsvisual/svelte-components";
 
-  let selected = []; // An array of the selected items
+  let selected = $state([]); // An array of the selected items
 </script>
 
 <Checkboxes label="Select items">

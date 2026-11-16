@@ -11,5 +11,5 @@ Based on [this ONS Design System pattern](https://service-manual.ons.gov.uk/desi
   import { ErrorPage } from "@onsvisual/svelte-components";
 </script>
 
-<ErrorPage page="{page}" />
+<ErrorPage page={page} />
 ```

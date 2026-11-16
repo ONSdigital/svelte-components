@@ -27,9 +27,11 @@ To see what is selected, bind `value` to a variable e.g.
 
 <!-- prettier-ignore -->
 ```html
-let selectedValue;
+<script>
+  let selectedValue = $state(null);
+</script>
 
-<ButtonGroup name="primary" legend="Choose an option" bind:value="{selectedValue}">
+<ButtonGroup name="primary" legend="Choose an option" bind:value={selectedValue}>
 ...
 </ButtonGroup>
 ```

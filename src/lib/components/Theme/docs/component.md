@@ -6,5 +6,5 @@ A component that sets the colour scheme of its child components using CSS variab
   import { Theme } from "@onsvisual/svelte-components";
 </script>
 
-<Theme theme="{light|dark|paleblue|blue|navyblue|grey}"> {child_components} </Theme>
+<Theme theme={light|dark|paleblue|blue|navyblue|grey}> {child_components} </Theme>
 ```

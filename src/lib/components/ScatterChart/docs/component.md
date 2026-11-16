@@ -7,7 +7,7 @@ Note: This component is part of the **@onsvisual/svelte-charts** library. See [m
 <script>
   import { ScatterChart } from "@onsvisual/svelte-charts";
 
-  const data = export default [
+  const data = [
     { year: 1979, value: 7.19, alt: 12, group: "apples" },
     { year: 1980, value: 7.83, alt: 15, group: "apples" },
     { year: 1981, value: 7.24, alt: 17, group: "apples" },
