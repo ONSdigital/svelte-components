@@ -1,7 +1,12 @@
 <script lang="ts">
 	import { getContext } from "svelte";
 
-	let { classes = "" }: { classes?: string } = $props();
+	let {
+		classes = ""
+	}: {
+		/** Additional CSS classes for the divider */
+		classes?: string;
+	} = $props();
 
 	// Get the orientation store from context
 	const orientationStore = getContext<import("svelte/store").Writable<string>>("orientation");

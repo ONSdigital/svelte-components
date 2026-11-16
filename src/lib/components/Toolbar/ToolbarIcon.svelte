@@ -1,11 +1,11 @@
 <script>
 	/**
 	 * @typedef {Object} Props
-	 * @property {string} [type]
-	 * @property {boolean} [marginLeft]
-	 * @property {boolean} [marginRight]
-	 * @property {boolean} [selected]
-	 * @property {boolean} [disabled]
+	 * @property {"move" | "polygon" | "radius" | "erase" | "zoomin" | "zoomout" | "undo" | "redo" | "search" | "save" | "download" | "upload" | "help" | "bin"} [type] Type of icon, eg. "move", "polygon", "zoomin", "undo"
+	 * @property {boolean} [marginLeft] Add a small margin on the left of the icon
+	 * @property {boolean} [marginRight] Add a small margin on the right of the icon
+	 * @property {boolean} [selected] Show the icon in its selected style
+	 * @property {boolean} [disabled] Show the icon as disabled (greyed out)
 	 */
 
 	/** @type {Props} */

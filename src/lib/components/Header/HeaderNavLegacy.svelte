@@ -4,13 +4,13 @@
 
 	/**
 	 * @typedef {Object} Props
-	 * @property {boolean} [search]
-	 * @property {boolean} [bilingual]
-	 * @property {string} [lang]
-	 * @property {string} [baseurl]
-	 * @property {string} [baseother]
-	 * @property {string} [path]
-	 * @property {any} [i18n]
+	 * @property {boolean} [search] Include site search
+	 * @property {boolean} [bilingual] Set to true to include an English/Welsh language link
+	 * @property {string} [lang] Language of the current page ("en" or "cy"), set by Header from the page URL
+	 * @property {string} [baseurl] Base URL of the ONS site in the current language (used for the logo link)
+	 * @property {string} [baseother] Base URL of the ONS site in the other language (used for the language link)
+	 * @property {string} [path] Path of the current page, added to `baseother` so the language link goes to the same page
+	 * @property {any} [i18n] Function that translates the header's text into Welsh when `lang` is "cy"
 	 */
 
 	/** @type {Props} */

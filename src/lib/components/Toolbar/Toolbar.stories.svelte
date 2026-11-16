@@ -13,6 +13,7 @@
 
 	let container;
 
+	/** @type {{ type: string; id?: string; icon?: import("svelte").ComponentProps<typeof ToolbarButton>["icon"]; label?: string; helpContent?: string; disabled?: boolean; hasAriaControls?: boolean }[]} */
 	const toolbarContent = [
 		{
 			type: "button",

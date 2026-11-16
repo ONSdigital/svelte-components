@@ -17,6 +17,8 @@ test("schema extraction reads TS props and legacy external props without evaluat
 	const modern = extractProps('<script lang="ts">interface Props { label?: string; disabled?: boolean } let { label = "Example", disabled = false } : Props = $props();</script>', "Example.svelte");
 	expect(modern.map(field => field.name)).toEqual(["label", "disabled"]);
 	expect(modern[1].kind).toBe("boolean");
+	const documented = extractProps('<script lang="ts">let { label = "" }: {\n\t/** Button label */\n\tlabel?: string;\n} = $props();</script>', "Documented.svelte");
+	expect(documented[0].description).toBe("Button label");
 	const legacy = extractProps('<script>/** @type {number} */ export let value = 5;</script>', "Legacy.svelte");
 	expect(legacy[0]).toMatchObject({ name: "value", initial: 5, kind: "number" });
 });

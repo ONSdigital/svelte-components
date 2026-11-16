@@ -42,7 +42,7 @@ function choices(node) {
 /** @param {ts.TypeNode | ts.JSDocTypeLiteral | undefined} type @returns {Metadata[]} */
 function members(type) {
 	if (!type) return [];
-	if (ts.isTypeLiteralNode(type)) return type.members.filter(ts.isPropertySignature).map(member => ({ name: member.name.getText().replace(/^["']|["']$/g, ""), type: member.type, description: "" }));
+	if (ts.isTypeLiteralNode(type)) return type.members.filter(ts.isPropertySignature).map(member => ({ name: member.name.getText().replace(/^["']|["']$/g, ""), type: member.type, description: ts.getTextOfJSDocComment(/** @type {{ jsDoc?: ts.JSDoc[] }} */ (member).jsDoc?.at(-1)?.comment)?.trim() ?? "" }));
 	if (ts.isJSDocTypeLiteral(type)) return (type.jsDocPropertyTags ?? []).map(member => ({ name: member.name.getText(), type: member.typeExpression?.type, description: (typeof member.comment === "string" ? member.comment : "").replace(/^-\s*/, "") }));
 	return [];
 }
