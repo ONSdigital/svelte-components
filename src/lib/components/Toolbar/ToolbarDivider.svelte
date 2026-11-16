@@ -1,15 +1,17 @@
-<script lang="ts">
+<script>
 	import { getContext } from "svelte";
 
-	let {
-		classes = ""
-	}: {
-		/** Additional CSS classes for the divider */
-		classes?: string;
-	} = $props();
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [classes] Additional CSS classes for the divider
+	 */
+
+	/** @type {Props} */
+	let { classes = "" } = $props();
 
 	// Get the orientation store from context
-	const orientationStore = getContext<import("svelte/store").Writable<string>>("orientation");
+	/** @type {import("svelte/store").Writable<string>} */
+	const orientationStore = getContext("orientation");
 
 	// Subscribe to the store to get its value
 	const orientation = $derived(orientationStore);

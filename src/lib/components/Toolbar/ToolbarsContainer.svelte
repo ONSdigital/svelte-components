@@ -1,20 +1,22 @@
-<script lang="ts">
+<script>
 	import { setContext, onMount } from "svelte";
 	import { writable } from "svelte/store";
-	interface Props {
-		/** Child content (snippet) */
-		children?: import("svelte").Snippet;
-	}
+	/**
+	 * @typedef {Object} Props
+	 * @property {import("svelte").Snippet} [children] Child content (snippet)
+	 */
 
-	let { children }: Props = $props();
+	/** @type {Props} */
+	let { children } = $props();
 
 	// Initialize a store for button IDs
-	const buttonIds = writable<string[]>([]);
+	/** @type {import("svelte/store").Writable<string[]>} */
+	const buttonIds = writable([]);
 	setContext("buttonIds", {
-		register: (id: string) => {
+		register: (/** @type {string} */ id) => {
 			buttonIds.update((ids) => [...ids, id]);
 		},
-		unregister: (id: string) => {
+		unregister: (/** @type {string} */ id) => {
 			buttonIds.update((ids) => ids.filter((btnId) => btnId !== id));
 		},
 		buttonIds
@@ -37,7 +39,8 @@
 		showHelpModals.set(showHelpState);
 	});
 
-	const activeModalStore = writable<string | null>(null); // Tracks the ID of the active modal
+	/** @type {import("svelte/store").Writable<string | null>} */
+	const activeModalStore = writable(null); // Tracks the ID of the active modal
 	setContext("activeModalId", activeModalStore);
 
 	onMount(() => {
