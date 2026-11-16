@@ -7,7 +7,16 @@
 	/** @type {import("svelte").EventDispatcher<{ change: { id: string } }>} */
 	const dispatch = createEventDispatcher();
 
-	/** @type {{ children?: import("svelte").Snippet; compact?: boolean; border?: boolean; selected?: string | null; cls?: string | null; onChange?: (detail: { id: string }) => void }} */
+	/**
+	 * @typedef {Object} Props
+	 * @property {import("svelte").Snippet} [children] Child content (snippet)
+	 * @property {boolean} [compact] Make tabs smaller/more compact
+	 * @property {boolean} [border] Include a border around the tab panel
+	 * @property {string | null} [selected] The ID of selected tab (for binding)
+	 * @property {string | null} [cls] Optional: Set an additional CSS class for the component
+	 * @property {(detail: { id: string }) => void} [onChange] Callback for the `change` event, called with the same value as the event's `detail`
+	 */
+	/** @type {Props} */
 	let {
 		children,
 		compact = false,

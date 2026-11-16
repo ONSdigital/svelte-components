@@ -3,17 +3,17 @@
 
 	/**
 	 * @typedef {Object} Props
-	 * @property {string|null} [id] - Optional: Set the unique ID of the section
-	 * @property {string|null} [cls] - Optional: Set an additional CSS class for the section
-	 * @property {boolean} [bigText] - Applies a larger default text size (by default)
-	 * @property {"narrow"|"medium"|"wide"|"wider"|"full"} [width] - Sets the width of the container
-	 * @property {number|string|null} [height] - Sets the (minimum) height of the container
-	 * @property {"light"|"dark"|"paleblue"|"blue"|"navyblue"|"grey"|null} [theme] - Sets a predefined theme
-	 * @property {Record<string, string>} [themeOverrides] - Define additional props to override the base theme
-	 * @property {string|null} [background] - Overrides the background CSS for the section
-	 * @property {boolean} [marginTop] - Adds margin above section
-	 * @property {boolean} [marginBottom] - Adds margin below section
-	 * @property {import('svelte').Snippet} [children]
+	 * @property {string|null} [id] Optional: Set the unique ID of the section
+	 * @property {string|null} [cls] Optional: Set an additional CSS class for the section
+	 * @property {boolean} [bigText] Applies a larger default text size (by default)
+	 * @property {"narrow"|"medium"|"wide"|"wider"|"full"} [width] Sets the width of the container
+	 * @property {number|string|null} [height] Sets the (minimum) height of the container
+	 * @property {"light"|"dark"|"paleblue"|"blue"|"navyblue"|"grey"|null} [theme] Sets a predefined theme
+	 * @property {Record<string, string>} [themeOverrides] Define additional props to override the base theme
+	 * @property {string|null} [background] Overrides the background CSS for the section
+	 * @property {boolean} [marginTop] Adds margin above section
+	 * @property {boolean} [marginBottom] Adds margin below section
+	 * @property {import('svelte').Snippet} [children] Child content (snippet)
 	 */
 
 	/** @type {Props} */

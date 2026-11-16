@@ -20,3 +20,11 @@ test("schema extraction reads TS props and legacy external props without evaluat
 	const legacy = extractProps('<script>/** @type {number} */ export let value = 5;</script>', "Legacy.svelte");
 	expect(legacy[0]).toMatchObject({ name: "value", initial: 5, kind: "number" });
 });
+test("schema extraction reads JSDoc @typedef props with types and descriptions", () => {
+	const fields = extractProps(
+		'<script>\n/**\n * @typedef {Object} Props\n * @property {"a" | "b"} [variant] - Style variant\n * @property {import("svelte").Snippet} [children] Default content\n */\n\n/** @type {Props} */\nlet { variant = "a", children } = $props();\n</script>',
+		"Typedef.svelte"
+	);
+	expect(fields[0]).toMatchObject({ name: "variant", kind: "enum", options: ["a", "b"], description: "Style variant" });
+	expect(fields[1]).toMatchObject({ name: "children", kind: "snippet", description: "Default content" });
+});

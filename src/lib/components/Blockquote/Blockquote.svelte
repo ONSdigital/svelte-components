@@ -1,8 +1,8 @@
 <script>
 	/**
 	 * @typedef {Object} Props
-	 * @property {string|null} [attribution] - Attribution for the quote.
-	 * @property {import('svelte').Snippet} [children]
+	 * @property {string|null} [attribution] Attribution for the quote.
+	 * @property {import('svelte').Snippet} [children] Child content (snippet)
 	 */
 
 	/** @type {Props} */

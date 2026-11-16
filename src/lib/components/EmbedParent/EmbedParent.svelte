@@ -6,7 +6,16 @@
 	/** @typedef {{ id: string; url: string; el: HTMLElement; iframe: HTMLIFrameElement; sendMessage: (type: string, message: string) => void; onMessage: (type: string, callback: (message: string) => void) => void; remove: () => void }} PymParent */
 	/** @typedef {{ id: string; iframeId: string; href: string; title: string | null; pymParent: PymParent }} LoadDetail */
 	const uid = $props.id();
-	/** @type {{ id?: string; href: string; title?: string | null; name?: string | null; pymParent?: PymParent | null; onLoad?: (detail: LoadDetail) => void }} */
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [id]
+	 * @property {string} href
+	 * @property {string | null} [title]
+	 * @property {string | null} [name]
+	 * @property {PymParent | null} [pymParent]
+	 * @property {(detail: LoadDetail) => void} [onLoad] Callback for the `load` event, called with the same value as the event's `detail`
+	 */
+	/** @type {Props} */
 	let { id = uid, href, title = null, name = null, pymParent = $bindable(), onLoad } = $props();
 	if (pymParent === undefined) pymParent = null;
 	/** @type {import("svelte").EventDispatcher<{ load: LoadDetail }>} */

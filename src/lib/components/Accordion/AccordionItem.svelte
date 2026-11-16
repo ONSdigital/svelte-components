@@ -2,7 +2,15 @@
 	import { getContext } from "svelte";
 	import { slugify, sleep } from "$lib/js/utils.js";
 
-	/** @type {{ children?: import("svelte").Snippet; title?: string | null; id?: string; headingTag?: "h2" | "h3"; open?: boolean }} */
+	/**
+	 * @typedef {Object} Props
+	 * @property {import("svelte").Snippet} [children] Child content (snippet)
+	 * @property {string | null} [title] Sets the title of the accordion item
+	 * @property {string} [id] Sets the unique ID of the accordion item
+	 * @property {"h2" | "h3"} [headingTag] Set the heading level for the accordion items
+	 * @property {boolean} [open] Set the initial status of the accordion item to open (non-reactive)
+	 */
+	/** @type {Props} */
 	let {
 		children,
 		title = null,

@@ -1,5 +1,11 @@
 <script>
-	/** @type {{ children?: import("svelte").Snippet; mode?: "info" | "success" | "error" | "warning"; cls?: string | null }} */
+	/**
+	 * @typedef {Object} Props
+	 * @property {import("svelte").Snippet} [children] Child content (snippet)
+	 * @property {"info" | "success" | "error" | "warning"} [mode] Sets the mode/colour of the notice
+	 * @property {string | null} [cls] Optional: Set an additional CSS class for the component
+	 */
+	/** @type {Props} */
 	let { children, mode = "info", cls = null } = $props();
 </script>
 

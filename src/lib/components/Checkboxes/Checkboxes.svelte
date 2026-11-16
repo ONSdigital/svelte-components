@@ -7,7 +7,19 @@
 	/** @type {import("svelte").EventDispatcher<{ change: { item: CheckboxItem; e: Event } }>} */
 	const dispatch = createEventDispatcher();
 
-	/** @type {{ children?: import("svelte").Snippet; title?: string | null; hideTitle?: boolean; label?: string | null; items?: CheckboxItem[] | null; compact?: boolean; value?: CheckboxItem[]; cls?: string | null; onChange?: (detail: { item: CheckboxItem; e: Event }) => void }} */
+	/**
+	 * @typedef {Object} Props
+	 * @property {import("svelte").Snippet} [children] Child content (snippet)
+	 * @property {string | null} [title] Title/legend for parent <fieldset>
+	 * @property {boolean} [hideTitle] Visually hide the title/legend
+	 * @property {string | null} [label] Descriptive "how to" label for inputs
+	 * @property {CheckboxItem[] | null} [items] Optional: Define the checkboxes as an array of {id, label, checked, description?}
+	 * @property {boolean} [compact] Compact mode (no borders)
+	 * @property {CheckboxItem[]} [value] Binding for selected checkboxes (if checkboxes are defined as "items")
+	 * @property {string | null} [cls] Optional: Set an additional CSS class for the component
+	 * @property {(detail: { item: CheckboxItem; e: Event }) => void} [onChange] Callback for the `change` event, called with the same value as the event's `detail`
+	 */
+	/** @type {Props} */
 	let {
 		children,
 		title = null,

@@ -4,11 +4,11 @@
 
 	/**
 	 * @typedef {Object} Props
-	 * @property {string|null} [id] - Sets the unique ID of the section (identifiable in associated scroll events)
-	 * @property {string|null} [title] - Optional: Sets the title of the section
-	 * @property {boolean} [hideTitle] - Allows the h2 title tag for the section to be visually hidden
-	 * @property {string|null} [cls] - Optional: Set an additional CSS class for the component
-	 * @property {import('svelte').Snippet} [children]
+	 * @property {string|null} [id] Sets the unique ID of the section (identifiable in associated scroll events)
+	 * @property {string|null} [title] Optional: Sets the title of the section
+	 * @property {boolean} [hideTitle] Allows the h2 title tag for the section to be visually hidden
+	 * @property {string|null} [cls] Optional: Set an additional CSS class for the component
+	 * @property {import('svelte').Snippet} [children] Child content (snippet)
 	 */
 
 	/** @type {Props} */

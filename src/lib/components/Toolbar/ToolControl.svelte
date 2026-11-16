@@ -6,6 +6,13 @@
 	const currentModalId = $derived(activeModalId);
 	const showHelp = $derived(showHelpModals);
 
+	/**
+	 * @typedef {Object} Props
+	 * @property {import("svelte").Snippet} [children] Child content (snippet)
+	 * @property {string} [id] The id of the ToolbarButton that shows this control
+	 */
+
+	/** @type {Props} */
 	let { children, id = "" } = $props();
 </script>
 

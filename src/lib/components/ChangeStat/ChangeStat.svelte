@@ -1,5 +1,14 @@
 <script>
-	/** @type {{ value?: string | number | null; direction?: "up" | "down" | "neutral"; label?: string | null; context?: string | null; tone?: "default" | "positive" | "negative" | "subtle"; cls?: string | null }} */
+	/**
+	 * @typedef {Object} Props
+	 * @property {string | number | null} [value] Highlighted change value, for example "7%" or "1.3pp"
+	 * @property {"up" | "down" | "neutral"} [direction] Direction of change
+	 * @property {string | null} [label] Optional override for the descriptive label
+	 * @property {string | null} [context] Optional trailing context, for example "than last year"
+	 * @property {"default" | "positive" | "negative" | "subtle"} [tone] Optional colour treatment
+	 * @property {string | null} [cls] Optional: Set an additional CSS class for the component
+	 */
+	/** @type {Props} */
 	let {
 		value = null,
 		direction = "neutral",

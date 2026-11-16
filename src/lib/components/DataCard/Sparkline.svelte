@@ -3,7 +3,13 @@
 	import { line } from "d3-shape";
 
 	/** @typedef {Record<string, number>} Point */
-	/** @type {{ data: Point[]; xKey?: string; yKey?: string }} */
+	/**
+	 * @typedef {Object} Props
+	 * @property {Point[]} data Array of data in the format [{x: value, y: value}, etc]
+	 * @property {string} [xKey] Key for the X values
+	 * @property {string} [yKey] Key for the Y values
+	 */
+	/** @type {Props} */
 	let { data, xKey = "x", yKey = "y" } = $props();
 
 	/** @param {Point[]} data @param {string} key */

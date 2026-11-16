@@ -12,23 +12,23 @@
 
 	/**
 	 * @typedef {Object} Props
-	 * @property {string|null} [title] - Optional product title
-	 * @property {string|null} [titleHref] - Optional link for product title
-	 * @property {"narrow"|"medium"|"wide"|"wider"|"full"} [width] - Sets the width of the header (does not apply to legacy mode)
-	 * @property {"light"|"dark"|"paleblue"|"blue"|"navyblue"|"grey"|null} [theme] - Sets a predefined theme
-	 * @property {object} [themeOverrides] - Define additional props to override the base theme
-	 * @property {string|null} [cls] - Optional: Set an additional CSS class for the container
-	 * @property {boolean} [compact] - Display compact header without menus
-	 * @property {boolean} [search] - Include site search
-	 * @property {boolean} [bilingual] - Set to true to include an English/Welsh language link
-	 * @property {boolean} [headerBorder] - Include a border/line under the header. For use if hero is transparent
-	 * @property {boolean} [menuBorder] - Include a border/line under the menu when open. For use if hero colour matches menu
-	 * @property {boolean} [legacy] - Use the legacy nav header
-	 * @property {any} [page] - Optional: Pass the "page" state from "$app/state" in SvelteKit (gets read from context by default if it exists)
-	 * @property {string|null} [skipHref] - Anchor link to skip to main body content (default "#main")
-	 * @property {{label: string, href: string}[]|null} [navLinks] - Optional: Nav links below title (only works in combination with title block). An array of links in the format {label, href}
-	 * @property {import('svelte').Snippet} [before]
-	 * @property {import('svelte').Snippet} [after]
+	 * @property {string|null} [title] Optional product title
+	 * @property {string|null} [titleHref] Optional link for product title
+	 * @property {"narrow"|"medium"|"wide"|"wider"|"full"} [width] Sets the width of the header (does not apply to legacy mode)
+	 * @property {"light"|"dark"|"paleblue"|"blue"|"navyblue"|"grey"|null} [theme] Sets a predefined theme
+	 * @property {object} [themeOverrides] Define additional props to override the base theme
+	 * @property {string|null} [cls] Optional: Set an additional CSS class for the container
+	 * @property {boolean} [compact] Display compact header without menus
+	 * @property {boolean} [search] Include site search
+	 * @property {boolean} [bilingual] Set to true to include an English/Welsh language link
+	 * @property {boolean} [headerBorder] Include a border/line under the header. For use if hero is transparent
+	 * @property {boolean} [menuBorder] Include a border/line under the menu when open. For use if hero colour matches menu
+	 * @property {boolean} [legacy] Use the legacy nav header
+	 * @property {any} [page] Optional: Pass the "page" state from "$app/state" in SvelteKit (gets read from context by default if it exists)
+	 * @property {string|null} [skipHref] Anchor link to skip to main body content (default "#main")
+	 * @property {{label: string, href: string}[]|null} [navLinks] Optional: Nav links below title (only works in combination with title block). An array of links in the format {label, href}
+	 * @property {import('svelte').Snippet} [before] Content rendered before the main content (snippet)
+	 * @property {import('svelte').Snippet} [after] Content rendered after the main content (snippet)
 	 */
 
 	/** @type {Props} */

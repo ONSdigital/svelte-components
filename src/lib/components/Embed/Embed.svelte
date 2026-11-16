@@ -4,7 +4,15 @@
 
 	/** @typedef {{ sendMessage: (type: string, value: string) => void; remove: () => void }} PymChild */
 	/** @typedef {{ href: string; parentUrl: string | null; pymChild: PymChild }} LoadDetail */
-	/** @type {{ children?: import("svelte").Snippet; id?: string | null; pymChild?: PymChild | null; polling?: number | false; onLoad?: (detail: LoadDetail) => void }} */
+	/**
+	 * @typedef {Object} Props
+	 * @property {import("svelte").Snippet} [children] Child content (snippet)
+	 * @property {string | null} [id] (Optional) ID for embed
+	 * @property {PymChild | null} [pymChild] Binding for pymChild element (can be used to send messages to parent of iframe)
+	 * @property {number | false} [polling] Frequency (in milliseconds) of iframe height updates. Set as "false" to disable polling.
+	 * @property {(detail: LoadDetail) => void} [onLoad] Callback for the `load` event, called with the same value as the event's `detail`
+	 */
+	/** @type {Props} */
 	let { children, id = null, pymChild = $bindable(null), polling = 500, onLoad } = $props();
 	/** @type {import("svelte").EventDispatcher<{ load: LoadDetail }>} */
 	const dispatch = createEventDispatcher();

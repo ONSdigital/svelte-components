@@ -3,7 +3,19 @@
 
 	/** @typedef {Record<string, unknown>} Row */
 	/** @typedef {{ key: string; label: string; numeric?: boolean; dp?: number; formatter?: (value: number) => string }} Column */
-	/** @type {{ title?: string | null; compact?: boolean; sortable?: boolean; responsive?: boolean; rowHover?: boolean; height?: number | "auto"; data?: Row[]; columns?: Column[]; cls?: string | null }} */
+	/**
+	 * @typedef {Object} Props
+	 * @property {string | null} [title] An optional title for the table
+	 * @property {boolean} [compact] Make the table smaller/more compact
+	 * @property {boolean} [sortable] Make the table sortable
+	 * @property {boolean} [responsive] Make the chart responsive (changes layout on narrow screens)
+	 * @property {boolean} [rowHover] Highlight rows on hover
+	 * @property {number | "auto"} [height] Maximum height of table (in pixels). The header row becomes sticky unless the value is "auto" (default).
+	 * @property {Row[]} [data] Rows of data
+	 * @property {Column[]} [columns] Optional metadata for formatting columns. Array of {key, label, numeric?, dp?, formatter?} objects
+	 * @property {string | null} [cls] Optional: Set an additional CSS class for the component
+	 */
+	/** @type {Props} */
 	let {
 		title = null,
 		compact = false,

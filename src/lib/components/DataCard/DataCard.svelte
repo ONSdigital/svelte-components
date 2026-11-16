@@ -2,7 +2,19 @@
 	import Card from "$lib/components/Card/Card.svelte";
 	import Sparkline from "./Sparkline.svelte";
 
-	/** @type {{ title?: string | null; subtitle?: string | null; href?: string | null; value?: string | number | null; mode?: "number" | "sparkline" | "bar"; caption?: string | null; data?: Record<string, number>[] | null; source?: string | null; cls?: string | null }} */
+	/**
+	 * @typedef {Object} Props
+	 * @property {string | null} [title] Title of card
+	 * @property {string | null} [subtitle] Optional: Subtitle of card
+	 * @property {string | null} [href] Optional: URL link for card title
+	 * @property {string | number | null} [value] Big number (expects a pre-formatted text string)
+	 * @property {"number" | "sparkline" | "bar"} [mode] Mode for the data tile
+	 * @property {string | null} [caption] Text caption describing the number
+	 * @property {Record<string, number>[] | null} [data] An array of data (required for charts)
+	 * @property {string | null} [source] Text describing the source of the data
+	 * @property {string | null} [cls] Optional: Set an additional CSS class for the component
+	 */
+	/** @type {Props} */
 	let {
 		title = null,
 		subtitle = null,

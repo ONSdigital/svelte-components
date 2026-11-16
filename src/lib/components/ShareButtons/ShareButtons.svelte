@@ -4,11 +4,11 @@
 
 	/**
 	 * @typedef {Object} Props
-	 * @property {string} [title] - Set the title/call to action
-	 * @property {string[]} [platforms] - Which platforms to include (available options "facebook", "x", "linkedin" and "email")
-	 * @property {boolean} [marginTop] - Adds margin above section
-	 * @property {boolean} [marginBottom] - Adds margin below section
-	 * @property {string|null} [cls] - Optional: Set an additional CSS class for the component
+	 * @property {string} [title] Set the title/call to action
+	 * @property {string[]} [platforms] Which platforms to include (available options "facebook", "x", "linkedin" and "email")
+	 * @property {boolean} [marginTop] Adds margin above section
+	 * @property {boolean} [marginBottom] Adds margin below section
+	 * @property {string|null} [cls] Optional: Set an additional CSS class for the component
 	 */
 
 	/** @type {Props} */

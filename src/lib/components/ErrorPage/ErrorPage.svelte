@@ -6,10 +6,10 @@
 
 	/**
 	 * @typedef {Object} Props
-	 * @property {"narrow"|"medium"|"wide"|"wider"|"full"} [width] - Sets the width of the container
-	 * @property {any} [page] - Optional: Pass the "page" store from "$app/state" in SvelteKit (gets read from context by default if it exists)
-	 * @property {number|null} [status] - Optional: Explicitly pass a page status number, eg. 404 or 500.
-	 * @property {string|null} [message] - Optional: Explicitly pass a page status message.
+	 * @property {"narrow"|"medium"|"wide"|"wider"|"full"} [width] Sets the width of the container
+	 * @property {any} [page] Optional: Pass the "page" store from "$app/state" in SvelteKit (gets read from context by default if it exists)
+	 * @property {number|null} [status] Optional: Explicitly pass a page status number, eg. 404 or 500.
+	 * @property {string|null} [message] Optional: Explicitly pass a page status message.
 	 */
 
 	/** @type {Props} */

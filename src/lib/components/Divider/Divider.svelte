@@ -1,7 +1,16 @@
 <script>
 	import Container from "$lib/components/Container/Container.svelte";
 
-	/** @type {{ hr?: "narrow" | "full" | null; width?: "narrow" | "medium" | "wide" | "wider" | "full"; mode?: "dark" | "light"; marginTop?: boolean; marginBottom?: boolean; cls?: string | null }} */
+	/**
+	 * @typedef {Object} Props
+	 * @property {"narrow" | "full" | null} [hr] Optional: Include a horizontal rule
+	 * @property {"narrow" | "medium" | "wide" | "wider" | "full"} [width] Sets the width of the container
+	 * @property {"dark" | "light"} [mode] Sets the mode/colour of the line
+	 * @property {boolean} [marginTop] Adds margin above section
+	 * @property {boolean} [marginBottom] Adds margin below section
+	 * @property {string | null} [cls] Optional: Set an additional CSS class for the component
+	 */
+	/** @type {Props} */
 	let {
 		hr = "full",
 		width = "wide",

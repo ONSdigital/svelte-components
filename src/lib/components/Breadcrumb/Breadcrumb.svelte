@@ -3,13 +3,13 @@
 
 	/**
 	 * @typedef {Object} Props
-	 * @property {{ label: string; href?: string }[]} [links] - An array of links in the format {label, href}
-	 * @property {string|null} [backHref] - Optional: Link href if component is used for a single back-link
-	 * @property {"narrow"|"medium"|"wide"|"wider"|"full"} [width] - Sets the width of the container
-	 * @property {string|null} [cls] - Optional: Set an additional CSS class for the component
-	 * @property {"light"|"dark"|"paleblue"|"blue"|"navyblue"|"grey"|null} [theme] - Optional: Sets a base theme ("light", "dark", null etc)
-	 * @property {Record<string, string>} [themeOverrides] - Optional: Define additional props to override the base theme
-	 * @property {string|null} [background] - Optional: Overrides the base theme background (accepts any valid CSS background value)
+	 * @property {{ label: string; href?: string }[]} [links] An array of links in the format {label, href}
+	 * @property {string|null} [backHref] Optional: Link href if component is used for a single back-link
+	 * @property {"narrow"|"medium"|"wide"|"wider"|"full"} [width] Sets the width of the container
+	 * @property {string|null} [cls] Optional: Set an additional CSS class for the component
+	 * @property {"light"|"dark"|"paleblue"|"blue"|"navyblue"|"grey"|null} [theme] Optional: Sets a base theme ("light", "dark", null etc)
+	 * @property {Record<string, string>} [themeOverrides] Optional: Define additional props to override the base theme
+	 * @property {string|null} [background] Optional: Overrides the base theme background (accepts any valid CSS background value)
 	 */
 
 	/** @type {Props} */

@@ -1,11 +1,11 @@
 <script>
 	/**
 	 * @typedef {Object} Props
-	 * @property {string} [title] - Sets the title of the contents block
-	 * @property {boolean} [hideTitle] - Visually hides the title of the block
-	 * @property {{ label: string; href?: string }[]} [links] - An array of links for the contentents block in the form {label, href?}. Excluding href renders an item as plain text and marks it as the current section for screenreaders.
-	 * @property {string|null} [skipHref] - An anchor link URL to the main content of the page (to skip contents)
-	 * @property {string|null} [cls] - Optional: Set an additional CSS class for the component
+	 * @property {string} [title] Sets the title of the contents block
+	 * @property {boolean} [hideTitle] Visually hides the title of the block
+	 * @property {{ label: string; href?: string }[]} [links] An array of links for the contentents block in the form {label, href?}. Excluding href renders an item as plain text and marks it as the current section for screenreaders.
+	 * @property {string|null} [skipHref] An anchor link URL to the main content of the page (to skip contents)
+	 * @property {string|null} [cls] Optional: Set an additional CSS class for the component
 	 */
 
 	/** @type {Props} */

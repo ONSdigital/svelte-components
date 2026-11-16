@@ -4,7 +4,25 @@
 	/** @type {import("svelte").EventDispatcher<{ change: { value: string | null; e: Event }; input: { value: string | null; e: Event }; blur: { value: string | null; e: Event } }>} */
 	const dispatch = createEventDispatcher();
 
-	/** @type {{ id?: string | null; name?: string | null; value?: string | null; label?: string | null; hideLabel?: boolean; description?: string | null; charLimit?: number | null; rows?: number; width?: number; readonly?: boolean; disabled?: boolean; cls?: string | null; onChange?: (detail: { value: string | null; e: Event }) => void; onInput?: (detail: { value: string | null; e: Event }) => void; onBlur?: (detail: { value: string | null; e: Event }) => void }} */
+	/**
+	 * @typedef {Object} Props
+	 * @property {string | null} [id] ID for &lt;textarea&gt; element
+	 * @property {string | null} [name] Name for &lt;textarea&gt; element
+	 * @property {string | null} [value] A prop to bind to for the entered value
+	 * @property {string | null} [label] A label to describe the &lt;textarea&gt; element (expected for accessibility)
+	 * @property {boolean} [hideLabel] Visually hide the label
+	 * @property {string | null} [description] An optional description to help users know what to enter
+	 * @property {number | null} [charLimit] The maximum number of characters that can be entered (optional)
+	 * @property {number} [rows] The height of the &lt;textarea&gt; element in rows
+	 * @property {number} [width] The width of the &lt;textarea&gt; element in characters
+	 * @property {boolean} [readonly] Set to `true` to make the input read-only
+	 * @property {boolean} [disabled] Set to `true` to give the input a disabled state
+	 * @property {string | null} [cls] Optional: Set an additional CSS class for the component
+	 * @property {(detail: { value: string | null; e: Event }) => void} [onChange] Callback for the `change` event, called with the same value as the event's `detail`
+	 * @property {(detail: { value: string | null; e: Event }) => void} [onInput] Callback for the `input` event, called with the same value as the event's `detail`
+	 * @property {(detail: { value: string | null; e: Event }) => void} [onBlur] Callback for the `blur` event, called with the same value as the event's `detail`
+	 */
+	/** @type {Props} */
 	let {
 		id = null,
 		name = id,

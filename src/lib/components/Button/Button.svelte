@@ -6,7 +6,28 @@
 	/** @type {import("svelte").EventDispatcher<{ click: MouseEvent }>} */
 	const dispatch = createEventDispatcher();
 
-	/** @type {{ children?: import("svelte").Snippet; iconSlot?: import("svelte").Snippet; type?: "button" | "submit" | "reset"; variant?: "primary" | "secondary" | "ghost"; href?: string | null; download?: string | null; rel?: string | null; noScroll?: boolean; small?: boolean; icon?: "arrow" | "carret" | "chevron" | "code" | "cog" | "copy" | "cross" | "delete" | "download" | "edit" | "edit-text" | "expand" | "external" | "minus" | "pin" | "plus" | "print" | "save" | "saveas" | "search" | "shrink" | "signout" | "tick" | "upload" | null; iconPosition?: "before" | "after"; iconRotation?: number; disabled?: boolean; hideLabel?: boolean; arialabel?: string | null; color?: string | null; cls?: string | null; onClick?: (event: MouseEvent) => void }} */
+	/**
+	 * @typedef {Object} Props
+	 * @property {import("svelte").Snippet} [children] Child content (snippet)
+	 * @property {import("svelte").Snippet} [iconSlot] Custom icon content, used instead of the `icon` prop (snippet)
+	 * @property {"button" | "submit" | "reset"} [type] Type of button
+	 * @property {"primary" | "secondary" | "ghost"} [variant] Style variant of button
+	 * @property {string | null} [href] Href of button (renders button as a link)
+	 * @property {string | null} [download] File name if link is used for a file download (only if href is also specified)
+	 * @property {string | null} [rel] HTML "rel" attribute for hyperlinks (Eg. rel="nofollow")
+	 * @property {boolean} [noScroll] Don't scroll when link is followed (only if href is also specified)
+	 * @property {boolean} [small] Make button smaller
+	 * @property {"arrow" | "carret" | "chevron" | "code" | "cog" | "copy" | "cross" | "delete" | "download" | "edit" | "edit-text" | "expand" | "external" | "minus" | "pin" | "plus" | "print" | "save" | "saveas" | "search" | "shrink" | "signout" | "tick" | "upload" | null} [icon] Icon on button, eg. "arrow", "search"
+	 * @property {"before" | "after"} [iconPosition] Position of icon
+	 * @property {number} [iconRotation] Rotation of icon in degrees (clockwise)
+	 * @property {boolean} [disabled] Show button as disabled
+	 * @property {boolean} [hideLabel] Visually hide the button text (for icon-only buttons)
+	 * @property {string | null} [arialabel] Aria label for button
+	 * @property {string | null} [color] Set a colour for the button
+	 * @property {string | null} [cls] Optional: Set an additional CSS class for the component
+	 * @property {(event: MouseEvent) => void} [onClick] Callback for the `click` event, called with the same value as the event's `detail`
+	 */
+	/** @type {Props} */
 	let {
 		children,
 		iconSlot,

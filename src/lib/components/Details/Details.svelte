@@ -4,7 +4,16 @@
 	/** @type {import("svelte").EventDispatcher<{ toggle: { open: boolean; e: Event } }>} */
 	const dispatch = createEventDispatcher();
 
-	/** @type {{ children?: import("svelte").Snippet; title?: string; headingTag?: "h2" | "h3"; open?: boolean; cls?: string | null; onToggle?: (detail: { open: boolean; e: Event }) => void }} */
+	/**
+	 * @typedef {Object} Props
+	 * @property {import("svelte").Snippet} [children] Child content (snippet)
+	 * @property {string} [title] A title for the element
+	 * @property {"h2" | "h3"} [headingTag] Set the heading level for the title
+	 * @property {boolean} [open] Option for element to be open/expanded by default
+	 * @property {string | null} [cls] Optional: Set an additional CSS class for the component
+	 * @property {(detail: { open: boolean; e: Event }) => void} [onToggle] Callback for the `toggle` event, called with the same value as the event's `detail`
+	 */
+	/** @type {Props} */
 	let {
 		children,
 		title = "Title",

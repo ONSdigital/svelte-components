@@ -3,11 +3,11 @@
 
 	/**
 	 * @typedef {Object} Props
-	 * @property {string} [phase] - Phase of project (alpha, beta, prototype etc.)
-	 * @property {string} [description] - Message to describe the phase
-	 * @property {string} [href] - URL of feedback form (relative or absolute)
-	 * @property {"narrow"|"medium"|"wide"|"wider"|"full"} [width] - Sets the width of the banner
-	 * @property {string|null} [cls] - Optional: Set an additional CSS class for the component
+	 * @property {string} [phase] Phase of project (alpha, beta, prototype etc.)
+	 * @property {string} [description] Message to describe the phase
+	 * @property {string} [href] URL of feedback form (relative or absolute)
+	 * @property {"narrow"|"medium"|"wide"|"wider"|"full"} [width] Sets the width of the banner
+	 * @property {string|null} [cls] Optional: Set an additional CSS class for the component
 	 */
 
 	/** @type {Props} */

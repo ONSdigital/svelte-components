@@ -1,5 +1,12 @@
 <script>
-	/** @type {{ children?: import("svelte").Snippet; entered?: boolean; initialHeight?: number; rootMargin?: number }} */
+	/**
+	 * @typedef {Object} Props
+	 * @property {import("svelte").Snippet} [children] Child content (snippet)
+	 * @property {boolean} [entered] Bind to this variable to monitor whether the component has entered the viewport (boolean true/false).
+	 * @property {number} [initialHeight] Set the initial "placeholder" height of the component in pixels.
+	 * @property {number} [rootMargin] Set how many pixels from the viewport you want lazy loading to kick in.
+	 */
+	/** @type {Props} */
 	let { children, entered = $bindable(false), initialHeight = 400, rootMargin = 200 } = $props();
 
 	/** @type {IntersectionObserverCallback} */

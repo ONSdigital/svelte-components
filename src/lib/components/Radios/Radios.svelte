@@ -5,7 +5,20 @@
 	const dispatch = createEventDispatcher();
 	/** @typedef {{ id: string; label: string; description?: string | null }} RadioItem */
 
-	/** @type {{ children?: import("svelte").Snippet; title?: string | null; hideTitle?: boolean; id?: string; label?: string | null; value?: RadioItem | null; items?: RadioItem[]; compact?: boolean; cls?: string | null; onChange?: (detail: { value: RadioItem; e: Event }) => void }} */
+	/**
+	 * @typedef {Object} Props
+	 * @property {import("svelte").Snippet} [children] Child content (snippet)
+	 * @property {string | null} [title] Title/legend for parent <fieldset>
+	 * @property {boolean} [hideTitle] Visually hide the title/legend
+	 * @property {string} [id] Unique ID/name for radio group (required)
+	 * @property {string | null} [label] Descriptive "how to" label for inputs
+	 * @property {RadioItem | null} [value] Binding for ID of selected option
+	 * @property {RadioItem[]} [items] Optional: Define the radios as an array of {id, label, description?}
+	 * @property {boolean} [compact] Compact mode (no border)
+	 * @property {string | null} [cls] Optional: Set an additional CSS class for the component
+	 * @property {(detail: { value: RadioItem; e: Event }) => void} [onChange] Callback for the `change` event, called with the same value as the event's `detail`
+	 */
+	/** @type {Props} */
 	let {
 		children,
 		title = null,

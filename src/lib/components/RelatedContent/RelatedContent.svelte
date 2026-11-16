@@ -1,11 +1,11 @@
 <script>
 	/**
 	 * @typedef {Object} Props
-	 * @property {string} [title] - Title for the section
-	 * @property {{ title: string; href: string }[] | object} [links] - Links in the form {title, href}
-	 * @property {{ title?: string; links: { title: string; href: string }[] | object }[]} [related] - Define multiple links sections in the form {title, links: [{title, href}]} (overrides above options)
-	 * @property {string|null} [cls] - Optional: Set an additional CSS class for the component
-	 * @property {import('svelte').Snippet} [children]
+	 * @property {string} [title] Title for the section
+	 * @property {{ title: string; href: string }[] | object} [links] Links in the form {title, href}
+	 * @property {{ title?: string; links: { title: string; href: string }[] | object }[]} [related] Define multiple links sections in the form {title, links: [{title, href}]} (overrides above options)
+	 * @property {string|null} [cls] Optional: Set an additional CSS class for the component
+	 * @property {import('svelte').Snippet} [children] Child content (snippet)
 	 */
 
 	/** @type {Props} */

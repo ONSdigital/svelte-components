@@ -2,7 +2,14 @@
 	import { onMount, onDestroy, getContext } from "svelte";
 	import { slugify } from "../../js/utils.js";
 
-	/** @type {{ children?: import("svelte").Snippet; title?: string; hideTitle?: boolean; id?: string }} */
+	/**
+	 * @typedef {Object} Props
+	 * @property {import("svelte").Snippet} [children] Child content (snippet)
+	 * @property {string} [title] Title of tab/panel
+	 * @property {boolean} [hideTitle] Hide the title within the panel
+	 * @property {string} [id] ID/slug for tab (auto-generated from title if not set)
+	 */
+	/** @type {Props} */
 	let { children, title = "Tab title", hideTitle = true, id = slugify(title) } = $props();
 
 	/** @type {import("svelte/store").Writable<HTMLElement[]>} */

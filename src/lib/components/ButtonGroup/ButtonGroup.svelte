@@ -2,6 +2,17 @@
 	import { setContext } from "svelte";
 	import { writable } from "svelte/store";
 
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [name] Name attribute shared by the radio inputs in the group
+	 * @property {string} [legend] Legend text for the group
+	 * @property {string} [value] The selected value (bindable)
+	 * @property {boolean} [visuallyHideLegend] Visually hide the legend (it stays available to screen readers)
+	 * @property {boolean} [stackOnMobile] Stack the buttons vertically on small screens
+	 * @property {import("svelte").Snippet} [children] Child content: the ButtonGroupItem components (snippet)
+	 */
+
+	/** @type {Props} */
 	let {
 		name = "",
 		legend = "",
@@ -12,6 +23,7 @@
 	} = $props();
 
 	// create the store
+	/** @type {import("svelte/store").Writable<string | undefined>} */
 	const selectedValue = writable(value);
 
 	//  When store changes and update prop

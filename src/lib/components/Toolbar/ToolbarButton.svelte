@@ -25,8 +25,11 @@
 		transient = false,
 		disableHelp = false
 	}: {
+		/** Child content (snippet) */
 		children?: import("svelte").Snippet;
+		/** Custom content for the button, shown when `custom` is true (snippet) */
 		customContent?: import("svelte").Snippet;
+		/** Callback for the `click` event, called with the same value as the event's `detail` */
 		onClick?: (detail: null) => void;
 		id?: string;
 		icon?: string;
@@ -34,6 +37,7 @@
 		disabled?: boolean;
 		classes?: string;
 		helpText?: string | null;
+		/** Whether a toggle button is selected (bindable) */
 		selected?: boolean;
 		toggle?: boolean;
 		custom?: boolean;

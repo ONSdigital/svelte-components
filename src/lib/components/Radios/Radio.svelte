@@ -10,7 +10,18 @@
 		return description ? { id, label, description } : { id, label };
 	}
 
-	/** @type {{ id?: string | null; label?: string | null; description?: string | null; item?: RadioItem; groupId: string; value?: RadioItem | null; compact?: boolean; onChange?: (detail: { value: RadioItem; e: Event }) => void }} */
+	/**
+	 * @typedef {Object} Props
+	 * @property {string | null} [id] Unique ID input
+	 * @property {string | null} [label] Label for input
+	 * @property {string | null} [description] Optional: Extended description for element
+	 * @property {RadioItem} [item] Optional: Define the item as an object in the form {id, label, description?}
+	 * @property {string} groupId ID/name for radio group (required)
+	 * @property {RadioItem | null} [value] Binding selected option
+	 * @property {boolean} [compact] Compact mode (no border)
+	 * @property {(detail: { value: RadioItem; e: Event }) => void} [onChange] Callback for the `change` event, called with the same value as the event's `detail`
+	 */
+	/** @type {Props} */
 	let {
 		id = null,
 		label = "",

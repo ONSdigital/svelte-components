@@ -4,7 +4,15 @@
 	/** @type {import("svelte").EventDispatcher<{ change: { item: object } }>} */
 	const dispatch = createEventDispatcher();
 
-	/** @type {{ id?: string | null; title?: string | null; items?: { key: string; value: string; href?: string; editable?: boolean }[]; cls?: string | null; onChange?: (detail: { item: { key: string; value: string; href?: string; editable?: boolean } }) => void }} */
+	/**
+	 * @typedef {Object} Props
+	 * @property {string | null} [id] A unique ID for the summary table
+	 * @property {string | null} [title] Title for summary table
+	 * @property {{ key: string; value: string; href?: string; editable?: boolean }[]} [items] Array of items in format {key, value, href?}
+	 * @property {string | null} [cls] Optional: Set an additional CSS class for the component
+	 * @property {(detail: { item: { key: string; value: string; href?: string; editable?: boolean } }) => void} [onChange] Callback for the `change` event, called with the same value as the event's `detail`
+	 */
+	/** @type {Props} */
 	let { id = null, title = null, items = [], cls = null, onChange = () => {} } = $props();
 
 	/** @param {{ key: string; value: string; href?: string; editable?: boolean }} item */

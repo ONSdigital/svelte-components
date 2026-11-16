@@ -3,14 +3,14 @@
 
 	/**
 	 * @typedef {Object} Props
-	 * @property {string|null} [cls] - Optional: Set an additional CSS class for the section
-	 * @property {string} title - Sets the title of the banner (required)
-	 * @property {string} description - Sets the text content of the banner (required)
-	 * @property {"black"|"red"|"teal"} [variant] - Sets the variant/colour of the banner
-	 * @property {string|null} [linkHref] - Sets the text content of the banner
-	 * @property {string|null} [linkText] - Sets the text content of the banner
-	 * @property {boolean} [marginTop] - Adds margin above section
-	 * @property {boolean} [marginBottom] - Adds margin below section
+	 * @property {string|null} [cls] Optional: Set an additional CSS class for the section
+	 * @property {string} title Sets the title of the banner (required)
+	 * @property {string} description Sets the text content of the banner (required)
+	 * @property {"black"|"red"|"teal"} [variant] Sets the variant/colour of the banner
+	 * @property {string|null} [linkHref] Sets the text content of the banner
+	 * @property {string|null} [linkText] Sets the text content of the banner
+	 * @property {boolean} [marginTop] Adds margin above section
+	 * @property {boolean} [marginBottom] Adds margin below section
 	 */
 
 	/** @type {Props} */

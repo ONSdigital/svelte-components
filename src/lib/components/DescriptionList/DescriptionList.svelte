@@ -1,10 +1,10 @@
 <script>
 	/**
 	 * @typedef {Object} Props
-	 * @property {string|null} [title] - Sets the title of the list (for screen readers)
-	 * @property {{ key: string; value: unknown }[]} [items] - Array of items in format {key, value} where "value" may be an array of multiple values
-	 * @property {"default"|"inline"} [mode] - Option to change layout to "inline", eg. for title blocks
-	 * @property {string|null} [cls] - Optional: Set an additional CSS class for the component
+	 * @property {string|null} [title] Sets the title of the list (for screen readers)
+	 * @property {{ key: string; value: unknown }[]} [items] Array of items in format {key, value} where "value" may be an array of multiple values
+	 * @property {"default"|"inline"} [mode] Option to change layout to "inline", eg. for title blocks
+	 * @property {string|null} [cls] Optional: Set an additional CSS class for the component
 	 */
 
 	/** @type {Props} */

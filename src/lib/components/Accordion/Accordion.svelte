@@ -7,7 +7,15 @@
 	/** @type {import("svelte").EventDispatcher<{ toggle: { id: string; open: boolean; el: HTMLElement } }>} */
 	const dispatch = createEventDispatcher();
 
-	/** @type {{ children?: import("svelte").Snippet; id?: string; cls?: string | null; showToggle?: boolean; onToggle?: (detail: { id: string; open: boolean; el: HTMLElement }) => void }} */
+	/**
+	 * @typedef {Object} Props
+	 * @property {import("svelte").Snippet} [children] Child content (snippet)
+	 * @property {string} [id] Optional: Set the unique ID of the accordion
+	 * @property {string | null} [cls] Optional: Set an additional CSS class for the component
+	 * @property {boolean} [showToggle] Option to include a "show all" toggle above the accordion
+	 * @property {(detail: { id: string; open: boolean; el: HTMLElement }) => void} [onToggle] Callback for the `toggle` event, called with the same value as the event's `detail`
+	 */
+	/** @type {Props} */
 	let { children, id = slugify(), cls = null, showToggle = false, onToggle = () => {} } = $props();
 
 	setContext("dataGroup", () => id);

@@ -1,5 +1,10 @@
 <script>
-	/** @type {{ children?: import("svelte").Snippet; title?: string | null }} */
+	/**
+	 * @typedef {Object} Props
+	 * @property {import("svelte").Snippet} [children] Child content (snippet)
+	 * @property {string | null} [title] Title of timeline item
+	 */
+	/** @type {Props} */
 	let { children, title = null } = $props();
 </script>
 

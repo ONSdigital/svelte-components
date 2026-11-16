@@ -2,6 +2,7 @@
 	import { setContext, onMount } from "svelte";
 	import { writable } from "svelte/store";
 	interface Props {
+		/** Child content (snippet) */
 		children?: import("svelte").Snippet;
 	}
 

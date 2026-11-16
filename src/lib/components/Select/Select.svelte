@@ -15,7 +15,31 @@
 	let accessibleAutocomplete;
 	let hideMenu = $state(false);
 
-	/** @type {{ id?: string; name?: string; mode?: "default" | "search"; clearable?: boolean; autoClear?: boolean; autoFocus?: boolean; label?: string | null; hideLabel?: boolean; description?: string | null; placeholder?: string; value?: object | string | null; options?: object[]; labelKey?: string; groupKey?: string | null; renderFallback?: boolean; minLength?: number; loadOptions?: (query: string, populateResults: (results: object[]) => void) => void; clearInput?: () => void; cls?: string | null; onChange?: (value: object | string) => void; onClear?: (value: null) => void }} */
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [id] Unique id for the HTML element
+	 * @property {string} [name] Name for the HTML element
+	 * @property {"default" | "search"} [mode] The mode can be either "default" or "search"
+	 * @property {boolean} [clearable] Defines whether the selection can be cleared
+	 * @property {boolean} [autoClear] Clear value on selection (default for "search" mode)
+	 * @property {boolean} [autoFocus] Auto focus the search input when it is created
+	 * @property {string | null} [label] A label to describe the element (expected for accessibility)
+	 * @property {boolean} [hideLabel] Visually hide the label
+	 * @property {string | null} [description] An optional description to help users know what to enter
+	 * @property {string} [placeholder] An optional placeholder text
+	 * @property {object | string | null} [value] A prop to bind to for the selected value
+	 * @property {object[]} [options] An array of options, formatted {id, label}
+	 * @property {string} [labelKey] The attribute of an option that defines its label/name
+	 * @property {string | null} [groupKey] The attribute of an option that defines its group (optional)
+	 * @property {boolean} [renderFallback] When using SSR or pre-rendering, this option will render a text input or dropdown before the page is hydrated (allows for progressive enhancement).
+	 * @property {number} [minLength] Optional: Minimum query length to return results
+	 * @property {(query: string, populateResults: (results: object[]) => void) => void} [loadOptions] Optional: Override function for loading/filtering options based on the entered text
+	 * @property {() => void} [clearInput] Call this function externally to clear the input
+	 * @property {string | null} [cls] Optional: Set an additional CSS class for the component
+	 * @property {(value: object | string) => void} [onChange] Callback for the `change` event, called with the same value as the event's `detail`
+	 * @property {(value: null) => void} [onClear] Callback for the `clear` event, called with the same value as the event's `detail`
+	 */
+	/** @type {Props} */
 	let {
 		id = "autocomplete",
 		name = id,

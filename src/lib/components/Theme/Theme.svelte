@@ -2,7 +2,17 @@
 	import themes from "./themes.js";
 
 	/** @typedef {keyof typeof themes | null} ThemeName */
-	/** @type {{ children?: import("svelte").Snippet; theme?: ThemeName; overrides?: Record<string, string>; background?: string | null; global?: boolean; allowClientOverrides?: boolean; cls?: string | null }} */
+	/**
+	 * @typedef {Object} Props
+	 * @property {import("svelte").Snippet} [children] Child content (snippet)
+	 * @property {ThemeName} [theme] Sets a base theme ("light", "dark" or null for no theme)
+	 * @property {Record<string, string>} [overrides] Define additional props to override the base theme
+	 * @property {string | null} [background] Overrides the base theme background (accepts any valid CSS background value)
+	 * @property {boolean} [global] Sets the theme at html body level (only use this at the top level)
+	 * @property {boolean} [allowClientOverrides] Allows client imported CSS for embeddable content
+	 * @property {string | null} [cls] Optional: Set an additional CSS class for the theme container
+	 */
+	/** @type {Props} */
 	let {
 		children,
 		theme = null,

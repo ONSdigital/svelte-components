@@ -1,7 +1,16 @@
 <script>
 	import { contrastColor } from "../../js/utils";
 
-	/** @type {{ children?: import("svelte").Snippet; color?: string; mode?: "default" | "badge"; fontSize?: string | null; nowrap?: boolean; ariaLabel?: string | null }} */
+	/**
+	 * @typedef {Object} Props
+	 * @property {import("svelte").Snippet} [children] Child content (snippet)
+	 * @property {string} [color] Any valid CSS colour
+	 * @property {"default" | "badge"} [mode] Any valid CSS colour (CSS variables will not be parsed)
+	 * @property {string | null} [fontSize] Override the font size of the surrounding text
+	 * @property {boolean} [nowrap] Don't break text across lines
+	 * @property {string | null} [ariaLabel] Descriptive text for screen readers if not self-explanatory
+	 */
+	/** @type {Props} */
 	let {
 		children,
 		color = "lightgrey",
