@@ -7,7 +7,12 @@
 	 * @property {number} [rootMargin] Set how many pixels from the viewport you want lazy loading to kick in.
 	 */
 	/** @type {Props} */
-	let { children, entered = $bindable(false), initialHeight = 400, rootMargin = 200 } = $props();
+	let { children, entered = $bindable(), initialHeight = 400, rootMargin = 200 } = $props();
+
+	// Defaults for bindable props are set here rather than in $props(): Svelte 5 throws an error if a
+	// parent binds a prop that has a default to an undefined variable (eg. `let value = $state()`).
+	// Setting them here also writes the default back to the bound variable, as in v1.
+	if (entered === undefined) entered = false;
 
 	/** @type {IntersectionObserverCallback} */
 	const callback = (entries, observer) => {

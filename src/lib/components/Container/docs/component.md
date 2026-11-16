@@ -8,5 +8,5 @@ Note that the this component includes the `<Theme>` component internally, allowi
   import { Container } from "@onsvisual/svelte-components";
 </script>
 
-<Container width="{narrow|medium|wide|wider|full}" theme="light">{child_components}</Container>
+<Container width={narrow|medium|wide|wider|full} theme="light">{child_components}</Container>
 ```

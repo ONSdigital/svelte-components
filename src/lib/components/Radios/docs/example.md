@@ -4,8 +4,6 @@ In this example, the radios are defined explicitly rather than via an array.
 ```html
 <script>
   import { Radio, Radios } from "@onsvisual/svelte-components";
-
-  let selected; // A binding for the selected item ID
 </script>
 
 <Radios label="Select one">

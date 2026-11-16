@@ -14,7 +14,7 @@ The `page` prop accepts a SvelteKit page store or page-state object. Passing `an
   }
 </script>
 
-<AnalyticsBanner analyticsId="{id_string}" />
+<AnalyticsBanner analyticsId={id_string} />
 <!-- Rest of page content -->
 ```
 

@@ -13,7 +13,7 @@ In this demo, you can open your browser's developer console (**F12**) to see the
 <script>
   import { Observe } from "@onsvisual/svelte-components";
 
-  let visible;
+  let visible = $state(false);
 
   const colors = ["yellow", "green", "blue", "purple", "red", "orange"];
 </script>
@@ -21,9 +21,9 @@ In this demo, you can open your browser's developer console (**F12**) to see the
 {#each colors as color}
 <Observe
   bind:visible
-  on:enter={() => console.log(`${color} entered`)}
-  on:exit={() => console.log(`${color} exited`)}>
-  <div class="section" style:background={color} style:height="400px"/>
+  onEnter={() => console.log(`${color} entered`)}
+  onExit={() => console.log(`${color} exited`)}>
+  <div class="section" style:background={color} style:height="400px"></div>
 </Observe>
 {/each}
 ```

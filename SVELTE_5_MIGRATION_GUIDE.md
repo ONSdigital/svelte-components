@@ -36,7 +36,7 @@ Card's image/title snippet overrides retain their existing linked-card behavior.
 
 Relevant event-emitting components retain dispatched events under Svelte 5 alongside callback props. Callback arguments match the dispatched event's `detail`; see each component's documentation for payload types. Keeping `createEventDispatcher` and supported `on:event` usage is intentional. Existing two-way bindings use `$bindable`.
 
-Svelte 5 throws an error (`props_invalid_value`) when a parent binds a variable that is `undefined` (eg. `let value = $state()`) to a `$bindable` prop with a default value. Select (`value`, `clearInput`) and Checkbox (`checked`) set their defaults in the component instead, so, as in v1, a bound variable that starts `undefined` is set to the default. `bind:clearInput` gets Select's function for clearing the selection. Other bindable props still have defaults: start bound variables with a value (eg. `$state(null)`).
+As in v1, a bound variable can start `undefined` (eg. `let value = $state()`): the component sets it to the prop's default, eg. `null` for Input's `value`, and `bind:clearInput` gets Select's function for clearing the selection. In versions 2.0 to 2.2, most bindable props (all except Select's `value` and `clearInput`, and Checkbox's `checked`) instead threw an error (`props_invalid_value`) when the bound variable started `undefined`. If you need to support those versions, start bound variables with a value (eg. `$state(null)`).
 
 ## Reactive Inputs
 

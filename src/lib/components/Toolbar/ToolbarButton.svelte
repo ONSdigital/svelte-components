@@ -36,7 +36,7 @@
 		disabled = false,
 		classes = "",
 		helpText = null,
-		selected = $bindable(false),
+		selected = $bindable(),
 		toggle = false,
 		custom = false,
 		hasAriaControls = false,
@@ -45,6 +45,11 @@
 		transient = false,
 		disableHelp = false
 	} = $props();
+
+	// Defaults for bindable props are set here rather than in $props(): Svelte 5 throws an error if a
+	// parent binds a prop that has a default to an undefined variable (eg. `let value = $state()`).
+	// Setting them here also writes the default back to the bound variable, as in v1.
+	if (selected === undefined) selected = false;
 
 	/** @type {import("svelte").EventDispatcher<{ click: null }>} */
 	const dispatch = createEventDispatcher();

@@ -15,7 +15,7 @@ Svelte 5 uses `background` and `foreground` snippets in place of named slots. `o
   }
 </script>
 
-<Scroller onChange={updateScroller} id="{any_unique_id}">
+<Scroller onChange={updateScroller} id={any_unique_id}>
   {#snippet background()}
     <!--
       The <Container> component is optional here.
@@ -26,13 +26,13 @@ Svelte 5 uses `background` and `foreground` snippets in place of named slots. `o
     </Container>
   {/snippet}
   {#snippet foreground()}
-    <ScrollerSection id="{any_unique_id}">
+    <ScrollerSection id={any_unique_id}>
       <p>First section caption.</p>
     </ScrollerSection>
-    <ScrollerSection id="{any_unique_id}">
+    <ScrollerSection id={any_unique_id}>
       <p>Second section caption.</p>
     </ScrollerSection>
-    <ScrollerSection id="{any_unique_id}">
+    <ScrollerSection id={any_unique_id}>
       <p>Third section caption.</p>
     </ScrollerSection>
   {/snippet}

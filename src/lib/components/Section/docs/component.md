@@ -6,7 +6,7 @@ A layout block for text content, including an optional title.
   import { Section } from "@onsvisual/svelte-components";
 </script>
 
-<Section width="{narrow|medium|wide|full}" title="Section title">
+<Section width={narrow|medium|wide|full} title="Section title">
   <p>Contents of section.</p>
 </Section>
 ```

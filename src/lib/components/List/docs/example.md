@@ -8,5 +8,5 @@ In this example, the list items are defined in an array. The items can include H
   const items = ["<strong>First</strong> list item", "Second list item", "Third list item"];
 </script>
 
-<List items="{items}"/>
+<List items={items}/>
 ```

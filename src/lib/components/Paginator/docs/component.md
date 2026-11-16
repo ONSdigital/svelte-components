@@ -8,9 +8,10 @@ Based on the simpler version of this [ONS Design System component](https://servi
   import { Paginator } from "@onsvisual/svelte-components";
 </script>
 
-<Paginator 
-  pageCount={10},
-  pageCurrent={2},
-  nextHref="#3",
-  prevHref="#1"/>
+<Paginator
+  pageCount={10}
+  pageCurrent={2}
+  nextHref="#3"
+  prevHref="#1"
+/>
 ```

@@ -16,22 +16,29 @@
 import fs from "node:fs";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
+import { pathToFileURL } from "node:url";
 import ts from "typescript";
 
 const COMPONENTS = "src/lib/components";
 const V1_REFS = ["v1-legacy", "origin/v1-legacy"];
-/** The first v1 ref that resolves, or null */
-const V1_REF =
-	V1_REFS.find((ref) => {
-		try {
-			execFileSync("git", ["rev-parse", "--verify", "--quiet", `${ref}^{commit}`], {
-				stdio: "ignore"
-			});
-			return true;
-		} catch {
-			return false;
-		}
-	}) ?? null;
+/** @type {string | null | undefined} */
+let v1RefCache;
+/** The first v1 ref that resolves, or null (looked up once, when first needed) */
+function v1Ref() {
+	if (v1RefCache === undefined)
+		v1RefCache =
+			V1_REFS.find((ref) => {
+				try {
+					execFileSync("git", ["rev-parse", "--verify", "--quiet", `${ref}^{commit}`], {
+						stdio: "ignore"
+					});
+					return true;
+				} catch {
+					return false;
+				}
+			}) ?? null;
+	return v1RefCache;
+}
 const REPORT = "PROP_DOCS_REPORT.md";
 
 /** Snippet props that replaced v1 named slots (see SVELTE_5_MIGRATION_GUIDE.md) */
@@ -95,6 +102,7 @@ const clean = (comment) =>
 
 /** @param {string} file @returns {Map<string, string> | null} v1 prop name -> description ("" if undocumented) */
 function v1Props(file) {
+	const V1_REF = v1Ref();
 	if (!V1_REF) return null;
 	let source;
 	try {
@@ -123,9 +131,36 @@ function v1Props(file) {
 }
 
 /**
- * @typedef {{ name: string; type: string; optional: boolean; description: string }} Prop
+ * @typedef {{ name: string; type: string; optional: boolean; description: string; defaultValue?: string; bindable?: boolean; defaultInScript?: boolean }} Prop
  * @typedef {{ style: "inline" | "typedef" | "ts" | "untyped" | "none"; props: Prop[]; script: NonNullable<ReturnType<typeof instanceScript>>; typeDoc?: ts.JSDoc; typedefDoc?: ts.JSDoc; members?: ts.PropertySignature[] }} Parsed
  */
+
+/**
+ * A default set in the script, as `if (name === undefined) name = value;`
+ * @param {ts.Statement} statement
+ * @returns {{ name: string; value: string } | null}
+ */
+function scriptDefault(statement) {
+	if (!ts.isIfStatement(statement) || statement.elseStatement) return null;
+	const test = statement.expression;
+	if (
+		!ts.isBinaryExpression(test) ||
+		test.operatorToken.kind !== ts.SyntaxKind.EqualsEqualsEqualsToken ||
+		!ts.isIdentifier(test.left) ||
+		test.right.getText() !== "undefined"
+	)
+		return null;
+	const then = statement.thenStatement;
+	const assignment = ts.isExpressionStatement(then) ? then.expression : null;
+	if (
+		!assignment ||
+		!ts.isBinaryExpression(assignment) ||
+		assignment.operatorToken.kind !== ts.SyntaxKind.EqualsToken ||
+		assignment.left.getText() !== test.left.text
+	)
+		return null;
+	return { name: test.left.text, value: assignment.right.getText().replace(/\s*\n\s*/g, " ") };
+}
 
 /** @param {string} source @returns {Parsed | null} */
 function parseProps(source) {
@@ -155,9 +190,37 @@ function parseProps(source) {
 				ts.isObjectBindingPattern(d.name)
 		);
 		if (!declaration) continue;
-		const names = /** @type {ts.ObjectBindingPattern} */ (declaration.name).elements
-			.filter((e) => !e.dotDotDotToken)
-			.map((e) => (e.propertyName ?? e.name).getText());
+		const elements = /** @type {ts.ObjectBindingPattern} */ (declaration.name).elements.filter(
+			(e) => !e.dotDotDotToken
+		);
+		const names = elements.map((e) => (e.propertyName ?? e.name).getText());
+		// Default values and $bindable() from the destructuring, eg. `value = $bindable(null)`
+		/** @type {Map<string, { defaultValue?: string; bindable: boolean; defaultInScript?: boolean }>} */
+		const bindings = new Map();
+		for (const e of elements) {
+			let init = e.initializer;
+			const bindable =
+				Boolean(init) &&
+				ts.isCallExpression(/** @type {ts.Expression} */ (init)) &&
+				/** @type {ts.CallExpression} */ (init).expression.getText() === "$bindable";
+			if (bindable) init = /** @type {ts.CallExpression} */ (init).arguments[0];
+			bindings.set((e.propertyName ?? e.name).getText(), {
+				defaultValue: init?.getText().replace(/\s*\n\s*/g, " "),
+				bindable
+			});
+		}
+		// Bindable props have their defaults set in the script, as `if (value === undefined) value = null;`
+		for (const statement of script.sf.statements) {
+			const fallback = scriptDefault(statement);
+			const binding = fallback && bindings.get(fallback.name);
+			if (binding && binding.defaultValue === undefined) {
+				binding.defaultValue = fallback.value;
+				binding.defaultInScript = true;
+			}
+		}
+		/** @param {Prop[]} props @returns {Prop[]} */
+		const withBindings = (props) =>
+			props.map((prop) => ({ ...prop, ...(bindings.get(prop.name) ?? { bindable: false }) }));
 		const typeDoc = jsDocs(statement).find((doc) => doc.tags?.some(ts.isJSDocTypeTag));
 		const type = typeDoc?.tags?.find(ts.isJSDocTypeTag)?.typeExpression.type;
 		if (type && ts.isTypeLiteralNode(type)) {
@@ -167,7 +230,7 @@ function parseProps(source) {
 				optional: Boolean(member.questionToken),
 				description: ""
 			}));
-			return { style: "inline", props, script, typeDoc };
+			return { style: "inline", props: withBindings(props), script, typeDoc };
 		}
 		const typedefDoc =
 			type && ts.isTypeReferenceNode(type) ? typedefs.get(type.typeName.getText()) : undefined;
@@ -183,7 +246,7 @@ function parseProps(source) {
 				optional: p.isBracketed,
 				description: clean(p.comment)
 			}));
-			return { style: "typedef", props, script, typedefDoc };
+			return { style: "typedef", props: withBindings(props), script, typedefDoc };
 		}
 		const tsType =
 			declaration.type && ts.isTypeReferenceNode(declaration.type)
@@ -197,11 +260,13 @@ function parseProps(source) {
 				optional: Boolean(member.questionToken),
 				description: clean(jsDocs(member).at(-1)?.comment)
 			}));
-			return { style: "ts", props, script, members };
+			return { style: "ts", props: withBindings(props), script, members };
 		}
 		return {
 			style: "untyped",
-			props: names.map((name) => ({ name, type: "", optional: true, description: "" })),
+			props: withBindings(
+				names.map((name) => ({ name, type: "", optional: true, description: "" }))
+			),
 			script
 		};
 	}
@@ -229,7 +294,7 @@ function template(prop, source) {
 	return "";
 }
 
-/** @param {string} text */
+/** @param {string} text @param {number} index */
 const indentAt = (text, index) =>
 	text.slice(text.lastIndexOf("\n", index - 1) + 1, index).match(/^\s*/)?.[0] ?? "";
 
@@ -298,6 +363,7 @@ function migrate(file) {
 }
 
 function report() {
+	const V1_REF = v1Ref();
 	/** @type {{ file: string; name: string; reason: string }[]} */
 	const missing = [];
 	/** @type {{ file: string; name: string; description: string }[]} */
@@ -398,9 +464,12 @@ function report() {
 		);
 }
 
-const mode = process.argv[2];
-if (mode === "--write") {
-	if (!V1_REF) {
+const isMain = process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
+const mode = isMain ? process.argv[2] : null;
+if (!isMain) {
+	// Imported by another script (eg. scripts/agent-docs.js): only export the helpers.
+} else if (mode === "--write") {
+	if (!v1Ref()) {
 		console.error(
 			"The v1-legacy branch is needed to copy v1 descriptions: run `git fetch origin v1-legacy`."
 		);
@@ -418,3 +487,5 @@ if (mode === "--write") {
 	console.error("Usage: node scripts/prop-docs.js --report | --write");
 	process.exit(1);
 }
+
+export { COMPONENTS, listComponents, parseProps, isSnippet };

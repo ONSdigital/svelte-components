@@ -13,7 +13,12 @@
 	 * @property {(detail: LoadDetail) => void} [onLoad] Callback for the `load` event, called with the same value as the event's `detail`
 	 */
 	/** @type {Props} */
-	let { children, id = null, pymChild = $bindable(null), polling = 500, onLoad } = $props();
+	let { children, id = null, pymChild = $bindable(), polling = 500, onLoad } = $props();
+
+	// Defaults for bindable props are set here rather than in $props(): Svelte 5 throws an error if a
+	// parent binds a prop that has a default to an undefined variable (eg. `let value = $state()`).
+	// Setting them here also writes the default back to the bound variable, as in v1.
+	if (pymChild === undefined) pymChild = null;
 	/** @type {import("svelte").EventDispatcher<{ load: LoadDetail }>} */
 	const dispatch = createEventDispatcher();
 

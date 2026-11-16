@@ -19,6 +19,7 @@ npm run check               # svelte-check (JSDoc types via jsconfig.json)
 npm run lint                # prettier --check && eslint (eslint only runs if prettier passes)
 npm run format
 npm run docs:props          # regenerate PROP_DOCS_REPORT.md (props without descriptions)
+npm run docs:agents         # write dist/llms.txt and dist/llms-full.txt (also run by prepack and build:docs)
 npm run build:package       # svelte-package -> dist/ + publint + CSS merge (same as prepack)
 npm run build               # build:package then build:docs
 npm run build:docs          # storybook build, then vite build (workbench -> build/), then copy build/workbench into storybook-static/
@@ -53,11 +54,18 @@ To support it properly:
 2. Add a visible "hydrated" flag set in `onMount`, so the two states can be told apart.
 3. Add browser tests (e.g. Playwright) per fixture: with JavaScript disabled, check the core content and links work; with JavaScript enabled, check that no hydration warnings appear and the interactions work.
 
+## Agent docs (llms.txt)
+
+`scripts/agent-docs.js` generates `llms.txt` and `llms-full.txt`, documentation for coding agents in apps that use the package. `prepack` writes them to `dist/` (shipped in the package) and `build:docs` writes them to `storybook-static/` (published on the docs site). They're built from `src/lib/index.js`, each component's props (via `parseProps()` in `scripts/prop-docs.js`) and the opening paragraph and first example of its `docs/component.md`. The rules section (Svelte 5 usage, `Section` vs `Container`, `{@html}` props, and so on) is written in the script, so update it there when a convention changes. The list of props that throw when bound to an `undefined` variable is worked out from the source.
+
+- `src/agent-docs.spec.js` checks that every export appears and every prop has a description.
+- `src/docs-examples.spec.js` compiles every code example in `docs/*.md` in runes mode and fails on errors or deprecation warnings. Put `<!-- prettier-ignore -->` before a fenced example: otherwise Prettier reformats `svelte` blocks and quotes attributes (`prop="{x}"`), which Svelte 5 warns about.
+
 ## Component conventions (Svelte 5)
 
 - Props are written as `let { ... } = $props()`, typed by a JSDoc `@typedef {Object} Props` with one `@property {Type} [name] Description` per prop (no brackets for required props), followed by `/** @type {Props} */` on the `$props()` statement. Don't use an inline `/** @type {{ ... }} */`: it can't hold per-prop descriptions, and those descriptions are what Storybook's docs table and editor IntelliSense show. Write descriptions without a leading `- `, because Storybook keeps it. Components are plain JavaScript, not `lang="ts"`: types are JSDoc and get checked by svelte-check, and the repo's ESLint config can't parse TypeScript in `.svelte` files. Type `getContext` results and `$state` with a JSDoc `@type` comment, not generics. Keep string-literal unions accurate, because the workbench builds its select controls from them. `npm run docs:props` regenerates `PROP_DOCS_REPORT.md`, which lists the props still without descriptions. It compares against the `v1-legacy` branch (local or `origin/`), so fetch that first, or the report can't say which props are new in v2.
 - Use `$bindable` for two-way bindings, `$derived`/`$state` instead of `$:`, and snippets instead of slots. Default content is the `children` snippet, and named slots became snippet props (mapping in `SVELTE_5_MIGRATION_GUIDE.md`, e.g. Button `iconSlot`, Card `imageContent`/`titleContent`).
-- Don't give a `$bindable` prop a default in `$props()` (`value = $bindable(null)`). Svelte 5 throws `props_invalid_value` when a parent binds a variable that is `undefined` (eg. `let value = $state()`, or `let value;` in a legacy component) to a prop with a default, which worked in v1. Declare it as `value = $bindable()` and set the default in the script: `if (value === undefined) value = null;`. That also writes the default back to the bound variable, as v1 did. Select (`value`, `clearInput`) and Checkbox (`checked`) follow this; see "Known issues" for the props that don't yet.
+- Don't give a `$bindable` prop a default in `$props()` (`value = $bindable(null)`). Svelte 5 throws `props_invalid_value` when a parent binds a variable that is `undefined` (eg. `let value = $state()`, or `let value;` in a legacy component) to a prop with a default, which worked in v1. Declare it as `value = $bindable()` and set the default in the script: `if (value === undefined) value = null;`. That also writes the default back to the bound variable, as v1 did. TypeScript doesn't narrow the prop after that line, so use eg. `value ?? null` or a JSDoc cast where a non-`undefined` type is needed. `src/bindable-defaults.spec.js` fails if a bindable prop has a default in `$props()`, and `BindableDefaults.svelte.test.js` checks each component with a bound `undefined` variable (add new bindable props to its table).
 - Event-emitting components deliberately support both a callback prop (e.g. `onClick`) and a `createEventDispatcher` event with the same payload as `detail`. Keep both. Tests assert they fire once each with equivalent payloads.
 - Some APIs render trusted HTML via `{@html}` (List items, DescriptionList values, Table cells, DataCard captions, Theme head styles). This is an intentional contract with no sanitizer.
 - Class overrides use a `cls` prop. Markup and class names follow the ONS Design System (`ons-*`).
@@ -69,10 +77,6 @@ Vitest has two projects (`vite.config.js`):
 - **client**: `src/**/*.svelte.{test,spec}.js`, jsdom + `@testing-library/svelte`. Build snippet props with `createRawSnippet`.
 - To test a binding, pass the prop as a getter/setter pair (which is how `bind:` is compiled), from `$state` in the test file. Define it with `get`/`set` in an object literal or `Object.defineProperty`, not by spreading an object, which copies the getter's value. ESLint doesn't give `.svelte.test.js` files the runes globals, so those tests start with `/* global $state */` (see `Select.svelte.test.js` and `Checkbox.svelte.test.js`).
 - **server**: other `*.{test,spec}.js` files, node environment, often SSR via `svelte/server` `render` (e.g. the workbench specs check that every component renders with default fixtures).
-
-## Known issues
-
-- **Bindable props with defaults (should be fixed).** These still have defaults in `$props()`, so binding them to a variable that starts `undefined` throws `props_invalid_value` (see the `$bindable` convention above for the fix, and the Select/Checkbox tests for how to test it): AccordionItem `open`; AnalyticsBanner `usageCookies`; Checkbox `item`, `group`; Checkboxes `value`; Details `open`; Dropdown `value`; Embed `pymChild`; Input `value`; LazyLoad `entered`; Observe `visible`; Radio `value`; Radios `value`; Scroller `count`, `index`, `sectionId`, `offset`, `progress`, `visible`; Tabs `selected`; Textarea `value`; ToolbarButton `selected`. Until they're fixed, the migration guide tells users to start bound variables with a value.
 
 ## Migration docs
 

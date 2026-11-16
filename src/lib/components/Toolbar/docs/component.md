@@ -69,6 +69,7 @@ Use the prop `hasAriaControls` on a button to link the controls to the button.
 
 ## Sticky buttons
 
+<!-- prettier-ignore -->
 ```html
 <ToolbarsContainer>
 	<Toolbar>
@@ -81,6 +82,7 @@ Use the prop `hasAriaControls` on a button to link the controls to the button.
 
 ## Transient buttons
 
+<!-- prettier-ignore -->
 ```html
 <ToolbarsContainer>
 	<Toolbar>
@@ -88,8 +90,8 @@ Use the prop `hasAriaControls` on a button to link the controls to the button.
 			id="zoomin"
 			icon="zoomin"
 			label="Zoom in"
-			transient="{true}"
-			selected="{false}"
+			transient={true}
+			selected={false}
 		/>
 		<ToolbarButton id="zoomout" icon="zoomout" label="zoom out" transient />
 	</Toolbar>
@@ -98,6 +100,7 @@ Use the prop `hasAriaControls` on a button to link the controls to the button.
 
 ## No help modal
 
+<!-- prettier-ignore -->
 ```html
 <ToolbarsContainer>
 	<Toolbar>
@@ -105,11 +108,11 @@ Use the prop `hasAriaControls` on a button to link the controls to the button.
 			id="zoomin"
 			icon="zoomin"
 			label="Zoom in"
-			transient="{true}"
-			selected="{false}"
-			disableHelp="{true}"
+			transient={true}
+			selected={false}
+			disableHelp={true}
 		/>
-		<ToolbarButton id="zoomout" icon="zoomout" label="zoom out" disableHelp="{true}" transient />
+		<ToolbarButton id="zoomout" icon="zoomout" label="zoom out" disableHelp={true} transient />
 	</Toolbar>
 </ToolbarsContainer>
 ```

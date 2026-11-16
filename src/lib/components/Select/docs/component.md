@@ -11,19 +11,18 @@ In Svelte 5, `onChange` receives the selected value directly and `onClear` recei
 <script>
   import { AccessibleSelect } from "@onsvisual/svelte-components";
 
-  const values = [
+  const options = [
     { id: "1", label: "one" },
     { id: "2", label: "two" },
     { id: "3", label: "three" },
   ];
-  
 
-  // Bind the <select> value to a variable (reactive)
-  let value;
+  // Bind the selected value to a variable (start it as null, not undefined)
+  let value = $state(null);
 
   // Define your own function on change
-  const handleChange = (e) => console.log(e);
+  const handleChange = (value) => console.log(value);
 </script>
 
-<AccessibleSelect {options} bind:value on:change="{handleChange}" />
+<AccessibleSelect {options} bind:value onChange={handleChange} />
 ```

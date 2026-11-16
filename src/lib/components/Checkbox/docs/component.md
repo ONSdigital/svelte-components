@@ -9,7 +9,7 @@ In Svelte 5, `onChange` receives `{ item, e }`, where `e` is the native change e
 <script>
   import { Checkbox } from "@onsvisual/svelte-components";
 
-  let checked = false;
+  let checked = $state(false);
 </script>
 
 <Checkbox id="checkbox" label="Select this" bind:checked />
