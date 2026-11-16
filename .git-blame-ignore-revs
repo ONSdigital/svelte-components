@@ -1,0 +1,5 @@
+# Commits that only reformat code, skipped by `git blame` (GitHub reads this file automatically).
+# Locally: git config blame.ignoreRevsFile .git-blame-ignore-revs
+
+# apply prettier formatting and lint
+8b5c6a4134861c75ca184b51569308cdcf156ad8
