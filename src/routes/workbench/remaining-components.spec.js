@@ -36,7 +36,15 @@ test("global Theme emits server head styles while preserving children", () => {
 
 test("preview sections preserve heading levels, anchors and example content", () => {
 	const children = createRawSnippet(() => ({ render: () => "<p>Preview content</p>" }));
-	const { body } = render(PreviewSection, { props: { headingId: "preview-heading", title: "Example component", level: "h3", id: "preview-anchor", children } });
+	const { body } = render(PreviewSection, {
+		props: {
+			headingId: "preview-heading",
+			title: "Example component",
+			level: "h3",
+			id: "preview-anchor",
+			children
+		}
+	});
 	expect(body).toContain('aria-labelledby="preview-heading"');
 	expect(body).toContain('id="preview-anchor"');
 	expect(body).toMatch(/<h3[^>]*id="preview-heading"[^>]*>Example component/);

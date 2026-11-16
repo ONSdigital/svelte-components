@@ -59,7 +59,11 @@
 
 <Story name="Three columns with medium column width" args={{}} template={threeColumnsTemplate} />
 
-<Story name="Three columns with GridCell class override" args={{}} template={threeColumnsClassTemplate} />
+<Story
+	name="Three columns with GridCell class override"
+	args={{}}
+	template={threeColumnsClassTemplate}
+/>
 
 <style>
 	.grid-cell {
