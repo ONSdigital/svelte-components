@@ -1,5 +1,10 @@
 <script>
-	/** @type {{ href?: string; cls?: string | null }} */
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [href] Href for top of page or contents section
+	 * @property {string | null} [cls] Optional: Add a CSS class to the link
+	 */
+	/** @type {Props} */
 	let { href = "#top", cls = null } = $props();
 </script>
 

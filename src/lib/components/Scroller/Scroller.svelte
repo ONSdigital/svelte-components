@@ -99,23 +99,23 @@
 
 	/**
 	 * @typedef {Object} Props
-	 * @property {string | null} [id] - Sets the unique ID of the scroller
-	 * @property {boolean} [splitscreen] - Enables splitscreen view (captions appear on left on larger screens)
-	 * @property {boolean} [marginTop] - Adds a margin under the scroller section
-	 * @property {boolean} [marginBottom] - Adds a margin under the scroller section
-	 * @property {number} [threshold] - Set the threshold for the transition between scroller sections (0-1)
-	 * @property {number} [count] - Binding: Total number of sections within scroller
-	 * @property {number|null} [index] - Binding: Current section index (number)
-	 * @property {string|null} [sectionId] - Binding: Current section id, if it has one set - ID for current section within scroller
-	 * @property {number} [offset] - Binding: The progress between the start of current scroller section and next (0-1)
-	 * @property {number} [progress] - Binding: The progress through the whole scroller (0-1)
-	 * @property {boolean} [visible] - Binding: Whether the scroller is visible on screen or not
-	 * @property {string|null} [cls] - Optional: Set an additional CSS class for the component
-	 * @property {import('svelte').Snippet} [background]
-	 * @property {import('svelte').Snippet} [foreground]
-	 * @property {(detail: ScrollDetail) => void} [onChange]
-	 * @property {(detail: ScrollDetail) => void} [onEnter]
-	 * @property {(detail: ScrollDetail) => void} [onExit]
+	 * @property {string | null} [id] Sets the unique ID of the scroller
+	 * @property {boolean} [splitscreen] Enables splitscreen view (captions appear on left on larger screens)
+	 * @property {boolean} [marginTop] Adds a margin under the scroller section
+	 * @property {boolean} [marginBottom] Adds a margin under the scroller section
+	 * @property {number} [threshold] Set the threshold for the transition between scroller sections (0-1)
+	 * @property {number} [count] Binding: Total number of sections within scroller
+	 * @property {number|null} [index] Binding: Current section index (number)
+	 * @property {string|null} [sectionId] Binding: Current section id, if it has one set - ID for current section within scroller
+	 * @property {number} [offset] Binding: The progress between the start of current scroller section and next (0-1)
+	 * @property {number} [progress] Binding: The progress through the whole scroller (0-1)
+	 * @property {boolean} [visible] Binding: Whether the scroller is visible on screen or not
+	 * @property {string|null} [cls] Optional: Set an additional CSS class for the component
+	 * @property {import('svelte').Snippet} [background] Content for the fixed background layer (snippet)
+	 * @property {import('svelte').Snippet} [foreground] Content for the scrolling foreground layer (eg. ScrollerSection components) (snippet)
+	 * @property {(detail: ScrollDetail) => void} [onChange] Callback for the `change` event, called with the same value as the event's `detail`
+	 * @property {(detail: ScrollDetail) => void} [onEnter] Callback for the `enter` event, called with the same value as the event's `detail`
+	 * @property {(detail: ScrollDetail) => void} [onExit] Callback for the `exit` event, called with the same value as the event's `detail`
 	 */
 
 	/** @type {Props} */

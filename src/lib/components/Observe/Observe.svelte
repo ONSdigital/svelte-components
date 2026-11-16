@@ -3,7 +3,15 @@
 
 	/** @type {import("svelte").EventDispatcher<{ enter: IntersectionObserverEntry; exit: IntersectionObserverEntry }>} */
 	const dispatch = createEventDispatcher();
-	/** @type {{ children?: import("svelte").Snippet; visible?: boolean; rootMargin?: number; onEnter?: (entry: IntersectionObserverEntry) => void; onExit?: (entry: IntersectionObserverEntry) => void }} */
+	/**
+	 * @typedef {Object} Props
+	 * @property {import("svelte").Snippet} [children] Child content (snippet)
+	 * @property {boolean} [visible] Bind to this variable to monitor visiblity (boolean true/false).
+	 * @property {number} [rootMargin] Number of pixels before/after the viewport that component is considered "visible" (default = 0).
+	 * @property {(entry: IntersectionObserverEntry) => void} [onEnter] Callback for the `enter` event, called with the same value as the event's `detail`
+	 * @property {(entry: IntersectionObserverEntry) => void} [onExit] Callback for the `exit` event, called with the same value as the event's `detail`
+	 */
+	/** @type {Props} */
 	let { children, visible = $bindable(false), rootMargin = 0, onEnter, onExit } = $props();
 
 	/** @param {IntersectionObserverEntry[]} entries */

@@ -1,7 +1,12 @@
 <script>
 	import TimelineItem from "./TimelineItem.svelte";
 
-	/** @type {{ children?: import("svelte").Snippet; items?: { title: string; content: string }[] }} */
+	/**
+	 * @typedef {Object} Props
+	 * @property {import("svelte").Snippet} [children] Child content (snippet)
+	 * @property {{ title: string; content: string }[]} [items] Timeline items in the format {title, content}, where content can be an HTML string
+	 */
+	/** @type {Props} */
 	let { children, items = [] } = $props();
 </script>
 

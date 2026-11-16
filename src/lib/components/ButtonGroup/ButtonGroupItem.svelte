@@ -1,6 +1,14 @@
 <script>
 	import { getContext } from "svelte";
 
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [value] Value set on the parent ButtonGroup when this item is selected
+	 * @property {string} [id] ID of the radio input (defaults to `value`)
+	 * @property {string} [label] Label text (defaults to `value`)
+	 */
+
+	/** @type {Props} */
 	let { value = "", id = value, label = value } = $props();
 
 	// Get the parent ButtonGroup context

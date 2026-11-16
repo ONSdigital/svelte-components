@@ -1,7 +1,7 @@
 <script>
 	/**
 	 * @typedef {Object} Props
-	 * @property {string} [href] - Anchor link to <main> page element
+	 * @property {string} [href] Anchor link to <main> page element
 	 */
 
 	/** @type {Props} */

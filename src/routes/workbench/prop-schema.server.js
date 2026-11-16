@@ -42,8 +42,8 @@ function choices(node) {
 /** @param {ts.TypeNode | ts.JSDocTypeLiteral | undefined} type @returns {Metadata[]} */
 function members(type) {
 	if (!type) return [];
-	if (ts.isTypeLiteralNode(type)) return type.members.filter(ts.isPropertySignature).map(member => ({ name: member.name.getText().replace(/^["']|["']$/g, ""), type: member.type, description: "" }));
-	if (ts.isJSDocTypeLiteral(type)) return (type.jsDocPropertyTags ?? []).map(member => ({ name: member.name.getText(), type: member.typeExpression?.type, description: typeof member.comment === "string" ? member.comment : "" }));
+	if (ts.isTypeLiteralNode(type)) return type.members.filter(ts.isPropertySignature).map(member => ({ name: member.name.getText().replace(/^["']|["']$/g, ""), type: member.type, description: ts.getTextOfJSDocComment(/** @type {{ jsDoc?: ts.JSDoc[] }} */ (member).jsDoc?.at(-1)?.comment)?.trim() ?? "" }));
+	if (ts.isJSDocTypeLiteral(type)) return (type.jsDocPropertyTags ?? []).map(member => ({ name: member.name.getText(), type: member.typeExpression?.type, description: (typeof member.comment === "string" ? member.comment : "").replace(/^-\s*/, "") }));
 	return [];
 }
 
@@ -60,7 +60,9 @@ export function extractProps(source, filename) {
 	for (const script of scripts) for (const statement of script.statements) {
 		if (ts.isInterfaceDeclaration(statement)) aliases.set(statement.name.text, members(ts.factory.createTypeLiteralNode(statement.members)));
 		if (ts.isTypeAliasDeclaration(statement)) aliases.set(statement.name.text, members(statement.type));
-		for (const tag of ts.getJSDocTags(statement)) if (ts.isJSDocTypedefTag(tag)) {
+		// ts.getJSDocTags() omits @typedef tags, so read them from the attached JSDoc comments.
+		const tags = /** @type {{ jsDoc?: ts.JSDoc[] }} */ (statement).jsDoc?.flatMap(doc => doc.tags ?? []) ?? [];
+		for (const tag of tags) if (ts.isJSDocTypedefTag(tag)) {
 			const name = tag.fullName?.getText() ?? tag.name?.getText();
 			if (name) aliases.set(name, members(tag.typeExpression));
 		}

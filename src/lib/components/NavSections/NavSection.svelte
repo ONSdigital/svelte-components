@@ -4,7 +4,16 @@
 	import BackLink from "../BackLink/BackLink.svelte";
 	/** @typedef {{ id: string; dataset: { title?: string; subsection?: string } }} RegisteredNavSection */
 
-	/** @type {{ children?: import("svelte").Snippet; title?: string; id?: string; cls?: string | null; hideTitle?: boolean; subsection?: boolean }} */
+	/**
+	 * @typedef {Object} Props
+	 * @property {import("svelte").Snippet} [children] Child content (snippet)
+	 * @property {string} [title] Sets the title of the section
+	 * @property {string} [id] Sets the unique ID of the section (if not set, this will be slugified from the title)
+	 * @property {string | null} [cls] Optional: Set an additional CSS class for the section
+	 * @property {boolean} [hideTitle] Allows the h2 title tag for the section to be visually hidden
+	 * @property {boolean} [subsection] Treat a section as sub-section. It will have an h3 title, and will be indented in the contents table
+	 */
+	/** @type {Props} */
 	let {
 		children,
 		title = "Section title",

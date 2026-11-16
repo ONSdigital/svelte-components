@@ -6,7 +6,23 @@
 	/** @typedef {{ id?: string; title?: string; subsections: { id?: string; title?: string }[] }} ContentsSection */
 	/** @typedef {{ id: string; dataset: { title?: string; subsection?: string } }} RegisteredSection */
 
-	/** @type {{ before?: import("svelte").Snippet; children?: import("svelte").Snippet; after?: import("svelte").Snippet; beforeNav?: import("svelte").Snippet; afterNav?: import("svelte").Snippet; footer?: import("svelte").Snippet; id?: string; cls?: string | null; width?: "narrow" | "medium" | "wide" | "wider" | "full"; contentsLabel?: string; noContents?: boolean; marginTop?: boolean; marginBottom?: boolean }} */
+	/**
+	 * @typedef {Object} Props
+	 * @property {import("svelte").Snippet} [before] Content rendered before the main content (snippet)
+	 * @property {import("svelte").Snippet} [children] Child content (snippet)
+	 * @property {import("svelte").Snippet} [after] Content rendered after the main content (snippet)
+	 * @property {import("svelte").Snippet} [beforeNav] Content rendered above the contents navigation (snippet)
+	 * @property {import("svelte").Snippet} [afterNav] Content rendered below the contents navigation (snippet)
+	 * @property {import("svelte").Snippet} [footer] Content rendered below the sections and navigation (snippet)
+	 * @property {string} [id] ID for back-linking to table of contents
+	 * @property {string | null} [cls] Optional: Set an additional CSS class for the section
+	 * @property {"narrow" | "medium" | "wide" | "wider" | "full"} [width] Sets the width of the container
+	 * @property {string} [contentsLabel] A label for the page contents nav
+	 * @property {boolean} [noContents] Don't include table of contents (allows for custom uses of nav panel)
+	 * @property {boolean} [marginTop] Adds margin above section
+	 * @property {boolean} [marginBottom] Adds margin below section
+	 */
+	/** @type {Props} */
 	let {
 		before,
 		children,

@@ -11,8 +11,11 @@
 		triggerElement = null,
 		onClose = () => {}
 	}: {
+		/** Child content (snippet) */
 		children?: import("svelte").Snippet;
+		/** The element the modal is positioned next to */
 		triggerElement?: HTMLElement | null;
+		/** Called when the modal is closed with the Escape key */
 		onClose?: () => void;
 	} = $props();
 

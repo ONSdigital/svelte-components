@@ -1,7 +1,15 @@
 <script>
 	import { createPopper } from "@popperjs/core";
 
-	/** @type {{ children?: import("svelte").Snippet; text?: string; position?: "top" | "bottom" | "left" | "right"; width?: number | null; zIndex?: number | null }} */
+	/**
+	 * @typedef {Object} Props
+	 * @property {import("svelte").Snippet} [children] Child content (snippet)
+	 * @property {string} [text] Define the text to be displayed on the tooltip
+	 * @property {"top" | "bottom" | "left" | "right"} [position] Define the position of the tooltip relative to the element
+	 * @property {number | null} [width] Set a maximum width for the tooltip (beyond this width text will wrap)
+	 * @property {number | null} [zIndex] Set z-index of tooltip, to ensure it appears in front of other elements
+	 */
+	/** @type {Props} */
 	let { children, text = "", position = "bottom", width = null, zIndex = null } = $props();
 	/** @type {HTMLDivElement | undefined} */
 	let wrapper = $state();

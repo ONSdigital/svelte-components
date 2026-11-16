@@ -1,5 +1,14 @@
 <script>
-	/** @type {{ pageCount?: number; pageCurrent?: number; nextHref?: string | null; prevHref?: string | null; nextTitle?: string | null; prevTitle?: string | null }} */
+	/**
+	 * @typedef {Object} Props
+	 * @property {number} [pageCount] Total number of pages
+	 * @property {number} [pageCurrent] Number of the current page
+	 * @property {string | null} [nextHref] URL of next page (use null if on last page)
+	 * @property {string | null} [prevHref] URL of previous page (use null if on first page)
+	 * @property {string | null} [nextTitle] (Optional) title of next page (with no label, will default to 'page {x-1} of {n}')
+	 * @property {string | null} [prevTitle] (Optional) title of previous page (with no label, will default to 'page {x+1} of {n}')
+	 */
+	/** @type {Props} */
 	let {
 		pageCount = 1,
 		pageCurrent = 1,

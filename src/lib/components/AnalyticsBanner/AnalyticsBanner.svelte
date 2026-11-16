@@ -13,13 +13,13 @@
 
 	/**
 	 * @typedef {Object} Props
-	 * @property {string} [analyticsId] - Google analytics/tags manager ID
-	 * @property {object} [analyticsProps] - Optional props to describe the content
-	 * @property {any} [page] - Optional: Pass the "page" store from "$app/state" in SvelteKit (gets read from context by default if it exists)
-	 * @property {boolean} [hideBanner] - Use this to hide the banner (only initialises analytics if cookies already accepted)
-	 * @property {boolean} [usageCookies] - Bind to this value if you need to know if cookies have been accepted
-	 * @property {"narrow"|"medium"|"wide"|"wider"|"full"} [width] - Set the width of the banner
-	 * @property {boolean} [pageViewEnabled] - Enable automatic pageView event on route changes
+	 * @property {string} [analyticsId] Google analytics/tags manager ID
+	 * @property {object} [analyticsProps] Optional props to describe the content
+	 * @property {any} [page] Optional: Pass the "page" store from "$app/state" in SvelteKit (gets read from context by default if it exists)
+	 * @property {boolean} [hideBanner] Use this to hide the banner (only initialises analytics if cookies already accepted)
+	 * @property {boolean} [usageCookies] Bind to this value if you need to know if cookies have been accepted
+	 * @property {"narrow"|"medium"|"wide"|"wider"|"full"} [width] Set the width of the banner
+	 * @property {boolean} [pageViewEnabled] Enable automatic pageView event on route changes
 	 */
 
 	/** @type {Props} */

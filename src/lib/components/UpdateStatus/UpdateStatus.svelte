@@ -1,5 +1,15 @@
 <script>
-	/** @type {{ date?: string | null; recent?: boolean; recentLabel?: string; prefix?: string; missingLabel?: string; showRecentDot?: boolean; cls?: string | null }} */
+	/**
+	 * @typedef {Object} Props
+	 * @property {string | null} [date] Last updated date or label to display when the content is not recent
+	 * @property {boolean} [recent] Whether the content has been updated recently
+	 * @property {string} [recentLabel] Label used when recent is true
+	 * @property {string} [prefix] Prefix used when showing the date
+	 * @property {string} [missingLabel] Message shown when no date is available
+	 * @property {boolean} [showRecentDot] Whether to show the status dot for recent updates
+	 * @property {string | null} [cls] Optional: Set an additional CSS class for the component
+	 */
+	/** @type {Props} */
 	let {
 		date = null,
 		recent = false,

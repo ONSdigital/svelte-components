@@ -3,7 +3,14 @@
 	/** @typedef {"narrow" | "medium" | "wide" | "wider" | "full"} GridWidth */
 	/** @typedef {"narrow" | "medium" | "wide"} GridColumnWidth */
 
-	/** @type {{ children?: import("svelte").Snippet; colspan?: number; cls?: string | null; colCls?: string | null }} */
+	/**
+	 * @typedef {Object} Props
+	 * @property {import("svelte").Snippet} [children] Child content (snippet)
+	 * @property {number} [colspan] (If used in grid) How many columns the card should span across
+	 * @property {string | null} [cls] Optional: Add additional classes
+	 * @property {string | null} [colCls] Optional: Override default grid column class
+	 */
+	/** @type {Props} */
 	let { children, colspan = 1, cls = null, colCls = null } = $props();
 
 	/** @type {Record<GridWidth, Record<GridColumnWidth, string[]>>} */

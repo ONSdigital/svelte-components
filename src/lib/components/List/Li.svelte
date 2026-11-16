@@ -1,7 +1,7 @@
 <script>
 	/**
 	 * @typedef {Object} Props
-	 * @property {import('svelte').Snippet} [children]
+	 * @property {import('svelte').Snippet} [children] Child content (snippet)
 	 */
 
 	/** @type {Props} */

@@ -7,10 +7,10 @@
 
 	/**
 	 * @typedef {Object} Props
-	 * @property {boolean} [compact] - Display compact header without menus
-	 * @property {"narrow"|"medium"|"wide"|"wider"|"full"} [width] - Sets the width of the header (does not apply to legacy mode)
-	 * @property {"light"|"dark"|"paleblue"|"blue"|"navyblue"|"grey"|null} [theme] - Sets a predefined theme
-	 * @property {object} [themeOverrides] - Define additional props to override the base theme
+	 * @property {boolean} [compact] Display compact header without menus
+	 * @property {"narrow"|"medium"|"wide"|"wider"|"full"} [width] Sets the width of the header (does not apply to legacy mode)
+	 * @property {"light"|"dark"|"paleblue"|"blue"|"navyblue"|"grey"|null} [theme] Sets a predefined theme
+	 * @property {object} [themeOverrides] Define additional props to override the base theme
 	 */
 
 	/** @type {Props} */

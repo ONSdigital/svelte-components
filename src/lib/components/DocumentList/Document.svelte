@@ -1,5 +1,16 @@
 <script>
-	/** @type {{ children?: import("svelte").Snippet; title?: string | null; headingTag?: "h2" | "h3"; href?: string | null; description?: string | null; image?: string | boolean; featured?: boolean; meta?: string | null }} */
+	/**
+	 * @typedef {Object} Props
+	 * @property {import("svelte").Snippet} [children] Child content (snippet)
+	 * @property {string | null} [title] The title of the document
+	 * @property {"h2" | "h3"} [headingTag] Set the heading level for the title
+	 * @property {string | null} [href] The URL of the document
+	 * @property {string | null} [description] A description of the document
+	 * @property {string | boolean} [image] Optional: URL of image to represent the document (use "true" for a placeholder)
+	 * @property {boolean} [featured] Highlight document as a featured item (inset on grey background)
+	 * @property {string | null} [meta] Metadata about the type of document linked to (can include HTML)
+	 */
+	/** @type {Props} */
 	let {
 		children,
 		title = null,

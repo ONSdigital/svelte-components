@@ -5,7 +5,22 @@
 	/** @type {import("svelte").EventDispatcher<{ change: { item: CheckboxItem; e: Event } }>} */
 	const dispatch = createEventDispatcher();
 
-	/** @type {{ id?: string; label?: string; description?: string | null; checked?: boolean; disabled?: boolean; item?: CheckboxItem; groupName?: string | null; group?: CheckboxItem[] | null; variant?: "default" | "ghost"; compact?: boolean; cls?: string | null; onChange?: (detail: { item: CheckboxItem; e: Event }) => void }} */
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [id] ID for input element
+	 * @property {string} [label] Label for input
+	 * @property {string | null} [description] Optional: Extended description for element
+	 * @property {boolean} [checked] Binding for checked state of input
+	 * @property {boolean} [disabled] Option to disable input
+	 * @property {CheckboxItem} [item] Optional: Define the item as an object in the form {id, label, description?, checked?}
+	 * @property {string | null} [groupName] Optional: Name of checkbox group
+	 * @property {CheckboxItem[] | null} [group] Binding for checked state of input
+	 * @property {"default" | "ghost"} [variant] Set display mode of checkbox
+	 * @property {boolean} [compact] Compact mode (no border)
+	 * @property {string | null} [cls] Optional: Set an additional CSS class for the component
+	 * @property {(detail: { item: CheckboxItem; e: Event }) => void} [onChange] Callback for the `change` event, called with the same value as the event's `detail`
+	 */
+	/** @type {Props} */
 	let {
 		id = "",
 		label = "",

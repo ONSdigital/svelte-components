@@ -1,5 +1,15 @@
 <script>
-	/** @type {{ type?: "arrow" | "carret" | "chevron" | "code" | "cog" | "copy" | "cross" | "delete" | "download" | "edit" | "edit-text" | "expand" | "external" | "minus" | "pin" | "plus" | "print" | "save" | "saveas" | "search" | "shrink" | "signout" | "tick" | "upload"; size?: "s" | "m" | "l" | "xl" | "2xl" | "3xl" | null; rotation?: number; svgPath?: string | null; svgViewBox?: string; marginLeft?: boolean; marginRight?: boolean }} */
+	/**
+	 * @typedef {Object} Props
+	 * @property {"arrow" | "carret" | "chevron" | "code" | "cog" | "copy" | "cross" | "delete" | "download" | "edit" | "edit-text" | "expand" | "external" | "minus" | "pin" | "plus" | "print" | "save" | "saveas" | "search" | "shrink" | "signout" | "tick" | "upload"} [type] Set the type of icon
+	 * @property {"s" | "m" | "l" | "xl" | "2xl" | "3xl" | null} [size] Set the size of the icon
+	 * @property {number} [rotation] Rotation in degrees (clockwise)
+	 * @property {string | null} [svgPath] (Optional) Provide a custom SVG path string for the icon (overrides "type")
+	 * @property {string} [svgViewBox] (Optional) If using a custom SVG path, specify the viewBox of the SVG
+	 * @property {boolean} [marginLeft] Add a small margin on the left of the icon
+	 * @property {boolean} [marginRight] Add a small margin on the right of the icon
+	 */
+	/** @type {Props} */
 	let {
 		type = "arrow",
 		size = null,

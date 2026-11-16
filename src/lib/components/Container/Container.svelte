@@ -1,7 +1,20 @@
 <script>
 	import Theme from "$lib/components/Theme/Theme.svelte";
 
-	/** @type {{ children?: import("svelte").Snippet; id?: string | null; cls?: string | null; width?: "narrow" | "medium" | "wide" | "wider" | "full"; height?: number | string | null; marginTop?: boolean; marginBottom?: boolean; theme?: "light" | "dark" | "paleblue" | "blue" | "navyblue" | "grey" | null; themeOverrides?: Record<string, string>; background?: string | null }} */
+	/**
+	 * @typedef {Object} Props
+	 * @property {import("svelte").Snippet} [children] Child content (snippet)
+	 * @property {string | null} [id] Optional: Set the unique ID of the container
+	 * @property {string | null} [cls] Optional: Set an additional CSS class for the container
+	 * @property {"narrow" | "medium" | "wide" | "wider" | "full"} [width] Sets the width of the container
+	 * @property {number | string | null} [height] Sets the height of the container
+	 * @property {boolean} [marginTop] Adds margin above container
+	 * @property {boolean} [marginBottom] Adds margin below container
+	 * @property {"light" | "dark" | "paleblue" | "blue" | "navyblue" | "grey" | null} [theme] Optional: Sets a base theme ("light", "dark" or null for no theme)
+	 * @property {Record<string, string>} [themeOverrides] Optional: Define additional props to override the base theme
+	 * @property {string | null} [background] Optional: Overrides the base theme background (accepts any valid CSS background value)
+	 */
+	/** @type {Props} */
 	let {
 		children,
 		id = null,

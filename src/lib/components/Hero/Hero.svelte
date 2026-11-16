@@ -7,23 +7,23 @@
 
 	/**
 	 * @typedef {Object} Props
-	 * @property {string} [title] - Sets the title/headline
-	 * @property {string|null} [pageType] - Optional: Page type to sit above title
-	 * @property {string|null} [lede] - Descriptive text for page to sit below title
-	 * @property {{ label: string; color?: string; ariaLabel?: string } | null} [titleBadge] - Optional: Badge to appear next to the page title in format {label, color}
-	 * @property {{ label: string; href: string; ariaLabel?: string } | null} [actionButton] - Optional: Label and href for an action button in format {label, ariaLabel, href}
-	 * @property {boolean} [natStatBadge] - Include "national statistic" badge
-	 * @property {boolean} [censusLogo] - Include Census logo
-	 * @property {{ key: string; value: unknown }[] | null} [meta] - Array of {key, value} objects containing page metadata
-	 * @property {"narrow"|"medium"|"wide"|"wider"|"full"} [width] - Sets the width of the container
-	 * @property {number|string|null} [height] - Sets the (minimum) height of the container
-	 * @property {string|null} [cls] - Optional: Set an additional CSS class for the component
-	 * @property {"light"|"dark"|"blue"|"paleblue"|"navyblue"|"grey"|null} [theme] - Sets a predefined theme
-	 * @property {Record<string, string>} [themeOverrides] - Define additional props to override the base theme
-	 * @property {string|null} [background] - Overrides the background CSS for the section
-	 * @property {import('svelte').Snippet} [before]
-	 * @property {import('svelte').Snippet} [children]
-	 * @property {import('svelte').Snippet} [after]
+	 * @property {string} [title] Sets the title/headline
+	 * @property {string|null} [pageType] Optional: Page type to sit above title
+	 * @property {string|null} [lede] Descriptive text for page to sit below title
+	 * @property {{ label: string; color?: string; ariaLabel?: string } | null} [titleBadge] Optional: Badge to appear next to the page title in format {label, color}
+	 * @property {{ label: string; href: string; ariaLabel?: string } | null} [actionButton] Optional: Label and href for an action button in format {label, ariaLabel, href}
+	 * @property {boolean} [natStatBadge] Include "national statistic" badge
+	 * @property {boolean} [censusLogo] Include Census logo
+	 * @property {{ key: string; value: unknown }[] | null} [meta] Array of {key, value} objects containing page metadata
+	 * @property {"narrow"|"medium"|"wide"|"wider"|"full"} [width] Sets the width of the container
+	 * @property {number|string|null} [height] Sets the (minimum) height of the container
+	 * @property {string|null} [cls] Optional: Set an additional CSS class for the component
+	 * @property {"light"|"dark"|"blue"|"paleblue"|"navyblue"|"grey"|null} [theme] Sets a predefined theme
+	 * @property {Record<string, string>} [themeOverrides] Define additional props to override the base theme
+	 * @property {string|null} [background] Overrides the background CSS for the section
+	 * @property {import('svelte').Snippet} [before] Content rendered before the main content (snippet)
+	 * @property {import('svelte').Snippet} [children] Child content (snippet)
+	 * @property {import('svelte').Snippet} [after] Content rendered after the main content (snippet)
 	 */
 
 	/** @type {Props} */

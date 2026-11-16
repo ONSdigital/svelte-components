@@ -1,7 +1,25 @@
 <script>
 	import GridCell from "../Grid/GridCell.svelte";
 
-	/** @type {{ children?: import("svelte").Snippet; imageContent?: import("svelte").Snippet; titleContent?: import("svelte").Snippet; id?: string | null; cls?: string | null; colCls?: string | null; title?: string | null; hideTitle?: boolean; headingTag?: "h2" | "h3"; mode?: "default" | "featured"; baseline?: boolean; href?: string | null; image?: string | null; imageAlt?: string | null; colspan?: number }} */
+	/**
+	 * @typedef {Object} Props
+	 * @property {import("svelte").Snippet} [children] Child content (snippet)
+	 * @property {import("svelte").Snippet} [imageContent] Custom image content, used instead of the `image` prop (snippet)
+	 * @property {import("svelte").Snippet} [titleContent] Custom title content, used instead of the `title` prop (snippet)
+	 * @property {string | null} [id] Sets the unique ID of the section
+	 * @property {string | null} [cls] Optional: Set an additional CSS class for the section
+	 * @property {string | null} [colCls] Optional: Override default column class for the card
+	 * @property {string | null} [title] Sets the title of the card
+	 * @property {boolean} [hideTitle] Allows the h2 title tag for the card to be visually hidden
+	 * @property {"h2" | "h3"} [headingTag] Set the heading level for the card titles
+	 * @property {"default" | "featured"} [mode] Setting mode to "featured" creates an inset card on a grey background
+	 * @property {boolean} [baseline] Include a border at the bottom of the card
+	 * @property {string | null} [href] Optional: URL for title/image link
+	 * @property {string | null} [image] Optional: URL for image
+	 * @property {string | null} [imageAlt] Optional: Alt text for image
+	 * @property {number} [colspan] (If used in grid) How many columns the card should span across
+	 */
+	/** @type {Props} */
 	let {
 		children,
 		imageContent,

@@ -4,11 +4,11 @@
 
 	/**
 	 * @typedef {object} ToolbarProps
-	 * @property {import("svelte").Snippet} [children]
-	 * @property {import("svelte").Snippet} [controls]
-	 * @property {string | null} [classes=null] - Additional classes for the button
-	 * @property {string | null} [ariaLabel=null] - aria label for button
-	 * @property {'horizontal' | 'vertical'} [orientation='horizontal'] - Orientation of the toolbar
+	 * @property {import("svelte").Snippet} [children] Child content (snippet)
+	 * @property {import("svelte").Snippet} [controls] Toolbar controls (snippet)
+	 * @property {string | null} [classes=null] Additional CSS classes for the toolbar
+	 * @property {string | null} [ariaLabel=null] aria label for button
+	 * @property {'horizontal' | 'vertical'} [orientation='horizontal'] Orientation of the toolbar
 	 */
 
 	/** @type {ToolbarProps} */

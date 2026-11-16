@@ -3,10 +3,10 @@
 
 	/**
 	 * @typedef {Object} Props
-	 * @property {string|null} [title] - Defines the title of the error
-	 * @property {{ label: string; href?: string }[]} [items] - Define an array of errors/issues in the format {label, href?}
-	 * @property {string|null} [cls] - Optional: Set an additional CSS class for the component
-	 * @property {import('svelte').Snippet} [children]
+	 * @property {string|null} [title] Defines the title of the error
+	 * @property {{ label: string; href?: string }[]} [items] Define an array of errors/issues in the format {label, href?}
+	 * @property {string|null} [cls] Optional: Set an additional CSS class for the component
+	 * @property {import('svelte').Snippet} [children] Child content (snippet)
 	 */
 
 	/** @type {Props} */

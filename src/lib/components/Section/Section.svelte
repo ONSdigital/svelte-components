@@ -2,7 +2,19 @@
 	import { slugify } from "../../js/utils.js";
 	import Container from "$lib/components/Container/Container.svelte";
 
-	/** @type {{ children?: import("svelte").Snippet; id?: string | null; cls?: string | null; width?: "narrow" | "medium" | "wide" | "wider" | "full"; height?: number | string | null; title?: string | null; hideTitle?: boolean; marginTop?: boolean; marginBottom?: boolean }} */
+	/**
+	 * @typedef {Object} Props
+	 * @property {import("svelte").Snippet} [children] Child content (snippet)
+	 * @property {string | null} [id] Sets the unique ID of the section
+	 * @property {string | null} [cls] Optional: Set an additional CSS class for the section
+	 * @property {"narrow" | "medium" | "wide" | "wider" | "full"} [width] Sets the width of the container
+	 * @property {number | string | null} [height] Sets the (minimum) height of the container
+	 * @property {string | null} [title] Sets the title of the section
+	 * @property {boolean} [hideTitle] Allows the h2 title tag for the section to be visually hidden
+	 * @property {boolean} [marginTop] Adds margin above section
+	 * @property {boolean} [marginBottom] Adds margin below section
+	 */
+	/** @type {Props} */
 	let {
 		children,
 		id = null,

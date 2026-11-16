@@ -4,7 +4,31 @@
 	/** @type {import("svelte").EventDispatcher<{ change: { value: string | null; e: Event }; input: { value: string | null; e: Event }; blur: { value: string | null; e: Event } }>} */
 	const dispatch = createEventDispatcher();
 
-	/** @type {{ id?: string | null; name?: string | null; value?: string | null; label?: string | null; hideLabel?: boolean; description?: string | null; placeholder?: string | null; charLimit?: number | null; width?: number | string | null; prefix?: string | null; suffix?: string | null; unitLabel?: string; pattern?: string | null; numeric?: boolean; readonly?: boolean; disabled?: boolean; error?: boolean; cls?: string | null; onChange?: (detail: { value: string | null; e: Event }) => void; onInput?: (detail: { value: string | null; e: Event }) => void; onBlur?: (detail: { value: string | null; e: Event }) => void }} */
+	/**
+	 * @typedef {Object} Props
+	 * @property {string | null} [id] ID for &lt;input&gt; element
+	 * @property {string | null} [name] Name attribute for &lt;input&gt; element
+	 * @property {string | null} [value] A prop to bind to for the entered value
+	 * @property {string | null} [label] A label to describe the &lt;input&gt; element (expected for accessibility)
+	 * @property {boolean} [hideLabel] Visually hide the label
+	 * @property {string | null} [description] An optional description to help users know what to enter
+	 * @property {string | null} [placeholder] The maximum number of characters that can be entered (optional)
+	 * @property {number | null} [charLimit] A placeholder text for the input (optional)
+	 * @property {number | string | null} [width] The width of the &lt;input&gt; in characters or a valid css width string (eg. "100px")
+	 * @property {string | null} [prefix] An optional prefix (eg. £) to appear on the left of the input
+	 * @property {string | null} [suffix] An optional suffix (eg. %) to appear on the right of the input
+	 * @property {string} [unitLabel] An optional hidden description of the prefix (for accessibility)
+	 * @property {string | null} [pattern] An optional regex pattern foto limit the input (not currently used)
+	 * @property {boolean} [numeric] Set to `true` if the value should be a number
+	 * @property {boolean} [readonly] Set to `true` to make the input read-only
+	 * @property {boolean} [disabled] Set to `true` to give the input a disabled state
+	 * @property {boolean} [error] Set to `true` to highlight border in red
+	 * @property {string | null} [cls] Optional: Set an additional CSS class for the component
+	 * @property {(detail: { value: string | null; e: Event }) => void} [onChange] Callback for the `change` event, called with the same value as the event's `detail`
+	 * @property {(detail: { value: string | null; e: Event }) => void} [onInput] Callback for the `input` event, called with the same value as the event's `detail`
+	 * @property {(detail: { value: string | null; e: Event }) => void} [onBlur] Callback for the `blur` event, called with the same value as the event's `detail`
+	 */
+	/** @type {Props} */
 	let {
 		id = null,
 		name = id,

@@ -2,7 +2,23 @@
 	import { setContext } from "svelte";
 	import Container from "$lib/components/Container/Container.svelte";
 
-	/** @type {{ children?: import("svelte").Snippet; id?: string | null; cls?: string | null; width?: "narrow" | "medium" | "wide" | "wider" | "full"; title?: string | null; hideTitle?: boolean; caption?: string | null; marginTop?: boolean; marginBottom?: boolean; colWidth?: "narrow" | "medium" | "wide" | "full"; rowHeight?: number | string | null; rowStretch?: boolean; gridGap?: "narrow" | "medium" | "wide" | "none" }} */
+	/**
+	 * @typedef {Object} Props
+	 * @property {import("svelte").Snippet} [children] Child content (snippet)
+	 * @property {string | null} [id] Optional: Sets the unique ID of the section
+	 * @property {string | null} [cls] Optional: Set an additional CSS class for the component
+	 * @property {"narrow" | "medium" | "wide" | "wider" | "full"} [width] Sets the width of the section
+	 * @property {string | null} [title] Sets the title of the section
+	 * @property {boolean} [hideTitle] Allows the h2 title tag for the section to be visually hidden
+	 * @property {string | null} [caption] Optional: Caption for the grid (if used as a media container, eg. for an image)
+	 * @property {boolean} [marginTop] Adds margin above section
+	 * @property {boolean} [marginBottom] Adds margin below section
+	 * @property {"narrow" | "medium" | "wide" | "full"} [colWidth] Sets the width of the columns
+	 * @property {number | string | null} [rowHeight] Set the minimum height of a grid row (can be a number in pixels, or a valid CSS height)
+	 * @property {boolean} [rowStretch] Stretch the height of grid cells to match their siblings
+	 * @property {"narrow" | "medium" | "wide" | "none"} [gridGap] Set the grid gap, in pixels
+	 */
+	/** @type {Props} */
 	let {
 		children,
 		id = null,

@@ -3,10 +3,10 @@
 
 	/**
 	 * @typedef {Object} Props
-	 * @property {string} [width]
-	 * @property {boolean} [headerBorder]
-	 * @property {string} [baseurl]
-	 * @property {any} [i18n]
+	 * @property {string} [width] Sets the width of the header
+	 * @property {boolean} [headerBorder] Include a border/line under the header. For use if hero is transparent
+	 * @property {string} [baseurl] Base URL of the ONS site in the current language (used for the logo link)
+	 * @property {any} [i18n] Function that translates the header's text into Welsh when `lang` is "cy"
 	 */
 
 	/** @type {Props} */

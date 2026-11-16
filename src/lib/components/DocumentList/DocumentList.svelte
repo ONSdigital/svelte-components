@@ -1,7 +1,14 @@
 <script>
 	import Document from "./Document.svelte";
 
-	/** @type {{ children?: import("svelte").Snippet; items?: { title?: string | null; href?: string | null; description?: string | null; image?: string | boolean; featured?: boolean; meta?: string | null; headingTag?: "h2" | "h3" }[] | null; compact?: boolean; cls?: string | null }} */
+	/**
+	 * @typedef {Object} Props
+	 * @property {import("svelte").Snippet} [children] Child content (snippet)
+	 * @property {{ title?: string | null; href?: string | null; description?: string | null; image?: string | boolean; featured?: boolean; meta?: string | null; headingTag?: "h2" | "h3" }[] | null} [items] Optional: Define the documents as an array of {id, title, checked, description?}
+	 * @property {boolean} [compact] Compact mode. Removes horizonatal lines between documents
+	 * @property {string | null} [cls] Optional: Set an additional CSS class for the component
+	 */
+	/** @type {Props} */
 	let { children, items = null, compact = false, cls = null } = $props();
 </script>
 
