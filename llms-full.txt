@@ -1,0 +1,2215 @@
+# @onsvisual/svelte-components
+
+> Svelte 5 components that render ONS Design System markup and styles, for ONS web pages, articles and data visualisations. Version 2.2.0.
+
+- Storybook docs, with examples of every component: https://onsdigital.github.io/svelte-components/
+- Workbench, to try out components and their props: https://onsdigital.github.io/svelte-components/workbench/
+- Full reference, with every component's props and an example: `node_modules/@onsvisual/svelte-components/dist/llms-full.txt` (or https://onsdigital.github.io/svelte-components/llms-full.txt)
+- Each component's docs and types are in the package: `node_modules/@onsvisual/svelte-components/dist/components/<Folder>/docs/component.md` and `node_modules/@onsvisual/svelte-components/dist/components/<Folder>/<Name>.svelte.d.ts`
+
+## Setup
+
+- Install: `npm install @onsvisual/svelte-components`. Version 2 needs Svelte 5. (Svelte 3/4 projects use version 1: `npm install @onsvisual/svelte-components@v1-legacy`.)
+- Import the CSS once, eg. in the root `+layout.svelte`: `import "@onsvisual/svelte-components/css/main.css";`
+- Import components by name: `import { Header, Section, Footer } from "@onsvisual/svelte-components";`
+- Peer dependencies, needed by some components: `@popperjs/core`, `accessible-autocomplete`, `d3-scale`, `d3-shape`, `parse-color`, `pym.js`, `tick-manager`, `viewport-details`.
+
+## Rules for using the components
+
+- Write Svelte 5 (runes) code: `$state`, `$derived`, `$props`, snippets and `onclick`-style attributes, not `export let`, `$:`, `<slot>` or `on:click`.
+- Events: use the callback props, eg. `<Button onClick={...}>` or `<Input onChange={({ value }) => ...}>`. Each callback gets the same value as the matching dispatched event's `detail`. The dispatched events (`on:click` etc.) still work, but are only for Svelte 4-style code.
+- Named slots are now snippet props, eg. `{#snippet titleContent()}...{/snippet}` inside a Card, or Scroller's `background` and `foreground`. Content passed with `slot="..."` is silently not rendered. Child content is the `children` snippet, as normal.
+- Bindings: use `bind:` with a `$state` variable, eg. `let value = $state(null);` and `<Input bind:value />`. If the variable starts `undefined`, the component sets it to the prop's default (version 2.3.0 and later; earlier 2.x versions throw `props_invalid_value` for some props, so start bound variables with a value there).
+- Layout: `Section` already renders a `Container` (narrow width, with a bottom margin), so don't put a `Container` inside a `Section`. Use one or the other, and set `width` and the margins on it.
+- Extra CSS classes: most components take a `cls` prop (Toolbar components use `classes`).
+- Some props render trusted HTML with `{@html}`, with no sanitising: List items, DescriptionList values, Table cells, DataCard captions and Theme head styles. Never pass user input to them.
+- Form components (Input, Dropdown, Select, Radios, Checkboxes, Textarea) need a `label` for accessibility, and an `id` if the label is hidden.
+- Check a component's props in its `.d.ts` file or in the full reference before using it. Don't guess prop names.
+
+## ONS Design System CSS
+
+The package CSS includes version 73.5.0 of the ONS Design System CSS, so any `ons-*` class from that version can be used directly in markup, eg. the grid (`ons-grid`, `ons-grid__col`, `ons-col-6@m`), utility classes such as `ons-u-mb-l` (bottom margin) or `ons-u-fs-r--b` (bold text), and Design System components that this package doesn't wrap. See https://service-manual.ons.gov.uk/design-system (it documents the latest version, which may be newer than 73.5.0). Prefer the components in this package where one exists.
+
+## Components
+
+### Wrappers
+
+- [Container](https://onsdigital.github.io/svelte-components/?path=/docs/wrappers-container--docs): A container to set the width and minimum height of a block of content.
+- [Embed](https://onsdigital.github.io/svelte-components/?path=/docs/wrappers-embed--docs): A container for content designed to appear within an `<iframe>`. The component does two things: 1. Overrides padding, so that content can fill the full width of its iframe. 2. Initialises a Pym.js child for the iframe, so that it can communicate its height with its parent page.
+- [EmbedParent](https://onsdigital.github.io/svelte-components/?path=/docs/wrappers-embedparent--docs): Add responsive Pym.js iframes to a page. The child page `href` can be a relative or absolute path, or a full URL. When referencing another page within the same app, be sure to use SvelteKit's `resolve()` function to ensure that the path is correct wherever your app is deployed.
+- [LazyLoad](https://onsdigital.github.io/svelte-components/?path=/docs/wrappers-lazyload--docs): A wrapper component that uses IntersectionObserver to allow the Svelte components or HTML elements it contains to be lazy loaded, ie. to be added to the page (or DOM) only when they enter the viewport.
+- [Main](https://onsdigital.github.io/svelte-components/?path=/docs/wrappers-main--docs): This component creates a styled `<main>` element to wrap the primary contents of a page (generally everything between the page header and footer).
+- [Observe](https://onsdigital.github.io/svelte-components/?path=/docs/wrappers-observe--docs): A wrapper component that uses IntersectionObserver to monitor whether the elements in contains are within the current viewport.
+- [Theme](https://onsdigital.github.io/svelte-components/?path=/docs/wrappers-theme--docs): A component that sets the colour scheme of its child components using CSS variables.
+
+### Navigation
+
+- [BackLink](https://onsdigital.github.io/svelte-components/?path=/docs/navigation-backlink--docs): Link that can be used to return to the top of a page, or to a table of contents.
+- [Breadcrumb](https://onsdigital.github.io/svelte-components/?path=/docs/navigation-breadcrumb--docs): Displays a breadcrumb with the current page's parents.
+- [Contents](https://onsdigital.github.io/svelte-components/?path=/docs/navigation-contents--docs): Displays a table of contents based on an array of links. Can be used for in-page navigation, or for navigation between sibling pages.
+- [Paginator](https://onsdigital.github.io/svelte-components/?path=/docs/navigation-paginator--docs): A very simple next/previous page paginator.
+- [RelatedContent](https://onsdigital.github.io/svelte-components/?path=/docs/navigation-relatedcontent--docs): Dispay related content for a page.
+- [SkipLink](https://onsdigital.github.io/svelte-components/?path=/docs/navigation-skiplink--docs): An invisible link to skip from the top of the page header to the content of the page. Should be the first focusable item on the page, and is included by default in the [Header](https://onsdigital.github.io/svelte-components/?path=/docs/layout-header--docs) component
+
+### Form elements
+
+- [Button](https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-button--docs): A button/link component that can be styled in various ways. It will render as an `<a>` link if it has an `href` property defined.
+- [Checkbox](https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-checkbox--docs): A checkbox element with various styling and labelling options. Its "checked" attribute can be bound to a Svelte boolean (true/false) variable.
+- [Checkboxes](https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-checkboxes--docs): A component for defining a group of checkbox elements, whose checked values can be bound to Svelte variables, or grouped in an array.
+- [Dropdown](https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-dropdown--docs): A standard `<select>` component with Svelte bindings and events.
+- [ErrorPanel](https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-errorpanel--docs): Use this component to show validation errors by wrapping form inputs and fieldsets.
+- [ErrorSummary](https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-errorsummary--docs): A panel to summarise errors on a form/input. The errors can be defined in an `items` array, or as plain text/html within the component.
+- [Input](https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-input--docs): A standard `<input>` element with Svelte bindings and events.
+- [Radio](https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-radios--docs): used with `Radios`; see its docs.
+- [Radios](https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-radios--docs): A component for defining a group of radio inputs, where the selected item id can be bound to a Svelte variable.
+- [Select](https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-select--docs): (also exported as `AccessibleSelect`) An extended alternative to an HTML `<select>` component (see Dropdown), with auto-complete and the ability to have a custom **loadOptions** function.
+- [Textarea](https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-textarea--docs): A standard `<textarea>` element with Svelte bindings and events.
+- [HelpModal](https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-toolbar--docs): used with `Toolbar`; see its docs. Experimental.
+- [ToolbarIcon](https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-toolbar--docs): used with `Toolbar`; see its docs. Experimental.
+- [Toolbar](https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-toolbar--docs): A toolbar component. Use `ToolbarsContainer` even if using one toolbar as it contains a store for all the IDs and the activeID. Experimental.
+- [ToolbarButton](https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-toolbar--docs): used with `Toolbar`; see its docs. Experimental.
+- [ToolbarDivider](https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-toolbar--docs): used with `Toolbar`; see its docs. Experimental.
+- [ToolbarsContainer](https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-toolbar--docs): used with `Toolbar`; see its docs. Experimental.
+- [ToolControl](https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-toolbar--docs): used with `Toolbar`; see its docs. Experimental.
+- [ToolControls](https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-toolbar--docs): used with `Toolbar`; see its docs. Experimental.
+- [ButtonGroup](https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-buttongroup--docs): Radio inputs dressed up as a button group. Experimental.
+- [ButtonGroupItem](https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-buttongroup--docs): used with `ButtonGroup`; see its docs. Experimental.
+
+### Layout
+
+- [Accordion](https://onsdigital.github.io/svelte-components/?path=/docs/layout-accordion--docs): An accordion component.
+- [AccordionItem](https://onsdigital.github.io/svelte-components/?path=/docs/layout-accordion--docs): used with `Accordion`; see its docs.
+- [Card](https://onsdigital.github.io/svelte-components/?path=/docs/layout-card--docs): Display content and links as cards. Can be used in combination with the `<Grid>` component to combine multiple cards.
+- [Details](https://onsdigital.github.io/svelte-components/?path=/docs/layout-details--docs): (also exported as `Twisty`) An expandable `<details>` ("twisty") component, which can be open or closed by default.
+- [Divider](https://onsdigital.github.io/svelte-components/?path=/docs/layout-divider--docs): A component to draw a divider between blocks of contnet.
+- [Footer](https://onsdigital.github.io/svelte-components/?path=/docs/layout-footer--docs): A footer component with compact mode and theming options.
+- [Grid](https://onsdigital.github.io/svelte-components/?path=/docs/layout-grid--docs): (also exported as `Cards`) A media grid component, useful for images and small multiple charts. Setting `colwidth` to **full** allows for a single cell/image/chart with an optional caption.
+- [GridCell](https://onsdigital.github.io/svelte-components/?path=/docs/layout-grid--docs): used with `Grid`; see its docs.
+- [Header](https://onsdigital.github.io/svelte-components/?path=/docs/layout-header--docs): A header component with compact mode and theming options.
+- [Hero](https://onsdigital.github.io/svelte-components/?path=/docs/layout-hero--docs): (also exported as `Titleblock`) A hero/title block suitable for a standard pages, with optional metadata block.
+- [Highlight](https://onsdigital.github.io/svelte-components/?path=/docs/layout-highlight--docs): A large text block that can be used as a standfirst or transition between sections of a feature article, with various options and style customisations.
+- [List](https://onsdigital.github.io/svelte-components/?path=/docs/layout-list--docs): A list component with modes for numbered, bulleted, dashed and bare lists. There is also an option to define list items as an array.
+- [Li](https://onsdigital.github.io/svelte-components/?path=/docs/layout-list--docs): used with `List`; see its docs.
+- [NavSection](https://onsdigital.github.io/svelte-components/?path=/docs/layout-navsections--docs): used with `NavSections`; see its docs.
+- [NavSections](https://onsdigital.github.io/svelte-components/?path=/docs/layout-navsections--docs): Use this component to allow users to quickly jump to named sections within a long page of content.
+- [PhaseBanner](https://onsdigital.github.io/svelte-components/?path=/docs/layout-phasebanner--docs): Display a phase banner on prototypes, alpha and beta products.
+- [Scroller](https://onsdigital.github.io/svelte-components/?path=/docs/layout-scroller--docs): Components for adding interactive scrollytelling sections to a feature article.
+- [ScrollerSection](https://onsdigital.github.io/svelte-components/?path=/docs/layout-scroller--docs): used with `Scroller`; see its docs.
+- [Section](https://onsdigital.github.io/svelte-components/?path=/docs/layout-section--docs): A layout block for text content, including an optional title.
+- [Tabs](https://onsdigital.github.io/svelte-components/?path=/docs/layout-tabs--docs): Use tabs to help users navigate between short sections of related content within a single page, showing one section at a time.
+- [Tab](https://onsdigital.github.io/svelte-components/?path=/docs/layout-tabs--docs): used with `Tabs`; see its docs.
+
+### Information and media
+
+- [AnalyticsBanner](https://onsdigital.github.io/svelte-components/?path=/docs/information-and-media-analyticsbanner--docs): This component will display a cookie banner and export a function that allows you to push events to the Google Analytics dataLayer array.
+- [analyticsEvent](https://onsdigital.github.io/svelte-components/?path=/docs/information-and-media-analyticsbanner--docs): function exported alongside AnalyticsBanner.
+- [AnnouncementBanner](https://onsdigital.github.io/svelte-components/?path=/docs/information-and-media-announcementbanner--docs): This banner is used to highlight important messages for all users of a service or website. The banner is only meant for critical short-term messages, and should be placed immediately below the website navigation header (and above the breadcrumb).
+- [Blockquote](https://onsdigital.github.io/svelte-components/?path=/docs/information-and-media-blockquote--docs): A component to highlight a pull quote on a page, with optional attribution.
+- [DescriptionList](https://onsdigital.github.io/svelte-components/?path=/docs/information-and-media-descriptionlist--docs): A component to display metadata in a tabular format.
+- [DocumentList](https://onsdigital.github.io/svelte-components/?path=/docs/information-and-media-documentlist--docs): A component for defining a list of pages or links. Items can either be defined in an array of objects or as individual `<Document>` components.
+- [Document](https://onsdigital.github.io/svelte-components/?path=/docs/information-and-media-documentlist--docs): used with `DocumentList`; see its docs.
+- [ErrorPage](https://onsdigital.github.io/svelte-components/?path=/docs/information-and-media-errorpage--docs): An error page component that will display generic error messages for "page not found" (404) or other errors.
+- [Image](https://onsdigital.github.io/svelte-components/?path=/docs/information-and-media-image--docs): Insert an image with an optional caption.
+- [Notice](https://onsdigital.github.io/svelte-components/?path=/docs/information-and-media-notice--docs): Container for displaying notices on a page.
+- [ShareButtons](https://onsdigital.github.io/svelte-components/?path=/docs/information-and-media-sharebuttons--docs): Add social sharing buttons to a page.
+- [Summary](https://onsdigital.github.io/svelte-components/?path=/docs/information-and-media-summary--docs): A summary table for selected variables etc.
+- [Timeline](https://onsdigital.github.io/svelte-components/?path=/docs/information-and-media-timeline--docs): A component to display a linear record of past and future events.
+- [TimelineItem](https://onsdigital.github.io/svelte-components/?path=/docs/information-and-media-timeline--docs): used with `Timeline`; see its docs.
+
+### Data visualisation
+
+- [UpdateStatus](https://onsdigital.github.io/svelte-components/?path=/docs/data-visualisation-updatestatus--docs): Shows a short status message for recently updated content, or falls back to a standard "Last updated" label.
+- [ChangeStat](https://onsdigital.github.io/svelte-components/?path=/docs/data-visualisation-changestat--docs): Shows a short directional stat such as `7% lower`, `1.3pp higher`, or `69 (0.7%) fewer`.
+- [DataCard](https://onsdigital.github.io/svelte-components/?path=/docs/data-visualisation-datacard--docs): A component for presenting key facts and figures as a grid of "cards". Experimental.
+- [Table](https://onsdigital.github.io/svelte-components/?path=/docs/data-visualisation-table--docs): A table component with various customisation options.
+
+### Decorators
+
+- [Em](https://onsdigital.github.io/svelte-components/?path=/docs/decorators-em--docs): A component to visually highlight text. Can be used for inline text or to provide a "badge".
+- [Icon](https://onsdigital.github.io/svelte-components/?path=/docs/decorators-icon--docs): Make use of pre-defined icons in your projects. The icon fill is set to `currentColor`, so will render in the same colour as the surrounding text.
+- [Indent](https://onsdigital.github.io/svelte-components/?path=/docs/decorators-indent--docs): An indented block of text.
+- [Tooltip](https://onsdigital.github.io/svelte-components/?path=/docs/decorators-tooltip--docs): A component that displays a tooltip when the element it is wrapped around is hovered over or focused on.
+
+## Charts and maps (separate packages)
+
+These packages are developed separately, have fewer options, and may change more than this one. Check their docs and types before using them.
+
+- `@onsvisual/svelte-charts` (version 0.4.11 when this file was generated): `Chart`, `LineChart`, `BarChart`, `ColumnChart`, `ScatterChart`, `DotPlotChart`. Their docs and examples are also on the Storybook site under "Data visualisation", and in `node_modules/@onsvisual/svelte-components/dist/components/<ChartName>/docs/`. They're written in Svelte 4 style, so use `on:` events with them. In a Vite/SvelteKit app, add `@onsvisual/svelte-charts` and `layercake` to `ssr.noExternal`.
+- `@onsvisual/svelte-maps`: MapLibre maps (`Map`, `MapSource`, `MapLayer`, `MapTooltip`). Its components still dispatch Svelte 4-style events, so use `on:` and `bind:` with them.
+
+## Component reference
+
+### Container
+
+A container to set the width and minimum height of a block of content.
+
+`import { Container } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/wrappers-container--docs
+
+Props:
+
+- `children` (`import("svelte").Snippet`): Child content
+- `id` (`string | null`, default `null`): Optional: Set the unique ID of the container
+- `cls` (`string | null`, default `null`): Optional: Set an additional CSS class for the container
+- `width` (`"narrow" | "medium" | "wide" | "wider" | "full"`, default `"wide"`): Sets the width of the container
+- `height` (`number | string | null`, default `null`): Sets the height of the container
+- `marginTop` (`boolean`, default `false`): Adds margin above container
+- `marginBottom` (`boolean`, default `false`): Adds margin below container
+- `theme` (`"light" | "dark" | "paleblue" | "blue" | "navyblue" | "grey" | null`, default `null`): Optional: Sets a base theme ("light", "dark" or null for no theme)
+- `themeOverrides` (`Record<string, string>`, default `{}`): Optional: Define additional props to override the base theme
+- `background` (`string | null`, default `null`): Optional: Overrides the base theme background (accepts any valid CSS background value)
+
+Example:
+
+```svelte
+<script>
+  import { Container } from "@onsvisual/svelte-components";
+</script>
+
+<Container width={narrow|medium|wide|wider|full} theme="light">{child_components}</Container>
+```
+
+### Embed
+
+A container for content designed to appear within an `<iframe>`. The component does two things: 1. Overrides padding, so that content can fill the full width of its iframe. 2. Initialises a Pym.js child for the iframe, so that it can communicate its height with its parent page.
+
+`import { Embed } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/wrappers-embed--docs
+
+Props:
+
+- `children` (`import("svelte").Snippet`): Child content
+- `id` (`string | null`, default `null`): (Optional) ID for embed
+- `pymChild` (`PymChild | null`, default `null`, bindable): Binding for pymChild element (can be used to send messages to parent of iframe)
+- `polling` (`number | false`, default `500`): Frequency (in milliseconds) of iframe height updates. Set as "false" to disable polling.
+- `onLoad` (`(detail: LoadDetail) => void`): Callback for the `load` event, called with the same value as the event's `detail`
+
+Example:
+
+```svelte
+<script>
+  import { Embed } from "@onsvisual/svelte-components";
+</script>
+
+<Embed>
+  {child_components}
+</Embed>
+```
+
+### EmbedParent
+
+Add responsive Pym.js iframes to a page. The child page `href` can be a relative or absolute path, or a full URL. When referencing another page within the same app, be sure to use SvelteKit's `resolve()` function to ensure that the path is correct wherever your app is deployed.
+
+`import { EmbedParent } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/wrappers-embedparent--docs
+
+Props:
+
+- `id` (`string`, default `uid`): ID of the container element (the iframe gets `${id}-iframe`). Generated by default
+- `href` (`string`, required): URL of the child page to embed in the iframe
+- `title` (`string | null`, default `null`): Accessible name for the iframe
+- `name` (`string | null`, default `null`): Name attribute for the iframe (defaults to a slug of `title`)
+- `pymParent` (`PymParent | null`, default `null`, bindable): Binding for the pym.js Parent instance (eg. to send messages to the child page)
+- `onLoad` (`(detail: LoadDetail) => void`): Callback for the `load` event, called with the same value as the event's `detail`
+
+Example:
+
+```svelte
+<script>
+  import { EmbedParent } from "@onsvisual/svelte-components";
+</script>
+
+<EmbedParent href="child_page_url" id="iframe" title="Accessible name" />
+```
+
+### LazyLoad
+
+A wrapper component that uses IntersectionObserver to allow the Svelte components or HTML elements it contains to be lazy loaded, ie. to be added to the page (or DOM) only when they enter the viewport.
+
+`import { LazyLoad } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/wrappers-lazyload--docs
+
+Props:
+
+- `children` (`import("svelte").Snippet`): Child content
+- `entered` (`boolean`, default `false`, bindable): Bind to this variable to monitor whether the component has entered the viewport (boolean true/false).
+- `initialHeight` (`number`, default `400`): Set the initial "placeholder" height of the component in pixels.
+- `rootMargin` (`number`, default `200`): Set how many pixels from the viewport you want lazy loading to kick in.
+
+Example:
+
+```svelte
+<script>
+  import { LazyLoad } from "@onsvisual/svelte-components";
+</script>
+
+{#each Array.from(Array(20).keys()) as i}
+  <LazyLoad>
+    <div class="img-container">
+      <img src="https://picsum.photos/400/300?random={i}" alt="" />
+    </div>
+  </LazyLoad>
+{/each}
+
+<style>
+  .img-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
+    background: #eee;
+    margin-bottom: 10px;
+  }
+</style>
+```
+
+### Main
+
+This component creates a styled `<main>` element to wrap the primary contents of a page (generally everything between the page header and footer).
+
+`import { Main } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/wrappers-main--docs
+
+Props:
+
+- `children` (`import("svelte").Snippet`): Child content
+- `id` (`string`, default `"main"`): Sets the unique ID that can be targetted by hyperlinks
+
+Example:
+
+```svelte
+<script>
+  import { Main } from "@onsvisual/svelte-components";
+</script>
+
+<!-- Header goes here -->
+<Main>
+  {child_components}
+</Main>
+<!-- Footer goes here -->
+```
+
+### Observe
+
+A wrapper component that uses IntersectionObserver to monitor whether the elements in contains are within the current viewport.
+
+`import { Observe } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/wrappers-observe--docs
+
+Props:
+
+- `children` (`import("svelte").Snippet`): Child content
+- `visible` (`boolean`, default `false`, bindable): Bind to this variable to monitor visiblity (boolean true/false).
+- `rootMargin` (`number`, default `0`): Number of pixels before/after the viewport that component is considered "visible" (default = 0).
+- `onEnter` (`(entry: IntersectionObserverEntry) => void`): Callback for the `enter` event, called with the same value as the event's `detail`
+- `onExit` (`(entry: IntersectionObserverEntry) => void`): Callback for the `exit` event, called with the same value as the event's `detail`
+
+Example:
+
+```svelte
+<script>
+  import { Observe } from "@onsvisual/svelte-components";
+
+  let visible = $state(false);
+
+  const colors = ["yellow", "green", "blue", "purple", "red", "orange"];
+</script>
+
+{#each colors as color}
+<Observe
+  bind:visible
+  onEnter={() => console.log(`${color} entered`)}
+  onExit={() => console.log(`${color} exited`)}>
+  <div class="section" style:background={color} style:height="400px"></div>
+</Observe>
+{/each}
+```
+
+### Theme
+
+A component that sets the colour scheme of its child components using CSS variables.
+
+`import { Theme } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/wrappers-theme--docs
+
+Props:
+
+- `children` (`import("svelte").Snippet`): Child content
+- `theme` (`ThemeName`, default `null`): Sets a base theme ("light", "dark" or null for no theme)
+- `overrides` (`Record<string, string>`, default `{}`): Define additional props to override the base theme
+- `background` (`string | null`, default `null`): Overrides the base theme background (accepts any valid CSS background value)
+- `global` (`boolean`, default `false`): Sets the theme at html body level (only use this at the top level)
+- `allowClientOverrides` (`boolean`, default `false`): Allows client imported CSS for embeddable content
+- `cls` (`string | null`, default `null`): Optional: Set an additional CSS class for the theme container
+
+Example:
+
+```svelte
+<script>
+  import { Theme } from "@onsvisual/svelte-components";
+</script>
+
+<Theme theme={light|dark|paleblue|blue|navyblue|grey}> {child_components} </Theme>
+```
+
+### BackLink
+
+Link that can be used to return to the top of a page, or to a table of contents.
+
+`import { BackLink } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/navigation-backlink--docs
+
+Props:
+
+- `href` (`string`, default `"#top"`): Href for top of page or contents section
+- `cls` (`string | null`, default `null`): Optional: Add a CSS class to the link
+
+Example:
+
+```svelte
+<script>
+  import { BackLink } from "@onsvisual/svelte-components";
+</script>
+
+<BackLink href="#top" />
+```
+
+### Breadcrumb
+
+Displays a breadcrumb with the current page's parents.
+
+`import { Breadcrumb } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/navigation-breadcrumb--docs
+
+Props:
+
+- `links` (`{ label: string; href?: string }[]`, default `[]`): An array of links in the format {label, href}
+- `backHref` (`string|null`, default `null`): Optional: Link href if component is used for a single back-link
+- `width` (`"narrow"|"medium"|"wide"|"wider"|"full"`, default `"wide"`): Sets the width of the container
+- `cls` (`string|null`, default `null`): Optional: Set an additional CSS class for the component
+- `theme` (`"light"|"dark"|"paleblue"|"blue"|"navyblue"|"grey"|null`, default `null`): Optional: Sets a base theme ("light", "dark", null etc)
+- `themeOverrides` (`Record<string, string>`, default `{}`): Optional: Define additional props to override the base theme
+- `background` (`string|null`, default `null`): Optional: Overrides the base theme background (accepts any valid CSS background value)
+
+Example:
+
+```svelte
+<script>
+  import { Breadcrumb } from "@onsvisual/svelte-components";
+</script>
+
+<Breadcrumb links={[
+  {label: 'Home', href: '/'},
+  {label: 'Parent page', href: '/parent'}
+]} />
+```
+
+### Contents
+
+Displays a table of contents based on an array of links. Can be used for in-page navigation, or for navigation between sibling pages.
+
+`import { Contents } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/navigation-contents--docs
+
+Props:
+
+- `title` (`string`, default `"Contents"`): Sets the title of the contents block
+- `hideTitle` (`boolean`, default `false`): Visually hides the title of the block
+- `links` (`{ label: string; href?: string }[]`, default `[]`): An array of links for the contentents block in the form {label, href?}. Excluding href renders an item as plain text and marks it as the current section for screenreaders.
+- `skipHref` (`string|null`, default `null`): An anchor link URL to the main content of the page (to skip contents)
+- `cls` (`string|null`, default `null`): Optional: Set an additional CSS class for the component
+
+Example:
+
+```svelte
+<script>
+  import { Contents } from "@onsvisual/svelte-components";
+</script>
+
+<Contents links={[
+  { label: 'Overview' },
+  { label: 'Who should take part and why', href: '#0' },
+  { label: 'How your information is used', href: '#0' },
+  { label: 'The 2019 Census Rehearsal', href: '#0' },
+  { label: 'Online census', href: '#0' },
+]} />
+```
+
+### Paginator
+
+A very simple next/previous page paginator.
+
+`import { Paginator } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/navigation-paginator--docs
+
+Props:
+
+- `pageCount` (`number`, default `1`): Total number of pages
+- `pageCurrent` (`number`, default `1`): Number of the current page
+- `nextHref` (`string | null`, default `null`): URL of next page (use null if on last page)
+- `prevHref` (`string | null`, default `null`): URL of previous page (use null if on first page)
+- `nextTitle` (`string | null`, default `null`): (Optional) title of next page (with no label, will default to 'page {x-1} of {n}')
+- `prevTitle` (`string | null`, default `null`): (Optional) title of previous page (with no label, will default to 'page {x+1} of {n}')
+
+Example:
+
+```svelte
+<script>
+  import { Paginator } from "@onsvisual/svelte-components";
+</script>
+
+<Paginator
+  pageCount={10}
+  pageCurrent={2}
+  nextHref="#3"
+  prevHref="#1"
+/>
+```
+
+### RelatedContent
+
+Dispay related content for a page.
+
+`import { RelatedContent } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/navigation-relatedcontent--docs
+
+Props:
+
+- `title` (`string`, default `"Related content"`): Title for the section
+- `links` (`{ title: string; href: string }[] | object`, default `[]`): Links in the form {title, href}
+- `related` (`{ title?: string; links: { title: string; href: string }[] | object }[]`): Define multiple links sections in the form {title, links: [{title, href}]} (overrides above options)
+- `cls` (`string|null`, default `null`): Optional: Set an additional CSS class for the component
+- `children` (`import('svelte').Snippet`): Child content
+
+Example:
+
+```svelte
+<script>
+  import { RelatedContent } from "@onsvisual/svelte-components";
+</script>
+
+<RelatedContent
+  links={[
+    { title: "How we will contact or visit you", href: "#0" },
+    { title: "Media enquiries", href: "#0" }
+  ]}/>
+```
+
+### SkipLink
+
+An invisible link to skip from the top of the page header to the content of the page. Should be the first focusable item on the page, and is included by default in the [Header](https://onsdigital.github.io/svelte-components/?path=/docs/layout-header--docs) component
+
+`import { SkipLink } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/navigation-skiplink--docs
+
+Props:
+
+- `href` (`string`, default `"#main"`): Anchor link to <main> page element
+
+Example:
+
+```svelte
+<script>
+  import { SkipLink } from "@onsvisual/svelte-components";
+</script>
+
+<SkipLink/>
+<!-- page body -->
+```
+
+### Button
+
+A button/link component that can be styled in various ways. It will render as an `<a>` link if it has an `href` property defined.
+
+`import { Button } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-button--docs
+
+Props:
+
+- `children` (`import("svelte").Snippet`): Child content
+- `iconSlot` (`import("svelte").Snippet`): Custom icon content, used instead of the `icon` prop
+- `type` (`"button" | "submit" | "reset"`, default `"button"`): Type of button
+- `variant` (`"primary" | "secondary" | "ghost"`, default `"primary"`): Style variant of button
+- `href` (`string | null`, default `null`): Href of button (renders button as a link)
+- `download` (`string | null`, default `null`): File name if link is used for a file download (only if href is also specified)
+- `rel` (`string | null`, default `null`): HTML "rel" attribute for hyperlinks (Eg. rel="nofollow")
+- `noScroll` (`boolean`, default `false`): Don't scroll when link is followed (only if href is also specified)
+- `small` (`boolean`, default `false`): Make button smaller
+- `icon` (`"arrow" | "carret" | "chevron" | "code" | "cog" | "copy" | "cross" | "delete" | "download" | "edit" | "edit-text" | "expand" | "external" | "minus" | "pin" | "plus" | "print" | "save" | "saveas" | "search" | "shrink" | "signout" | "tick" | "upload" | null`, default `null`): Icon on button, eg. "arrow", "search"
+- `iconPosition` (`"before" | "after"`, default `"before"`): Position of icon
+- `iconRotation` (`number`, default `0`): Rotation of icon in degrees (clockwise)
+- `disabled` (`boolean`, default `false`): Show button as disabled
+- `hideLabel` (`boolean`, default `false`): Visually hide the button text (for icon-only buttons)
+- `arialabel` (`string | null`, default `null`): Aria label for button
+- `color` (`string | null`, default `null`): Set a colour for the button
+- `cls` (`string | null`, default `null`): Optional: Set an additional CSS class for the component
+- `onClick` (`(event: MouseEvent) => void`, default `() => {}`): Callback for the `click` event, called with the same value as the event's `detail`
+
+Example:
+
+```svelte
+<script>
+  import { Button } from "@onsvisual/svelte-components";
+
+  // Define your own function on click
+  const handleClick = (event) => console.log(event);
+</script>
+
+<!-- Standard button with an onClick callback -->
+<Button onClick={handleClick}>Button text</Button>
+
+<!-- Button-styled link with href -->
+<Button href="#">Link text</Button>
+```
+
+### Checkbox
+
+A checkbox element with various styling and labelling options. Its "checked" attribute can be bound to a Svelte boolean (true/false) variable.
+
+`import { Checkbox } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-checkbox--docs
+
+Props:
+
+- `id` (`string`, default `""`): ID for input element
+- `label` (`string`, default `""`): Label for input
+- `description` (`string | null`, default `null`): Optional: Extended description for element
+- `checked` (`boolean`, default `item.checked ?? false`, bindable): Binding for checked state of input
+- `disabled` (`boolean`, default `false`): Option to disable input
+- `item` (`CheckboxItem`, default `{ id, label, description, checked: false }`, bindable): Optional: Define the item as an object in the form {id, label, description?, checked?}
+- `groupName` (`string | null`, default `null`): Optional: Name of checkbox group
+- `group` (`CheckboxItem[] | null`, default `null`, bindable): Binding for checked state of input
+- `variant` (`"default" | "ghost"`, default `"default"`): Set display mode of checkbox
+- `compact` (`boolean`, default `false`): Compact mode (no border)
+- `cls` (`string | null`, default `null`): Optional: Set an additional CSS class for the component
+- `onChange` (`(detail: { item: CheckboxItem; e: Event }) => void`, default `() => {}`): Callback for the `change` event, called with the same value as the event's `detail`
+
+Example:
+
+```svelte
+<script>
+  import { Checkbox } from "@onsvisual/svelte-components";
+
+  let checked = $state(false);
+</script>
+
+<Checkbox id="checkbox" label="Select this" bind:checked />
+```
+
+### Checkboxes
+
+A component for defining a group of checkbox elements, whose checked values can be bound to Svelte variables, or grouped in an array.
+
+`import { Checkboxes } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-checkboxes--docs
+
+Props:
+
+- `children` (`import("svelte").Snippet`): Child content
+- `title` (`string | null`, default `null`): Title/legend for parent <fieldset>
+- `hideTitle` (`boolean`, default `false`): Visually hide the title/legend
+- `label` (`string | null`, default `null`): Descriptive "how to" label for inputs
+- `items` (`CheckboxItem[] | null`, default `null`): Optional: Define the checkboxes as an array of {id, label, checked, description?}
+- `compact` (`boolean`, default `false`): Compact mode (no borders)
+- `value` (`CheckboxItem[]`, default `[]`, bindable): Binding for selected checkboxes (if checkboxes are defined as "items")
+- `cls` (`string | null`, default `null`): Optional: Set an additional CSS class for the component
+- `onChange` (`(detail: { item: CheckboxItem; e: Event }) => void`, default `() => {}`): Callback for the `change` event, called with the same value as the event's `detail`
+
+Example:
+
+```svelte
+<script>
+  import { Checkboxes } from "@onsvisual/svelte-components";
+
+  let items = [
+    { id: "ice-cream", label: "Ice cream", checked: true },
+    { id: "sprinkles", label: "Sprinkles", description: "Highly recommended!", checked: false },
+    { id: "disabled", label: "Disabled option", checked: false, disabled: true },
+  ];
+
+  let selected = $state([]); // An array of the selected items
+</script>
+
+<Checkboxes {items} bind:value={selected} label="Select items" />
+```
+
+### Dropdown
+
+A standard `<select>` component with Svelte bindings and events.
+
+`import { Dropdown } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-dropdown--docs
+
+Props:
+
+- `id` (`string | null`, default `null`): Unique id for the <select> element
+- `name` (`string | null`, default `id`): Name for the <select> element
+- `label` (`string | null`, default `null`): A label to describe the <select> element (expected for accessibility)
+- `hideLabel` (`boolean`, default `false`): Visually hide the label
+- `description` (`string | null`, default `null`): An optional description to help users know what to enter
+- `placeholder` (`string`, default `"Select an option"`): An optional placeholder text
+- `value` (`object | string | null`, default `null`, bindable): A prop to bind to for the selected value
+- `options` (`(object | string)[]`, default `[]`): An array of options, formatted {id, label}
+- `width` (`number | string | null`, default `20`): The width of the <input> in characters or a valid css width string (eg. "100px")
+- `cls` (`string | null`, default `null`): Optional: Set an additional CSS class for the component
+- `onChange` (`(detail: { value: object | string | null; e: Event }) => void`, default `() => {}`): Callback for the `change` event, called with the same value as the event's `detail`
+- `onInput` (`(detail: { value: object | string | null; e: Event }) => void`, default `() => {}`): Callback for the `input` event, called with the same value as the event's `detail`
+- `onBlur` (`(detail: { value: object | string | null; e: Event }) => void`, default `() => {}`): Callback for the `blur` event, called with the same value as the event's `detail`
+
+Example:
+
+```svelte
+<script>
+  import { Dropdown } from "@onsvisual/svelte-components";
+
+  const options = [
+    { id: "1", label: "one" },
+    { id: "2", label: "two" },
+    { id: "3", label: "three" },
+  ];
+
+  // Bind the selected value to a variable (start it as null, not undefined)
+  let value = $state(null);
+
+  // Define your own function on change
+  const handleChange = ({ value }) => console.log(value);
+</script>
+
+<Dropdown {options} bind:value onChange={handleChange} />
+```
+
+### ErrorPanel
+
+Use this component to show validation errors by wrapping form inputs and fieldsets.
+
+`import { ErrorPanel } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-errorpanel--docs
+
+Props:
+
+- `children` (`import("svelte").Snippet`): Child content
+- `message` (`string | null`, default `null`): Set an error message
+- `cls` (`string | null`, default `null`): Optional: Set an additional CSS class for the component
+
+Example:
+
+```svelte
+<script>
+  import { ErrorPanel, Input } from "@onsvisual/svelte-components";
+</script>
+
+<ErrorPanel message="You enterered the wrong text">
+  <Input/>
+</ErrorPanel>
+```
+
+### ErrorSummary
+
+A panel to summarise errors on a form/input. The errors can be defined in an `items` array, or as plain text/html within the component.
+
+`import { ErrorSummary } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-errorsummary--docs
+
+Props:
+
+- `title` (`string|null`, default `null`): Defines the title of the error
+- `items` (`{ label: string; href?: string }[]`, default `[]`): Define an array of errors/issues in the format {label, href?}
+- `cls` (`string|null`, default `null`): Optional: Set an additional CSS class for the component
+- `children` (`import('svelte').Snippet`): Child content
+
+Example:
+
+```svelte
+<script>
+  import { ErrorSummary } from "@onsvisual/svelte-components";
+
+  const items = [
+    { label: "First issue description.", href: "#0" },
+    { label: "Second issue description." },
+  ];
+</script>
+
+<ErrorSummary title="There are 2 problems with your answer" {items} />
+```
+
+### Input
+
+A standard `<input>` element with Svelte bindings and events.
+
+`import { Input } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-input--docs
+
+Props:
+
+- `id` (`string | null`, default `null`): ID for <input> element
+- `name` (`string | null`, default `id`): Name attribute for <input> element
+- `value` (`string | null`, default `null`, bindable): A prop to bind to for the entered value
+- `label` (`string | null`, default `null`): A label to describe the <input> element (expected for accessibility)
+- `hideLabel` (`boolean`, default `false`): Visually hide the label
+- `description` (`string | null`, default `null`): An optional description to help users know what to enter
+- `placeholder` (`string | null`, default `null`): The maximum number of characters that can be entered (optional)
+- `charLimit` (`number | null`, default `null`): A placeholder text for the input (optional)
+- `width` (`number | string | null`, default `20`): The width of the <input> in characters or a valid css width string (eg. "100px")
+- `prefix` (`string | null`, default `null`): An optional prefix (eg. £) to appear on the left of the input
+- `suffix` (`string | null`, default `null`): An optional suffix (eg. %) to appear on the right of the input
+- `unitLabel` (`string`, default `prefix || suffix || ""`): An optional hidden description of the prefix (for accessibility)
+- `pattern` (`string | null`, default `null`): An optional regex pattern foto limit the input (not currently used)
+- `numeric` (`boolean`, default `false`): Set to `true` if the value should be a number
+- `readonly` (`boolean`, default `false`): Set to `true` to make the input read-only
+- `disabled` (`boolean`, default `false`): Set to `true` to give the input a disabled state
+- `error` (`boolean`, default `false`): Set to `true` to highlight border in red
+- `cls` (`string | null`, default `null`): Optional: Set an additional CSS class for the component
+- `onChange` (`(detail: { value: string | null; e: Event }) => void`, default `() => {}`): Callback for the `change` event, called with the same value as the event's `detail`
+- `onInput` (`(detail: { value: string | null; e: Event }) => void`, default `() => {}`): Callback for the `input` event, called with the same value as the event's `detail`
+- `onBlur` (`(detail: { value: string | null; e: Event }) => void`, default `() => {}`): Callback for the `blur` event, called with the same value as the event's `detail`
+
+Example:
+
+```svelte
+<script>
+	import { Input } from "@onsvisual/svelte-components";
+
+	let value = $state(null);
+	const search = (query) => console.log(query);
+</script>
+
+<Input bind:value onInput={({ value }) => search(value)} />
+```
+
+### Radio
+
+used with `Radios`; see its docs.
+
+`import { Radio } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-radios--docs
+
+Props:
+
+- `id` (`string | null`, default `null`): Unique ID input
+- `label` (`string | null`, default `""`): Label for input
+- `description` (`string | null`, default `null`): Optional: Extended description for element
+- `item` (`RadioItem`, default `createItem(id ?? "", label ?? "", description ?? "")`): Optional: Define the item as an object in the form {id, label, description?}
+- `groupId` (`string`, required): ID/name for radio group (required)
+- `value` (`RadioItem | null`, default `null`, bindable): Binding selected option
+- `compact` (`boolean`, default `false`): Compact mode (no border)
+- `onChange` (`(detail: { value: RadioItem; e: Event }) => void`, default `() => {}`): Callback for the `change` event, called with the same value as the event's `detail`
+
+### Radios
+
+A component for defining a group of radio inputs, where the selected item id can be bound to a Svelte variable.
+
+`import { Radios } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-radios--docs
+
+Props:
+
+- `children` (`import("svelte").Snippet`): Child content
+- `title` (`string | null`, default `null`): Title/legend for parent <fieldset>
+- `hideTitle` (`boolean`, default `false`): Visually hide the title/legend
+- `id` (`string`, default `"radios"`): Unique ID/name for radio group (required)
+- `label` (`string | null`, default `null`): Descriptive "how to" label for inputs
+- `value` (`RadioItem | null`, default `null`, bindable): Binding for ID of selected option
+- `items` (`RadioItem[]`, default `[]`): Optional: Define the radios as an array of {id, label, description?}
+- `compact` (`boolean`, default `false`): Compact mode (no border)
+- `cls` (`string | null`, default `null`): Optional: Set an additional CSS class for the component
+- `onChange` (`(detail: { value: RadioItem; e: Event }) => void`, default `() => {}`): Callback for the `change` event, called with the same value as the event's `detail`
+
+Example:
+
+```svelte
+<script>
+  import { Radios } from "@onsvisual/svelte-components";
+
+  let items = [
+    {
+      id: "house",
+      label: "House or bungalow",
+      description: "Includes terraced, semi-detached and detached homes.",
+    },
+    { id: "flat", label: "Flat, maisonette or apartment" },
+    { id: "mobile", label: "Caravan or other mobile or temporary structure" },
+  ];
+
+  let selected = $state(null); // A binding for the selected item
+</script>
+
+<Radios {items} bind:value={selected} label="Select one" />
+```
+
+### Select
+
+also exported as `AccessibleSelect`. An extended alternative to an HTML `<select>` component (see Dropdown), with auto-complete and the ability to have a custom **loadOptions** function.
+
+`import { Select } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-select--docs
+
+Props:
+
+- `id` (`string`, default `"autocomplete"`): Unique id for the HTML element
+- `name` (`string`, default `id`): Name for the HTML element
+- `mode` (`"default" | "search"`, default `"default"`): The mode can be either "default" or "search"
+- `clearable` (`boolean`, default `mode !== "search"`): Defines whether the selection can be cleared
+- `autoClear` (`boolean`, default `mode === "search"`): Clear value on selection (default for "search" mode)
+- `autoFocus` (`boolean`, default `false`): Auto focus the search input when it is created
+- `label` (`string | null`, default `mode === "search" ? "Type to select" : "Select an option"`): A label to describe the element (expected for accessibility)
+- `hideLabel` (`boolean`, default `false`): Visually hide the label
+- `description` (`string | null`, default `null`): An optional description to help users know what to enter
+- `placeholder` (`string`, default `mode === "search" ? "Enter text" : "Select one"`): An optional placeholder text
+- `value` (`object | string | null`, default `null`, bindable): A prop to bind to for the selected value
+- `options` (`object[]`, default `[]`): An array of options, formatted {id, label}
+- `labelKey` (`string`, default `"label"`): The attribute of an option that defines its label/name
+- `groupKey` (`string | null`, default `null`): The attribute of an option that defines its group (optional)
+- `renderFallback` (`boolean`, default `false`): When using SSR or pre-rendering, this option will render a text input or dropdown before the page is hydrated (allows for progressive enhancement).
+- `minLength` (`number`, default `mode === "search" ? 1 : 0`): Optional: Minimum query length to return results
+- `loadOptions` (`(query: string, populateResults: (results: object[]) => void) => void`, default `(query, populateResults) => { if (mode !== "search" && (!query || options.map((opt) => opt?.[labelKey]).includes(query))) populateResults(options); else { const regex = new RegExp(`\\b${query.replace(/[^\w\s]/gi, "")}`, "i"); const filteredResults = options.filter((opt) => regex.test(opt?.[labelKey])); populateResults(filteredResults); } }`): Optional: Override function for loading/filtering options based on the entered text
+- `clearInput` (`() => void`, default `clearSelection`, bindable): Call this function externally to clear the input
+- `cls` (`string | null`, default `null`): Optional: Set an additional CSS class for the component
+- `onChange` (`(value: object | string) => void`, default `() => {}`): Callback for the `change` event, called with the same value as the event's `detail`
+- `onClear` (`(value: null) => void`, default `() => {}`): Callback for the `clear` event, called with the same value as the event's `detail`
+
+Example:
+
+```svelte
+<script>
+  import { AccessibleSelect } from "@onsvisual/svelte-components";
+
+  const options = [
+    { id: "1", label: "one" },
+    { id: "2", label: "two" },
+    { id: "3", label: "three" },
+  ];
+
+  // Bind the selected value to a variable (start it as null, not undefined)
+  let value = $state(null);
+
+  // Define your own function on change
+  const handleChange = (value) => console.log(value);
+</script>
+
+<AccessibleSelect {options} bind:value onChange={handleChange} />
+```
+
+### Textarea
+
+A standard `<textarea>` element with Svelte bindings and events.
+
+`import { Textarea } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-textarea--docs
+
+Props:
+
+- `id` (`string | null`, default `null`): ID for <textarea> element
+- `name` (`string | null`, default `id`): Name for <textarea> element
+- `value` (`string | null`, default `null`, bindable): A prop to bind to for the entered value
+- `label` (`string | null`, default `"Enter some text"`): A label to describe the <textarea> element (expected for accessibility)
+- `hideLabel` (`boolean`, default `false`): Visually hide the label
+- `description` (`string | null`, default `null`): An optional description to help users know what to enter
+- `charLimit` (`number | null`, default `null`): The maximum number of characters that can be entered (optional)
+- `rows` (`number`, default `8`): The height of the <textarea> element in rows
+- `width` (`number`, default `30`): The width of the <textarea> element in characters
+- `readonly` (`boolean`, default `false`): Set to `true` to make the input read-only
+- `disabled` (`boolean`, default `false`): Set to `true` to give the input a disabled state
+- `cls` (`string | null`, default `null`): Optional: Set an additional CSS class for the component
+- `onChange` (`(detail: { value: string | null; e: Event }) => void`, default `() => {}`): Callback for the `change` event, called with the same value as the event's `detail`
+- `onInput` (`(detail: { value: string | null; e: Event }) => void`, default `() => {}`): Callback for the `input` event, called with the same value as the event's `detail`
+- `onBlur` (`(detail: { value: string | null; e: Event }) => void`, default `() => {}`): Callback for the `blur` event, called with the same value as the event's `detail`
+
+Example:
+
+```svelte
+<script>
+  import { Textarea } from "@onsvisual/svelte-components";
+
+  // Bind the <textarea> value to a variable (start it as null, not undefined)
+  let value = $state(null);
+
+  // Define your own function on change
+  const handleChange = ({ value }) => console.log(value);
+</script>
+
+<Textarea bind:value onChange={handleChange} />
+```
+
+### HelpModal
+
+used with `Toolbar`; see its docs. Experimental.
+
+`import { HelpModal } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-toolbar--docs
+
+Props:
+
+- `children` (`import("svelte").Snippet`): Child content
+- `triggerElement` (`HTMLElement | null`, default `null`): The element the modal is positioned next to
+- `onClose` (`() => void`, default `() => {}`): Called when the modal is closed with the Escape key
+
+### ToolbarIcon
+
+used with `Toolbar`; see its docs. Experimental.
+
+`import { ToolbarIcon } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-toolbar--docs
+
+Props:
+
+- `type` (`"move" | "polygon" | "radius" | "erase" | "zoomin" | "zoomout" | "undo" | "redo" | "search" | "save" | "download" | "upload" | "help" | "bin"`, default `"move"`): Type of icon, eg. "move", "polygon", "zoomin", "undo"
+- `marginLeft` (`boolean`, default `false`): Add a small margin on the left of the icon
+- `marginRight` (`boolean`, default `false`): Add a small margin on the right of the icon
+- `selected` (`boolean`, default `false`): Show the icon in its selected style
+- `disabled` (`boolean`, default `false`): Show the icon as disabled (greyed out)
+
+### Toolbar
+
+A toolbar component. Use `ToolbarsContainer` even if using one toolbar as it contains a store for all the IDs and the activeID. Experimental.
+
+`import { Toolbar } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-toolbar--docs
+
+Props:
+
+- `children` (`import("svelte").Snippet`): Child content
+- `controls` (`import("svelte").Snippet`): Toolbar controls
+- `classes` (`string | null`, default `null`): Additional CSS classes for the toolbar
+- `ariaLabel` (`string | null`, default `null`): aria label for button
+- `orientation` (`'horizontal' | 'vertical'`, default `"horizontal"`): Orientation of the toolbar
+
+### ToolbarButton
+
+used with `Toolbar`; see its docs. Experimental.
+
+`import { ToolbarButton } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-toolbar--docs
+
+Props:
+
+- `children` (`import("svelte").Snippet`): Content for the help modal, used when `helpText` isn't set
+- `customContent` (`import("svelte").Snippet`): Custom content for the button, shown when `custom` is true
+- `onClick` (`(detail: null) => void`): Callback for the `click` event, called with the same value as the event's `detail`
+- `id` (`string`, default `slugify()`): Links the button to the ToolControl with the same `id` (generated by default)
+- `icon` (`"move" | "polygon" | "radius" | "erase" | "zoomin" | "zoomout" | "undo" | "redo" | "search" | "save" | "download" | "upload" | "help" | "bin" | ""`, default `""`): Icon on button, eg. "move", "zoomin" (see ToolbarIcon for options)
+- `label` (`string`, default `""`): Button label, shown in the tooltip and used as the aria label
+- `disabled` (`boolean`, default `false`): Show button as disabled
+- `classes` (`string`, default `""`): Additional CSS classes for the button
+- `helpText` (`string | null`, default `null`): Text shown in the help modal for this button. If not set, the `children` content is used
+- `selected` (`boolean`, default `false`, bindable): Whether a toggle button is selected (bindable)
+- `toggle` (`boolean`, default `false`): Make the button an on/off toggle (the state is in `selected`)
+- `custom` (`boolean`, default `false`): Render `customContent` instead of the standard button
+- `hasAriaControls` (`boolean`, default `false`): Add `aria-controls`, pointing to the ToolControl panel with the same `id`
+- `hasTooltip` (`boolean`, default `true`): Show the label in a tooltip on hover and focus
+- `sticky` (`boolean`, default `false`): Keep the button's control open when the button is clicked again
+- `transient` (`boolean`, default `false`): Run the click action only, without opening a control or staying selected (eg. undo)
+- `disableHelp` (`boolean`, default `false`): Don't show a help modal for this button
+
+### ToolbarDivider
+
+used with `Toolbar`; see its docs. Experimental.
+
+`import { ToolbarDivider } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-toolbar--docs
+
+Props:
+
+- `classes` (`string`, default `""`): Additional CSS classes for the divider
+
+### ToolbarsContainer
+
+used with `Toolbar`; see its docs. Experimental.
+
+`import { ToolbarsContainer } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-toolbar--docs
+
+Props:
+
+- `children` (`import("svelte").Snippet`): Child content
+
+### ToolControl
+
+used with `Toolbar`; see its docs. Experimental.
+
+`import { ToolControl } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-toolbar--docs
+
+Props:
+
+- `children` (`import("svelte").Snippet`): Child content
+- `id` (`string`, default `""`): The id of the ToolbarButton that shows this control
+
+### ToolControls
+
+used with `Toolbar`; see its docs. Experimental.
+
+`import { ToolControls } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-toolbar--docs
+
+Props:
+
+- `children` (`import('svelte').Snippet`): Child content
+
+### ButtonGroup
+
+Radio inputs dressed up as a button group. Experimental.
+
+`import { ButtonGroup } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-buttongroup--docs
+
+Props:
+
+- `name` (`string`, default `""`): Name attribute shared by the radio inputs in the group
+- `legend` (`string`, default `""`): Legend text for the group
+- `value` (`string`, bindable): The selected value (bindable)
+- `visuallyHideLegend` (`boolean`, default `false`): Visually hide the legend (it stays available to screen readers)
+- `stackOnMobile` (`boolean`, default `true`): Stack the buttons vertically on small screens
+- `children` (`import("svelte").Snippet`): Child content: the ButtonGroupItem components
+
+Example:
+
+```svelte
+<script>
+  let selectedValue = $state(null);
+</script>
+
+<ButtonGroup name="primary" legend="Choose an option" bind:value={selectedValue}>
+...
+</ButtonGroup>
+```
+
+### ButtonGroupItem
+
+used with `ButtonGroup`; see its docs. Experimental.
+
+`import { ButtonGroupItem } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-buttongroup--docs
+
+Props:
+
+- `value` (`string`, default `""`): Value set on the parent ButtonGroup when this item is selected
+- `id` (`string`, default `value`): ID of the radio input (defaults to `value`)
+- `label` (`string`, default `value`): Label text (defaults to `value`)
+
+### Accordion
+
+An accordion component.
+
+`import { Accordion } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/layout-accordion--docs
+
+Props:
+
+- `children` (`import("svelte").Snippet`): Child content
+- `id` (`string`, default `slugify()`): Optional: Set the unique ID of the accordion
+- `cls` (`string | null`, default `null`): Optional: Set an additional CSS class for the component
+- `showToggle` (`boolean`, default `false`): Option to include a "show all" toggle above the accordion
+- `onToggle` (`(detail: { id: string; open: boolean; el: HTMLElement }) => void`, default `() => {}`): Callback for the `toggle` event, called with the same value as the event's `detail`
+
+Example:
+
+```svelte
+<script>
+  import { Accordion, AccordionItem } from "@onsvisual/svelte-components";
+</script>
+
+<Accordion>
+  <AccordionItem title="First item">
+    <p>Contents of first item.</p>
+  </AccordionItem>
+  <AccordionItem title="Second item">
+    <p>Contents of second item.</p>
+  </AccordionItem>
+</Accordion>
+```
+
+### AccordionItem
+
+used with `Accordion`; see its docs.
+
+`import { AccordionItem } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/layout-accordion--docs
+
+Props:
+
+- `children` (`import("svelte").Snippet`): Child content
+- `title` (`string | null`, default `null`): Sets the title of the accordion item
+- `id` (`string`, default `slugify(title)`): Sets the unique ID of the accordion item
+- `headingTag` (`"h2" | "h3"`, default `"h2"`): Set the heading level for the accordion items
+- `open` (`boolean`, default `false`, bindable): Set the initial status of the accordion item to open (non-reactive)
+
+### Card
+
+Display content and links as cards. Can be used in combination with the `<Grid>` component to combine multiple cards.
+
+`import { Card } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/layout-card--docs
+
+Props:
+
+- `children` (`import("svelte").Snippet`): Child content
+- `imageContent` (`import("svelte").Snippet`): Custom image content, used instead of the `image` prop
+- `titleContent` (`import("svelte").Snippet`): Custom title content, used instead of the `title` prop
+- `id` (`string | null`, default `null`): Sets the unique ID of the section
+- `cls` (`string | null`, default `null`): Optional: Set an additional CSS class for the section
+- `colCls` (`string | null`, default `null`): Optional: Override default column class for the card
+- `title` (`string | null`, default `null`): Sets the title of the card
+- `hideTitle` (`boolean`, default `false`): Allows the h2 title tag for the card to be visually hidden
+- `headingTag` (`"h2" | "h3"`, default `"h2"`): Set the heading level for the card titles
+- `mode` (`"default" | "featured"`, default `"default"`): Setting mode to "featured" creates an inset card on a grey background
+- `baseline` (`boolean`, default `false`): Include a border at the bottom of the card
+- `href` (`string | null`, default `null`): Optional: URL for title/image link
+- `image` (`string | null`, default `null`): Optional: URL for image
+- `imageAlt` (`string | null`, default `null`): Optional: Alt text for image
+- `colspan` (`number`, default `1`): (If used in grid) How many columns the card should span across
+
+Example:
+
+```svelte
+<script>
+  import { Grid, Card } from "@onsvisual/svelte-components";
+</script>
+
+<Grid>
+  <Card title="Card one">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Card>
+  <Card title="Card two">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Card>
+  <Card title="Card three">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</Card>
+</Grid>
+```
+
+### Details
+
+also exported as `Twisty`. An expandable `<details>` ("twisty") component, which can be open or closed by default.
+
+`import { Details } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/layout-details--docs
+
+Props:
+
+- `children` (`import("svelte").Snippet`): Child content
+- `title` (`string`, default `"Title"`): A title for the element
+- `headingTag` (`"h2" | "h3"`, default `"h2"`): Set the heading level for the title
+- `open` (`boolean`, default `false`, bindable): Option for element to be open/expanded by default
+- `cls` (`string | null`, default `null`): Optional: Set an additional CSS class for the component
+- `onToggle` (`(detail: { open: boolean; e: Event }) => void`, default `() => {}`): Callback for the `toggle` event, called with the same value as the event's `detail`
+
+Example:
+
+```svelte
+<script>
+  import { Details } from "@onsvisual/svelte-components";
+</script>
+
+<Details title="Title of twisty">
+  <p>Contents of twisty</p>
+</Details>
+```
+
+### Divider
+
+A component to draw a divider between blocks of contnet.
+
+`import { Divider } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/layout-divider--docs
+
+Props:
+
+- `hr` (`"narrow" | "full" | null`, default `"full"`): Optional: Include a horizontal rule
+- `width` (`"narrow" | "medium" | "wide" | "wider" | "full"`, default `"wide"`): Sets the width of the container
+- `mode` (`"dark" | "light"`, default `"dark"`): Sets the mode/colour of the line
+- `marginTop` (`boolean`, default `!!hr`): Adds margin above section
+- `marginBottom` (`boolean`, default `true`): Adds margin below section
+- `cls` (`string | null`, default `null`): Optional: Set an additional CSS class for the component
+
+Example:
+
+```svelte
+<script>
+  import { Divider } from "@onsvisual/svelte-components";
+</script>
+
+<!-- Some content blocks -->
+<Divider />
+<!-- More content blocks -->
+```
+
+### Footer
+
+A footer component with compact mode and theming options.
+
+`import { Footer } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/layout-footer--docs
+
+Props:
+
+- `compact` (`boolean`, default `false`): Display compact header without menus
+- `width` (`"narrow"|"medium"|"wide"|"wider"|"full"`, default `"wide"`): Sets the width of the header (does not apply to legacy mode)
+- `theme` (`"light"|"dark"|"paleblue"|"blue"|"navyblue"|"grey"|null`, default `null`): Sets a predefined theme
+- `themeOverrides` (`object`, default `{}`): Define additional props to override the base theme
+
+Example:
+
+```svelte
+<script>
+  import { Footer } from "@onsvisual/svelte-components";
+</script>
+
+<Footer />
+```
+
+### Grid
+
+also exported as `Cards`. A media grid component, useful for images and small multiple charts. Setting `colwidth` to **full** allows for a single cell/image/chart with an optional caption.
+
+`import { Grid } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/layout-grid--docs
+
+Props:
+
+- `children` (`import("svelte").Snippet`): Child content
+- `id` (`string | null`, default `null`): Optional: Sets the unique ID of the section
+- `cls` (`string | null`, default `null`): Optional: Set an additional CSS class for the component
+- `width` (`"narrow" | "medium" | "wide" | "wider" | "full"`, default `"wide"`): Sets the width of the section
+- `title` (`string | null`, default `null`): Sets the title of the section
+- `hideTitle` (`boolean`, default `false`): Allows the h2 title tag for the section to be visually hidden
+- `caption` (`string | null`, default `null`): Optional: Caption for the grid (if used as a media container, eg. for an image)
+- `marginTop` (`boolean`, default `false`): Adds margin above section
+- `marginBottom` (`boolean`, default `true`): Adds margin below section
+- `colWidth` (`"narrow" | "medium" | "wide" | "full"`, default `"medium"`): Sets the width of the columns
+- `rowHeight` (`number | string | null`, default `null`): Set the minimum height of a grid row (can be a number in pixels, or a valid CSS height)
+- `rowStretch` (`boolean`, default `true`): Stretch the height of grid cells to match their siblings
+- `gridGap` (`"narrow" | "medium" | "wide" | "none"`, default `"medium"`): Set the grid gap, in pixels
+
+Example:
+
+```svelte
+<script>
+  import { Grid, GridCell } from "@onsvisual/svelte-components";
+</script>
+
+<Grid>
+  <GridCell>{grid_cell_content}</GridCell>
+  <GridCell>{grid_cell_content}</GridCell>
+  <GridCell>{grid_cell_content}</GridCell>
+</Grid>
+```
+
+### GridCell
+
+used with `Grid`; see its docs.
+
+`import { GridCell } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/layout-grid--docs
+
+Props:
+
+- `children` (`import("svelte").Snippet`): Child content
+- `colspan` (`number`, default `1`): (If used in grid) How many columns the card should span across
+- `cls` (`string | null`, default `null`): Optional: Add additional classes
+- `colCls` (`string | null`, default `null`): Optional: Override default grid column class
+
+### Header
+
+A header component with compact mode and theming options.
+
+`import { Header } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/layout-header--docs
+
+Props:
+
+- `title` (`string|null`, default `null`): Optional product title
+- `titleHref` (`string|null`, default `null`): Optional link for product title
+- `width` (`"narrow"|"medium"|"wide"|"wider"|"full"`, default `"wide"`): Sets the width of the header (does not apply to legacy mode)
+- `theme` (`"light"|"dark"|"paleblue"|"blue"|"navyblue"|"grey"|null`, default `null`): Sets a predefined theme
+- `themeOverrides` (`object`, default `{}`): Define additional props to override the base theme
+- `cls` (`string|null`, default `null`): Optional: Set an additional CSS class for the container
+- `compact` (`boolean`, default `false`): Display compact header without menus
+- `search` (`boolean`, default `true`): Include site search
+- `bilingual` (`boolean`, default `true`): Set to true to include an English/Welsh language link
+- `headerBorder` (`boolean`, default `false`): Include a border/line under the header. For use if hero is transparent
+- `menuBorder` (`boolean`, default `false`): Include a border/line under the menu when open. For use if hero colour matches menu
+- `legacy` (`boolean`, default `false`): Use the legacy nav header
+- `page` (`any`, default `getContext("page")`): Optional: Pass the "page" state from "$app/state" in SvelteKit (gets read from context by default if it exists)
+- `skipHref` (`string|null`, default `"#main"`): Anchor link to skip to main body content (default "#main")
+- `navLinks` (`{label: string, href: string}[]|null`, default `null`): Optional: Nav links below title (only works in combination with title block). An array of links in the format {label, href}
+- `before` (`import('svelte').Snippet`): Content rendered before the main content
+- `after` (`import('svelte').Snippet`): Content rendered after the main content
+
+Example:
+
+```svelte
+<script>
+  import { Header } from "@onsvisual/svelte-components";
+</script>
+
+<Header />
+<!-- page body -->
+```
+
+### Hero
+
+also exported as `Titleblock`. A hero/title block suitable for a standard pages, with optional metadata block.
+
+`import { Hero } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/layout-hero--docs
+
+Props:
+
+- `title` (`string`, default `"Page title"`): Sets the title/headline
+- `pageType` (`string|null`, default `null`): Optional: Page type to sit above title
+- `lede` (`string|null`, default `null`): Descriptive text for page to sit below title
+- `titleBadge` (`{ label: string; color?: string; ariaLabel?: string } | null`, default `null`): Optional: Badge to appear next to the page title in format {label, color}
+- `actionButton` (`{ label: string; href: string; ariaLabel?: string } | null`, default `null`): Optional: Label and href for an action button in format {label, ariaLabel, href}
+- `natStatBadge` (`boolean`, default `false`): Include "national statistic" badge
+- `censusLogo` (`boolean`, default `false`): Include Census logo
+- `meta` (`{ key: string; value: unknown }[] | null`, default `null`): Array of {key, value} objects containing page metadata
+- `width` (`"narrow"|"medium"|"wide"|"wider"|"full"`, default `"wide"`): Sets the width of the container
+- `height` (`number|string|null`, default `null`): Sets the (minimum) height of the container
+- `cls` (`string|null`, default `null`): Optional: Set an additional CSS class for the component
+- `theme` (`"light"|"dark"|"blue"|"paleblue"|"navyblue"|"grey"|null`, default `null`): Sets a predefined theme
+- `themeOverrides` (`Record<string, string>`, default `{}`): Define additional props to override the base theme
+- `background` (`string|null`, default `null`): Overrides the background CSS for the section
+- `before` (`import('svelte').Snippet`): Content rendered before the main content
+- `children` (`import('svelte').Snippet`): Child content
+- `after` (`import('svelte').Snippet`): Content rendered after the main content
+
+Example:
+
+```svelte
+<script>
+  import { Hero } from "@onsvisual/svelte-components";
+</script>
+
+<Hero title="Page title" lede="A description of the page">
+  {optional_additonal_content}
+</Hero>
+```
+
+### Highlight
+
+A large text block that can be used as a standfirst or transition between sections of a feature article, with various options and style customisations.
+
+`import { Highlight } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/layout-highlight--docs
+
+Props:
+
+- `id` (`string|null`, default `null`): Optional: Set the unique ID of the section
+- `cls` (`string|null`, default `null`): Optional: Set an additional CSS class for the section
+- `bigText` (`boolean`, default `true`): Applies a larger default text size (by default)
+- `width` (`"narrow"|"medium"|"wide"|"wider"|"full"`, default `"narrow"`): Sets the width of the container
+- `height` (`number|string|null`, default `null`): Sets the (minimum) height of the container
+- `theme` (`"light"|"dark"|"paleblue"|"blue"|"navyblue"|"grey"|null`, default `"paleblue"`): Sets a predefined theme
+- `themeOverrides` (`Record<string, string>`, default `{}`): Define additional props to override the base theme
+- `background` (`string|null`, default `null`): Overrides the background CSS for the section
+- `marginTop` (`boolean`, default `false`): Adds margin above section
+- `marginBottom` (`boolean`, default `true`): Adds margin below section
+- `children` (`import('svelte').Snippet`): Child content
+
+Example:
+
+```svelte
+<script>
+  import { Highlight } from "@onsvisual/svelte-components";
+</script>
+
+<Highlight>
+  <p>Contents of highlight section.</p>
+</Highlight>
+```
+
+### List
+
+A list component with modes for numbered, bulleted, dashed and bare lists. There is also an option to define list items as an array.
+
+`import { List } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/layout-list--docs
+
+Props:
+
+- `mode` (`"bullet"|"dash"|"number"|"bare"|"inline"`, default `"bullet"`): Type of list - dash | bullet | number | bare
+- `items` (`string[]|null`, default `null`): Optional: Array of HTML strings representing items in list
+- `cls` (`string|null`, default `null`): Optional: Set an additional CSS class for the component
+- `children` (`import('svelte').Snippet`): Child content
+
+Example:
+
+```svelte
+<script>
+  import { List, Li } from "@onsvisual/svelte-components";
+</script>
+
+<List>
+  <Li>First list item</Li>
+  <Li>Second list item</Li>
+  <Li>Third list item</Li>
+</List>
+```
+
+### Li
+
+used with `List`; see its docs.
+
+`import { Li } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/layout-list--docs
+
+Props:
+
+- `children` (`import('svelte').Snippet`): Child content
+
+### NavSection
+
+used with `NavSections`; see its docs.
+
+`import { NavSection } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/layout-navsections--docs
+
+Props:
+
+- `children` (`import("svelte").Snippet`): Child content
+- `title` (`string`, default `"Section title"`): Sets the title of the section
+- `id` (`string`, default `slugify(title)`): Sets the unique ID of the section (if not set, this will be slugified from the title)
+- `cls` (`string | null`, default `null`): Optional: Set an additional CSS class for the section
+- `hideTitle` (`boolean`, default `false`): Allows the h2 title tag for the section to be visually hidden
+- `subsection` (`boolean`, default `false`): Treat a section as sub-section. It will have an h3 title, and will be indented in the contents table
+
+### NavSections
+
+Use this component to allow users to quickly jump to named sections within a long page of content.
+
+`import { NavSections } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/layout-navsections--docs
+
+Props:
+
+- `before` (`import("svelte").Snippet`): Content rendered before the main content
+- `children` (`import("svelte").Snippet`): Child content
+- `after` (`import("svelte").Snippet`): Content rendered after the main content
+- `beforeNav` (`import("svelte").Snippet`): Content rendered above the contents navigation
+- `afterNav` (`import("svelte").Snippet`): Content rendered below the contents navigation
+- `footer` (`import("svelte").Snippet`): Content rendered below the sections and navigation
+- `id` (`string`, default `"toc"`): ID for back-linking to table of contents
+- `cls` (`string | null`, default `null`): Optional: Set an additional CSS class for the section
+- `width` (`"narrow" | "medium" | "wide" | "wider" | "full"`, default `"wide"`): Sets the width of the container
+- `contentsLabel` (`string`, default `"Contents"`): A label for the page contents nav
+- `noContents` (`boolean`, default `false`): Don't include table of contents (allows for custom uses of nav panel)
+- `marginTop` (`boolean`, default `false`): Adds margin above section
+- `marginBottom` (`boolean`, default `true`): Adds margin below section
+
+Example:
+
+```svelte
+<script>
+  import { NavSections, NavSection } from "@onsvisual/svelte-components";
+</script>
+
+<NavSections>
+  <NavSection title="Section one">
+    <p>Contents of first section.</p>
+  </NavSection>
+  <NavSection title="Subsection A" subsection>
+    <p>Contents of subsection.</p>
+  </NavSection>
+  <NavSection title="Subsection B" subsection>
+    <p>Contents of subsection.</p>
+  </NavSection>
+  <NavSection title="Section two">
+    <p>Contents of third section.</p>
+  </NavSection>
+</NavSections>
+```
+
+### PhaseBanner
+
+Display a phase banner on prototypes, alpha and beta products.
+
+`import { PhaseBanner } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/layout-phasebanner--docs
+
+Props:
+
+- `phase` (`string`, default `"Beta"`): Phase of project (alpha, beta, prototype etc.)
+- `description` (`string`, default `phase === "Prototype" ? "This is a prototype." : "This is a new service."`): Message to describe the phase
+- `href` (`string`, default `"https://www.ons.gov.uk/feedback"`): URL of feedback form (relative or absolute)
+- `width` (`"narrow"|"medium"|"wide"|"wider"|"full"`, default `"wide"`): Sets the width of the banner
+- `cls` (`string|null`, default `null`): Optional: Set an additional CSS class for the component
+
+Example:
+
+```svelte
+<script>
+  import { PhaseBanner } from "@onsvisual/svelte-components";
+</script>
+
+<PhaseBanner />
+<!-- page header -->
+<!-- page contents -->
+```
+
+### Scroller
+
+Components for adding interactive scrollytelling sections to a feature article.
+
+`import { Scroller } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/layout-scroller--docs
+
+Props:
+
+- `id` (`string | null`, default `null`): Sets the unique ID of the scroller
+- `splitscreen` (`boolean`, default `false`): Enables splitscreen view (captions appear on left on larger screens)
+- `marginTop` (`boolean`, default `false`): Adds a margin under the scroller section
+- `marginBottom` (`boolean`, default `true`): Adds a margin under the scroller section
+- `threshold` (`number`, default `0.7`): Set the threshold for the transition between scroller sections (0-1)
+- `count` (`number`, default `0`, bindable): Binding: Total number of sections within scroller
+- `index` (`number|null`, default `null`, bindable): Binding: Current section index (number)
+- `sectionId` (`string|null`, default `null`, bindable): Binding: Current section id, if it has one set - ID for current section within scroller
+- `offset` (`number`, default `0`, bindable): Binding: The progress between the start of current scroller section and next (0-1)
+- `progress` (`number`, default `0`, bindable): Binding: The progress through the whole scroller (0-1)
+- `visible` (`boolean`, default `false`, bindable): Binding: Whether the scroller is visible on screen or not
+- `cls` (`string|null`, default `null`): Optional: Set an additional CSS class for the component
+- `background` (`import('svelte').Snippet`): Content for the fixed background layer
+- `foreground` (`import('svelte').Snippet`): Content for the scrolling foreground layer (eg. ScrollerSection components)
+- `onChange` (`(detail: ScrollDetail) => void`): Callback for the `change` event, called with the same value as the event's `detail`
+- `onEnter` (`(detail: ScrollDetail) => void`): Callback for the `enter` event, called with the same value as the event's `detail`
+- `onExit` (`(detail: ScrollDetail) => void`): Callback for the `exit` event, called with the same value as the event's `detail`
+
+Example:
+
+```svelte
+<script>
+  import { Scroller, ScrollerSection, Container } from "@onsvisual/svelte-components";
+
+  function updateScroller(detail) {
+    // Function to update scroller background components, using the following props:
+    // 1. detail.id - the ID of the Scroller
+    // 2. detail.index - the index of the current ScrollerSection
+    // 3. detail.sectionId - the (optional) ID of the current ScrollerSection
+  }
+</script>
+
+<Scroller onChange={updateScroller} id={any_unique_id}>
+  {#snippet background()}
+    <!--
+      The <Container> component is optional here.
+      It is a useful way to set the height and width of the background.
+    -->
+    <Container width="full" height="full">
+      {background_components}
+    </Container>
+  {/snippet}
+  {#snippet foreground()}
+    <ScrollerSection id={any_unique_id}>
+      <p>First section caption.</p>
+    </ScrollerSection>
+    <ScrollerSection id={any_unique_id}>
+      <p>Second section caption.</p>
+    </ScrollerSection>
+    <ScrollerSection id={any_unique_id}>
+      <p>Third section caption.</p>
+    </ScrollerSection>
+  {/snippet}
+</Scroller>
+```
+
+### ScrollerSection
+
+used with `Scroller`; see its docs.
+
+`import { ScrollerSection } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/layout-scroller--docs
+
+Props:
+
+- `id` (`string|null`, default `null`): Sets the unique ID of the section (identifiable in associated scroll events)
+- `title` (`string|null`, default `null`): Optional: Sets the title of the section
+- `hideTitle` (`boolean`, default `false`): Allows the h2 title tag for the section to be visually hidden
+- `cls` (`string|null`, default `null`): Optional: Set an additional CSS class for the component
+- `children` (`import('svelte').Snippet`): Child content
+
+### Section
+
+A layout block for text content, including an optional title.
+
+`import { Section } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/layout-section--docs
+
+Props:
+
+- `children` (`import("svelte").Snippet`): Child content
+- `id` (`string | null`, default `null`): Sets the unique ID of the section
+- `cls` (`string | null`, default `null`): Optional: Set an additional CSS class for the section
+- `width` (`"narrow" | "medium" | "wide" | "wider" | "full"`, default `"narrow"`): Sets the width of the container
+- `height` (`number | string | null`, default `null`): Sets the (minimum) height of the container
+- `title` (`string | null`, default `null`): Sets the title of the section
+- `hideTitle` (`boolean`, default `false`): Allows the h2 title tag for the section to be visually hidden
+- `marginTop` (`boolean`, default `false`): Adds margin above section
+- `marginBottom` (`boolean`, default `true`): Adds margin below section
+
+Example:
+
+```svelte
+<script>
+  import { Section } from "@onsvisual/svelte-components";
+</script>
+
+<Section width={narrow|medium|wide|full} title="Section title">
+  <p>Contents of section.</p>
+</Section>
+```
+
+### Tabs
+
+Use tabs to help users navigate between short sections of related content within a single page, showing one section at a time.
+
+`import { Tabs } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/layout-tabs--docs
+
+Props:
+
+- `children` (`import("svelte").Snippet`): Child content
+- `compact` (`boolean`, default `false`): Make tabs smaller/more compact
+- `border` (`boolean`, default `false`): Include a border around the tab panel
+- `selected` (`string | null`, default `null`, bindable): The ID of selected tab (for binding)
+- `cls` (`string | null`, default `null`): Optional: Set an additional CSS class for the component
+- `onChange` (`(detail: { id: string }) => void`, default `() => {}`): Callback for the `change` event, called with the same value as the event's `detail`
+
+Example:
+
+```svelte
+<script>
+  import { Tab, Tabs } from "@onsvisual/svelte-components";
+</script>
+
+<Tabs>
+  <Tab title="Tab one">Contents of tab panel one.</Tab>
+  <Tab title="Tab two">Contents of tab panel two.</Tab>
+  <Tab title="Tab three">Contents of tab panel three.</Tab>
+</Tabs>
+```
+
+### Tab
+
+used with `Tabs`; see its docs.
+
+`import { Tab } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/layout-tabs--docs
+
+Props:
+
+- `children` (`import("svelte").Snippet`): Child content
+- `title` (`string`, default `"Tab title"`): Title of tab/panel
+- `hideTitle` (`boolean`, default `true`): Hide the title within the panel
+- `id` (`string`, default `slugify(title)`): ID/slug for tab (auto-generated from title if not set)
+
+### AnalyticsBanner
+
+This component will display a cookie banner and export a function that allows you to push events to the Google Analytics dataLayer array.
+
+`import { AnalyticsBanner } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/information-and-media-analyticsbanner--docs
+
+Props:
+
+- `analyticsId` (`string`, default `"GTM-MBCBVQS"`): Google analytics/tags manager ID
+- `analyticsProps` (`object`, default `{}`): Optional props to describe the content
+- `page` (`any`, default `getContext("page")`): Optional: Pass the "page" store from "$app/state" in SvelteKit (gets read from context by default if it exists)
+- `hideBanner` (`boolean`, default `false`): Use this to hide the banner (only initialises analytics if cookies already accepted)
+- `usageCookies` (`boolean`, default `false`, bindable): Bind to this value if you need to know if cookies have been accepted
+- `width` (`"narrow"|"medium"|"wide"|"wider"|"full"`, default `"wide"`): Set the width of the banner
+- `pageViewEnabled` (`boolean`, default `true`): Enable automatic pageView event on route changes
+
+Example:
+
+```svelte
+<script>
+  import { AnalyticsBanner, analyticsEvent } from "@onsvisual/svelte-components";
+
+  // Example of an analytics event triggered by another event "e"
+  function doAnalyticsEvent(e) {
+    // Assumes that e.detail is in the form {key1: "value1", key2: "value2", etc}
+    analyticsEvent({event: "eventName", ...e.detail});
+  }
+</script>
+
+<AnalyticsBanner analyticsId={id_string} />
+<!-- Rest of page content -->
+```
+
+### analyticsEvent()
+
+`analyticsEvent()`: function exported alongside AnalyticsBanner.
+
+### AnnouncementBanner
+
+This banner is used to highlight important messages for all users of a service or website. The banner is only meant for critical short-term messages, and should be placed immediately below the website navigation header (and above the breadcrumb).
+
+`import { AnnouncementBanner } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/information-and-media-announcementbanner--docs
+
+Props:
+
+- `cls` (`string|null`, default `null`): Optional: Set an additional CSS class for the section
+- `title` (`string`, required): Sets the title of the banner (required)
+- `description` (`string`, required): Sets the text content of the banner (required)
+- `variant` (`"black"|"red"|"teal"`, default `"teal"`): Sets the variant/colour of the banner
+- `linkHref` (`string|null`, default `null`): Sets the text content of the banner
+- `linkText` (`string|null`, default `null`): Sets the text content of the banner
+- `marginTop` (`boolean`, default `false`): Adds margin above section
+- `marginBottom` (`boolean`, default `false`): Adds margin below section
+
+Example:
+
+```svelte
+<script>
+  import { AnnouncementBanner } from "@onsvisual/svelte-components";
+</script>
+
+<AnnouncementBanner
+  title="Important service announcement"
+  description="This is a website-wide service announcement"
+  linkHref="https://example.com"
+  linkText="More information"/>
+```
+
+### Blockquote
+
+A component to highlight a pull quote on a page, with optional attribution.
+
+`import { Blockquote } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/information-and-media-blockquote--docs
+
+Props:
+
+- `attribution` (`string|null`, default `null`): Attribution for the quote.
+- `children` (`import('svelte').Snippet`): Child content
+
+Example:
+
+```svelte
+<script>
+  import { Blockquote } from "@onsvisual/svelte-components";
+</script>
+
+<Blockquote attribution="A. Person">Some quoted text.</Blockquote>
+```
+
+### DescriptionList
+
+A component to display metadata in a tabular format.
+
+`import { DescriptionList } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/information-and-media-descriptionlist--docs
+
+Props:
+
+- `title` (`string|null`, default `null`): Sets the title of the list (for screen readers)
+- `items` (`{ key: string; value: unknown }[]`, default `[]`): Array of items in format {key, value} where "value" may be an array of multiple values
+- `mode` (`"default"|"inline"`, default `"default"`): Option to change layout to "inline", eg. for title blocks
+- `cls` (`string|null`, default `null`): Optional: Set an additional CSS class for the component
+
+Example:
+
+```svelte
+<script>
+  import { DescriptionList } from "@onsvisual/svelte-components";
+  
+  const items = [
+    { key: "Survey", value: "Bricks & Blocks" },
+    { key: "RU Refs", value: [49900000118, 49300005832]},
+    { key: "To", value: "<a href='mailto:'>A Person</a>"}
+  ];
+</script>
+
+<DescriptionList {items}/>
+```
+
+### DocumentList
+
+A component for defining a list of pages or links. Items can either be defined in an array of objects or as individual `<Document>` components.
+
+`import { DocumentList } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/information-and-media-documentlist--docs
+
+Props:
+
+- `children` (`import("svelte").Snippet`): Child content
+- `items` (`{ title?: string | null; href?: string | null; description?: string | null; image?: string | boolean; featured?: boolean; meta?: string | null; headingTag?: "h2" | "h3" }[] | null`, default `null`): Optional: Define the documents as an array of {id, title, checked, description?}
+- `compact` (`boolean`, default `false`): Compact mode. Removes horizonatal lines between documents
+- `cls` (`string | null`, default `null`): Optional: Set an additional CSS class for the component
+
+Example:
+
+```svelte
+<script>
+  import { DocumentList } from "@onsvisual/svelte-components";
+
+  const items = [
+		{
+			title: "Including everyone in Census",
+			href: "#0",
+			meta: "Poster, PDF, 499KB, 1 page",
+			description: "Empty belly poster, aimed at advertising census events."
+		},
+		{
+			title: "Community handbook for Census 2021",
+			href: "#0",
+			meta: "Booklet,PDF, 3.3MB, 16 pages",
+			description:
+				"This handbook explains what the census is, why it matters to everyone and how we can work together to spread the word within your community."
+		}
+	];
+</script>
+
+<DocumentList {items} />
+```
+
+### Document
+
+used with `DocumentList`; see its docs.
+
+`import { Document } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/information-and-media-documentlist--docs
+
+Props:
+
+- `children` (`import("svelte").Snippet`): Child content
+- `title` (`string | null`, default `null`): The title of the document
+- `headingTag` (`"h2" | "h3"`, default `"h2"`): Set the heading level for the title
+- `href` (`string | null`, default `null`): The URL of the document
+- `description` (`string | null`, default `null`): A description of the document
+- `image` (`string | boolean`, default `false`): Optional: URL of image to represent the document (use "true" for a placeholder)
+- `featured` (`boolean`, default `false`): Highlight document as a featured item (inset on grey background)
+- `meta` (`string | null`, default `null`): Metadata about the type of document linked to (can include HTML)
+
+### ErrorPage
+
+An error page component that will display generic error messages for "page not found" (404) or other errors.
+
+`import { ErrorPage } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/information-and-media-errorpage--docs
+
+Props:
+
+- `width` (`"narrow"|"medium"|"wide"|"wider"|"full"`, default `"narrow"`): Sets the width of the container
+- `page` (`any`, default `getContext("page")`): Optional: Pass the "page" store from "$app/state" in SvelteKit (gets read from context by default if it exists)
+- `status` (`number|null`): Optional: Explicitly pass a page status number, eg. 404 or 500.
+- `message` (`string|null`): Optional: Explicitly pass a page status message.
+
+Example:
+
+```svelte
+<script>
+  import { page } from "$app/stores";
+  import { ErrorPage } from "@onsvisual/svelte-components";
+</script>
+
+<ErrorPage page={page} />
+```
+
+### Image
+
+Insert an image with an optional caption.
+
+`import { Image } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/information-and-media-image--docs
+
+Props:
+
+- `src` (`string|null`, default `null`): The URL of the image
+- `alt` (`string|null`, default `null`): An alternative text for the image
+- `caption` (`string|null`, default `null`): A visible caption for the image
+- `cls` (`string|null`, default `null`): Optional: Set an additional CSS class for the component
+
+Example:
+
+```svelte
+<script>
+  import { Image } from "@onsvisual/svelte-components";
+</script>
+
+<Image
+  src="https://service-manual.ons.gov.uk/img/small/woman-in-purple-dress-shirt.jpg"
+  alt="Woman in a purple dress shirt using a laptop"
+  caption="Image 1 - Woman in a purple dress shirt using a laptop" />
+```
+
+### Notice
+
+Container for displaying notices on a page.
+
+`import { Notice } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/information-and-media-notice--docs
+
+Props:
+
+- `children` (`import("svelte").Snippet`): Child content
+- `mode` (`"info" | "success" | "error" | "warning"`, default `"info"`): Sets the mode/colour of the notice
+- `cls` (`string | null`, default `null`): Optional: Set an additional CSS class for the component
+
+Example:
+
+```svelte
+<script>
+  import { Notice } from "@onsvisual/svelte-components";
+</script>
+
+<Notice>
+  <p>This is the text of the notice.</p>
+</Notice>
+```
+
+### UpdateStatus
+
+Shows a short status message for recently updated content, or falls back to a standard "Last updated" label.
+
+`import { UpdateStatus } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/data-visualisation-updatestatus--docs
+
+Props:
+
+- `date` (`string | null`, default `null`): Last updated date or label to display when the content is not recent
+- `recent` (`boolean`, default `false`): Whether the content has been updated recently
+- `recentLabel` (`string`, default `"Updated this week"`): Label used when recent is true
+- `prefix` (`string`, default `"Last updated:"`): Prefix used when showing the date
+- `missingLabel` (`string`, default `"No update date provided"`): Message shown when no date is available
+- `showRecentDot` (`boolean`, default `true`): Whether to show the status dot for recent updates
+- `cls` (`string | null`, default `null`): Optional: Set an additional CSS class for the component
+
+Example:
+
+```svelte
+<script>
+  import { UpdateStatus } from "@onsvisual/svelte-components";
+</script>
+
+<UpdateStatus recent />
+<UpdateStatus date="1 September 2026" />
+```
+
+### ShareButtons
+
+Add social sharing buttons to a page.
+
+`import { ShareButtons } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/information-and-media-sharebuttons--docs
+
+Props:
+
+- `title` (`string`, default `"Share this page"`): Set the title/call to action
+- `platforms` (`string[]`, default `["facebook", "linkedin", "x", "email"]`): Which platforms to include (available options "facebook", "x", "linkedin" and "email")
+- `marginTop` (`boolean`, default `false`): Adds margin above section
+- `marginBottom` (`boolean`, default `true`): Adds margin below section
+- `cls` (`string|null`, default `null`): Optional: Set an additional CSS class for the component
+
+Example:
+
+```svelte
+<script>
+  import { ShareButtons } from "@onsvisual/svelte-components";
+</script>
+
+<!-- page contents -->
+<ShareButtons />
+<!-- page footer -->
+```
+
+### ChangeStat
+
+Shows a short directional stat such as `7% lower`, `1.3pp higher`, or `69 (0.7%) fewer`.
+
+`import { ChangeStat } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/data-visualisation-changestat--docs
+
+Props:
+
+- `value` (`string | number | null`, default `null`): Highlighted change value, for example "7%" or "1.3pp"
+- `direction` (`"up" | "down" | "neutral"`, default `"neutral"`): Direction of change
+- `label` (`string | null`, default `null`): Optional override for the descriptive label
+- `context` (`string | null`, default `null`): Optional trailing context, for example "than last year"
+- `tone` (`"default" | "positive" | "negative" | "subtle"`, default `"default"`): Optional colour treatment
+- `cls` (`string | null`, default `null`): Optional: Set an additional CSS class for the component
+
+Example:
+
+```svelte
+<script>
+  import { ChangeStat } from "@onsvisual/svelte-components";
+</script>
+
+<ChangeStat value="7%" direction="down" />
+<ChangeStat value="1.3pp" direction="up" />
+<ChangeStat value="69 (0.7%)" label="fewer" direction="down" tone="positive" />
+```
+
+### Summary
+
+A summary table for selected variables etc.
+
+`import { Summary } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/information-and-media-summary--docs
+
+Props:
+
+- `id` (`string | null`, default `null`): A unique ID for the summary table
+- `title` (`string | null`, default `null`): Title for summary table
+- `items` (`{ key: string; value: string; href?: string; editable?: boolean }[]`, default `[]`): Array of items in format {key, value, href?}
+- `cls` (`string | null`, default `null`): Optional: Set an additional CSS class for the component
+- `onChange` (`(detail: { item: { key: string; value: string; href?: string; editable?: boolean } }) => void`, default `() => {}`): Callback for the `change` event, called with the same value as the event's `detail`
+
+Example:
+
+```svelte
+<script>
+  import { Summary } from "@onsvisual/svelte-components";
+
+  let items = [
+    { key: "First item", value: "Value of first item" },
+    { key: "Second item", value: "Value of second item (that can be changed)", href: "#" }
+  ];
+</script>
+
+<Summary {items}/>
+```
+
+### Timeline
+
+A component to display a linear record of past and future events.
+
+`import { Timeline } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/information-and-media-timeline--docs
+
+Props:
+
+- `children` (`import("svelte").Snippet`): Child content
+- `items` (`{ title: string; content: string }[]`, default `[]`): Timeline items in the format {title, content}, where content can be an HTML string
+
+Example:
+
+```svelte
+<script>
+  import { Timeline } from "@onsvisual/svelte-components";
+
+  const items = [
+    {
+      title: "November 2020",
+      content: "ONS to provide you with content for magazines and publications"
+    },
+    {
+      title: "January to March 2021",
+      content: "ONS to provide a range of press releases for external use"
+    },
+    {
+      title: "February to April 2021",
+      content: "Promote your local Census Support Centres"
+    }
+  ];
+</script>
+
+<Timeline {items} />
+```
+
+### TimelineItem
+
+used with `Timeline`; see its docs.
+
+`import { TimelineItem } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/information-and-media-timeline--docs
+
+Props:
+
+- `children` (`import("svelte").Snippet`): Child content
+- `title` (`string | null`, default `null`): Title of timeline item
+
+### DataCard
+
+A component for presenting key facts and figures as a grid of "cards". Experimental.
+
+`import { DataCard } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/data-visualisation-datacard--docs
+
+Props:
+
+- `title` (`string | null`, default `null`): Title of card
+- `subtitle` (`string | null`, default `null`): Optional: Subtitle of card
+- `href` (`string | null`, default `null`): Optional: URL link for card title
+- `value` (`string | number | null`, default `null`): Big number (expects a pre-formatted text string)
+- `mode` (`"number" | "sparkline" | "bar"`, default `"number"`): Mode for the data tile
+- `caption` (`string | null`, default `null`): Text caption describing the number
+- `data` (`Record<string, number>[] | null`, default `null`): An array of data (required for charts)
+- `source` (`string | null`, default `null`): Text describing the source of the data
+- `cls` (`string | null`, default `null`): Optional: Set an additional CSS class for the component
+
+Example:
+
+```svelte
+<script>
+  import { DataCard } from "@onsvisual/svelte-components";
+</script>
+
+<DataCard
+  title="Consumer Price Index (CPI)"
+  subtitle="Consumer Price Index (CPI)"
+  value="up 2.5%"
+  caption="in 12 months to December 2024"
+  source="Source: ONS"
+/>
+```
+
+### Table
+
+A table component with various customisation options.
+
+`import { Table } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/data-visualisation-table--docs
+
+Props:
+
+- `title` (`string | null`, default `null`): An optional title for the table
+- `compact` (`boolean`, default `false`): Make the table smaller/more compact
+- `sortable` (`boolean`, default `false`): Make the table sortable
+- `responsive` (`boolean`, default `false`): Make the chart responsive (changes layout on narrow screens)
+- `rowHover` (`boolean`, default `false`): Highlight rows on hover
+- `height` (`number | "auto"`, default `"auto"`): Maximum height of table (in pixels). The header row becomes sticky unless the value is "auto" (default).
+- `data` (`Row[]`, default `[]`): Rows of data
+- `columns` (`Column[]`): Optional metadata for formatting columns. Array of {key, label, numeric?, dp?, formatter?} objects
+- `cls` (`string | null`, default `null`): Optional: Set an additional CSS class for the component
+
+Example:
+
+```svelte
+<script>
+  import { Table } from "@onsvisual/svelte-components";
+
+  const data = [
+    { col1: "Item one", col2: 10 },
+    { col1: "Item two", col2: 20 },
+    { col1: "Item three", col2: 30 },
+  ];
+  const columns = [
+    { key: "col1", label: "Text column" },
+    { key: "col2", label: "Numeric column", numeric: true},
+  ];
+</script>
+
+<Table {data} {columns} />
+```
+
+### Em
+
+A component to visually highlight text. Can be used for inline text or to provide a "badge".
+
+`import { Em } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/decorators-em--docs
+
+Props:
+
+- `children` (`import("svelte").Snippet`): Child content
+- `color` (`string`, default `"lightgrey"`): Any valid CSS colour
+- `mode` (`"default" | "badge"`, default `"default"`): Any valid CSS colour (CSS variables will not be parsed)
+- `fontSize` (`string | null`, default `null`): Override the font size of the surrounding text
+- `nowrap` (`boolean`, default `true`): Don't break text across lines
+- `ariaLabel` (`string | null`, default `null`): Descriptive text for screen readers if not self-explanatory
+
+Example:
+
+```svelte
+<script>
+  import { Em } from "@onsvisual/svelte-components";
+</script>
+
+<Em color="steelblue">Highlighted text</Em>
+```
+
+### Icon
+
+Make use of pre-defined icons in your projects. The icon fill is set to `currentColor`, so will render in the same colour as the surrounding text.
+
+`import { Icon } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/decorators-icon--docs
+
+Props:
+
+- `type` (`"arrow" | "carret" | "chevron" | "code" | "cog" | "copy" | "cross" | "delete" | "download" | "edit" | "edit-text" | "expand" | "external" | "minus" | "pin" | "plus" | "print" | "save" | "saveas" | "search" | "shrink" | "signout" | "tick" | "upload"`, default `"arrow"`): Set the type of icon
+- `size` (`"s" | "m" | "l" | "xl" | "2xl" | "3xl" | null`, default `null`): Set the size of the icon
+- `rotation` (`number`, default `0`): Rotation in degrees (clockwise)
+- `svgPath` (`string | null`, default `null`): (Optional) Provide a custom SVG path string for the icon (overrides "type")
+- `svgViewBox` (`string`, default `"0 0 24 24"`): (Optional) If using a custom SVG path, specify the viewBox of the SVG
+- `marginLeft` (`boolean`, default `false`): Add a small margin on the left of the icon
+- `marginRight` (`boolean`, default `false`): Add a small margin on the right of the icon
+
+Example:
+
+```svelte
+<script>
+  import { Icon } from "@onsvisual/svelte-components";
+</script>
+
+<Icon type="arrow" size="3xl"/>
+```
+
+### Indent
+
+An indented block of text.
+
+`import { Indent } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/decorators-indent--docs
+
+Props:
+
+- `children` (`import('svelte').Snippet`): Child content
+
+Example:
+
+```svelte
+<script>
+  import { Indent } from "@onsvisual/svelte-components";
+</script>
+
+<Indent>{indented_text}</Indent>
+```
+
+### Tooltip
+
+A component that displays a tooltip when the element it is wrapped around is hovered over or focused on.
+
+`import { Tooltip } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/decorators-tooltip--docs
+
+Props:
+
+- `children` (`import("svelte").Snippet`): Child content
+- `text` (`string`, default `""`): Define the text to be displayed on the tooltip
+- `position` (`"top" | "bottom" | "left" | "right"`, default `"bottom"`): Define the position of the tooltip relative to the element
+- `width` (`number | null`, default `null`): Set a maximum width for the tooltip (beyond this width text will wrap)
+- `zIndex` (`number | null`, default `null`): Set z-index of tooltip, to ensure it appears in front of other elements
+
+Example:
+
+```svelte
+<script>
+  import { Tooltip } from "@onsvisual/svelte-components";
+</script>
+
+<Tooltip text="Tooltip text">
+  <!-- Child element -->
+</Tooltip>
+```

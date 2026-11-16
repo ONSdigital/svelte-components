@@ -1,0 +1,138 @@
+# @onsvisual/svelte-components
+
+> Svelte 5 components that render ONS Design System markup and styles, for ONS web pages, articles and data visualisations. Version 2.2.0.
+
+- Storybook docs, with examples of every component: https://onsdigital.github.io/svelte-components/
+- Workbench, to try out components and their props: https://onsdigital.github.io/svelte-components/workbench/
+- Full reference, with every component's props and an example: `node_modules/@onsvisual/svelte-components/dist/llms-full.txt` (or https://onsdigital.github.io/svelte-components/llms-full.txt)
+- Each component's docs and types are in the package: `node_modules/@onsvisual/svelte-components/dist/components/<Folder>/docs/component.md` and `node_modules/@onsvisual/svelte-components/dist/components/<Folder>/<Name>.svelte.d.ts`
+
+## Setup
+
+- Install: `npm install @onsvisual/svelte-components`. Version 2 needs Svelte 5. (Svelte 3/4 projects use version 1: `npm install @onsvisual/svelte-components@v1-legacy`.)
+- Import the CSS once, eg. in the root `+layout.svelte`: `import "@onsvisual/svelte-components/css/main.css";`
+- Import components by name: `import { Header, Section, Footer } from "@onsvisual/svelte-components";`
+- Peer dependencies, needed by some components: `@popperjs/core`, `accessible-autocomplete`, `d3-scale`, `d3-shape`, `parse-color`, `pym.js`, `tick-manager`, `viewport-details`.
+
+## Rules for using the components
+
+- Write Svelte 5 (runes) code: `$state`, `$derived`, `$props`, snippets and `onclick`-style attributes, not `export let`, `$:`, `<slot>` or `on:click`.
+- Events: use the callback props, eg. `<Button onClick={...}>` or `<Input onChange={({ value }) => ...}>`. Each callback gets the same value as the matching dispatched event's `detail`. The dispatched events (`on:click` etc.) still work, but are only for Svelte 4-style code.
+- Named slots are now snippet props, eg. `{#snippet titleContent()}...{/snippet}` inside a Card, or Scroller's `background` and `foreground`. Content passed with `slot="..."` is silently not rendered. Child content is the `children` snippet, as normal.
+- Bindings: use `bind:` with a `$state` variable, eg. `let value = $state(null);` and `<Input bind:value />`. If the variable starts `undefined`, the component sets it to the prop's default (version 2.3.0 and later; earlier 2.x versions throw `props_invalid_value` for some props, so start bound variables with a value there).
+- Layout: `Section` already renders a `Container` (narrow width, with a bottom margin), so don't put a `Container` inside a `Section`. Use one or the other, and set `width` and the margins on it.
+- Extra CSS classes: most components take a `cls` prop (Toolbar components use `classes`).
+- Some props render trusted HTML with `{@html}`, with no sanitising: List items, DescriptionList values, Table cells, DataCard captions and Theme head styles. Never pass user input to them.
+- Form components (Input, Dropdown, Select, Radios, Checkboxes, Textarea) need a `label` for accessibility, and an `id` if the label is hidden.
+- Check a component's props in its `.d.ts` file or in the full reference before using it. Don't guess prop names.
+
+## ONS Design System CSS
+
+The package CSS includes version 73.5.0 of the ONS Design System CSS, so any `ons-*` class from that version can be used directly in markup, eg. the grid (`ons-grid`, `ons-grid__col`, `ons-col-6@m`), utility classes such as `ons-u-mb-l` (bottom margin) or `ons-u-fs-r--b` (bold text), and Design System components that this package doesn't wrap. See https://service-manual.ons.gov.uk/design-system (it documents the latest version, which may be newer than 73.5.0). Prefer the components in this package where one exists.
+
+## Components
+
+### Wrappers
+
+- [Container](https://onsdigital.github.io/svelte-components/?path=/docs/wrappers-container--docs): A container to set the width and minimum height of a block of content.
+- [Embed](https://onsdigital.github.io/svelte-components/?path=/docs/wrappers-embed--docs): A container for content designed to appear within an `<iframe>`. The component does two things: 1. Overrides padding, so that content can fill the full width of its iframe. 2. Initialises a Pym.js child for the iframe, so that it can communicate its height with its parent page.
+- [EmbedParent](https://onsdigital.github.io/svelte-components/?path=/docs/wrappers-embedparent--docs): Add responsive Pym.js iframes to a page. The child page `href` can be a relative or absolute path, or a full URL. When referencing another page within the same app, be sure to use SvelteKit's `resolve()` function to ensure that the path is correct wherever your app is deployed.
+- [LazyLoad](https://onsdigital.github.io/svelte-components/?path=/docs/wrappers-lazyload--docs): A wrapper component that uses IntersectionObserver to allow the Svelte components or HTML elements it contains to be lazy loaded, ie. to be added to the page (or DOM) only when they enter the viewport.
+- [Main](https://onsdigital.github.io/svelte-components/?path=/docs/wrappers-main--docs): This component creates a styled `<main>` element to wrap the primary contents of a page (generally everything between the page header and footer).
+- [Observe](https://onsdigital.github.io/svelte-components/?path=/docs/wrappers-observe--docs): A wrapper component that uses IntersectionObserver to monitor whether the elements in contains are within the current viewport.
+- [Theme](https://onsdigital.github.io/svelte-components/?path=/docs/wrappers-theme--docs): A component that sets the colour scheme of its child components using CSS variables.
+
+### Navigation
+
+- [BackLink](https://onsdigital.github.io/svelte-components/?path=/docs/navigation-backlink--docs): Link that can be used to return to the top of a page, or to a table of contents.
+- [Breadcrumb](https://onsdigital.github.io/svelte-components/?path=/docs/navigation-breadcrumb--docs): Displays a breadcrumb with the current page's parents.
+- [Contents](https://onsdigital.github.io/svelte-components/?path=/docs/navigation-contents--docs): Displays a table of contents based on an array of links. Can be used for in-page navigation, or for navigation between sibling pages.
+- [Paginator](https://onsdigital.github.io/svelte-components/?path=/docs/navigation-paginator--docs): A very simple next/previous page paginator.
+- [RelatedContent](https://onsdigital.github.io/svelte-components/?path=/docs/navigation-relatedcontent--docs): Dispay related content for a page.
+- [SkipLink](https://onsdigital.github.io/svelte-components/?path=/docs/navigation-skiplink--docs): An invisible link to skip from the top of the page header to the content of the page. Should be the first focusable item on the page, and is included by default in the [Header](https://onsdigital.github.io/svelte-components/?path=/docs/layout-header--docs) component
+
+### Form elements
+
+- [Button](https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-button--docs): A button/link component that can be styled in various ways. It will render as an `<a>` link if it has an `href` property defined.
+- [Checkbox](https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-checkbox--docs): A checkbox element with various styling and labelling options. Its "checked" attribute can be bound to a Svelte boolean (true/false) variable.
+- [Checkboxes](https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-checkboxes--docs): A component for defining a group of checkbox elements, whose checked values can be bound to Svelte variables, or grouped in an array.
+- [Dropdown](https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-dropdown--docs): A standard `<select>` component with Svelte bindings and events.
+- [ErrorPanel](https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-errorpanel--docs): Use this component to show validation errors by wrapping form inputs and fieldsets.
+- [ErrorSummary](https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-errorsummary--docs): A panel to summarise errors on a form/input. The errors can be defined in an `items` array, or as plain text/html within the component.
+- [Input](https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-input--docs): A standard `<input>` element with Svelte bindings and events.
+- [Radio](https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-radios--docs): used with `Radios`; see its docs.
+- [Radios](https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-radios--docs): A component for defining a group of radio inputs, where the selected item id can be bound to a Svelte variable.
+- [Select](https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-select--docs): (also exported as `AccessibleSelect`) An extended alternative to an HTML `<select>` component (see Dropdown), with auto-complete and the ability to have a custom **loadOptions** function.
+- [Textarea](https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-textarea--docs): A standard `<textarea>` element with Svelte bindings and events.
+- [HelpModal](https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-toolbar--docs): used with `Toolbar`; see its docs. Experimental.
+- [ToolbarIcon](https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-toolbar--docs): used with `Toolbar`; see its docs. Experimental.
+- [Toolbar](https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-toolbar--docs): A toolbar component. Use `ToolbarsContainer` even if using one toolbar as it contains a store for all the IDs and the activeID. Experimental.
+- [ToolbarButton](https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-toolbar--docs): used with `Toolbar`; see its docs. Experimental.
+- [ToolbarDivider](https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-toolbar--docs): used with `Toolbar`; see its docs. Experimental.
+- [ToolbarsContainer](https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-toolbar--docs): used with `Toolbar`; see its docs. Experimental.
+- [ToolControl](https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-toolbar--docs): used with `Toolbar`; see its docs. Experimental.
+- [ToolControls](https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-toolbar--docs): used with `Toolbar`; see its docs. Experimental.
+- [ButtonGroup](https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-buttongroup--docs): Radio inputs dressed up as a button group. Experimental.
+- [ButtonGroupItem](https://onsdigital.github.io/svelte-components/?path=/docs/form-elements-buttongroup--docs): used with `ButtonGroup`; see its docs. Experimental.
+
+### Layout
+
+- [Accordion](https://onsdigital.github.io/svelte-components/?path=/docs/layout-accordion--docs): An accordion component.
+- [AccordionItem](https://onsdigital.github.io/svelte-components/?path=/docs/layout-accordion--docs): used with `Accordion`; see its docs.
+- [Card](https://onsdigital.github.io/svelte-components/?path=/docs/layout-card--docs): Display content and links as cards. Can be used in combination with the `<Grid>` component to combine multiple cards.
+- [Details](https://onsdigital.github.io/svelte-components/?path=/docs/layout-details--docs): (also exported as `Twisty`) An expandable `<details>` ("twisty") component, which can be open or closed by default.
+- [Divider](https://onsdigital.github.io/svelte-components/?path=/docs/layout-divider--docs): A component to draw a divider between blocks of contnet.
+- [Footer](https://onsdigital.github.io/svelte-components/?path=/docs/layout-footer--docs): A footer component with compact mode and theming options.
+- [Grid](https://onsdigital.github.io/svelte-components/?path=/docs/layout-grid--docs): (also exported as `Cards`) A media grid component, useful for images and small multiple charts. Setting `colwidth` to **full** allows for a single cell/image/chart with an optional caption.
+- [GridCell](https://onsdigital.github.io/svelte-components/?path=/docs/layout-grid--docs): used with `Grid`; see its docs.
+- [Header](https://onsdigital.github.io/svelte-components/?path=/docs/layout-header--docs): A header component with compact mode and theming options.
+- [Hero](https://onsdigital.github.io/svelte-components/?path=/docs/layout-hero--docs): (also exported as `Titleblock`) A hero/title block suitable for a standard pages, with optional metadata block.
+- [Highlight](https://onsdigital.github.io/svelte-components/?path=/docs/layout-highlight--docs): A large text block that can be used as a standfirst or transition between sections of a feature article, with various options and style customisations.
+- [List](https://onsdigital.github.io/svelte-components/?path=/docs/layout-list--docs): A list component with modes for numbered, bulleted, dashed and bare lists. There is also an option to define list items as an array.
+- [Li](https://onsdigital.github.io/svelte-components/?path=/docs/layout-list--docs): used with `List`; see its docs.
+- [NavSection](https://onsdigital.github.io/svelte-components/?path=/docs/layout-navsections--docs): used with `NavSections`; see its docs.
+- [NavSections](https://onsdigital.github.io/svelte-components/?path=/docs/layout-navsections--docs): Use this component to allow users to quickly jump to named sections within a long page of content.
+- [PhaseBanner](https://onsdigital.github.io/svelte-components/?path=/docs/layout-phasebanner--docs): Display a phase banner on prototypes, alpha and beta products.
+- [Scroller](https://onsdigital.github.io/svelte-components/?path=/docs/layout-scroller--docs): Components for adding interactive scrollytelling sections to a feature article.
+- [ScrollerSection](https://onsdigital.github.io/svelte-components/?path=/docs/layout-scroller--docs): used with `Scroller`; see its docs.
+- [Section](https://onsdigital.github.io/svelte-components/?path=/docs/layout-section--docs): A layout block for text content, including an optional title.
+- [Tabs](https://onsdigital.github.io/svelte-components/?path=/docs/layout-tabs--docs): Use tabs to help users navigate between short sections of related content within a single page, showing one section at a time.
+- [Tab](https://onsdigital.github.io/svelte-components/?path=/docs/layout-tabs--docs): used with `Tabs`; see its docs.
+
+### Information and media
+
+- [AnalyticsBanner](https://onsdigital.github.io/svelte-components/?path=/docs/information-and-media-analyticsbanner--docs): This component will display a cookie banner and export a function that allows you to push events to the Google Analytics dataLayer array.
+- [analyticsEvent](https://onsdigital.github.io/svelte-components/?path=/docs/information-and-media-analyticsbanner--docs): function exported alongside AnalyticsBanner.
+- [AnnouncementBanner](https://onsdigital.github.io/svelte-components/?path=/docs/information-and-media-announcementbanner--docs): This banner is used to highlight important messages for all users of a service or website. The banner is only meant for critical short-term messages, and should be placed immediately below the website navigation header (and above the breadcrumb).
+- [Blockquote](https://onsdigital.github.io/svelte-components/?path=/docs/information-and-media-blockquote--docs): A component to highlight a pull quote on a page, with optional attribution.
+- [DescriptionList](https://onsdigital.github.io/svelte-components/?path=/docs/information-and-media-descriptionlist--docs): A component to display metadata in a tabular format.
+- [DocumentList](https://onsdigital.github.io/svelte-components/?path=/docs/information-and-media-documentlist--docs): A component for defining a list of pages or links. Items can either be defined in an array of objects or as individual `<Document>` components.
+- [Document](https://onsdigital.github.io/svelte-components/?path=/docs/information-and-media-documentlist--docs): used with `DocumentList`; see its docs.
+- [ErrorPage](https://onsdigital.github.io/svelte-components/?path=/docs/information-and-media-errorpage--docs): An error page component that will display generic error messages for "page not found" (404) or other errors.
+- [Image](https://onsdigital.github.io/svelte-components/?path=/docs/information-and-media-image--docs): Insert an image with an optional caption.
+- [Notice](https://onsdigital.github.io/svelte-components/?path=/docs/information-and-media-notice--docs): Container for displaying notices on a page.
+- [ShareButtons](https://onsdigital.github.io/svelte-components/?path=/docs/information-and-media-sharebuttons--docs): Add social sharing buttons to a page.
+- [Summary](https://onsdigital.github.io/svelte-components/?path=/docs/information-and-media-summary--docs): A summary table for selected variables etc.
+- [Timeline](https://onsdigital.github.io/svelte-components/?path=/docs/information-and-media-timeline--docs): A component to display a linear record of past and future events.
+- [TimelineItem](https://onsdigital.github.io/svelte-components/?path=/docs/information-and-media-timeline--docs): used with `Timeline`; see its docs.
+
+### Data visualisation
+
+- [UpdateStatus](https://onsdigital.github.io/svelte-components/?path=/docs/data-visualisation-updatestatus--docs): Shows a short status message for recently updated content, or falls back to a standard "Last updated" label.
+- [ChangeStat](https://onsdigital.github.io/svelte-components/?path=/docs/data-visualisation-changestat--docs): Shows a short directional stat such as `7% lower`, `1.3pp higher`, or `69 (0.7%) fewer`.
+- [DataCard](https://onsdigital.github.io/svelte-components/?path=/docs/data-visualisation-datacard--docs): A component for presenting key facts and figures as a grid of "cards". Experimental.
+- [Table](https://onsdigital.github.io/svelte-components/?path=/docs/data-visualisation-table--docs): A table component with various customisation options.
+
+### Decorators
+
+- [Em](https://onsdigital.github.io/svelte-components/?path=/docs/decorators-em--docs): A component to visually highlight text. Can be used for inline text or to provide a "badge".
+- [Icon](https://onsdigital.github.io/svelte-components/?path=/docs/decorators-icon--docs): Make use of pre-defined icons in your projects. The icon fill is set to `currentColor`, so will render in the same colour as the surrounding text.
+- [Indent](https://onsdigital.github.io/svelte-components/?path=/docs/decorators-indent--docs): An indented block of text.
+- [Tooltip](https://onsdigital.github.io/svelte-components/?path=/docs/decorators-tooltip--docs): A component that displays a tooltip when the element it is wrapped around is hovered over or focused on.
+
+## Charts and maps (separate packages)
+
+These packages are developed separately, have fewer options, and may change more than this one. Check their docs and types before using them.
+
+- `@onsvisual/svelte-charts` (version 0.4.11 when this file was generated): `Chart`, `LineChart`, `BarChart`, `ColumnChart`, `ScatterChart`, `DotPlotChart`. Their docs and examples are also on the Storybook site under "Data visualisation", and in `node_modules/@onsvisual/svelte-components/dist/components/<ChartName>/docs/`. They're written in Svelte 4 style, so use `on:` events with them. In a Vite/SvelteKit app, add `@onsvisual/svelte-charts` and `layercake` to `ssr.noExternal`.
+- `@onsvisual/svelte-maps`: MapLibre maps (`Map`, `MapSource`, `MapLayer`, `MapTooltip`). Its components still dispatch Svelte 4-style events, so use `on:` and `bind:` with them.
