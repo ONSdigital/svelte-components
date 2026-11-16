@@ -1,28 +1,27 @@
-<script lang="ts">
+<script>
 	import { getContext } from "svelte";
 	// import { get, set } from "svelte/store";
-	import { fly } from "svelte/transition";
 	import Checkbox from "../Checkbox/Checkbox.svelte";
 	import Button from "../Button/Button.svelte";
-	import type { Writable } from "svelte/store";
 
-	let {
-		children,
-		triggerElement = null,
-		onClose = () => {}
-	}: {
-		/** Child content (snippet) */
-		children?: import("svelte").Snippet;
-		/** The element the modal is positioned next to */
-		triggerElement?: HTMLElement | null;
-		/** Called when the modal is closed with the Escape key */
-		onClose?: () => void;
-	} = $props();
+	/**
+	 * @typedef {Object} Props
+	 * @property {import("svelte").Snippet} [children] Child content (snippet)
+	 * @property {HTMLElement | null} [triggerElement] The element the modal is positioned next to
+	 * @property {() => void} [onClose] Called when the modal is closed with the Escape key
+	 */
+
+	/** @type {Props} */
+	let { children, triggerElement = null, onClose = () => {} } = $props();
 
 	// --- Context ---
-	const activeModalId = getContext<Writable<string | null>>("activeModalId");
-	const showHelpModals = getContext<Writable<boolean>>("showHelpModals");
-	const { buttonIds } = getContext<{ buttonIds: Writable<string[]> }>("buttonIds");
+	/** @type {import("svelte/store").Writable<string | null>} */
+	const activeModalId = getContext("activeModalId");
+	/** @type {import("svelte/store").Writable<boolean>} */
+	const showHelpModals = getContext("showHelpModals");
+	const { buttonIds } = /** @type {{ buttonIds: import("svelte/store").Writable<string[]> }} */ (
+		getContext("buttonIds")
+	);
 
 	// --- Derived state from stores ---
 	const ids = $derived(buttonIds);
@@ -31,7 +30,8 @@
 
 	// --- Local state ---
 	let modalPosition = $state({ top: 50, left: -5 });
-	let notchPosition = $state<{ left: number | "auto"; right: number | "auto" }>({
+	/** @type {{ left: number | "auto"; right: number | "auto" }} */
+	let notchPosition = $state({
 		left: 17,
 		right: "auto"
 	});
@@ -99,7 +99,8 @@
 		}
 	}
 
-	function handleKeydown(event: KeyboardEvent) {
+	/** @param {KeyboardEvent} event */
+	function handleKeydown(event) {
 		if (event.key === "Escape") onClose();
 	}
 </script>

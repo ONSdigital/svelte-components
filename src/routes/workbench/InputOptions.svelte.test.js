@@ -5,11 +5,15 @@ import InputOptions from "./InputOptions.svelte";
 
 test("Input Options starts collapsed and edits typed inputs without publishing invalid JSON", async () => {
 	const onChange = vi.fn();
-	const { container } = render(InputOptions, { componentName: "Example", fields: [
-		{ name: "label", type: "string", kind: "string", initial: "Example" },
-		{ name: "disabled", type: "boolean", kind: "boolean", initial: false },
-		{ name: "items", type: "object[]", kind: "json", initial: [] }
-	], onChange });
+	const { container } = render(InputOptions, {
+		componentName: "Example",
+		fields: [
+			{ name: "label", type: "string", kind: "string", initial: "Example" },
+			{ name: "disabled", type: "boolean", kind: "boolean", initial: false },
+			{ name: "items", type: "object[]", kind: "json", initial: [] }
+		],
+		onChange
+	});
 	expect(container.querySelector("details")).not.toHaveAttribute("open");
 	await fireEvent.click(screen.getByText("Input Options"));
 	await fireEvent.input(screen.getByLabelText("label"), { target: { value: "Updated" } });
