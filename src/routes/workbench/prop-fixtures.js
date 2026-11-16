@@ -48,6 +48,7 @@ export function fixtureValues(schema) {
 		ErrorPage: { status: 404 },
 		Header: { title: "Component preview", skipHref: null },
 		Embed: { polling: false },
+		EmbedParent: { href: "about:blank", title: "Embedded page" },
 		AnalyticsBanner: { analyticsId: "" },
 		ToolbarButton: { id: "prop-tool", label: "Example tool", icon: "search" },
 		ToolbarIcon: { type: "search" },
