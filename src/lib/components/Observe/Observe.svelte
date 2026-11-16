@@ -12,7 +12,12 @@
 	 * @property {(entry: IntersectionObserverEntry) => void} [onExit] Callback for the `exit` event, called with the same value as the event's `detail`
 	 */
 	/** @type {Props} */
-	let { children, visible = $bindable(false), rootMargin = 0, onEnter, onExit } = $props();
+	let { children, visible = $bindable(), rootMargin = 0, onEnter, onExit } = $props();
+
+	// Defaults for bindable props are set here rather than in $props(): Svelte 5 throws an error if a
+	// parent binds a prop that has a default to an undefined variable (eg. `let value = $state()`).
+	// Setting them here also writes the default back to the bound variable, as in v1.
+	if (visible === undefined) visible = false;
 
 	/** @param {IntersectionObserverEntry[]} entries */
 	const callback = (entries) => {

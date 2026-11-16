@@ -28,10 +28,15 @@
 		description = null,
 		item = createItem(id ?? "", label ?? "", description ?? ""),
 		groupId,
-		value = $bindable(null),
+		value = $bindable(),
 		compact = false,
 		onChange = () => {}
 	} = $props();
+
+	// Defaults for bindable props are set here rather than in $props(): Svelte 5 throws an error if a
+	// parent binds a prop that has a default to an undefined variable (eg. `let value = $state()`).
+	// Setting them here also writes the default back to the bound variable, as in v1.
+	if (value === undefined) value = null;
 
 	/** @param {Event & { currentTarget: HTMLInputElement }} event */
 	function handleChange(event) {

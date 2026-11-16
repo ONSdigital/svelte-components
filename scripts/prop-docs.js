@@ -131,9 +131,36 @@ function v1Props(file) {
 }
 
 /**
- * @typedef {{ name: string; type: string; optional: boolean; description: string; defaultValue?: string; bindable?: boolean }} Prop
+ * @typedef {{ name: string; type: string; optional: boolean; description: string; defaultValue?: string; bindable?: boolean; defaultInScript?: boolean }} Prop
  * @typedef {{ style: "inline" | "typedef" | "ts" | "untyped" | "none"; props: Prop[]; script: NonNullable<ReturnType<typeof instanceScript>>; typeDoc?: ts.JSDoc; typedefDoc?: ts.JSDoc; members?: ts.PropertySignature[] }} Parsed
  */
+
+/**
+ * A default set in the script, as `if (name === undefined) name = value;`
+ * @param {ts.Statement} statement
+ * @returns {{ name: string; value: string } | null}
+ */
+function scriptDefault(statement) {
+	if (!ts.isIfStatement(statement) || statement.elseStatement) return null;
+	const test = statement.expression;
+	if (
+		!ts.isBinaryExpression(test) ||
+		test.operatorToken.kind !== ts.SyntaxKind.EqualsEqualsEqualsToken ||
+		!ts.isIdentifier(test.left) ||
+		test.right.getText() !== "undefined"
+	)
+		return null;
+	const then = statement.thenStatement;
+	const assignment = ts.isExpressionStatement(then) ? then.expression : null;
+	if (
+		!assignment ||
+		!ts.isBinaryExpression(assignment) ||
+		assignment.operatorToken.kind !== ts.SyntaxKind.EqualsToken ||
+		assignment.left.getText() !== test.left.text
+	)
+		return null;
+	return { name: test.left.text, value: assignment.right.getText().replace(/\s*\n\s*/g, " ") };
+}
 
 /** @param {string} source @returns {Parsed | null} */
 function parseProps(source) {
@@ -168,7 +195,7 @@ function parseProps(source) {
 		);
 		const names = elements.map((e) => (e.propertyName ?? e.name).getText());
 		// Default values and $bindable() from the destructuring, eg. `value = $bindable(null)`
-		/** @type {Map<string, { defaultValue?: string; bindable: boolean }>} */
+		/** @type {Map<string, { defaultValue?: string; bindable: boolean; defaultInScript?: boolean }>} */
 		const bindings = new Map();
 		for (const e of elements) {
 			let init = e.initializer;
@@ -181,6 +208,15 @@ function parseProps(source) {
 				defaultValue: init?.getText().replace(/\s*\n\s*/g, " "),
 				bindable
 			});
+		}
+		// Bindable props have their defaults set in the script, as `if (value === undefined) value = null;`
+		for (const statement of script.sf.statements) {
+			const fallback = scriptDefault(statement);
+			const binding = fallback && bindings.get(fallback.name);
+			if (binding && binding.defaultValue === undefined) {
+				binding.defaultValue = fallback.value;
+				binding.defaultInScript = true;
+			}
 		}
 		/** @param {Prop[]} props @returns {Prop[]} */
 		const withBindings = (props) =>

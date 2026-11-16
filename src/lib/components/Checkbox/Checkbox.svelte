@@ -25,16 +25,24 @@
 		id = "",
 		label = "",
 		description = null,
-		item = $bindable({ id, label, description, checked: false }),
+		item = $bindable(),
 		checked = $bindable(),
 		disabled = false,
 		groupName = null,
-		group = $bindable(null),
+		group = $bindable(),
 		variant = "default",
 		compact = false,
 		cls = null,
 		onChange = () => {}
 	} = $props();
+
+	// Defaults for bindable props are set here rather than in $props(): Svelte 5 throws an error if a
+	// parent binds a prop that has a default to an undefined variable (eg. `let value = $state()`).
+	// Setting them here also writes the default back to the bound variable, as in v1.
+	// The default item uses the initial id, label and description, as the default in $props() did
+	// svelte-ignore state_referenced_locally
+	if (item === undefined) item = { id, label, description, checked: false };
+	if (group === undefined) group = null;
 
 	/** @type {import("svelte/store").Writable<HTMLInputElement[]>} */
 	const checkboxes = getContext("checkboxes");
@@ -63,11 +71,13 @@
 	/** @param {Event & { currentTarget: HTMLInputElement }} e */
 	function doChange(e) {
 		checked = _checked = e.currentTarget.checked;
-		item.checked = checked;
+		// item is set to its default when the component is created, so it's never undefined here
+		const current = /** @type {CheckboxItem} */ (item);
+		current.checked = checked;
 		if (Array.isArray(group) && Array.isArray($checkboxes)) {
 			updateGroup();
 		}
-		const detail = { item, e };
+		const detail = { item: current, e };
 		onChange(detail);
 		dispatch("change", detail);
 	}

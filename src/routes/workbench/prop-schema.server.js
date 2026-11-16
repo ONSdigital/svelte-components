@@ -65,18 +65,16 @@ function choices(node) {
 function members(type) {
 	if (!type) return [];
 	if (ts.isTypeLiteralNode(type))
-		return type.members
-			.filter(ts.isPropertySignature)
-			.map((member) => ({
-				name: member.name.getText().replace(/^["']|["']$/g, ""),
-				type: member.type,
-				description:
-					ts
-						.getTextOfJSDocComment(
-							/** @type {{ jsDoc?: ts.JSDoc[] }} */ (member).jsDoc?.at(-1)?.comment
-						)
-						?.trim() ?? ""
-			}));
+		return type.members.filter(ts.isPropertySignature).map((member) => ({
+			name: member.name.getText().replace(/^["']|["']$/g, ""),
+			type: member.type,
+			description:
+				ts
+					.getTextOfJSDocComment(
+						/** @type {{ jsDoc?: ts.JSDoc[] }} */ (member).jsDoc?.at(-1)?.comment
+					)
+					?.trim() ?? ""
+		}));
 	if (ts.isJSDocTypeLiteral(type))
 		return (type.jsDocPropertyTags ?? []).map((member) => ({
 			name: member.name.getText(),
@@ -125,6 +123,27 @@ export function extractProps(source, filename) {
 					if (name) aliases.set(name, members(tag.typeExpression));
 				}
 		}
+	// Bindable props have their defaults set in the script, as `if (value === undefined) value = null;`
+	/** @type {Map<string, ts.Expression>} */
+	const scriptDefaults = new Map();
+	for (const script of scripts)
+		for (const statement of script.statements) {
+			if (!ts.isIfStatement(statement) || statement.elseStatement) continue;
+			const test = statement.expression;
+			const then = statement.thenStatement;
+			const assignment = ts.isExpressionStatement(then) ? then.expression : undefined;
+			if (
+				ts.isBinaryExpression(test) &&
+				test.operatorToken.kind === ts.SyntaxKind.EqualsEqualsEqualsToken &&
+				ts.isIdentifier(test.left) &&
+				test.right.getText() === "undefined" &&
+				assignment &&
+				ts.isBinaryExpression(assignment) &&
+				assignment.operatorToken.kind === ts.SyntaxKind.EqualsToken &&
+				assignment.left.getText() === test.left.text
+			)
+				scriptDefaults.set(test.left.text, assignment.right);
+		}
 	/** @type {PropSchema[]} */
 	const fields = [];
 	for (const script of scripts)
@@ -167,7 +186,13 @@ export function extractProps(source, filename) {
 					const metadata = declared.find((property) => property.name === name);
 					const typeNode =
 						metadata?.type ?? (exported ? (declaration.type ?? annotation) : undefined);
-					const initial = literal(binding.initializer);
+					const emptyBindable =
+						binding.initializer &&
+						ts.isCallExpression(binding.initializer) &&
+						binding.initializer.expression.getText() === "$bindable" &&
+						!binding.initializer.arguments.length;
+					const valueNode = (emptyBindable && scriptDefaults.get(name)) || binding.initializer;
+					const initial = literal(valueNode);
 					const type =
 						typeNode?.getText() ??
 						(initial === null || initial === undefined
@@ -179,9 +204,7 @@ export function extractProps(source, filename) {
 					const nullable = /\bnull\b/.test(type) || initial === null;
 					const callable =
 						/=>|\bFunction\b/.test(type) ||
-						(binding.initializer &&
-							(ts.isArrowFunction(binding.initializer) ||
-								ts.isFunctionExpression(binding.initializer)));
+						(valueNode && (ts.isArrowFunction(valueNode) || ts.isFunctionExpression(valueNode)));
 					const mixed =
 						/\bnumber\b/.test(type) &&
 						(/\bstring\b/.test(type) || options.some((option) => typeof option === "string"));
@@ -231,7 +254,7 @@ export function extractProps(source, filename) {
 						nullable,
 						initial,
 						options,
-						defaultText: binding.initializer?.getText() ?? "undefined",
+						defaultText: valueNode?.getText() ?? "undefined",
 						description: metadata?.description ?? "",
 						bindable: Boolean(
 							binding.initializer &&

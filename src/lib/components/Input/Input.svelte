@@ -32,7 +32,7 @@
 	let {
 		id = null,
 		name = id,
-		value = $bindable(null),
+		value = $bindable(),
 		label = null,
 		hideLabel = false,
 		description = null,
@@ -53,9 +53,14 @@
 		onBlur = () => {}
 	} = $props();
 
+	// Defaults for bindable props are set here rather than in $props(): Svelte 5 throws an error if a
+	// parent binds a prop that has a default to an undefined variable (eg. `let value = $state()`).
+	// Setting them here also writes the default back to the bound variable, as in v1.
+	if (value === undefined) value = null;
+
 	/** @param {"change" | "input" | "blur"} type @param {Event} event */
 	function emitInputEvent(type, event) {
-		const detail = { value, e: event };
+		const detail = { value: value ?? null, e: event };
 		if (type === "change") onChange(detail);
 		else if (type === "input") onInput(detail);
 		else onBlur(detail);

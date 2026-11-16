@@ -175,7 +175,12 @@ function chartLibrary() {
 
 /** @param {import("./prop-docs.js").Prop} prop */
 const throwsWhenBoundUndefined = (prop) =>
-	Boolean(prop.bindable && prop.defaultValue !== undefined && prop.defaultValue !== "undefined");
+	Boolean(
+		prop.bindable &&
+			!prop.defaultInScript &&
+			prop.defaultValue !== undefined &&
+			prop.defaultValue !== "undefined"
+	);
 
 /** @param {Export} e */
 function importLine(e) {
@@ -228,10 +233,9 @@ export function generate() {
 		"- Write Svelte 5 (runes) code: `$state`, `$derived`, `$props`, snippets and `onclick`-style attributes, not `export let`, `$:`, `<slot>` or `on:click`.",
 		"- Events: use the callback props, eg. `<Button onClick={...}>` or `<Input onChange={({ value }) => ...}>`. Each callback gets the same value as the matching dispatched event's `detail`. The dispatched events (`on:click` etc.) still work, but are only for Svelte 4-style code.",
 		'- Named slots are now snippet props, eg. `{#snippet titleContent()}...{/snippet}` inside a Card, or Scroller\'s `background` and `foreground`. Content passed with `slot="..."` is silently not rendered. Child content is the `children` snippet, as normal.',
-		"- Bindings: start a bound variable with a value, eg. `let value = $state(null);`, not `let value;` or `$state()`.",
 		bindWarnings.length
-			? `  These props throw \`props_invalid_value\` if the bound variable starts \`undefined\`: ${bindWarnings.join(", ")}.`
-			: "",
+			? `- Bindings: start a bound variable with a value, eg. \`let value = $state(null);\`, not \`let value;\` or \`$state()\`. These props throw \`props_invalid_value\` if the bound variable starts \`undefined\`: ${bindWarnings.join(", ")}.`
+			: `- Bindings: use \`bind:\` with a \`$state\` variable, eg. \`let value = $state(null);\` and \`<Input bind:value />\`. If the variable starts \`undefined\`, the component sets it to the prop's default (version 2.3.0 and later; earlier 2.x versions throw \`props_invalid_value\` for some props, so start bound variables with a value there).`,
 		"- Layout: `Section` already renders a `Container` (narrow width, with a bottom margin), so don't put a `Container` inside a `Section`. Use one or the other, and set `width` and the margins on it.",
 		"- Extra CSS classes: most components take a `cls` prop (Toolbar components use `classes`).",
 		"- Some props render trusted HTML with `{@html}`, with no sanitising: List items, DescriptionList values, Table cells, DataCard captions and Theme head styles. Never pass user input to them.",

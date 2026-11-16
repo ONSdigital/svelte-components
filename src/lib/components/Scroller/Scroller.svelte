@@ -125,12 +125,12 @@
 		marginTop = false,
 		marginBottom = true,
 		threshold = 0.7,
-		count = $bindable(0),
-		index = $bindable(null),
-		sectionId = $bindable(null),
-		offset = $bindable(0),
-		progress = $bindable(0),
-		visible = $bindable(false),
+		count = $bindable(),
+		index = $bindable(),
+		sectionId = $bindable(),
+		offset = $bindable(),
+		progress = $bindable(),
+		visible = $bindable(),
 		cls = null,
 		background,
 		foreground,
@@ -139,9 +139,19 @@
 		onExit
 	} = $props();
 
+	// Defaults for bindable props are set here rather than in $props(): Svelte 5 throws an error if a
+	// parent binds a prop that has a default to an undefined variable (eg. `let value = $state()`).
+	// Setting them here also writes the default back to the bound variable, as in v1.
+	if (count === undefined) count = 0;
+	if (index === undefined) index = null;
+	if (sectionId === undefined) sectionId = null;
+	if (offset === undefined) offset = 0;
+	if (progress === undefined) progress = 0;
+	if (visible === undefined) visible = false;
+
 	/** @param {"change" | "enter" | "exit"} type */
 	function emit(type) {
-		const detail = { id, index, sectionId };
+		const detail = { id, index: index ?? null, sectionId: sectionId ?? null };
 		if (type === "change") onChange?.(detail);
 		else if (type === "enter") onEnter?.(detail);
 		else onExit?.(detail);
