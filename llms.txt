@@ -1,6 +1,6 @@
 # @onsvisual/svelte-components
 
-> Svelte 5 components that render ONS Design System markup and styles, for ONS web pages, articles and data visualisations. Version 2.2.0.
+> Svelte 5 components that render ONS Design System markup and styles, for ONS web pages, articles and data visualisations. Version 2.3.0.
 
 - Storybook docs, with examples of every component: https://onsdigital.github.io/svelte-components/
 - Workbench, to try out components and their props: https://onsdigital.github.io/svelte-components/workbench/
