@@ -57,6 +57,44 @@
 	</Scroller>
 {/snippet}
 
+{#snippet embeddedTemplate(args)}
+	<div style="max-width: 800px; margin: 0 auto; padding: 2rem; background: #f5f5f5;">
+		<p>This scroller is embedded in a constrained column with a contrasting background.</p>
+		<Scroller {...args} onChange={(detail) => (scrollerColor = scrollerColors[detail.index ?? 0])}>
+			{#snippet background()}
+				<Container width="full" height="full" background={scrollerColor} />
+			{/snippet}
+			{#snippet foreground()}
+				<div>
+					<ScrollerSection>
+						<p>
+							When this first caption is visible, the background will appear <Em
+								color={scrollerColors[0]}>light grey</Em
+							>.
+						</p>
+					</ScrollerSection>
+					<ScrollerSection>
+						<p>
+							When this first caption is visible, the background will appear <Em
+								color={scrollerColors[1]}>dark grey</Em
+							>.
+						</p>
+					</ScrollerSection>
+					<ScrollerSection>
+						<p>
+							When this first caption is visible, the background will appear <Em
+								color={scrollerColors[2]}>black</Em
+							>.
+						</p>
+					</ScrollerSection>
+				</div>
+			{/snippet}
+		</Scroller>
+	</div>
+{/snippet}
+
 <Story name="Default" args={{}} {template} />
 
 <Story name="Split-screen mode" args={{ splitscreen: true }} {template} />
+
+<Story name="Full-bleed embedded mode" args={{ fullBleed: true }} template={embeddedTemplate} />
