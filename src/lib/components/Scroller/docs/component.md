@@ -38,3 +38,23 @@ Svelte 5 uses `background` and `foreground` snippets in place of named slots. `o
   {/snippet}
 </Scroller>
 ```
+
+## Full-bleed mode
+
+Use the `fullBleed` prop when the scroller is embedded inside an existing content column but should fill the viewport width:
+
+```html
+<Scroller fullBleed>
+	{#snippet background()}
+	<Container width="full" height="full"> {background_components} </Container>
+	{/snippet} {#snippet foreground()}
+	<!-- ScrollerSection components -->
+	{/snippet}
+</Scroller>
+```
+
+**Important caveats:**
+
+- The breakout uses `100vw`, which includes the vertical scrollbar width (~15px on desktop). To prevent an unwanted horizontal scrollbar, add `overflow-x: clip` to the page root (`html` or `body`).
+- The margin calculation (`margin-left: calc(50% - 50vw)`) assumes the embedding column is horizontally centered on the viewport. In off-center layouts (e.g. with a sidebar), the section may be offset. Ensure the column is centered or adjust margins as needed.
+- Avoid placing the scroller inside ancestors with `overflow: hidden`, as that clips the viewport-width breakout.

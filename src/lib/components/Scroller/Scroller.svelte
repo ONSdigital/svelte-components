@@ -101,6 +101,7 @@
 	 * @typedef {Object} Props
 	 * @property {string | null} [id] Sets the unique ID of the scroller
 	 * @property {boolean} [splitscreen] Enables splitscreen view (captions appear on left on larger screens)
+	 * @property {boolean} [fullBleed] Allows the scroller to break out of an inline content column and fill the viewport width
 	 * @property {boolean} [marginTop] Adds a margin under the scroller section
 	 * @property {boolean} [marginBottom] Adds a margin under the scroller section
 	 * @property {number} [threshold] Set the threshold for the transition between scroller sections (0-1)
@@ -122,6 +123,7 @@
 	let {
 		id = null,
 		splitscreen = false,
+		fullBleed = false,
 		marginTop = false,
 		marginBottom = true,
 		threshold = 0.7,
@@ -289,7 +291,13 @@
 	<div class="ons-u-mt-xl"></div>
 {/if}
 
-<svelte-scroller-outer {id} bind:this={outer} class={cls} class:splitscreen>
+<svelte-scroller-outer
+	{id}
+	bind:this={outer}
+	class={cls}
+	class:splitscreen
+	class:fullbleed={fullBleed}
+>
 	<svelte-scroller-background-container class="background-container" style="{style}{widthStyle}">
 		<svelte-scroller-background bind:this={backgroundElement}>
 			{@render background?.()}
@@ -309,6 +317,13 @@
 	svelte-scroller-outer {
 		display: block;
 		position: relative;
+	}
+
+	svelte-scroller-outer.fullbleed {
+		width: 100vw;
+		max-width: 100vw;
+		margin-left: calc(50% - 50vw);
+		margin-right: calc(50% - 50vw);
 	}
 
 	svelte-scroller-background {
