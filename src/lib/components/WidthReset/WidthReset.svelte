@@ -2,10 +2,10 @@
 	/**
 	 * @typedef {Object} Props
 	 * @property {import("svelte").Snippet} [children] Child content (snippet)
-	 * @property {"legacy"} [mode] The page layout to break out of. "legacy" targets the article column of the older ONS website template (`#main > .wrapper > .col-wrap`)
+	 * @property {"default"|"legacy"} [mode] How the full width is worked out. "default" works in any column that is centred on the page. "legacy" targets the article column of the older ONS website template (`#main > .wrapper > .col-wrap`)
 	 */
 	/** @type {Props} */
-	let { children, mode = "legacy" } = $props();
+	let { children, mode = "default" } = $props();
 </script>
 
 <div class="full-width-reset full-width-reset--{mode}">
@@ -13,9 +13,26 @@
 </div>
 
 <style>
+	/*
+	 * Each mode makes an ancestor a size container, so that 100cqw = page width
+	 * excluding the scrollbar (100vw includes it, causing horizontal scrolling).
+	 * :has() limits each global rule to pages using that mode. Browsers without
+	 * :has() fall back to viewport units, which can overflow by the scrollbar width.
+	 */
+
+	/* Default: any column centred on the page */
+	:global(html:has(.full-width-reset--default)) {
+		container-type: inline-size;
+	}
+
+	.full-width-reset--default {
+		width: 100cqw;
+		margin-left: calc(50% - 50cqw);
+		margin-right: 0;
+	}
+
 	/* Legacy ONS website template */
-	/* Makes 100cqw = page width excluding the scrollbar */
-	:global(#main) {
+	:global(#main:has(.full-width-reset--legacy)) {
 		container-type: inline-size;
 	}
 

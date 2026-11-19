@@ -11,7 +11,7 @@
 		argTypes: {
 			mode: {
 				control: { type: "select" },
-				options: ["legacy"]
+				options: ["default", "legacy"]
 			}
 		},
 		parameters: withComponentDocs(componentDocs)
@@ -27,3 +27,5 @@
 {/snippet}
 
 <Story name="Default" args={{}} {template} />
+
+<Story name="Legacy" args={{ mode: "legacy" }} {template} />
