@@ -9,8 +9,9 @@
 		component: WidthReset,
 		tags: ["autodocs"],
 		argTypes: {
-			width: {
-				control: { type: "select" }
+			mode: {
+				control: { type: "select" },
+				options: ["legacy"]
 			}
 		},
 		parameters: withComponentDocs(componentDocs)
