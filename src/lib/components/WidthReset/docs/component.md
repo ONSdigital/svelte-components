@@ -7,7 +7,7 @@ The `mode` prop sets how the full width is worked out:
 
 Either mode measures the page width from a container element (`<html>` for `"default"`, `#main` for `"legacy"`). An element between that and the component with its own CSS `container-type` will be measured instead, giving the wrong width.
 
-_Note: The `"legacy"` preview below will be incorrectly offset as it does not sit within a regular ONS page. The `"default"` preview will only display correcly when opened as a full-page preview from the left menu._
+_Note: The `"legacy"` preview below will be incorrectly offset as it does not sit within a regular ONS page. The `"default"` preview will only display correctly when opened as a full-page preview from the left menu._
 
 <!-- prettier-ignore -->
 ```html
