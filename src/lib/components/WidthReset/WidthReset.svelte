@@ -3,12 +3,13 @@
 	 * @typedef {Object} Props
 	 * @property {import("svelte").Snippet} [children] Child content (snippet)
 	 * @property {"default"|"legacy"} [mode] How the full width is worked out. "default" works in any column that is centred on the page. "legacy" targets the article column of the older ONS website template (`#main > .wrapper > .col-wrap`)
+	 * @property {string | null} [cls] Optional: Set an additional CSS class for the wrapper
 	 */
 	/** @type {Props} */
-	let { children, mode = "default" } = $props();
+	let { children, mode = "default", cls = null } = $props();
 </script>
 
-<div class="full-width-reset full-width-reset--{mode}">
+<div class="full-width-reset full-width-reset--{mode} {cls || ''}">
 	{@render children?.()}
 </div>
 
