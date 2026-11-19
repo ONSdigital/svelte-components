@@ -8,6 +8,7 @@ export { default as LazyLoad } from "./components/LazyLoad/LazyLoad.svelte";
 export { default as Main } from "./components/Main/Main.svelte";
 export { default as Observe } from "./components/Observe/Observe.svelte";
 export { default as Theme } from "./components/Theme/Theme.svelte";
+export { default as WidthReset } from "./components/WidthReset/WidthReset.svelte";
 
 // Navigation
 export { default as BackLink } from "./components/BackLink/BackLink.svelte";
