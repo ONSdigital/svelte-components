@@ -41,6 +41,7 @@ The package CSS includes version 73.5.0 of the ONS Design System CSS, so any `on
 - [Main](https://onsdigital.github.io/svelte-components/?path=/docs/wrappers-main--docs): This component creates a styled `<main>` element to wrap the primary contents of a page (generally everything between the page header and footer).
 - [Observe](https://onsdigital.github.io/svelte-components/?path=/docs/wrappers-observe--docs): A wrapper component that uses IntersectionObserver to monitor whether the elements in contains are within the current viewport.
 - [Theme](https://onsdigital.github.io/svelte-components/?path=/docs/wrappers-theme--docs): A component that sets the colour scheme of its child components using CSS variables.
+- [WidthReset](https://onsdigital.github.io/svelte-components/?path=/docs/wrappers-widthreset--docs): A simple wrapper component that can be used within a column on a page to break out to the full page width. Can be used, for example, to create a full-width scrollytelling section within an article on the ONS website.
 
 ### Navigation
 
@@ -343,6 +344,30 @@ Example:
 </script>
 
 <Theme theme={light|dark|paleblue|blue|navyblue|grey}> {child_components} </Theme>
+```
+
+### WidthReset
+
+A simple wrapper component that can be used within a column on a page to break out to the full page width. Can be used, for example, to create a full-width scrollytelling section within an article on the ONS website.
+
+`import { WidthReset } from "@onsvisual/svelte-components";` · Docs: https://onsdigital.github.io/svelte-components/?path=/docs/wrappers-widthreset--docs
+
+Props:
+
+- `children` (`import("svelte").Snippet`): Child content
+- `mode` (`"default"|"legacy"`, default `"default"`): How the full width is worked out. "default" works in any column that is centred on the page. "legacy" targets the article column of the older ONS website template (`#main > .wrapper > .col-wrap`)
+- `cls` (`string | null`, default `null`): Optional: Set an additional CSS class for the wrapper
+
+Example:
+
+```svelte
+<script>
+  import { WidthReset } from "@onsvisual/svelte-components";
+</script>
+
+<WidthReset mode="legacy">
+  {child_components}
+</WidthReset>
 ```
 
 ### BackLink

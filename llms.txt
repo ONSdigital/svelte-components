@@ -41,6 +41,7 @@ The package CSS includes version 73.5.0 of the ONS Design System CSS, so any `on
 - [Main](https://onsdigital.github.io/svelte-components/?path=/docs/wrappers-main--docs): This component creates a styled `<main>` element to wrap the primary contents of a page (generally everything between the page header and footer).
 - [Observe](https://onsdigital.github.io/svelte-components/?path=/docs/wrappers-observe--docs): A wrapper component that uses IntersectionObserver to monitor whether the elements in contains are within the current viewport.
 - [Theme](https://onsdigital.github.io/svelte-components/?path=/docs/wrappers-theme--docs): A component that sets the colour scheme of its child components using CSS variables.
+- [WidthReset](https://onsdigital.github.io/svelte-components/?path=/docs/wrappers-widthreset--docs): A simple wrapper component that can be used within a column on a page to break out to the full page width. Can be used, for example, to create a full-width scrollytelling section within an article on the ONS website.
 
 ### Navigation
 
