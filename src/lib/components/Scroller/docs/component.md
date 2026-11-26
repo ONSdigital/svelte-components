@@ -1,40 +1,40 @@
 Components for adding interactive scrollytelling sections to a feature article.
 
-Svelte 5 uses `background` and `foreground` snippets in place of named slots. `onChange`, `onEnter`, and `onExit` receive `{ id, index, sectionId }`; the retained `on:change`, `on:enter`, and `on:exit` events expose the same payload through `event.detail`. Existing output bindings remain available. Shared scroll/resize listeners are removed after the last Scroller unmounts.
+In v2 (Svelte 5), pass the fixed background content with `{#snippet background()}` and the scrolling captions with `{#snippet foreground()}`. These replace v1's `slot="background"` and `slot="foreground"` attributes. Place `ScrollerSection` components inside the `foreground` snippet; their ordinary child content is passed as the `children` snippet.
+
+Use `$state` for values that change as the reader scrolls. The `onChange`, `onEnter`, and `onExit` callbacks receive `{ id, index, sectionId }` directly, rather than a DOM event. `index` is zero-based and can be `null` before a section is selected. Set a unique Scroller `id` and distinct ScrollerSection IDs if you need to identify them in callbacks.
+
+The retained `on:change`, `on:enter`, and `on:exit` events expose the same payload through `event.detail`. Existing output bindings (`count`, `index`, `sectionId`, `offset`, `progress`, and `visible`) remain available.
 
 <!-- prettier-ignore -->
-```html
+```svelte
 <script>
   import { Scroller, ScrollerSection, Container } from "@onsvisual/svelte-components";
 
+  const colors = ["#ddd", "#777", "#222"];
+  let backgroundColor = $state(colors[0]);
+
   function updateScroller(detail) {
-    // Function to update scroller background components, using the following props:
-    // 1. detail.id - the ID of the Scroller
-    // 2. detail.index - the index of the current ScrollerSection
-    // 3. detail.sectionId - the (optional) ID of the current ScrollerSection
+    backgroundColor = colors[detail.index ?? 0];
   }
 </script>
 
-<Scroller onChange={updateScroller} id={any_unique_id}>
+<Scroller onChange={updateScroller} id="example-scroller">
   {#snippet background()}
-    <!--
-      The <Container> component is optional here.
-      It is a useful way to set the height and width of the background.
-    -->
-    <Container width="full" height="full">
-      {background_components}
-    </Container>
+    <Container width="full" height="full" background={backgroundColor} />
   {/snippet}
   {#snippet foreground()}
-    <ScrollerSection id={any_unique_id}>
-      <p>First section caption.</p>
+    <ScrollerSection id="first-section">
+      <p>When this caption is visible, the background is light grey.</p>
     </ScrollerSection>
-    <ScrollerSection id={any_unique_id}>
-      <p>Second section caption.</p>
+    <ScrollerSection id="second-section">
+      <p>When this caption is visible, the background is dark grey.</p>
     </ScrollerSection>
-    <ScrollerSection id={any_unique_id}>
-      <p>Third section caption.</p>
+    <ScrollerSection id="third-section">
+      <p>When this caption is visible, the background is black.</p>
     </ScrollerSection>
   {/snippet}
 </Scroller>
 ```
+
+`Container` is optional; it provides a convenient way to size the background. Replace it with your own background components inside the snippet. Set `splitscreen={true}` on Scroller to show captions on the left and the background on the right on larger screens.
