@@ -54,4 +54,22 @@
 			margin-left: calc(-1 * max(0px, (100cqw - 944px) / 2));
 		}
 	}
+
+	/*
+	 * Containers inside a legacy reset are capped to the legacy .wrapper content
+	 * width (752px / 944px), so their content lines up with the article column.
+	 * .ons-container is border-box with 16px side padding, hence the extra 32px.
+	 * Full-width containers (no .ons-container class) are left alone.
+	 */
+	@media (min-width: 768px) {
+		.full-width-reset--legacy :global(.ons-page__container.ons-container) {
+			max-width: calc(752px + 2rem);
+		}
+	}
+
+	@media (min-width: 992px) {
+		.full-width-reset--legacy :global(.ons-page__container.ons-container) {
+			max-width: calc(944px + 2rem);
+		}
+	}
 </style>
